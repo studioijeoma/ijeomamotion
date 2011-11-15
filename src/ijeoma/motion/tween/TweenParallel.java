@@ -43,7 +43,7 @@ public class TweenParallel extends MotionParallelController {
 	/**
 	 * Constructs a TweenParallel
 	 * 
-	 * @param parent
+	 * @param g
 	 *            refers to PApplet and is usually 'this'
 	 */
 	public TweenParallel() {
@@ -53,7 +53,7 @@ public class TweenParallel extends MotionParallelController {
 	/**
 	 * Constructs a TweenParallel
 	 * 
-	 * @param parent
+	 * @param g
 	 *            refers to PApplet and is usually 'this'
 	 * @param name
 	 *            is used to find a TweenParallel with in another TweenParallel or

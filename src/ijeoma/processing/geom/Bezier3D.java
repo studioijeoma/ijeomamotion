@@ -27,15 +27,15 @@
  
 package ijeoma.processing.geom;
 
-import processing.core.PApplet;
+import processing.core.PGraphics;
 import processing.core.PVector;
 
 public class Bezier3D {
-	PApplet parent;
+	PGraphics g;
 	float x1, y1, z1, cx1, cy1, cz1, cx2, cy2, cz2, x2, y2, z2;
 
-	Bezier3D(PApplet _parent, float _x1, float _y1, float _z1, float _cx1, float _cy1, float _cz1, float _cx2, float _cy2, float _cz2, float _x2, float _y2, float _z2) {
-		parent = _parent;
+	Bezier3D(PGraphics _g, float _x1, float _y1, float _z1, float _cx1, float _cy1, float _cz1, float _cx2, float _cy2, float _cz2, float _x2, float _y2, float _z2) {
+		g = _g;
 
 		x1 = _x1;
 		y1 = _y1;
@@ -52,13 +52,13 @@ public class Bezier3D {
 	}
 
 	public void draw() {
-		parent.bezier(x1, y1, z1, cx1, cy1, cz1, cx2, cy2, cz2, x2, y2, z2);
+		g.bezier(x1, y1, z1, cx1, cy1, cz1, cx2, cy2, cz2, x2, y2, z2);
 	}
 
 	public PVector getPoint(float _position) {
-		float x = parent.bezierPoint(x1, cx1, cx2, x2, _position);
-		float y = parent.bezierPoint(y1, cy1, cy2, y2, _position);
-		float z = parent.bezierPoint(z1, cz1, cz2, z2, _position);
+		float x = g.bezierPoint(x1, cx1, cx2, x2, _position);
+		float y = g.bezierPoint(y1, cy1, cy2, y2, _position);
+		float z = g.bezierPoint(z1, cz1, cz2, z2, _position);
 
 		return new PVector(x, y, z);
 	}

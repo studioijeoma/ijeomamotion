@@ -15,8 +15,8 @@ public class Bezier2DTween_Basic extends PApplet {
 		size(100, 100);
 		smooth();
 
-		b1 = new Bezier2D(this, 85, 20, 10, 10, 90, 90, 15, 80);
-		b2 = new Bezier2D(this, 30, 20, 80, 5, 80, 75, 30, 75);
+		b1 = new Bezier2D(g, 85, 20, 10, 10, 90, 90, 15, 80);
+		b2 = new Bezier2D(g, 30, 20, 80, 5, 80, 75, 30, 75);
 
 		Motion.setup(this);
 		

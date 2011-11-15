@@ -13,7 +13,7 @@ public class Bezier2D_Basic extends PApplet {
 		size(100, 100);
 		smooth();
 
-		b1 = new Bezier2D(this, 85, 20, 10, 10, 90, 90, 15, 80);
+		b1 = new Bezier2D(g, 85, 20, 10, 10, 90, 90, 15, 80);
 	}
 
 	public void draw() {
