@@ -1,8 +1,9 @@
 package ijeoma.motion.tween.test;
 
-import ijeoma.motion.*;
-import ijeoma.motion.tween.*;
-import ijeoma.motion.event.*;
+import ijeoma.motion.Motion;
+import ijeoma.motion.event.MotionEvent;
+import ijeoma.motion.event.MotionEventListener;
+import ijeoma.motion.tween.Tween;
 import processing.core.PApplet;
 import processing.core.PFont;
 
@@ -10,54 +11,51 @@ public class Tween_Events_2 extends PApplet {
 	PFont f;
 
 	Tween t;
-	TweenEventListener tel;
 
+	float w = 0;
+
+	@Override
 	public void setup() {
 		size(400, 100);
-
 		smooth();
-
-		f = createFont("Arial", 12);
-		textFont(f);
 
 		Motion.setup(this);
 
-		tel = new TweenEventListener();
-
-		t = new Tween("t", 0, width, 100);
-		//t.repeat();
-		t.addEventListener(tel);
-		t.play();
+		t = new Tween(this, "w", width, 100).addEventListener(
+				new TweenEventListener()).play();
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 
 		noStroke();
-		fill(0);
-		rect(0, 0, t.getPosition(), height);
+
+		fill(255 / 2f);
+		rect(0, 0, w, height);
 
 		String time = t.getTime() + " / " + t.getDuration();
 
-		fill(lerpColor(0xFF00FF00, 0xFFFF0000, t.getSeekPosition()));
+		fill(0);
 		text(time, width - textWidth(time) - 10, height - 10);
 	}
 
+	@Override
 	public void keyPressed() {
-		if (key == ' ')
-			t.play();
+		t.play();
 	}
 
 	public class TweenEventListener implements MotionEventListener {
+		@Override
 		public void onMotionEvent(MotionEvent te) {
 			if (te.type == MotionEvent.TWEEN_STARTED)
-				println(((Tween) te.getSource()).getName() + " started");
+				println(te.getSource() + " started");
 			else if (te.type == MotionEvent.TWEEN_ENDED)
-				println(((Tween) te.getSource()).getName() + " ended");
-//			else if (te.type == MotionEvent.TWEEN_CHANGED)
-//				println(((Tween) te.getSource()).getName() + " changed");
+				println(te.getSource() + " ended");
+			// else if (te.type == MotionEvent.TWEEN_CHANGED)
+			// println(((Tween) te.getSource()).getName() + " changed");
 			else if (te.type == MotionEvent.TWEEN_REPEATED)
-				println(((Tween) te.getSource()).getName() + " repeated");
+				println(te.getSource() + " repeated");
 		}
 	}
 }

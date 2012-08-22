@@ -28,6 +28,7 @@
 package ijeoma.processing.geom;
 
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PShape;
 import processing.core.PVector;
@@ -36,67 +37,66 @@ public class SVGPath2D {
 	PGraphics g;
 	PShape path;
 
+	int segmentIndex = 0;
+	int segmentVertexIndex = 0;
+	float segmentPosition = 0;
+	float segmentPositionRange = 0;
+
+	PVector point = new PVector();
+
 	public SVGPath2D(PGraphics _g, PShape _path) {
 		g = _g;
 		path = _path;
+
+		segmentPositionRange = (1.0f / (path.getVertexCount() - 1));
 	}
 
 	public void draw() {
 		g.shape(path);
-
 	}
 
 	public PVector getPoint(float _position) {
-		float x = 0;
-		float y = 0;
-
-		int segmentVertexIndex = 0;
-
-		if (_position < 1)
+		if (_position <= 1)
 			segmentVertexIndex = PApplet.floor((path.getVertexCount() - 1)
 					* _position);
 		else
 			segmentVertexIndex = (path.getVertexCount() - 2);
 
-		float segmentPositionRange = (1f / (path.getVertexCount() - 1));
-
-		float segmentPosition = 0;
-
-		if (_position < 1)
+		if (_position <= 1)
 			segmentPosition = PApplet.map((_position % segmentPositionRange),
-					0, segmentPositionRange, 0, 1);
+					0, segmentPositionRange, 0.0f, 1.0f);
 		else
 			segmentPosition = 1;
 
+		// based on PShape.drawPath()
 		if (path.getVertexCodeCount() == 0) {
-			if (path.getVertex(0).length == 2) {
+			if (path.getVertexCount() == 2) {
 				for (int i = 0; i < path.getVertexCount(); i++) {
-					x = PApplet.lerp(path.getVertexX(segmentVertexIndex),
+					point.x = PApplet.lerp(path.getVertexX(segmentVertexIndex),
 							path.getVertexX(segmentVertexIndex + 1),
 							segmentPosition);
-					y = PApplet.lerp(path.getVertexX(segmentVertexIndex),
+					point.y = PApplet.lerp(path.getVertexX(segmentVertexIndex),
 							path.getVertexX(segmentVertexIndex + 1),
 							segmentPosition);
 				}
 			}
 		} else {
-			int index = 0;
-
-			if (path.getVertex(0).length == 2) { // drawing a 2D path
+			if (path.getVertexCount() == 2) {
 				for (int j = 0; j < path.getVertexCodeCount(); j++) {
 					switch (path.getVertexCode(j)) {
 
-					case PShape.VERTEX:
-						x = PApplet.lerp(path.getVertexX(segmentVertexIndex),
+					case PConstants.VERTEX:
+						point.x = PApplet.lerp(
+								path.getVertexX(segmentVertexIndex),
 								path.getVertexX(segmentVertexIndex + 1),
 								segmentPosition);
-						y = PApplet.lerp(path.getVertexY(segmentVertexIndex),
+						point.y = PApplet.lerp(
+								path.getVertexY(segmentVertexIndex),
 								path.getVertexY(segmentVertexIndex + 1),
 								segmentPosition);
-						// index++;
 						break;
 
-					case PShape.QUAD_BEZIER_VERTEX:
+					case PConstants.QUAD_BEZIER_VERTEX:
 						// g.quadraticVertex(path.getVertexX(index + 0),
 						// path.getVertexY(index + 0),
 						// path.getVertexX(index + 1),
@@ -104,28 +104,54 @@ public class SVGPath2D {
 						// index += 2;
 						break;
 
-					case PShape.BEZIER_VERTEX:
-						// g.bezierVertex(path.getVertexX(index + 0),
-						// path.getVertexY(index + 0),
-						// path.getVertexX(index + 1),
-						// path.getVertexY(index + 1),
-						// path.getVertexX(index + 2),
-						// path.getVertexY(index + 2));
-						// index += 3;
+					case PConstants.BEZIER_VERTEX:
+						point.x = g.bezierPoint(
+								path.getVertexX(segmentVertexIndex),
+								path.getVertexX(segmentVertexIndex + 1),
+								path.getVertexX(segmentVertexIndex + 2),
+								path.getVertexX(segmentVertexIndex + 2),
+								segmentPosition);
+
+						point.y = g.bezierPoint(
+								path.getVertexY(segmentVertexIndex),
+								path.getVertexY(segmentVertexIndex + 1),
+								path.getVertexY(segmentVertexIndex + 2),
+								path.getVertexY(segmentVertexIndex + 2),
+								segmentPosition);
 						break;
 
-					case PShape.CURVE_VERTEX:
-						// g.curveVertex(path.getVertexX(index),
-						// path.getVertexY(index));
-						// index++;
+					case PConstants.CURVE_VERTEX:
+						point.x = g.curvePoint(
+								path.getVertexX(segmentVertexIndex),
+								path.getVertexX(segmentVertexIndex + 1),
+								path.getVertexX(segmentVertexIndex + 2),
+								path.getVertexX(segmentVertexIndex + 2),
+								segmentPosition);
 
-						// case BREAK:
-						// g.breakShape();
+						point.y = g.curvePoint(
+								path.getVertexY(segmentVertexIndex),
+								path.getVertexY(segmentVertexIndex + 1),
+								path.getVertexY(segmentVertexIndex + 2),
+								path.getVertexY(segmentVertexIndex + 2),
+								segmentPosition);
+						break;
 					}
 				}
 			}
 		}
 
-		return new PVector(x, y);
+		return point;
+	}
+
+	public int getSegmentIndex() {
+		return segmentIndex;
+	}
+
+	public int getSegmentVertexIndex() {
+		return segmentVertexIndex;
+	}
+
+	public float getSegmentPosition() {
+		return segmentPosition;
 	}
 }

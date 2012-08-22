@@ -24,31 +24,28 @@
  * @modified    ##date##
  * @version     ##library.prettyVersion## (##library.version##)
  */
- 
+
 package ijeoma.motion.timeline;
 
-import java.lang.reflect.Method;
-import java.util.Comparator;
-
-import processing.core.PApplet;
 import ijeoma.motion.Motion;
 import ijeoma.motion.MotionController;
-import ijeoma.motion.MotionParallelController;
 import ijeoma.motion.event.MotionEvent;
 
-public class KeyFrame extends MotionParallelController {
+import java.lang.reflect.Method;
+
+import processing.core.PApplet;
+
+public class KeyFrame extends MotionController {
 	private Method keyframeStartedMethod, keyframeEndedMethod,
 			keyframeChangedMethod, keyframeRepeatedMethod;
 
-	public KeyFrame(String _name, float _time) {
+	public KeyFrame(float _time) {
 		super();
-		setName(_name);
 		setPlayTime(_time);
 	}
 
-	public KeyFrame(String _name, float _time, Motion[] _children) {
+	public KeyFrame(float _time, Motion[] _children) {
 		super();
-		setName(_name);
 		setPlayTime(_time);
 	}
 
@@ -70,9 +67,9 @@ public class KeyFrame extends MotionParallelController {
 		}
 
 		try {
-			keyframeChangedMethod = parentClass
-					.getMethod(MotionEvent.KEYFRAME_CHANGED,
-							new Class[] { KeyFrame.class });
+			keyframeChangedMethod = parentClass.getMethod(
+					MotionEvent.KEYFRAME_CHANGED,
+					new Class[] { KeyFrame.class });
 		} catch (Exception e) {
 		}
 
@@ -84,13 +81,13 @@ public class KeyFrame extends MotionParallelController {
 		}
 	}
 
-	public void setPlayTime(float _playTime) {
-		super.setPlayTime(_playTime);
-		
-		for(int i = 0; i < children.size(); i++)
-			children.get(i).setPlayTime(_playTime);
-	}
-	
+	// public void setPlayTime(float _playTime) {
+	// super.setPlayTime(_playTime);
+	//
+	// for (int i = 0; i < children.size(); i++)
+	// children.get(i).setPlayTime(_playTime);
+	// }
+
 	@Override
 	protected void dispatchMotionStartedEvent() {
 		dispatchEvent(MotionEvent.TIMELINE_STARTED);
@@ -118,7 +115,8 @@ public class KeyFrame extends MotionParallelController {
 			}
 		}
 	}
-	
+
+	@Override
 	protected void dispatchMotionChangedEvent() {
 		dispatchEvent(MotionEvent.TIMELINE_CHANGED);
 
@@ -150,21 +148,25 @@ public class KeyFrame extends MotionParallelController {
 	public String toString() {
 		String childrenNames = "";
 
-		for (int i = 0; i < children.size(); i++) {
-			if (children.get(i).getClass().getSuperclass().getSimpleName()
-					.equals("Motion"))
-				childrenNames += (children.get(i)).getName();
-			else
-				childrenNames += ((MotionController) children.get(i))
-						.toString();
+		// for (int i = 0; i < children.size(); i++) {
+		// if (children.get(i).getClass().getSuperclass().getSimpleName()
+		// .equals("Motion"))
+		// childrenNames += (children.get(i)).getName();
+		// else
+		// childrenNames += ((MotionController) children.get(i))
+		// .toString();
+		//
+		// childrenNames += (i < children.size() - 1) ? ", " : "";
+		// }
 
-			childrenNames += (i < children.size() - 1) ? ", " : "";
-		}
-
-		return ("KeyFrame[name: " + name + ", time:" + Float.toString(playTime)
-				+ ", children[" + childrenNames + "]]");
+		// return ("KeyFrame[name: " + name + ", time:" +
+		// Float.toString(playTime)
+		// + ", children[" + childrenNames + "]]");
+		return ("KeyFrame[time:" + Float.toString(playTime) + ", duration: "
+				+ duration + ", children[" + children + "]]");
 	}
 
+	@Override
 	public void onMotionEvent(MotionEvent te) {
 		// TODO Auto-generated method stub
 

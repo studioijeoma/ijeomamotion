@@ -24,7 +24,7 @@
  * @modified    ##date##
  * @version     ##library.prettyVersion## (##library.version##)
  */
- 
+
 package ijeoma.motion;
 
 public interface MotionConstant {

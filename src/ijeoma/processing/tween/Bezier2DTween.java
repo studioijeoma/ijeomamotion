@@ -24,40 +24,39 @@
  * @modified    ##date##
  * @version     ##library.prettyVersion## (##library.version##)
  */
- 
+
 package ijeoma.processing.tween;
 
-import java.lang.reflect.Method;
-
-
-import ijeoma.motion.Motion;
 import ijeoma.motion.event.MotionEvent;
+import ijeoma.motion.tween.Tween;
 import ijeoma.processing.geom.Bezier2D;
+
+import java.lang.reflect.Method;
 
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public class Bezier2DTween extends Motion { // implements Comparable {
+public class Bezier2DTween extends Tween { // implements Comparable {
 	private Method tweenBezierStartedMethod, tweenBezierEndedMethod,
 			tweenBezierChangedMethod, tweenBezierRepeatedMethod;
 
 	private Bezier2D bezier;
 
-	public Bezier2DTween(String _name, Bezier2D _path, float _begin,
-			float _end, float _duration, float _delay, String _easing) {
-		super(_name, _begin, _end, _duration, _delay, _easing);
+	public Bezier2DTween(Bezier2D _path, float _begin, float _end,
+			float _duration, float _delay, String _easing) {
+		super(_duration, _delay, _easing);
 		setupBezier(_path);
 	}
-	
-	public Bezier2DTween(String _name, Bezier2D _path, float _begin,
-			float _end, float _duration, float _delay) {
-		super(_name, _begin, _end, _duration, _delay);
+
+	public Bezier2DTween(Bezier2D _path, float _begin, float _end,
+			float _duration, float _delay) {
+		super(_duration, _delay);
 		setupBezier(_path);
 	}
-	
-	public Bezier2DTween(String _name, Bezier2D _path, float _begin,
-			float _end, float _duration) {
-		super(_name, _begin, _end, _duration);
+
+	public Bezier2DTween(Bezier2D _path, float _begin, float _end,
+			float _duration) {
+		super(_duration);
 		setupBezier(_path);
 	}
 
@@ -70,6 +69,8 @@ public class Bezier2DTween extends Motion { // implements Comparable {
 	 */
 	@Override
 	protected void setupEvents() {
+		super.setupEvents();
+
 		Class<? extends PApplet> parentClass = parent.getClass();
 
 		try {
@@ -123,7 +124,7 @@ public class Bezier2DTween extends Motion { // implements Comparable {
 
 	@Override
 	protected void dispatchMotionStartedEvent() {
-		logger.println("dispatchMotionStartedEvent tweengroup");
+		// logger.println("dispatchMotionStartedEvent tweengroup");
 
 		if (tweenBezierStartedMethod != null) {
 			try {

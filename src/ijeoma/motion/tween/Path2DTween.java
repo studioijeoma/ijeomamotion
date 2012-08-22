@@ -24,36 +24,37 @@
  * @modified    ##date##
  * @version     ##library.prettyVersion## (##library.version##)
  */
- 
+
 package ijeoma.motion.tween;
 
-import java.lang.reflect.Method;
-
 import ijeoma.geom.Path2D;
-import ijeoma.motion.Motion;
 import ijeoma.motion.event.MotionEvent;
+
+import java.lang.reflect.Method;
 
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public class Path2DTween extends Motion { // implements Comparable {
+public class Path2DTween extends Tween { // implements Comparable {
 	private Method tweenPathStartedMethod, tweenPathEndedMethod,
 			tweenPathChangedMethod, tweenPathRepeatedMethod;
 
 	private Path2D path;
 
-	public Path2DTween(String _name, Path2D _path, float _begin, float _end, float _duration, float _delay, String _easing) {
-		super(_name, _begin, _end, _duration, _delay, _easing);
+	public Path2DTween(Path2D _path, float _begin, float _end, float _duration,
+			float _delay, String _easing) {
+		super(_duration, _delay, _easing);
 		setupPath(_path);
 	}
-	
-	public Path2DTween(String _name, Path2D _path, float _begin, float _end, float _duration, float _delay) {
-		super(_name, _begin, _end, _duration, _delay);
+
+	public Path2DTween(Path2D _path, float _begin, float _end, float _duration,
+			float _delay) {
+		super(_duration, _delay);
 		setupPath(_path);
 	}
-	
-	public Path2DTween(String _name, Path2D _path, float _begin, float _end, float _duration) {
-		super(_name, _begin, _end, _duration);
+
+	public Path2DTween(Path2D _path, float _begin, float _end, float _duration) {
+		super(_duration);
 		setupPath(_path);
 	}
 
@@ -66,31 +67,40 @@ public class Path2DTween extends Motion { // implements Comparable {
 	 */
 	@Override
 	protected void setupEvents() {
+		super.setupEvents();
+
 		Class<? extends PApplet> parentClass = parent.getClass();
 
 		try {
-			tweenPathStartedMethod = parentClass.getMethod(MotionEvent.TWEEN_STARTED, new Class[] { Path2DTween.class });
+			tweenPathStartedMethod = parentClass.getMethod(
+					MotionEvent.TWEEN_STARTED,
+					new Class[] { Path2DTween.class });
 		} catch (Exception e) {
 		}
 
 		try {
-			tweenPathEndedMethod = parentClass.getMethod(MotionEvent.TWEEN_ENDED, new Class[] { Path2DTween.class });
+			tweenPathEndedMethod = parentClass.getMethod(
+					MotionEvent.TWEEN_ENDED, new Class[] { Path2DTween.class });
 		} catch (Exception e) {
 		}
 
 		try {
-			tweenPathChangedMethod = parentClass.getMethod(MotionEvent.TWEEN_CHANGED, new Class[] { Path2DTween.class });
+			tweenPathChangedMethod = parentClass.getMethod(
+					MotionEvent.TWEEN_CHANGED,
+					new Class[] { Path2DTween.class });
 		} catch (Exception e) {
 		}
-		
+
 		try {
-			tweenPathRepeatedMethod = parentClass.getMethod(MotionEvent.TWEEN_REPEATED, new Class[] { Path2DTween.class });
+			tweenPathRepeatedMethod = parentClass.getMethod(
+					MotionEvent.TWEEN_REPEATED,
+					new Class[] { Path2DTween.class });
 		} catch (Exception e) {
 		}
 	}
 
 	public PVector getPoint() {
-		return path.getPoint(getPosition());
+		return path.get(getPosition());
 	}
 
 	public float getX() {
@@ -111,8 +121,6 @@ public class Path2DTween extends Motion { // implements Comparable {
 
 	@Override
 	protected void dispatchMotionStartedEvent() {
-		logger.println("dispatchMotionStartedEvent tweengroup");
-
 		if (tweenPathStartedMethod != null) {
 			try {
 				tweenPathStartedMethod.invoke(parent, new Object[] { this });

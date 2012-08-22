@@ -5,18 +5,23 @@
 
 package ijeoma.motion.tween.test;
 
-import processing.core.*;
-
-import ijeoma.motion.*;
-import ijeoma.motion.event.*;
-import ijeoma.motion.tween.*;
+import ijeoma.motion.Motion;
+import ijeoma.motion.event.MotionEvent;
+import ijeoma.motion.event.MotionEventListener;
+import ijeoma.motion.tween.Tween;
+import ijeoma.motion.tween.TweenParallel;
+import processing.core.PApplet;
+import processing.core.PFont;
 
 public class TweenParallel_Events_2 extends PApplet {
 	PFont f;
 
 	TweenParallel tp;
-	TweenParallelEventListener tpel;
 
+	float x1 = -width;
+	float x2 = width;
+
+	@Override
 	public void setup() {
 		size(400, 200);
 
@@ -28,65 +33,58 @@ public class TweenParallel_Events_2 extends PApplet {
 
 		Motion.setup(this);
 
-		tpel = new TweenParallelEventListener();
-
 		tp = new TweenParallel();
-		tp.addChild(new Tween("t1", -width, width, 100));
-		tp.addChild(new Tween("t2", width, -width, 200));
-		tp.addEventListener(tpel);
-		tp.play();
+		tp.add(new Tween(this, "x1", width, 100), "x1").add(
+				new Tween(this, "x2", -width, 200), "x2");
+		tp.addEventListener(new TweenParallelEventListener());
+		tp.repeat().play();
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 
 		stroke(255);
-		fill(0);
-		rect(tp.getTween("t1").getPosition(), 0, width, height / 2);
-		rect(tp.getTween("t2").getPosition(), height / 2, width, height / 2);
+		fill(255 / 2f);
+		rect(x1, 0, width, height / 2);
+		rect(x2, height / 2, width, height / 2);
 
-		drawUI();
-	}
-
-	public void drawUI() {
 		String time;
 
-		// This draws the seek for the ts TweenParallel object
-		stroke(lerpColor(0xFF00FF00, 0xFFFF0000, tp.getSeekPosition()));
-		line(tp.getSeekPosition() * width, 0, tp.getSeekPosition() * width,
-				height);
+		time = (int) tp.getTween("x1").getTime() + " / "
+				+ (int) tp.getTween("x1").getDuration();
 
-		// This draws the time for every Tween object
-		for (int i = 0; i < tp.getChildCount(); i++) {
-			Tween t = tp.getTween(i);
-			time = (int) t.getTime() + " / " + (int) t.getDuration();
+		fill(0);
+		text(time, 10, 10 + 12);
 
-			fill(lerpColor(0xFF00FF00, 0xFFFF0000, t.getSeekPosition()));
-			text(time, 10, i * 100 + 10 + 12);
-		}
+		time = (int) tp.getTween("x2").getTime() + " / "
+				+ (int) tp.getTween("x2").getDuration();
 
-		// This draws the time for the ts TweenParallel object
+		fill(0);
+		text(time, 10, 100 + 10 + 12);
+
 		time = (int) tp.getTime() + " / " + (int) tp.getDuration();
 
-		fill(lerpColor(0xFF00FF00, 0xFFFF0000, tp.getSeekPosition()));
+		fill(0);
 		text(time, width - textWidth(time) - 10, height - 10);
 	}
 
+	@Override
 	public void keyPressed() {
 		tp.play();
 	}
 
 	class TweenParallelEventListener implements MotionEventListener {
+		@Override
 		public void onMotionEvent(MotionEvent te) {
 			if (te.type == MotionEvent.TWEEN_PARALLEL_STARTED)
-				println(((TweenParallel) te.getSource()).getName() + " started");
+				println(te.getSource() + " started");
 			else if (te.type == MotionEvent.TWEEN_PARALLEL_ENDED)
-				println(((TweenParallel) te.getSource()).getName() + " ended");
+				println(te.getSource() + " ended");
 			// else if (te.type == MotionEvent.TWEEN_PARALLEL_CHANGED)
 			// println(((TweenParallel) te.getSource()).getName() + " changed");
 			else if (te.type == MotionEvent.TWEEN_PARALLEL_REPEATED)
-				println(((TweenParallel) te.getSource()).getName()
-						+ " repeated");
+				println(te.getSource() + " repeated");
 		}
 	}
 }

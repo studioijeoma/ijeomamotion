@@ -24,39 +24,37 @@
  * @modified    ##date##
  * @version     ##library.prettyVersion## (##library.version##)
  */
- 
+
 package ijeoma.motion.tween;
 
-import java.lang.reflect.Method;
-
 import ijeoma.geom.Path3D;
-import ijeoma.motion.Motion;
 import ijeoma.motion.event.MotionEvent;
+
+import java.lang.reflect.Method;
 
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public class Path3DTween extends Motion {
+public class Path3DTween extends Tween {
 	private Method tweenPathStartedMethod, tweenPathEndedMethod,
 			tweenPathChangedMethod, tweenPathRepeatedMethod;
 
 	private Path3D path;
 
-	public Path3DTween(String _name, Path3D _path, float _begin, float _end,
-			float _duration, float _delay, String _easing) {
-		super(_name, _begin, _end, _duration, _delay, _easing);
+	public Path3DTween(Path3D _path, float _begin, float _end, float _duration,
+			float _delay, String _easing) {
+		super(_duration, _delay, _easing);
 		setupPath(_path);
 	}
 
-	public Path3DTween(String _name, Path3D _path, float _begin, float _end,
-			float _duration, float _delay) {
-		super(_name, _begin, _end, _duration, _delay);
+	public Path3DTween(Path3D _path, float _begin, float _end, float _duration,
+			float _delay) {
+		super(_duration, _delay);
 		setupPath(_path);
 	}
 
-	public Path3DTween(String _name, Path3D _path, float _begin, float _end,
-			float _duration) {
-		super(_name, _begin, _end, _duration);
+	public Path3DTween(Path3D _path, float _begin, float _end, float _duration) {
+		super(_duration);
 		setupPath(_path);
 	}
 
@@ -69,6 +67,8 @@ public class Path3DTween extends Motion {
 	 */
 	@Override
 	protected void setupEvents() {
+		super.setupEvents();
+
 		Class<? extends PApplet> parentClass = parent.getClass();
 
 		try {
@@ -100,7 +100,7 @@ public class Path3DTween extends Motion {
 	}
 
 	public PVector getPoint() {
-		return path.getPoint(getPosition());
+		return path.get(getPosition());
 	}
 
 	public float getX() {
@@ -125,8 +125,6 @@ public class Path3DTween extends Motion {
 
 	@Override
 	protected void dispatchMotionStartedEvent() {
-		logger.println("dispatchMotionStartedEvent tweengroup");
-
 		if (tweenPathStartedMethod != null) {
 			try {
 				tweenPathStartedMethod.invoke(parent, new Object[] { this });

@@ -24,36 +24,38 @@
  * @modified    ##date##
  * @version     ##library.prettyVersion## (##library.version##)
  */
- 
+
 package ijeoma.processing.tween;
 
-import java.lang.reflect.Method;
-
-import ijeoma.motion.Motion;
 import ijeoma.motion.event.MotionEvent;
+import ijeoma.motion.tween.Tween;
 import ijeoma.processing.geom.Curve3D;
+
+import java.lang.reflect.Method;
 
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public class Curve3DTween extends Motion { // implements Comparable {
+public class Curve3DTween extends Tween { // implements Comparable {
 	private Method tweenCurveStartedMethod, tweenCurveEndedMethod,
 			tweenCurveChangedMethod, tweenCurveRepeatedMethod;
 
 	private Curve3D curve;
 
-	public Curve3DTween(String _name, Curve3D _path, float _begin, float _end, float _duration, float _delay, String _easing) {
-		super(_name, _begin, _end, _duration, _delay, _easing);
+	public Curve3DTween(Curve3D _path, float _begin, float _end,
+			float _duration, float _delay, String _easing) {
+		super(_duration, _delay, _easing);
 		setupCurve(_path);
 	}
-	
-	public Curve3DTween(String _name, Curve3D _path, float _begin, float _end, float _duration, float _delay) {
-		super(_name, _begin, _end, _duration, _delay);
+
+	public Curve3DTween(Curve3D _path, float _begin, float _end,
+			float _duration, float _delay) {
+		super(_duration, _delay);
 		setupCurve(_path);
 	}
-	
-	public Curve3DTween(String _name, Curve3D _path, float _begin, float _end, float _duration) {
-		super(_name, _begin, _end, _duration);
+
+	public Curve3DTween(Curve3D _path, float _begin, float _end, float _duration) {
+		super(_duration);
 		setupCurve(_path);
 	}
 
@@ -66,25 +68,35 @@ public class Curve3DTween extends Motion { // implements Comparable {
 	 */
 	@Override
 	protected void setupEvents() {
+		super.setupEvents();
+
 		Class<? extends PApplet> parentClass = parent.getClass();
 
 		try {
-			tweenCurveStartedMethod = parentClass.getMethod(MotionEvent.TWEEN_STARTED, new Class[] { Curve3DTween.class });
+			tweenCurveStartedMethod = parentClass.getMethod(
+					MotionEvent.TWEEN_STARTED,
+					new Class[] { Curve3DTween.class });
 		} catch (Exception e) {
 		}
 
 		try {
-			tweenCurveEndedMethod = parentClass.getMethod(MotionEvent.TWEEN_ENDED, new Class[] { Curve3DTween.class });
+			tweenCurveEndedMethod = parentClass
+					.getMethod(MotionEvent.TWEEN_ENDED,
+							new Class[] { Curve3DTween.class });
 		} catch (Exception e) {
 		}
 
 		try {
-			tweenCurveChangedMethod = parentClass.getMethod(MotionEvent.TWEEN_CHANGED, new Class[] { Curve3DTween.class });
+			tweenCurveChangedMethod = parentClass.getMethod(
+					MotionEvent.TWEEN_CHANGED,
+					new Class[] { Curve3DTween.class });
 		} catch (Exception e) {
 		}
 
 		try {
-			tweenCurveRepeatedMethod = parentClass.getMethod(MotionEvent.TWEEN_REPEATED, new Class[] { Curve3DTween.class });
+			tweenCurveRepeatedMethod = parentClass.getMethod(
+					MotionEvent.TWEEN_REPEATED,
+					new Class[] { Curve3DTween.class });
 		} catch (Exception e) {
 		}
 	}
@@ -100,7 +112,7 @@ public class Curve3DTween extends Motion { // implements Comparable {
 	public float getY() {
 		return getPoint().y;
 	}
-	
+
 	public float getZ() {
 		return getPoint().y;
 	}
@@ -115,8 +127,6 @@ public class Curve3DTween extends Motion { // implements Comparable {
 
 	@Override
 	protected void dispatchMotionStartedEvent() {
-		logger.println("dispatchMotionStartedEvent tweengroup");
-
 		if (tweenCurveStartedMethod != null) {
 			try {
 				tweenCurveStartedMethod.invoke(parent, new Object[] { this });

@@ -24,21 +24,20 @@
  * @modified    ##date##
  * @version     ##library.prettyVersion## (##library.version##)
  */
- 
+
 package ijeoma.motion.tween;
 
 import ijeoma.motion.Motion;
-import ijeoma.motion.MotionParallelController;
+import ijeoma.motion.MotionController;
 import ijeoma.motion.event.MotionEvent;
 
 import java.lang.reflect.Method;
-import java.util.Collections;
 
 import processing.core.PApplet;
 
-public class TweenParallel extends MotionParallelController {
-	private Method tweenParallelStartedMethod, tweenParallelEndedMethod, tweenParallelChangedMethod,
-			tweenParallelRepeatedMethod;
+public class TweenParallel extends MotionController {
+	private Method tweenParallelStartedMethod, tweenParallelEndedMethod,
+			tweenParallelChangedMethod, tweenParallelRepeatedMethod;
 
 	/**
 	 * Constructs a TweenParallel
@@ -48,6 +47,7 @@ public class TweenParallel extends MotionParallelController {
 	 */
 	public TweenParallel() {
 		super();
+		setupEvents();
 	}
 
 	/**
@@ -56,36 +56,44 @@ public class TweenParallel extends MotionParallelController {
 	 * @param g
 	 *            refers to PApplet and is usually 'this'
 	 * @param name
-	 *            is used to find a TweenParallel with in another TweenParallel or
-	 *            TweenSequence
+	 *            is used to find a TweenParallel with in another TweenParallel
+	 *            or TweenSequence
 	 * @param children
 	 *            is an array of type Object[] can contain Tweens and/or
 	 *            TweenParallels
 	 */
-	public TweenParallel(String _name, Motion[] _children) {
-		super(_name, _children);
+	public TweenParallel(Motion[] _children) {
+		super();
+		addAll(_children);
+		setupEvents();
 	}
 
 	/**
 	 * Sets the events
 	 */
+	@Override
 	protected void setupEvents() {
+		super.setupEvents();
+
 		Class<? extends PApplet> parentClass = parent.getClass();
 
 		try {
 			tweenParallelStartedMethod = parentClass.getMethod(
-					MotionEvent.TWEEN_PARALLEL_STARTED, new Class[] { TweenParallel.class });
-		} catch (Exception e) {
-		}
-
-		try {
-			tweenParallelEndedMethod = parentClass.getMethod(MotionEvent.TWEEN_PARALLEL_ENDED,
+					MotionEvent.TWEEN_PARALLEL_STARTED,
 					new Class[] { TweenParallel.class });
 		} catch (Exception e) {
 		}
 
 		try {
-			tweenParallelChangedMethod = parentClass.getMethod(MotionEvent.TWEEN_PARALLEL_CHANGED,
+			tweenParallelEndedMethod = parentClass.getMethod(
+					MotionEvent.TWEEN_PARALLEL_ENDED,
+					new Class[] { TweenParallel.class });
+		} catch (Exception e) {
+		}
+
+		try {
+			tweenParallelChangedMethod = parentClass.getMethod(
+					MotionEvent.TWEEN_PARALLEL_CHANGED,
 					new Class[] { TweenParallel.class });
 		} catch (Exception e) {
 		}
@@ -99,12 +107,108 @@ public class TweenParallel extends MotionParallelController {
 	}
 
 	@Override
+	public TweenParallel play() {
+		return (TweenParallel) super.play();
+	}
+
+	@Override
+	public TweenParallel stop() {
+		return (TweenParallel) super.stop();
+	}
+
+	@Override
+	public TweenParallel pause() {
+		return (TweenParallel) super.pause();
+	}
+
+	@Override
+	public TweenParallel resume() {
+		return (TweenParallel) super.resume();
+	}
+
+	@Override
+	public TweenParallel seek(float _value) {
+		return (TweenParallel) super.seek(_value);
+	}
+
+	@Override
+	public TweenParallel repeat() {
+		return (TweenParallel) super.repeat();
+	}
+
+	@Override
+	public TweenParallel repeat(int _repeatDuration) {
+		return (TweenParallel) super.repeat(_repeatDuration);
+	}
+
+	@Override
+	public TweenParallel noRepeat() {
+		return (TweenParallel) super.noRepeat();
+	}
+
+	@Override
+	public TweenParallel reverse() {
+		return (TweenParallel) super.reverse();
+	}
+
+	@Override
+	public TweenParallel noReverse() {
+		return (TweenParallel) super.noReverse();
+	}
+
+	@Override
+	public TweenParallel setTimeScale(float _timeScale) {
+		return (TweenParallel) super.setTimeScale(_timeScale);
+	}
+
+	@Override
+	public TweenParallel setDuration(float _duration) {
+		return (TweenParallel) super.setDuration(_duration);
+	}
+
+	@Override
+	public TweenParallel setDelay(float _delay) {
+		return (TweenParallel) super.setDelay(_delay);
+	}
+
+	@Override
+	public TweenParallel setEasing(String _easing) {
+		return (TweenParallel) super.setEasing(_easing);
+	}
+
+	@Override
+	public TweenParallel noEasing() {
+		return (TweenParallel) super.noEasing();
+	}
+
+	@Override
+	public TweenParallel setTimeMode(String _timeMode) {
+		return (TweenParallel) super.setTimeMode(_timeMode);
+	}
+
+	@Override
+	public TweenParallel setRepeatDuration(int _repeatCount) {
+		return (TweenParallel) super.setRepeatDuration(_repeatCount);
+	}
+
+	@Override
+	public TweenParallel autoUpdate() {
+		return (TweenParallel) super.autoUpdate();
+	}
+
+	@Override
+	public TweenParallel noAutoUpdate() {
+		return (TweenParallel) super.noAutoUpdate();
+	}
+
+	@Override
 	protected void dispatchMotionStartedEvent() {
-		logger.println("dispatchMotionStartedEvent tweengroup");
+		// logger.println("dispatchMotionStartedEvent tweengroup");
 
 		if (tweenParallelStartedMethod != null) {
 			try {
-				tweenParallelStartedMethod.invoke(parent, new Object[] { this });
+				tweenParallelStartedMethod
+						.invoke(parent, new Object[] { this });
 			} catch (Exception e) {
 				// e.printStackTrace();
 				tweenParallelStartedMethod = null;
@@ -120,7 +224,7 @@ public class TweenParallel extends MotionParallelController {
 			try {
 				tweenParallelEndedMethod.invoke(parent, new Object[] { this });
 			} catch (Exception e) {
-				 e.printStackTrace();
+				e.printStackTrace();
 				tweenParallelEndedMethod = null;
 			}
 		}
@@ -132,7 +236,8 @@ public class TweenParallel extends MotionParallelController {
 	protected void dispatchMotionChangedEvent() {
 		if (tweenParallelChangedMethod != null) {
 			try {
-				tweenParallelChangedMethod.invoke(parent, new Object[] { this });
+				tweenParallelChangedMethod
+						.invoke(parent, new Object[] { this });
 			} catch (Exception e) {
 				// e.printStackTrace();
 				tweenParallelChangedMethod = null;
@@ -146,7 +251,8 @@ public class TweenParallel extends MotionParallelController {
 	protected void dispatchMotionRepeatedEvent() {
 		if (tweenParallelRepeatedMethod != null) {
 			try {
-				tweenParallelRepeatedMethod.invoke(parent, new Object[] { this });
+				tweenParallelRepeatedMethod.invoke(parent,
+						new Object[] { this });
 			} catch (Exception e) {
 				// e.printStackTrace();
 				tweenParallelRepeatedMethod = null;
@@ -158,20 +264,10 @@ public class TweenParallel extends MotionParallelController {
 
 	@Override
 	public String toString() {
-		String tweenNames = "";
-
-		for (int i = 0; i < children.size(); i++) {
-			Object child = children.get(i);
-
-			if (child.getClass().getSimpleName().equals("Tween"))
-				tweenNames += ((Motion) child).getName() + ((i < children.size() - 1) ? ", " : "");
-			else
-				tweenNames += ((TweenParallel) child).toString() + ((i < children.size() - 1) ? ", " : "");
-		}
-
-		return ("TweenParallel[tweens: {" + tweenNames + "}]");
+		return ("TweenParallel[tweens: {" + tweens + "}]");
 	}
 
+	@Override
 	public void onMotionEvent(MotionEvent te) {
 		// TODO Auto-generated method stub
 	}

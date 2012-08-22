@@ -24,16 +24,13 @@
  * @modified    ##date##
  * @version     ##library.prettyVersion## (##library.version##)
  */
- 
+
 package ijeoma.motion;
 
 import ijeoma.motion.event.MotionEvent;
 import ijeoma.motion.event.MotionEventListener;
-import ijeoma.motion.MotionConstant;
-import ijeoma.util.Logger;
 
 import java.lang.reflect.Method;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -45,11 +42,10 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	protected static PApplet parent;
 	protected static Class parentClass;
 
-	protected String name;
+	// protected int id;
 	protected String type;
 
-	protected Property[] properties;
-	protected ArrayList<Callback> callbacks = new ArrayList();
+	protected ArrayList<Callback> callbacks = new ArrayList<Callback>();
 
 	protected float playTime = 0;
 
@@ -66,26 +62,25 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	protected Class<?> easingClass;
 	protected Method easingMethod;
 
-	protected int repeatIndex = 0;
 	protected int repeatCount = 0;
+	protected int repeatDuration = 0;
 
 	protected boolean isPlaying = false;
 	protected boolean isRepeating = false;
+	protected boolean isReversing = false;
 
 	public boolean isAutoUpdating = true;
 
 	protected String timeMode = FRAMES;
-	protected String repeatMode = NO_REVERSE;
-	protected String reverseMode = REVERSE_TIME;
 
 	protected float reverseTime = 0;
 
-	protected ArrayList<MotionEventListener> listeners;
+	protected ArrayList<MotionEventListener> listeners = new ArrayList<MotionEventListener>();
 
 	protected Method motionStartedMethod, motionEndedMethod,
 			motionChangedMethod, motionRepeatedMethod;
 
-	public Logger logger;
+	// public Logger logger;
 
 	private static class LibraryNotInitializedException extends
 			NullPointerException {
@@ -100,179 +95,11 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	 * 
 	 */
 	public Motion() {
-		// setup("defualt", null, duration, delay, easing);
-		setup("default", new Property[] { new Property("default", 0, 0) },
-				duration, delay, easing);
+		setup(duration, delay, easing);
 		setupEvents();
 	}
 
-	/**
-	 * Constructs a Tween
-	 * 
-	 * @param _name
-	 *            the id of the tween
-	 * @param _begin
-	 *            the position you want the tween to begin at
-	 * @param _end
-	 *            the position you want the tween to end at
-	 * @param _duration
-	 *            how many seconds/frames you want the tween to take from begin
-	 *            to the end
-	 */
-	public Motion(String _name, float _begin, float _end, float _duration) {
-		setup(_name, _begin, _end, _duration, 0, LINEAR_BOTH);
-		setupEvents();
-	}
-
-	/**
-	 * Constructs a Tween
-	 * 
-	 * @param _name
-	 *            the id of the tween
-	 * @param _begin
-	 *            the position you want the tween to begin at
-	 * @param _end
-	 *            the position you want the tween to end at
-	 * @param _duration
-	 *            how many seconds/frames you want the tween to take from begin
-	 *            to the end
-	 * @param _delay
-	 *            how many seconds/frames you want the tween to delay before
-	 *            starting
-	 * @param _easing
-	 *            LINEAR_IN, LINEAR_OUT, LINEAR_BOTH, QUAD_IN, QUAD_OUT,
-	 *            QUAD_BOTH, CUBIC_IN, CUBIC_BOTH, CUBIC_OUT, QUART_IN,
-	 *            QUART_OUT, QUART_BOTH, QUINT_IN, QUINT_OUT, QUINT_BOTH,
-	 *            SINE_IN, SINE_OUT,SINE_BOTH, CIRC_IN, CIRC_OUT, CIRC_BOTH,
-	 *            EXPO_IN, EXPO_OUT, EXPO_BOTH, BACK_IN, BACK_OUT, BACK_BOTH,
-	 *            BOUNCE_IN, BOUNCE_OUT, BOUNCE_BOTH, ELASTIC_IN, ELASTIC_OUT,
-	 *            ELASTIC_BOTH
-	 */
-	public Motion(String _name, float _begin, float _end, float _duration,
-			float _delay) {
-		setup(_name, _begin, _end, _duration, _delay, LINEAR_BOTH);
-		setupEvents();
-	}
-
-	/**
-	 * Constructs a Tween
-	 * 
-	 * @param _name
-	 *            the id of the tween
-	 * @param _begin
-	 *            the position you want the tween to begin at
-	 * @param _end
-	 *            the position you want the tween to end at
-	 * @param _duration
-	 *            how many seconds/frames you want the tween to take from begin
-	 *            to the end
-	 * @param _delay
-	 *            how many seconds/frames you want the tween to delay before
-	 *            starting
-	 * @param _easing
-	 *            LINEAR_IN, LINEAR_OUT, LINEAR_BOTH, QUAD_IN, QUAD_OUT,
-	 *            QUAD_BOTH, CUBIC_IN, CUBIC_BOTH, CUBIC_OUT, QUART_IN,
-	 *            QUART_OUT, QUART_BOTH, QUINT_IN, QUINT_OUT, QUINT_BOTH,
-	 *            SINE_IN, SINE_OUT,SINE_BOTH, CIRC_IN, CIRC_OUT, CIRC_BOTH,
-	 *            EXPO_IN, EXPO_OUT, EXPO_BOTH, BACK_IN, BACK_OUT, BACK_BOTH,
-	 *            BOUNCE_IN, BOUNCE_OUT, BOUNCE_BOTH, ELASTIC_IN, ELASTIC_OUT,
-	 *            ELASTIC_BOTH
-	 */
-	public Motion(String _name, float _begin, float _end, float _duration,
-			float _delay, String _easing) {
-		setup(_name, _begin, _end, _duration, _delay, _easing);
-		setupEvents();
-	}
-
-	public Motion(String _name, String[] _motionObjectProperties,
-			float _duration, float _delay, String _easing) {
-		Property[] parameters = parseProperties(parent, _motionObjectProperties);
-
-		setup(_name, parameters, _duration, _delay, _easing);
-		setupEvents();
-	}
-
-	public Motion(String _name, String[] _motionObjectProperties,
-			float _duration, float _delay) {
-		Property[] parameters = parseProperties(parent, _motionObjectProperties);
-
-		setup(_name, parameters, _duration, _delay, easing);
-		setupEvents();
-	}
-
-	public Motion(String _name, String[] _motionObjectProperties,
-			float _duration) {
-		Property[] parameters = parseProperties(parent, _motionObjectProperties);
-
-		setup(_name, parameters, _duration, delay, easing);
-		setupEvents();
-	}
-
-	public Motion(String _name, Object _motionObject,
-			String[] _motionObjectProperties, float _duration, float _delay,
-			String _easing) {
-		Property[] parameters = parseProperties(_motionObject,
-				_motionObjectProperties);
-
-		setup(_name, parameters, _duration, _delay, _easing);
-		setupEvents();
-	}
-
-	public Motion(String _name, Object _motionObject,
-			String[] _motionObjectProperties, float _duration, float _delay) {
-		Property[] parameters = parseProperties(_motionObject,
-				_motionObjectProperties);
-
-		setup(_name, parameters, _duration, _delay, easing);
-		setupEvents();
-	}
-
-	public Motion(String _name, Object _motionObject,
-			String[] _motionObjectProperties, float _duration) {
-		Property[] parameters = parseProperties(_motionObject,
-				_motionObjectProperties);
-
-		setup(_name, parameters, _duration, delay, easing);
-		setupEvents();
-	}
-
-	public Motion(String _name, Property[] _properties, float _duration,
-			float _delay, String _easing) {
-		setup(_name, _properties, _duration, _delay, _easing);
-		setupEvents();
-	}
-
-	public Motion(String _name, Property[] _properties, float _duration,
-			float _delay) {
-		setup(_name, _properties, _duration, _delay, easing);
-		setupEvents();
-	}
-
-	public Motion(String _name, Property[] _properties, float _duration) {
-		setup(_name, _properties, _duration, delay, easing);
-		setupEvents();
-	}
-
-	protected void setup(String _name, float _begin, float _end,
-			float _duration, float _delay, String _easing) {
-
-		setup(_name, new Property[] { new Property("default", _begin, _end) },
-				_duration, _delay, _easing);
-	}
-
-	protected void setup(String _name, Property[] _properties, float _duration,
-			float _delay, String _easing) {
-
-		getParent().registerPre(this);
-
-		name = _name;
-		type = this.getClass().getSimpleName();
-
-		if (_properties == null)
-			properties = new Property[1];
-		else
-			properties = _properties;
-
+	protected void setup(float _duration, float _delay, String _easing) {
 		duration = _duration;
 
 		delay = _delay;
@@ -282,10 +109,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 		setEasing(_easing);
 
-		listeners = new ArrayList<MotionEventListener>();
-
-		logger = new Logger();
-		logger.disable();
+		type = this.getClass().getSimpleName();
 	}
 
 	public static void setup(PApplet _parent) {
@@ -298,6 +122,8 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	}
 
 	protected void setupEvents() {
+		getParent().registerPre(this);
+
 		Class<? extends PApplet> parentClass = getParent().getClass();
 
 		try {
@@ -325,69 +151,43 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		}
 	}
 
-	public Property[] parseProperties(Object _motionObject,
-			String[] _motionObjectProperties) {
-		// PApplet.println("Motion.parseProperties()");
-
-		Property[] motionProperties = new Property[_motionObjectProperties.length];
-
-		for (int i = 0; i < _motionObjectProperties.length; i++) {
-			String[] motionObjectProperty = PApplet
-					.trim(_motionObjectProperties[i].split("[:,]"));
-
-			if (_motionObject == null) {
-				if (motionObjectProperty.length == 2)
-					motionProperties[i] = new Property(parent,
-							motionObjectProperty[0],
-							Float.parseFloat(motionObjectProperty[1]));
-				else if (motionObjectProperty.length == 3)
-					motionProperties[i] = new Property(parent,
-							motionObjectProperty[0],
-							Float.parseFloat(motionObjectProperty[1]),
-							Float.parseFloat(motionObjectProperty[2]));
-			} else {
-				if (motionObjectProperty.length == 2)
-					motionProperties[i] = new Property(_motionObject,
-							motionObjectProperty[0],
-							Float.parseFloat(motionObjectProperty[1]));
-				else if (motionObjectProperty.length == 3)
-					motionProperties[i] = new Property(_motionObject,
-							motionObjectProperty[0],
-							Float.parseFloat(motionObjectProperty[1]),
-							Float.parseFloat(motionObjectProperty[2]));
-			}
-		}
-
-		return motionProperties;
-	}
-
 	/**
 	 * Starts the tween from the beginning position
 	 */
-	public void play() {
-		isPlaying = true;
+	public Motion play() {
+		// PApplet.println(this + ".play()");
 
 		seek(0);
-		// resume();
 
 		time = beginTime;
 
 		beginTime = (timeMode == SECONDS) ? (getParent().millis() - beginTime * 1000)
 				: (getParent().frameCount - beginTime);
 
-		dispatchMotionStartedEvent();
+		repeatCount = 0;
 
-		repeatIndex = 0;
+		// if (delay == 0) {
+		// setProperties();
+
+		isPlaying = true;
+
+		dispatchMotionStartedEvent();
+		// }
+
+		return this;
 	}
 
 	/**
 	 * Ends the tween at the ending position
 	 */
-	public void stop() {
-		if (isRepeating && (repeatCount == 0 || repeatIndex < repeatCount)) {
+	public Motion stop() {
+		// PApplet.println(this + ".stop()");
 
-			// PApplet.println("repeatIndex = " + repeatIndex);
-			if (repeatMode == REVERSE)
+		if (isRepeating
+				&& (repeatDuration == 0 || repeatCount < repeatDuration)) {
+
+			// PApplet.println("repeatCount = " + repeatCount);
+			if (isReversing)
 				reverse();
 
 			seek(0);
@@ -395,36 +195,40 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 			dispatchMotionRepeatedEvent();
 
-			repeatIndex++;
+			repeatCount++;
 		} else {
 			isPlaying = false;
 
-			if (repeatMode == REVERSE)
+			if (isReversing)
 				reverse();
 
-			seek(1);
+			seek(1.0f);
 
 			dispatchMotionEndedEvent();
 
-			repeatIndex = 0;
+			repeatCount = 0;
 		}
+
+		return this;
 	}
 
 	/**
 	 * Pauses the tween
 	 */
-	public void pause() {
+	public Motion pause() {
 		isPlaying = false;
 
 		beginTime = time;
 
 		// dispatchMotionEndedEvent();
+
+		return this;
 	}
 
 	/**
 	 * Resumes the tween
 	 */
-	public void resume() {
+	public Motion resume() {
 		isPlaying = true;
 
 		time = beginTime;
@@ -434,76 +238,74 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 		// if(time == 0)
 		// dispatchMotionStartedEvent();
+
+		return this;
 	}
 
 	/**
 	 * Changes the time of the tween to a time percentange between 0 and 1
 	 */
-	public void seek(float _value) {
-		beginTime = time = _value * getDelayDuration();
+	public Motion seek(float _value) {
+		beginTime = time = getPlayTime() + _value * getDelayedDuration();
 
-		// if (isReversingTime() && reverseTime != 0)
-		// beginTime = time = reverseTime - time;
-
-		updatePosition();
-	}
-
-	public float getSeekPosition() {
-		return time / getDelayDuration();
+		return this;
 	}
 
 	/**
 	 * Sets the tween to repeat after ending
 	 */
-	public void repeat() {
+	public Motion repeat() {
 		isRepeating = true;
+
+		return this;
 	}
 
 	/**
 	 * 
 	 */
-	public void repeat(int _repeatCount) {
+	public Motion repeat(int _repeatDuration) {
 		isRepeating = true;
-		repeatCount = _repeatCount;
-	}
+		repeatDuration = _repeatDuration;
 
-	/**
-	 * 
-	 */
-	public void repeat(String _repeatMode) {
-		isRepeating = true;
-		repeatMode = _repeatMode;
+		return this;
 	}
 
 	/**
 	 * Sets tweens to not repeat after ending
 	 */
-	public void noRepeat() {
+	public Motion noRepeat() {
 		isRepeating = false;
-		repeatCount = 0;
+		repeatDuration = 0;
+
+		return this;
 	}
 
 	/**
 	 * Sets the tween to reverse
 	 */
-	public void reverse() {
-		if (reverseMode == REVERSE_POSITION)
-			properties[0].reverse();
-		else if (reverseMode == REVERSE_TIME)
-			reverseTime = (reverseTime == 0) ? duration : 0;
+	public Motion reverse() {
+		isReversing = true;
+		reverseTime = (reverseTime == 0) ? duration : 0;
+
+		return this;
+	}
+
+	public Motion noReverse() {
+		isReversing = false;
+		// reverseTime = 0;
+
+		return this;
 	}
 
 	public void update() {
 		if (isPlaying()) {
 			updateTime();
 
-			if (time > delay)
-				if (time > 0 && time < getDelayDuration())
-					updatePosition();
+			if (isAbovePlayTime(time))
+				if (isBelowStopTime(time))
+					updateCallbacks();
 				else
 					stop();
-			else
-				stop();
 		}
 	}
 
@@ -511,18 +313,16 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		if (isPlaying()) {
 			setTime(_time);
 
-			if (time > delay)
-				if (time > 0 && time < getDelayDuration())
-					updatePosition();
+			if (isAbovePlayTime(time))
+				if (isBelowStopTime(time))
+					updateCallbacks();
 				else
 					stop();
-			else
-				stop();
 		}
 	}
 
 	public void updateCallbacks() {
-		for (Callback callback:callbacks)
+		for (Callback callback : callbacks)
 			callback.update();
 	}
 
@@ -530,48 +330,6 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		time = ((timeMode == SECONDS) ? ((getParent().millis() - beginTime) / 1000)
 				: (getParent().frameCount - beginTime))
 				* timeScale;
-
-		if (isReversingTime() && reverseTime != 0)
-			time = reverseTime - time;
-	}
-
-	protected void updatePosition() {
-		try {
-			for (int i = 0; i < properties.length; i++) {
-				if (easing.equals(CUBIC_BEZIER_IN)
-						|| easing.equals(CUBIC_BEZIER_OUT)
-						|| easing.equals(CUBIC_BEZIER_BOTH)) {
-					Object[] args = { new Float(time),
-							new Float(properties[i].getBegin()),
-							new Float(properties[i].getChange()),
-							new Float(getDuration()),
-							new Float(properties[i].getBegin()),
-							new Float(properties[i].getEnd()) };
-
-					properties[i].setPosition(((Float) easingMethod.invoke(
-							parent, args)).floatValue());
-				} else {
-
-					Object[] args = { new Float(getTime()),
-							new Float(properties[i].getBegin()),
-							new Float(properties[i].getChange()),
-							new Float(getDuration()) };
-
-					properties[i].setPosition(((Float) easingMethod.invoke(
-							parent, args)).floatValue());
-				}
-			}
-
-			dispatchMotionChangedEvent();
-
-			updateCallbacks();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void addCallback(Callback _c) {
-		callbacks.add(_c);
 	}
 
 	public void pre() {
@@ -586,14 +344,6 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return parent;
 	}
 
-	public void setName(String _name) {
-		name = _name;
-	}
-
-	public String getName() {
-		return name;
-	}
-
 	public void setPlayTime(float _playTime) {
 		playTime = _playTime;
 	}
@@ -602,79 +352,57 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return playTime;
 	}
 
-	public float getDelayPlayTime() {
+	public float getDelayedPlayTime() {
 		return playTime + delay;
 	}
 
 	protected void setTime(float _time) {
-		logger.println(this.name + ".setTime(" + _time + ")");
+		// logger.println(".setTime(" + _time + ")");
 
 		time = _time;
 	}
 
 	public float getTime() {
-		return (time < delay) ? 0f : (time - delay);
+		return (time < getDelayedPlayTime()) ? 0f
+				: (time - getDelayedPlayTime());
 	}
 
 	public float getDelayTime() {
-		return (float) time;
+		return time;
 	}
 
-	public void setTimeScale(float _timeScale) {
+	public Motion setTimeScale(float _timeScale) {
 		timeScale = _timeScale;
+
+		return this;
 	}
 
 	public float getTimeScale() {
 		return timeScale;
 	}
 
-	public void setPosition(float _position) {
-		properties[0].setPosition(_position);
-	}
-
 	public float getPosition() {
-		return properties[0].getPosition();
+		return getTime() / getDelayedDuration();
 	}
 
-	public void setBegin(float _begin) {
-		// PApplet.println("setBegin(" + _begin + ")");
-		properties[0].setBegin(_begin);
-	}
-
-	public float getBegin() {
-		return properties[0].getBegin();
-	}
-
-	public void setEnd(float _end) {
-		properties[0].setEnd(_end);
-	}
-
-	public float getEnd() {
-		return properties[0].getEnd();
-	}
-
-	public void setChange(float _change) {
-		properties[0].setChange(_change);
-	}
-
-	public float getChange() {
-		return properties[0].getChange();
-	}
-
-	public void setDuration(float _duration) {
+	public Motion setDuration(float _duration) {
 		duration = _duration;
+
+		return this;
 	}
 
 	public float getDuration() {
 		return duration;
 	}
 
-	public float getDelayDuration() {
+	public float getDelayedDuration() {
 		return duration + delay;
 	}
 
-	public void setDelay(float _delay) {
+	public Motion setDelay(float _delay) {
 		delay = _delay;
+
+		return this;
 	}
 
 	public float getDelay() {
@@ -691,7 +419,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	 *            BOUNCE_IN, BOUNCE_OUT, BOUNCE_BOTH, ELASTIC_IN, ELASTIC_OUT,
 	 *            ELASTIC_BOTH
 	 */
-	public void setEasing(String _easing) {
+	public Motion setEasing(String _easing) {
 		easing = _easing;
 
 		int index = easing.indexOf("Ease");
@@ -708,61 +436,57 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		} catch (Exception e) {
 			// e.printStackTrace();
 		}
+
+		return this;
 	}
 
 	public String getEasing() {
 		return easing;
 	}
 
-	public void noEasing() {
+	public Motion noEasing() {
 		setEasing(MotionConstant.LINEAR_BOTH);
+
+		return this;
 	}
 
 	/**
 	 * @param _timeMode
 	 *            SECONDS, FRAMES
 	 */
-	public void setTimeMode(String _timeMode) {
+	public Motion setTimeMode(String _timeMode) {
 		timeMode = _timeMode;
+
+		return this;
 	}
 
 	public String getTimeMode() {
 		return timeMode;
 	}
 
-	// /**
-	// * @param _repeatMode
-	// * REVERSE, NO_REVERSE
-	// */
-	public void setRepeatMode(String _repeatMode) {
-		repeatMode = _repeatMode;
+	public Motion setRepeatDuration(int _repeatDuration) {
+		repeatCount = _repeatDuration;
+
+		return this;
 	}
 
-	public String getRepeatMode() {
-		return repeatMode;
-	}
-
-	public void setRepeatCount(int _repeatCount) {
-		repeatCount = _repeatCount;
-	}
-
-	public int getRepeatCount() {
+	public int getRepeatDuration() {
 		return repeatCount;
 	}
 
-	public void setReverseMode(String _reverseMode) {
-		reverseMode = _reverseMode;
+	public Motion autoUpdate() {
+		isAutoUpdating = true;
+
+		return this;
 	}
 
-	public String getReverseMode() {
-		return reverseMode;
+	public Motion noAutoUpdate() {
+		isAutoUpdating = false;
+
+		return this;
 	}
 
-	public void setAutoUpdate(boolean _value) {
-		isAutoUpdating = _value;
-	}
-
-	public boolean getAutoUpdate() {
+	public boolean isAutoUpdating() {
 		return isAutoUpdating;
 	}
 
@@ -774,32 +498,29 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return isPlaying;
 	}
 
-	boolean isReversingTime() {
-		return repeatMode == REVERSE && reverseMode == REVERSE_TIME;
+	boolean isReversing() {
+		return isReversing;
 	}
 
-	public boolean isTimeInside() {
-		return (getDelayPlayTime() > 0 && getDelayPlayTime() < getDelayDuration()) ? true
-				: false;
+	public boolean isAbovePlayTime(float _value) {
+		return (_value >= getDelayedPlayTime()) ? true : false;
 	}
 
-	public boolean isTimeBelow(float _value) {
-		return (_value <= getDelayPlayTime() + getDelayDuration()) ? true
-				: false;
+	public boolean isBelowStopTime(float _value) {
+		return (_value <= getDelayedPlayTime() + getDuration()) ? true : false;
 	}
 
-	public boolean isTimeAbove(float _value) {
-		return (_value >= getDelayPlayTime() + getDelayDuration()) ? true
-				: false;
-	}
-
-	public boolean isTimeInside(float _value) {
-		return (_value >= getDelayPlayTime() && _value <= getDelayPlayTime()
-				+ getDelayDuration()) ? true : false;
+	public boolean isInsidePlayingTime(float _value) {
+		// return (_value >= getDelayedPlayTime() && _value <=
+		// getDelayedPlayTime()
+		// + getDelayedDuration()) ? true : false;
+		return (_value >= getDelayedPlayTime() && _value <= getDelayedPlayTime()
+				+ getDuration()) ? true : false;
 	}
 
 	public Motion addEventListener(MotionEventListener listener) {
 		listeners.add(listener);
+
 		return this;
 	}
 
@@ -903,6 +624,14 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return type.equals(CALLBACK);
 	}
 
+	public boolean usingSeconds() {
+		return timeMode.equals(SECONDS);
+	}
+
+	public boolean usingFrames() {
+		return timeMode.equals(FRAMES);
+	}
+
 	private String firstCharToUpperCase(String _s) {
 		return Character.toUpperCase(_s.charAt(0)) + _s.substring(1);
 	}
@@ -911,14 +640,16 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return Character.toLowerCase(_s.charAt(0)) + _s.substring(1);
 	}
 
-	public String getTimeCode() {
-		return PApplet.str(getDuration() - getTime());
-	}
+	// public String getTimeCode() {
+	// return PApplet.str(getDuration() - getTime());
+	// }
 
+	@Override
 	public int compareTo(Motion _motion) {
 		return (int) (playTime - _motion.getPlayTime());
 	}
 
+	@Override
 	public int compare(Motion _motion1, Motion _motion2) {
 		return (int) (_motion2.getPlayTime() - _motion1.getPlayTime());
 	}

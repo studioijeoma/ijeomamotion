@@ -1,13 +1,12 @@
 package ijeoma.motion.tween.test;
 
 import ijeoma.motion.Motion;
-import ijeoma.motion.Property;
 import ijeoma.motion.tween.Tween;
 import ijeoma.motion.tween.TweenSequence;
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PVector;
-import processing.xml.XMLElement;
+import processing.core.XML;
 
 public class TweenSequence_GML extends PApplet {
 	TweenSequence ts;
@@ -15,9 +14,13 @@ public class TweenSequence_GML extends PApplet {
 	PFont font;
 
 	boolean loadingGML = true;
+	float x, y, z;
 
+	PVector[] points;
+
+	@Override
 	public void setup() {
-		size(800, 580, P3D);
+		size(800, 580);
 
 		frameRate(60);
 		smooth();
@@ -27,36 +30,28 @@ public class TweenSequence_GML extends PApplet {
 
 		Motion.setup(this);
 
+		x = y = 0;
 		ts = new TweenSequence();
 
-		loadGML("818.gml");
-		// loadGML("http://www.000000book.com/data/818.gml");
+		// loadGML("818.gml");
+		loadGML("http://000000book.com/data/42481.gml");
 		// loadGML("http://000000book.com/random.gml");
 
 		ts.play();
 	}
 
 	public void loadGML(String _fileName) {
-		println("begin");
+		XML gml = loadXML(_fileName);
+		XML[] pts = gml.getChildren("tag/drawing/stroke/pt");
 
-		loadingGML = true;
-
-		XMLElement gml = new XMLElement(this, _fileName);
-		XMLElement strokeXML = gml.getChild("tag/drawing/stroke");
-
-		ts.removeChildren();
-
-		PVector[] points = new PVector[strokeXML.getChildCount()];
+		points = new PVector[pts.length];
 
 		for (int i = 0; i < points.length; i++) {
-			float x = Float.parseFloat(strokeXML.getChild(i).getChild(0)
-					.getContent())
+			float x = Float.parseFloat(pts[i].getChild("x").getContent())
 					* width / 2;
-			float y = Float.parseFloat(strokeXML.getChild(i).getChild(1)
-					.getContent())
+			float y = Float.parseFloat(pts[i].getChild("y").getContent())
 					* height / 2;
-			float z = Float.parseFloat(strokeXML.getChild(i).getChild(2)
-					.getContent());
+			float z = Float.parseFloat(pts[i].getChild("z").getContent());
 
 			points[i] = new PVector(x, y, z);
 		}
@@ -69,64 +64,46 @@ public class TweenSequence_GML extends PApplet {
 			maxLength = max(maxLength, lengths[i]);
 		}
 
+		ts.removeAll();
+
 		for (int i = 0; i < points.length - 1; i++) {
-			Tween t = new Tween();
-			t.setName("point_" + i + "_" + (i + 1));
-			t.addProperty(new Property(this, "x", points[i].x, points[i + 1].x));
-			t.addProperty(new Property(this, "y", points[i].y, points[i + 1].y));
-			t.addProperty(new Property(this, "z", points[i].z, points[i + 1].z));
-
-			t.setDuration((lengths[i] / maxLength) * 5);
-
-			ts.appendChild(t);
+			ts.add(new Tween((lengths[i] / maxLength) * 15)
+					.add(this, "x", points[i].x).add(this, "y", points[i].y)
+					.add(this, "z", points[i].z));
 		}
-
-		loadingGML = false;
-
-		println("end");
 	}
 
+	@Override
 	public void draw() {
 		background(0);
 
-		if (!loadingGML) {
-			Tween[] tweens = ts.getTweens();
+		// if (!loadingGML) {
+		Tween[] tweens = ts.getTweens();
 
-			strokeWeight(5);
-			stroke(255);
-			noFill();
-			beginShape();
-			for (int i = 0; i < ts.getCurrentChildIndex(); i++) {
-				strokeWeight(tweens[i].getDuration() * 2);
-				vertex(tweens[i].getPosition("x"), tweens[i].getPosition("y"),
-						tweens[i].getPosition("z"));
+		if (ts.getCurrentChildIndex() > 1)
+			for (int i = 0; i < ts.getCurrentChildIndex() - 1; i++) {
+				stroke(255);
+				strokeWeight(tweens[i].getDuration() / 15f * 25);
+				noFill();
+				beginShape();
+				vertex(points[i].x, points[i].y);
+				vertex(points[i + 1].x, points[i + 1].y);
+				endShape();
 			}
-			endShape();
 
-			strokeWeight(1);
-			stroke(lerpColor(color(0, 255, 0), color(255, 0, 0),
-					ts.getSeekPosition()));
-			line(ts.getSeekPosition() * width, 0, ts.getSeekPosition() * width,
-					height);
+		ellipse(x, y, 10, 10);
 
-			noStroke();
-			if (ts.isPlaying())
-				fill(0, 255, 0);
-			else
-				fill(255, 0, 0);
-			String timeAsString = ts.getTime() + " / " + ts.getDuration();
-			text(timeAsString, width - textWidth(timeAsString) - 10,
-					height - 10);
-		}
+		noStroke();
+		fill(0);
+		String time = ts.getTime() + " / " + ts.getDuration();
+		text(time, width - textWidth(time) - 10, height - 10);
+		// }
 	}
 
 	public void tweenSequenceStarted(TweenSequence _ts) {
-		println("tweenSequenceStarted");
 	}
 
 	public void tweenSequenceEnded(TweenSequence _ts) {
-
-		println("tweenSequenceEnded");
 		// loadGML("http://000000book.com/random.gml");
 		// println("ts.getChildCount =" + ts.getChildCount());
 		// println("ts.getDuration =" + ts.getDuration());

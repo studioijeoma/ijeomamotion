@@ -24,7 +24,7 @@
  * @modified    ##date##
  * @version     ##library.prettyVersion## (##library.version##)
  */
- 
+
 package ijeoma.geom;
 
 import ijeoma.math.Interpolator;
@@ -33,194 +33,418 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import processing.core.PApplet;
+import processing.core.PConstants;
+import processing.core.PGraphics;
 import processing.core.PVector;
 
 public class Path2D {
-	PApplet parent;
+	protected int segmentIndex = 0;
+	protected int segmentPointIndex = 0;
+	protected float segmentPosition = 0;
+	protected float segmentPositionRange = 0;
 
-	int pointCount = 5;
-	int pathBegin, pathPVectorthLength;
+	protected int resolution = 10;
 
-	float tension = 0;
-	float bias = 0;
+	protected float tension = 0;
+	protected float bias = 0;
 
-	ArrayList<PVector> points = new ArrayList<PVector>();
+	protected float tolerance = 1;
+
+	protected ArrayList<PVector> points = new ArrayList<PVector>();
+	protected ArrayList<PVector> cachedPoints = new ArrayList<PVector>();
 
 	public static String LINEAR = "linear";
 	public static String COSINE = "cosine";
 	public static String CUBIC = "cubic";
 	public static String HERMITE = "hermite";
 
-	private String mode = CUBIC;
+	protected String mode = CUBIC;
 
-	public Path2D(PApplet _parent) {
-		parent = _parent;
-	}
-	
-	public Path2D(PApplet _parent, PVector[] _points) {
-		parent = _parent;
-		points.addAll(Arrays.asList(_points));
+	protected PVector pointMin, pointMax;
+	protected float width, height;
+
+	protected float distance = 0;
+
+	boolean computed = false;
+
+	public Path2D() {
 	}
 
-	public Path2D(PApplet _parent, PVector[] _points, String _mode) {
-		parent = _parent;
-		points.addAll(Arrays.asList(_points));
+	public Path2D(PVector[] _points) {
+		set(_points);
+	}
+
+	public Path2D(PVector[] _points, String _mode) {
+		set(_points);
+
 		mode = _mode;
 	}
 
-	public Path2D(PApplet _parent, PVector[] _points, String _mode, float _tension, float _bias) {
-		parent = _parent;
-		points.addAll(Arrays.asList(_points));
+	public Path2D(PVector[] _points, String _mode, float _tension, float _bias) {
+		set(_points);
+
 		mode = _mode;
 
 		tension = _tension;
 		bias = _bias;
 	}
 
-	public void draw() {
-		// points
-		parent.fill(0);
+	public void drawPoints(PGraphics _g) {
+		draw(_g, PConstants.POINTS, 1);
+	}
 
-		for (int i = 0; i < points.size(); i++)
-			parent.ellipse(points.get(i).x, points.get(i).y, 5, 5);
+	public void drawPoints(PGraphics _g, float _p) {
+		draw(_g, PConstants.POINTS, _p);
+	}
 
-		parent.noFill();
-		parent.stroke(0);
-		parent.beginShape();
-		for (int i = 0; i < points.size() - 1; i++) {
+	public void drawPoints(PGraphics _g, float _d, float _p) {
+		draw(_g, PConstants.POINTS, _d, _p);
+	}
 
-			PVector v1, v2, v3, v4;
+	public void drawLine(PGraphics _g) {
+		draw(_g, PConstants.LINE, 1);
+	}
 
-			v2 = points.get(i);
-			v3 = points.get(i + 1);
+	public void drawLine(PGraphics _g, float _p) {
+		draw(_g, PConstants.LINE, _p);
+	}
 
-			v1 = v4 = new PVector();
+	public void drawLine(PGraphics _g, float _d, float _p) {
+		draw(_g, PConstants.LINE, _d, _p);
+	}
 
-			if (i == 0) {
-				PVector segmentBeginVertex = points.get(0);
-				PVector segmentEndVertex = points.get(1);
+	public void draw(PGraphics _g, int _mode, float _p) {
+		draw(_g, _mode, 1, _p);
+	}
 
-				float segmentXSlope = (segmentEndVertex.x - segmentBeginVertex.x);
-				float segmentYSlope = (segmentEndVertex.y - segmentBeginVertex.y);
+	public void draw(PGraphics _g, int _mode, float _d, float _p) {
+		int pointCount = points.size() * resolution;
+		_d = 1;
 
-				v1 = new PVector(segmentBeginVertex.x - segmentXSlope, segmentBeginVertex.y - segmentYSlope);
-			} else {
-				v1 = points.get(i - 1);
-			}
+		if (_mode == PConstants.LINE)
+			_g.beginShape();
+		else
+			_g.beginShape(_mode);
 
-			if ((i + 1) == points.size() - 1) {
-				PVector segmentBeginVertex = points.get(points.size() - 2);
-				PVector segmentEndVertex = points.get(points.size() - 1);
-
-				float segmentXSlope = (segmentEndVertex.x - segmentBeginVertex.x);
-				float segmentYSlope = (segmentEndVertex.y - segmentBeginVertex.y);
-
-				v4 = new PVector(segmentEndVertex.x + segmentXSlope, segmentEndVertex.y + segmentYSlope);
-			} else {
-				v4 = points.get((i + 1) + 1);
-			}
-
-			for (float j = 0; j < 1; j += .01) {
-				float x = 0, y = 0;
-
-				if (mode.equals(LINEAR)) {
-					x = Interpolator.linear(v2.x, v3.x, j);
-					y = Interpolator.linear(v2.y, v3.y, j);
-				} else if (mode.equals(COSINE)) {
-					x = Interpolator.cosine(v2.x, v3.x, j);
-					y = Interpolator.cosine(v2.y, v3.y, j);
-				} else if (mode.equals(CUBIC)) {
-					x = Interpolator.cubic(v1.x, v2.x, v3.x, v4.x, j);
-					y = Interpolator.cubic(v1.y, v2.y, v3.y, v4.y, j);
-				} else if (mode.equals(HERMITE)) {
-					x = Interpolator.hermite(v1.x, v2.x, v3.x, v4.x, j, tension, bias);
-					y = Interpolator.hermite(v1.y, v2.y, v3.y, v4.y, j, tension, bias);
-				}
-
-				parent.point(x, y);
-			}
+		for (int i = 0; i < pointCount; i += _d) {
+			PVector p1 = get((float) i / pointCount);
+			_g.vertex(p1.x, p1.y);
 		}
-		parent.endShape();
+		_g.endShape();
 	}
 
-	public void addPoint(PVector _point) {
+	// public void drawPoints(PGraphics _g) {
+	// _g.beginShape();
+	// float s = _g.getStyle().strokeWeight * 2f;
+	// for (PVector p : points)
+	// _g.ellipse(p.x, p.y, s, s);
+	// _g.endShape();
+	// }
+
+	void drawBounds(PGraphics _g) {
+		_g.rect(pointMin.x, pointMin.y, pointMin.x + width, pointMin.y + height);
+	}
+
+	public void add(float _x, float _y) {
+		add(new PVector(_x, _y));
+	}
+
+	public void add(PVector _point) {
 		points.add(_point);
+
+		cachedPoints.add(_point);
+
+		segmentPositionRange = (1f / (points.size() - 1));
 	}
 
-	public PVector getPoint(float _position) {
-		float pathX = 0, pathY = 0;
+	public void removeAll() {
+		points.clear();
+		cachedPoints.clear();
+	}
 
-		int segmentBeginVertexIndex = 0;
+	public PVector get(float _position) {
+		PVector point = new PVector();
 
-		if (_position < 1)
-			segmentBeginVertexIndex = PApplet.floor((points.size() - 1) * _position);
-		else
-			segmentBeginVertexIndex = (points.size() - 2);
+		if (!computed)
+			compute();
 
-		float segmentPositionRange = (1f / (points.size() - 1));
-
-		float segmentPosition = 0;
-
-		if (_position < 1)
-			segmentPosition = PApplet.map((_position % segmentPositionRange), 0, segmentPositionRange, 0, 1);
-		else
+		if (_position < 1) {
+			segmentPointIndex = PApplet.floor((points.size() - 1) * _position);
+			segmentPosition = PApplet.map((_position % segmentPositionRange),
+					0, segmentPositionRange, 0, 1);
+		} else {
+			segmentPointIndex = (points.size() - 2);
 			segmentPosition = 1;
+		}
 
 		PVector v1, v2, v3, v4;
 
-		v2 = points.get(segmentBeginVertexIndex);
-		v3 = points.get(segmentBeginVertexIndex + 1);
+		v2 = points.get(segmentPointIndex);
+		v3 = points.get(segmentPointIndex + 1);
 
 		v1 = v4 = new PVector();
 
-		if (segmentBeginVertexIndex == 0) {
-			PVector segmentBeginVertex = points.get(0);
-			PVector segmentEndVertex = points.get(1);
+		if (segmentPointIndex == 0) {
+			PVector segmentBeginPoint = points.get(0);
+			PVector segmentEndPoint = points.get(1);
 
-			float segmentXSlope = (segmentEndVertex.x - segmentBeginVertex.x);
-			float segmentYSlope = (segmentEndVertex.y - segmentBeginVertex.y);
+			float segmentXSlope = (segmentEndPoint.x - segmentBeginPoint.x);
+			float segmentYSlope = (segmentEndPoint.y - segmentBeginPoint.y);
 
-			v1 = new PVector(segmentBeginVertex.x - segmentXSlope, segmentBeginVertex.y - segmentYSlope);
+			v1 = new PVector(segmentBeginPoint.x - segmentXSlope,
+					segmentBeginPoint.y - segmentYSlope);
 		} else {
-			v1 = points.get(segmentBeginVertexIndex - 1);
+			v1 = points.get(segmentPointIndex - 1);
 		}
 
-		if ((segmentBeginVertexIndex + 1) == points.size() - 1) {
-			PVector segmentBeginVertex = points.get(points.size() - 2);
-			PVector segmentEndVertex = points.get(points.size() - 1);
+		if ((segmentPointIndex + 1) == points.size() - 1) {
+			PVector segmentBeginPoint = points.get(points.size() - 2);
+			PVector segmentEndPoint = points.get(points.size() - 1);
 
-			float segmentXSlope = (segmentEndVertex.x - segmentBeginVertex.x);
-			float segmentYSlope = (segmentEndVertex.y - segmentBeginVertex.y);
+			float segmentXSlope = (segmentEndPoint.x - segmentBeginPoint.x);
+			float segmentYSlope = (segmentEndPoint.y - segmentBeginPoint.y);
 
-			v4 = new PVector(segmentEndVertex.x + segmentXSlope, segmentEndVertex.y + segmentYSlope);
+			v4 = new PVector(segmentEndPoint.x + segmentXSlope,
+					segmentEndPoint.y + segmentYSlope);
 		} else {
-			v4 = points.get((segmentBeginVertexIndex + 1) + 1);
+			v4 = points.get((segmentPointIndex + 1) + 1);
 		}
 
 		if (mode.equals(LINEAR)) {
-			pathX = Interpolator.linear(v2.x, v3.x, segmentPosition);
-			pathY = Interpolator.linear(v2.y, v3.y, segmentPosition);
+			point.x = Interpolator.linear(v2.x, v3.x, segmentPosition);
+			point.y = Interpolator.linear(v2.y, v3.y, segmentPosition);
 		} else if (mode.equals(COSINE)) {
-			pathX = Interpolator.cosine(v2.x, v3.x, segmentPosition);
-			pathY = Interpolator.cosine(v2.y, v3.y, segmentPosition);
+			point.x = Interpolator.cosine(v2.x, v3.x, segmentPosition);
+			point.y = Interpolator.cosine(v2.y, v3.y, segmentPosition);
 		} else if (mode.equals(CUBIC)) {
-			pathX = Interpolator.cubic(v1.x, v2.x, v3.x, v4.x, segmentPosition);
-			pathY = Interpolator.cubic(v1.y, v2.y, v3.y, v4.y, segmentPosition);
-		} else if (mode.equals(CUBIC)) {
-			pathX = Interpolator.hermite(v1.x, v2.x, v3.x, v4.x, segmentPosition, tension, bias);
-			pathY = Interpolator.hermite(v1.y, v2.y, v3.y, v4.y, segmentPosition, tension, bias);
+			point.x = Interpolator.cubic(v1.x, v2.x, v3.x, v4.x,
+					segmentPosition);
+			point.y = Interpolator.cubic(v1.y, v2.y, v3.y, v4.y,
+					segmentPosition);
+		} else if (mode.equals(HERMITE)) {
+			point.x = Interpolator.hermite(v1.x, v2.x, v3.x, v4.x,
+					segmentPosition, tension, bias);
+			point.y = Interpolator.hermite(v1.y, v2.y, v3.y, v4.y,
+					segmentPosition, tension, bias);
 		}
 
-		return new PVector(pathX, pathY, 0);
+		return point;
 	}
 
-	public void setPoints(PVector[] _points) {
-		points = new ArrayList<PVector>();
-		points.addAll(Arrays.asList(_points));
+	public void set(PVector[] _points) {
+		points = new ArrayList<PVector>(Arrays.asList(_points));
+
+		segmentPositionRange = (1f / (points.size() - 1));
+
+		compute();
 	}
 
-	public PVector[] getPoints() {
+	public void set(ArrayList<PVector> _points) {
+		points = _points;
+
+		segmentPositionRange = (1f / (points.size() - 1));
+
+		compute();
+	}
+
+	public PVector[] get() {
 		return points.toArray(new PVector[points.size()]);
+	}
+
+	public int getCount() {
+		return points.size();
+	}
+
+	public void simplify() {
+		float sqTolerance = tolerance * tolerance;
+
+		simplifyDouglasPeucker(sqTolerance);
+	}
+
+	public void simplify(float _tolerance, boolean highestQuality) {
+		tolerance = _tolerance;
+
+		float sqTolerance = tolerance * tolerance;
+
+		if (!highestQuality)
+			simplifyRadialDistance(sqTolerance);
+		simplifyDouglasPeucker(sqTolerance);
+	}
+
+	protected void simplifyRadialDistance(float sqTolerance) {
+		int len = cachedPoints.size();
+
+		PVector point = new PVector();
+		PVector prevPoint = cachedPoints.get(0);
+
+		ArrayList<PVector> newPoints = new ArrayList<PVector>();
+		newPoints.add(prevPoint);
+
+		for (int i = 1; i < len; i++) {
+			point = cachedPoints.get(i);
+
+			if (getSquareDistance(point, prevPoint) > sqTolerance) {
+				newPoints.add(point);
+				prevPoint = point;
+			}
+		}
+
+		if (!prevPoint.equals(point))
+			newPoints.add(point);
+
+		points = new ArrayList<PVector>(newPoints);
+	}
+
+	// simplification using optimized Douglas-Peucker algorithm with recursion
+	// elimination
+	protected void simplifyDouglasPeucker(float sqTolerance) {
+		int len = points.size();
+
+		Integer[] markers = new Integer[len];
+
+		Integer first = 0;
+		Integer last = len - 1;
+
+		float maxSqDist;
+		float sqDist;
+		int index = 0;
+
+		ArrayList<Integer> firstStack = new ArrayList<Integer>();
+		ArrayList<Integer> lastStack = new ArrayList<Integer>();
+
+		ArrayList<PVector> newPoints = new ArrayList<PVector>();
+
+		markers[first] = markers[last] = 1;
+
+		while (last != null) {
+			maxSqDist = 0;
+
+			for (int i = first + 1; i < last; i++) {
+				sqDist = getSquareSegmentDistance(points.get(i),
+						points.get(first), points.get(last));
+
+				if (sqDist > maxSqDist) {
+					index = i;
+					maxSqDist = sqDist;
+				}
+			}
+
+			if (maxSqDist > sqTolerance) {
+				markers[index] = 1;
+
+				firstStack.add(first);
+				lastStack.add(index);
+
+				firstStack.add(index);
+				lastStack.add(last);
+			}
+
+			try {
+				first = firstStack.remove(firstStack.size() - 1);
+				last = lastStack.remove(lastStack.size() - 1);
+			} catch (IndexOutOfBoundsException e) {
+				last = null;
+			}
+		}
+
+		for (int i = 0; i < len; i++) {
+			if (markers[i] != null)
+				newPoints.add(points.get(i));
+		}
+
+		points = new ArrayList<PVector>(newPoints);
+	}
+
+	// square distance between 2 points
+	protected float getSquareDistance(PVector p1, PVector p2) {
+		float dx = p1.x - p2.x,
+		// dz = p1.z - p2.z,
+		dy = p1.y - p2.y;
+
+		return dx * dx +
+		// dz * dz +
+				dy * dy;
+	}
+
+	// square distance from a point to a segment
+	protected float getSquareSegmentDistance(PVector p, PVector p1, PVector p2) {
+		float x = p1.x, y = p1.y,
+		// z = p1.z,
+
+		dx = p2.x - x, dy = p2.y - y,
+		// dz = p2.z - z,
+
+		t;
+
+		if (dx != 0 || dy != 0) {
+
+			t = ((p.x - x) * dx +
+			// (p.z - z) * dz +
+					(p.y - y) * dy)
+					/ (dx * dx +
+					// dz * dz +
+					dy * dy);
+
+			if (t > 1) {
+				x = p2.x;
+				y = p2.y;
+				// z = p2.z;
+
+			} else if (t > 0) {
+				x += dx * t;
+				y += dy * t;
+				// z += dz * t;
+			}
+		}
+
+		dx = p.x - x;
+		dy = p.y - y;
+		// dz = p.z - z;
+
+		return dx * dx +
+		// dz * dz +
+				dy * dy;
+	}
+
+	public void compute() {
+		computeDist();
+		computeBounds();
+
+		computed = true;
+	}
+
+	public void computeDist() {
+		distance = 0;
+
+		for (int i = 0; i < points.size() - 1; i++) {
+			PVector d1 = points.get(i);
+			PVector d2 = points.get(i + 1);
+
+			distance += PApplet.dist(d1.x, d1.y, d2.x, d2.y);
+		}
+	}
+
+	public void computeBounds() {
+		float yMin, yMax, xMin, xMax;
+
+		PVector p1 = points.get(0);
+
+		yMin = yMax = p1.y;
+		xMin = xMax = p1.x;
+
+		for (PVector p : points) {
+			yMin = PApplet.min(yMin, p.y);
+			xMin = PApplet.min(xMin, p.x);
+
+			yMax = PApplet.max(yMax, p.y);
+			xMax = PApplet.max(xMax, p.x);
+		}
+
+		pointMin = new PVector(yMax, xMin);
+		pointMax = new PVector(yMin, xMax);
+
+		width = PApplet.abs(xMax - xMin);
+		height = PApplet.abs(yMax - yMin);
 	}
 
 	public void setTension(float _tension) {
@@ -242,4 +466,32 @@ public class Path2D {
 	public void setMode(String _mode) {
 		mode = _mode;
 	}
+
+	public int getSegmentIndex() {
+		return segmentIndex;
+	}
+
+	public int getSegmentPointIndex() {
+		return segmentPointIndex;
+	}
+
+	public float getSegmentPosition() {
+		return segmentPosition;
+	}
+
+	public float getWidth() {
+		return width;
+	}
+
+	public float getHeight() {
+		return height;
+	}
+
+	public float getDistance() {
+		return distance;
+	}
+
+	// public float[] getBounds() {
+	// return float[] {};//pointMin.x, pointMin.y, width,height}
+	// }
 }

@@ -24,7 +24,7 @@
  * @modified    ##date##
  * @version     ##library.prettyVersion## (##library.version##)
  */
- 
+
 package ijeoma.motion.event;
 
 import java.util.EventObject;
@@ -34,7 +34,7 @@ public class MotionEvent extends EventObject {
 	public static String MOTION_ENDED = "motionEnded";
 	public static String MOTION_CHANGED = "motionChanged";
 	public static String MOTION_REPEATED = "motionRepeated";
-	
+
 	public static String CALLBACK_STARTED = "timelineStarted";
 	public static String CALLBACK_ENDED = "timelineEnded";
 
@@ -47,18 +47,17 @@ public class MotionEvent extends EventObject {
 	public static String TWEEN_PARALLEL_ENDED = "tweenParallelEnded";
 	public static String TWEEN_PARALLEL_CHANGED = "tweenParallelChanged";
 	public static String TWEEN_PARALLEL_REPEATED = "tweenParallelRepeated";
-	
+
 	public static String TWEEN_SEQUENCE_STARTED = "tweenSequenceStarted";
 	public static String TWEEN_SEQUENCE_ENDED = "tweenSequenceEnded";
 	public static String TWEEN_SEQUENCE_CHANGED = "tweenSequenceChanged";
 	public static String TWEEN_SEQUENCE_REPEATED = "tweenSequenceRepeated";
 
-	
 	public static String TIMELINE_STARTED = "timelineStarted";
 	public static String TIMELINE_ENDED = "timelineEnded";
 	public static String TIMELINE_CHANGED = "timelineChanged";
 	public static String TIMELINE_REPEATED = "timelineRepeated";
-	
+
 	public static String KEYFRAME_STARTED = "keyframeStarted";
 	public static String KEYFRAME_ENDED = "keyframeEnded";
 	public static String KEYFRAME_CHANGED = "keyframeChanged";

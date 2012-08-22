@@ -37,43 +37,44 @@ public class Callback extends Motion {
 	private Method callbackObjectMethod;
 	private Field callbackObjectParameter;
 
-	// protected Method callbackStartedMethod, callbackEndedMethod;
+	protected Method callbackStartedMethod, callbackEndedMethod;
 
 	public Callback(String _callbackObjectMethodName) {
-		// setup(_name, _begin, _end, _duration, _durationMode, delay,
-		// easing);
 		super();
-		setName(_callbackObjectMethodName);
 		setupObject(parent, _callbackObjectMethodName, null);
+		setDuration((usingFrames()) ? 1 : 1);
 	}
 
-	public Callback(String _callbackObjectMethodName, float _time) {
-		// setup(_name, _begin, _end, _duration, _durationMode, delay,
-		// easing);
-		super();
-		setName(_callbackObjectMethodName);
-		setPlayTime(_time);
-		setupObject(parent, _callbackObjectMethodName, null);
-	}
-
-	public Callback(String _callbackObjectMethodName, float _time,
-			float _duration) {
-		// setup(_name, _begin, _end, _duration, _durationMode, delay,
-		// easing);
-		super();
-		setName(_callbackObjectMethodName);
-		setPlayTime(_time);
-		setDuration(_duration);
-		setupObject(parent, _callbackObjectMethodName, null);
-	}
+	// public Callback(String _callbackObjectMethodName, {
+	// // setup(_name, _begin, _end, _duration, _durationMode, delay,
+	// // easing);
+	// super();
+	// // setName(_callbackObjectMethodName);
+	// setupObject(parent, _callbackObjectMethodName, null);
+	// }
+	//
+	// public Callback(String _callbackObjectMethodName, float _time) {
+	// // setup(_name, _begin, _end, _duration, _durationMode, delay,
+	// // easing);
+	// super();
+	// // setName(_callbackObjectMethodName);
+	// setPlayTime(_time);
+	// setupObject(parent, _callbackObjectMethodName, null);
+	// }
+	//
+	// public Callback(String _callbackObjectMethodName, float _time,
+	// float _duration) {
+	// // setup(_name, _begin, _end, _duration, _durationMode, delay,
+	// // easing);
+	// super();
+	// // setName(_callbackObjectMethodName);
+	// setPlayTime(_time);
+	// setDuration(_duration);
+	// setupObject(parent, _callbackObjectMethodName, null);
+	// }
 
 	private void setupObject(Object _object, String _callbackObjectMethodName,
 			String _callbackParamters) {
-		// Object[] args = { new Float(time), new
-		// Float(properties[i].getBegin()), new
-		// Float(properties[i].getChange()), new Float(duration), new
-		// Float(properties[i].getBegin()), new Float(properties[i].getEnd()) };
-
 		callbackObject = _object;
 
 		try {
@@ -88,7 +89,33 @@ public class Callback extends Motion {
 		}
 	}
 
+	@Override
 	public void update() {
+		if (isPlaying()) {
+			updateTime();
+
+			if (isAbovePlayTime(time))
+				if (isBelowStopTime(time))
+					updateObject();
+				else
+					stop();
+		}
+	}
+
+	@Override
+	public void update(float _time) {
+		if (isPlaying()) {
+			setTime(_time);
+
+			if (isAbovePlayTime(time))
+				if (isBelowStopTime(time))
+					updateObject();
+				else
+					stop();
+		}
+	}
+
+	protected void updateObject() {
 		try {
 			callbackObjectMethod.invoke(callbackObject, null);
 		} catch (IllegalArgumentException e) {
@@ -104,15 +131,22 @@ public class Callback extends Motion {
 	}
 
 	@Override
+	public Callback seek(float _value) {
+		super.seek(_value);
+
+		updateObject();
+
+		return this;
+	}
+
+	@Override
 	protected void dispatchMotionStartedEvent() {
-		logger.println("dispatchMotionStartedEvent callback");
 		// PApplet.println("started");
 		update();
 	}
 
 	@Override
 	protected void dispatchMotionEndedEvent() {
-		logger.println("dispatchMotionEndedEvent callback");
 		// PApplet.println("ended");
 		if (duration > 0)
 			update();

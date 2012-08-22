@@ -1,20 +1,25 @@
 /**
-	Author: Ekene Ijeoma
-	Date: October 2010   
+	  Author: Ekene Ijeoma
+	  Date: October 2010   
  */
 
 package ijeoma.motion.tween.test;
 
-import processing.core.*;
-
-import ijeoma.motion.*;
-import ijeoma.motion.tween.*;
+import ijeoma.motion.Motion;
+import ijeoma.motion.tween.Tween;
+import ijeoma.motion.tween.TweenParallel;
+import processing.core.PApplet;
+import processing.core.PFont;
 
 public class TweenParallel_Events_1 extends PApplet {
 	PFont f;
 
 	TweenParallel tp;
 
+	float x1 = -width;
+	float x2 = width;
+
+	@Override
 	public void setup() {
 		size(400, 200);
 
@@ -27,56 +32,66 @@ public class TweenParallel_Events_1 extends PApplet {
 		Motion.setup(this);
 
 		tp = new TweenParallel();
-		tp.addChild(new Tween("t1", -width, width, 100));
-		tp.addChild(new Tween("t2", width, -width, 200));
-		tp.play();
+		tp.add(new Tween(this, "x1", width, 100), "x1").add(
+				new Tween(this, "x2", -width, 200), "x2");
+		tp.repeat().play();
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 
 		stroke(255);
-		fill(0);
-		rect(tp.getTween("t1").getPosition(), 0, width, height / 2);
-		rect(tp.getTween("t2").getPosition(), height / 2, width, height / 2);
+		fill(255 / 2f);
+		rect(x1, 0, width, height / 2);
+		rect(x2, height / 2, width, height / 2);
 
-		drawUI();
-	}
-
-	public void drawUI() {
 		String time;
 
-		// This draws the seek for the ts TweenParallel object
-		stroke(lerpColor(0xFF00FF00, 0xFFFF0000, tp.getSeekPosition()));
-		line(tp.getSeekPosition() * width, 0, tp.getSeekPosition() * width,
-				height);
+		time = (int) tp.getTween("x1").getTime() + " / "
+				+ (int) tp.getTween("x1").getDuration();
 
-		// This draws the time for every Tween object
-		for (int i = 0; i < tp.getChildCount(); i++) {
-			Tween t = tp.getTween(i);
-			time = (int) t.getTime() + " / " + (int) t.getDuration();
+		fill(0);
+		text(time, 10, 10 + 12);
 
-			fill(lerpColor(0xFF00FF00, 0xFFFF0000, t.getSeekPosition()));
-			text(time, 10, i * 100 + 10 + 12);
-		}
+		time = (int) tp.getTween("x2").getTime() + " / "
+				+ (int) tp.getTween("x2").getDuration();
 
-		// This draws the time for the ts TweenParallel object
+		fill(0);
+		text(time, 10, 100 + 10 + 12);
+
 		time = (int) tp.getTime() + " / " + (int) tp.getDuration();
 
-		fill(lerpColor(0xFF00FF00, 0xFFFF0000, tp.getSeekPosition()));
+		fill(0);
 		text(time, width - textWidth(time) - 10, height - 10);
 	}
 
+	@Override
 	public void keyPressed() {
 		tp.play();
 	}
 
+	@Override
+	public void mousePressed() {
+		tp.pause();
+	}
+
+	@Override
+	public void mouseReleased() {
+		tp.resume();
+	}
+
+	@Override
+	public void mouseDragged() {
+		tp.seek((float) mouseX / width);
+	}
+
 	public void tweenParallelStarted(TweenParallel _tp) {
-		println(_tp.getName() + " started");
+		println(_tp + " started");
 	}
 
 	public void tweenParallelEnded(TweenParallel _tp) {
-		println(_tp.getName() + " ended");
+		println(_tp + " ended");
 	}
 
 	// public void tweenParallelChanged(TweenParallel _tp) {
@@ -84,6 +99,6 @@ public class TweenParallel_Events_1 extends PApplet {
 	// }
 
 	public void tweenParallelRepeated(TweenParallel _tp) {
-		println(_tp.getName() + " repeated");
+		println(_tp + " repeated");
 	}
 }

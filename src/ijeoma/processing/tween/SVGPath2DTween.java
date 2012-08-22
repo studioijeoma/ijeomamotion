@@ -27,44 +27,40 @@
 
 package ijeoma.processing.tween;
 
+import ijeoma.motion.event.MotionEvent;
+import ijeoma.motion.tween.Tween;
+import ijeoma.processing.geom.SVGPath2D;
+
 import java.lang.reflect.Method;
 
-import ijeoma.motion.Motion;
-import ijeoma.motion.event.MotionEvent;
-
 import processing.core.PApplet;
-import processing.core.PGraphics;
-import processing.core.PShape;
 import processing.core.PVector;
 
-public class SVGPath2DTween extends Motion { // implements Comparable {
+public class SVGPath2DTween extends Tween { // implements Comparable {
 	private Method tweenSVGPathStartedMethod, tweenSVGPathEndedMethod,
 			tweenSVGPathChangedMethod, tweenSVGPathRepeatedMethod;
 
-	private PGraphics g;
-	private PShape path;
+	private SVGPath2D path;
 
-	public SVGPath2DTween(String _name, PGraphics _g, PShape _path,
-			float _begin, float _end, float _duration, float _delay,
-			String _easing) {
-		super(_name, _begin, _end, _duration, _delay, _easing);
-		setupSVGPath(_g, _path);
+	public SVGPath2DTween(SVGPath2D _path, float _begin, float _end,
+			float _duration, float _delay, String _easing) {
+		super(_duration, _delay, _easing);
+		setupSVGPath(_path);
 	}
 
-	public SVGPath2DTween(String _name, PGraphics _g, PShape _path,
-			float _begin, float _end, float _duration, float _delay) {
-		super(_name, _begin, _end, _duration, _delay);
-		setupSVGPath(_g, _path);
+	public SVGPath2DTween(SVGPath2D _path, float _begin, float _end,
+			float _duration, float _delay) {
+		super(_duration, _delay);
+		setupSVGPath(_path);
 	}
 
-	public SVGPath2DTween(String _name, PGraphics _g, PShape _path,
-			float _begin, float _end, float _duration) {
-		super(_name, _begin, _end, _duration);
-		setupSVGPath(_g, _path);
+	public SVGPath2DTween(SVGPath2D _path, float _begin, float _end,
+			float _duration) {
+		super(_duration);
+		setupSVGPath(_path);
 	}
 
-	protected void setupSVGPath(PGraphics _g, PShape _path) {
-		g = _g;
+	protected void setupSVGPath(SVGPath2D _path) {
 		path = _path;
 	}
 
@@ -73,6 +69,8 @@ public class SVGPath2DTween extends Motion { // implements Comparable {
 	 */
 	@Override
 	protected void setupEvents() {
+		super.setupEvents();
+
 		Class<? extends PApplet> parentClass = parent.getClass();
 
 		try {
@@ -105,9 +103,7 @@ public class SVGPath2DTween extends Motion { // implements Comparable {
 	}
 
 	public PVector getPoint() {
-		PVector v = new PVector();
-
-		return v;
+		return path.getPoint(getPosition());
 	}
 
 	public float getX() {
@@ -118,18 +114,16 @@ public class SVGPath2DTween extends Motion { // implements Comparable {
 		return getPoint().y;
 	}
 
-	public void setSVGPath(PShape _path) {
+	public void setSVGPath(SVGPath2D _path) {
 		path = _path;
 	}
 
-	public PShape getSVGPath() {
+	public SVGPath2D getSVGPath() {
 		return path;
 	}
 
 	@Override
 	protected void dispatchMotionStartedEvent() {
-		logger.println("dispatchMotionStartedEvent tweengroup");
-
 		if (tweenSVGPathStartedMethod != null) {
 			try {
 				tweenSVGPathStartedMethod.invoke(parent, new Object[] { this });

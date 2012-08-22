@@ -2,7 +2,7 @@ A code template to build libraries for the Processing programming environment.
 
 Part of the Processing project - http://processing.org
 
-Copyright (c) 2011 Elie Zananiri
+Copyright (c) 2011-12 Elie Zananiri
 Copyright (c) 2008-11 Andreas Schlegel
 
 This program is free software; you can redistribute it and/or

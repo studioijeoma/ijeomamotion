@@ -1,3 +1,30 @@
+/**
+ * ##library.name##
+ * ##library.sentence##
+ * ##library.url##
+ *
+ * Copyright ##copyright## ##author##
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General
+ * Public License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA  02111-1307  USA
+ * 
+ * @author      ##author##
+ * @modified    ##date##
+ * @version     ##library.prettyVersion## (##library.version##)
+ */
+
 //http://local.wasp.uwa.edu.au/~pbourke/miscellaneous/interpolation/
 
 package ijeoma.math;
@@ -31,7 +58,8 @@ public class Interpolator {
 	 * Tension: 1 is high, 0 normal, -1 is low Bias: 0 is even, positive is
 	 * towards first segment, negative towards the other
 	 */
-	public static float hermite(float y0, float y1, float y2, float y3, float mu, float tension, float bias) {
+	public static float hermite(float y0, float y1, float y2, float y3,
+			float mu, float tension, float bias) {
 		float m0, m1, mu2, mu3;
 		float a0, a1, a2, a3;
 

@@ -24,23 +24,20 @@
  * @modified    ##date##
  * @version     ##library.prettyVersion## (##library.version##)
  */
- 
+
 package ijeoma.motion.tween;
 
 import ijeoma.motion.Motion;
-import ijeoma.motion.MotionSequenceController;
+import ijeoma.motion.MotionController;
 import ijeoma.motion.event.MotionEvent;
 
 import java.lang.reflect.Method;
-import java.util.Collections;
 
 import processing.core.PApplet;
 
-public class TweenSequence extends MotionSequenceController {
+public class TweenSequence extends MotionController {
 
 	private Motion currentChild;
-	private Tween currentTween;
-	private TweenParallel currentTweenParallel;
 
 	private int currentChildIndex = 0;
 
@@ -52,15 +49,16 @@ public class TweenSequence extends MotionSequenceController {
 		setupEvents();
 	}
 
-	public TweenSequence(String _name, Motion[] _children) {
+	public TweenSequence(Motion[] _children) {
 		super();
-		setName(_name);
-		appendChildren(_children);
+		addAll(_children);
 		setupEvents();
 	}
 
 	@Override
 	protected void setupEvents() {
+		super.setupEvents();
+
 		Class<? extends PApplet> parentClass = parent.getClass();
 
 		try {
@@ -92,129 +90,164 @@ public class TweenSequence extends MotionSequenceController {
 		}
 	}
 
-	// public void reverse() {
-	// Collections.sort(children);
-	//
-	// PApplet.println("NORMAL " + children);
-	//
-	// float[] playTimes = new float[children.size()];
-	//
-	// Collections.reverse(children);
-	//
-	// for (int i = 0; i < children.size(); i++)
-	// if (i == 0)
-	// playTimes[i] = 0;
-	// else
-	// playTimes[i] = playTimes[i - 1]
-	// + children.get(i - 1).getDuration();
-	//
-	// for (int i = 0; i < children.size(); i++)
-	// children.get(i).setPlayTime(playTimes[i]);
-	//
-	// PApplet.println("REVERSED " + children);
-	// }
-
 	@Override
 	public void update() {
 		super.update();
 
-		for (int i = 0; i < children.size(); i++) {
-			if (children.get(i).getClass().getSimpleName().equals("Tween")) {
-				Tween t = (Tween) children.get(i);
+		int i = 0;
 
-				if (time >= t.getPlayTime()
-						&& time <= (t.getPlayTime() + t.getDuration())) {
-					currentChildIndex = i;
-					currentChild = t;
-					currentTween = t;
-				}
-			} else {
-				TweenParallel tg = (TweenParallel) children.get(i);
+		// currentChildIndex = 0;
+		// currentChild = null;
 
-				if (time >= tg.getPlayTime()
-						&& time <= (tg.getPlayTime() + tg.getDuration())) {
-					currentChildIndex = i;
-					currentChild = tg;
-					currentTweenParallel = tg;
-				}
+		for (Motion c : children) {
+			if (c.isInsidePlayingTime(time)) {
+				currentChildIndex = i;
+				currentChild = c;
+
+				break;
 			}
+
+			i++;
 		}
 	}
 
+	@Override
 	public void update(float _time) {
 		super.update(_time);
-		
-		if (isPlaying()) {
-			setTime(_time);
 
-			for (int i = 0; i < children.size(); i++) {
-				if (children.get(i).getClass().getSimpleName().equals("Tween")) {
-					Tween t = (Tween) children.get(i);
+		// setTime(_time);
 
-					if (time >= t.getPlayTime()
-							&& time <= (t.getPlayTime() + t.getDuration())) {
-						currentChildIndex = i;
-						currentChild = t;
-						currentTween = t;
-					}
-				} else {
-					TweenParallel tg = (TweenParallel) children.get(i);
+		int i = 0;
 
-					if (time >= tg.getPlayTime()
-							&& time <= (tg.getPlayTime() + tg.getDuration())) {
-						currentChildIndex = i;
-						currentChild = tg;
-						currentTweenParallel = tg;
-					}
-				}
+		// currentChildIndex = 0;
+		// currentChild = null;
+
+		for (Motion c : children) {
+			if (c.isInsidePlayingTime(time)) {
+				currentChildIndex = i;
+				currentChild = c;
+
+				break;
 			}
-		}
 
+			i++;
+		}
 	}
 
-	public float getCurrentChildPosition() {
-		float position = 0;
-
-		if (currentChild.getClass().getSimpleName().equals("Tween"))
-			position = currentChild.getPosition();
-
-		return position;
+	@Override
+	public TweenSequence play() {
+		return (TweenSequence) super.play();
 	}
 
-	public float getCurrentChildPosition(String _parameterName) {
-		float position = 0;
+	@Override
+	public TweenSequence stop() {
+		return (TweenSequence) super.stop();
+	}
 
-		if (currentChild.getClass().getSimpleName().equals("Tween")) {
-			position = ((Tween) currentChild).getProperty(_parameterName)
-					.getPosition();
-		} else {
-			position = ((TweenParallel) currentChild).getChild(_parameterName)
-					.getPosition();
-		}
+	@Override
+	public TweenSequence pause() {
+		return (TweenSequence) super.pause();
+	}
 
-		return position;
+	@Override
+	public TweenSequence resume() {
+		return (TweenSequence) super.resume();
+	}
+
+	@Override
+	public TweenSequence seek(float _value) {
+		return (TweenSequence) super.seek(_value);
+	}
+
+	@Override
+	public TweenSequence repeat() {
+		return (TweenSequence) super.repeat();
+	}
+
+	@Override
+	public TweenSequence repeat(int _repeatDuration) {
+		return (TweenSequence) super.repeat(_repeatDuration);
+	}
+
+	@Override
+	public TweenSequence noRepeat() {
+		return (TweenSequence) super.noRepeat();
+	}
+
+	@Override
+	public TweenSequence reverse() {
+		return (TweenSequence) super.reverse();
+	}
+
+	@Override
+	public TweenSequence noReverse() {
+		return (TweenSequence) super.noReverse();
+	}
+
+	@Override
+	public TweenSequence setTimeScale(float _timeScale) {
+		return (TweenSequence) super.setTimeScale(_timeScale);
+	}
+
+	@Override
+	public TweenSequence setDuration(float _duration) {
+		return (TweenSequence) super.setDuration(_duration);
+	}
+
+	@Override
+	public TweenSequence setDelay(float _delay) {
+		return (TweenSequence) super.setDelay(_delay);
+	}
+
+	@Override
+	public TweenSequence setEasing(String _easing) {
+		return (TweenSequence) super.setEasing(_easing);
+	}
+
+	@Override
+	public TweenSequence noEasing() {
+		return (TweenSequence) super.noEasing();
+	}
+
+	@Override
+	public TweenSequence setTimeMode(String _timeMode) {
+		return (TweenSequence) super.setTimeMode(_timeMode);
+	}
+
+	@Override
+	public TweenSequence setRepeatDuration(int _repeatCount) {
+		return (TweenSequence) super.setRepeatDuration(_repeatCount);
+	}
+
+	@Override
+	public TweenSequence autoUpdate() {
+		return (TweenSequence) super.autoUpdate();
+	}
+
+	@Override
+	public TweenSequence noAutoUpdate() {
+		return (TweenSequence) super.noAutoUpdate();
+	}
+
+	@Override
+	public TweenSequence add(Motion _child) {
+		return add(_child, null);
+	}
+
+	@Override
+	public TweenSequence add(Motion _child, String _name) {
+		insert(_child, _name, getDuration());
+
+		currentChild = _child;
+
+		return this;
 	}
 
 	/**
-	 * returns the current object (either Tween or TweenGroup)
+	 * returns the current object (either Tween or TweenParallel)
 	 */
 	public Motion getCurrentChild() {
 		return currentChild;
-	}
-
-	/**
-	 * returns the current Tween (useful if you're sequencing Tweens only)
-	 */
-	public Tween getCurrentTween() {
-		return currentTween;
-	}
-
-	/**
-	 * returns the current TweenGroup (useful if you're sequencing TweenGroups
-	 * only)
-	 */
-	public TweenParallel getCurrentTweenGroup() {
-		return currentTweenParallel;
 	}
 
 	/**
@@ -228,8 +261,7 @@ public class TweenSequence extends MotionSequenceController {
 	 * returns the current child type which is either a Tween or TweenParallel
 	 */
 	public String getCurrentChildType() {
-		return (currentChild.getClass().getSimpleName().equals("Tween")) ? "Tween"
-				: "TweenParallel";
+		return (currentChild.getClass().getSimpleName());
 	}
 
 	@Override
@@ -319,20 +351,10 @@ public class TweenSequence extends MotionSequenceController {
 
 	@Override
 	public String toString() {
-		String tweenNames = "";
-
-		for (int i = 0; i < children.size(); i++) {
-			if (children.get(i).getClass().getSimpleName().equals("Tween"))
-				tweenNames += ((Tween) children.get(i)).getName();
-			else
-				tweenNames += ((TweenParallel) children.get(i)).toString();
-
-			tweenNames += (i < children.size() - 1) ? ", " : "";
-		}
-
-		return ("TweenSequence[tweens: {" + tweenNames + "}]");
+		return ("TweenSequence[tweens: {" + tweens + "}]");
 	}
 
+	@Override
 	public void onMotionEvent(MotionEvent te) {
 		// TODO Auto-generated method stub
 

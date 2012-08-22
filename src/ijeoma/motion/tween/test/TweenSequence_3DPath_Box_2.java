@@ -6,11 +6,11 @@
 
 package ijeoma.motion.tween.test;
 
+import ijeoma.motion.Motion;
+import ijeoma.motion.tween.Tween;
+import ijeoma.motion.tween.TweenSequence;
 import processing.core.PApplet;
 import processing.core.PFont;
-
-import ijeoma.motion.*;
-import ijeoma.motion.tween.*;
 
 public class TweenSequence_3DPath_Box_2 extends PApplet {
 	PFont f;
@@ -18,14 +18,15 @@ public class TweenSequence_3DPath_Box_2 extends PApplet {
 	TweenSequence ts;
 
 	int HALF_SIZE = 100;
-float[][] path = { { HALF_SIZE, HALF_SIZE, HALF_SIZE },
-		{ HALF_SIZE * 1.5f, 0, 0 }, { HALF_SIZE, -HALF_SIZE, -HALF_SIZE },
-		{ 0, -HALF_SIZE * 1.5f, 0 }, { -HALF_SIZE, -HALF_SIZE, HALF_SIZE },
-		{ -HALF_SIZE * 1.5f, 0, 0 }, { -HALF_SIZE, HALF_SIZE, -HALF_SIZE },
-		{ 0, HALF_SIZE * 1.5f, 0 } };
+	float[][] path = { { HALF_SIZE, HALF_SIZE, HALF_SIZE },
+			{ HALF_SIZE * 1.5f, 0, 0 }, { HALF_SIZE, -HALF_SIZE, -HALF_SIZE },
+			{ 0, -HALF_SIZE * 1.5f, 0 }, { -HALF_SIZE, -HALF_SIZE, HALF_SIZE },
+			{ -HALF_SIZE * 1.5f, 0, 0 }, { -HALF_SIZE, HALF_SIZE, -HALF_SIZE },
+			{ 0, HALF_SIZE * 1.5f, 0 } };
 
 	public float x, y, z;
 
+	@Override
 	public void setup() {
 		size(400, 400, P3D);
 
@@ -35,7 +36,9 @@ float[][] path = { { HALF_SIZE, HALF_SIZE, HALF_SIZE },
 
 		smooth();
 
-		z = y = z = 0;
+		x = path[0][0];
+		y = path[0][1];
+		z = path[0][2];
 
 		Motion.setup(this);
 
@@ -44,25 +47,16 @@ float[][] path = { { HALF_SIZE, HALF_SIZE, HALF_SIZE },
 		for (int i = 0; i < path.length; i++) {
 			int next = ((i + 1) == path.length) ? 0 : i + 1;
 
-			Tween t = new Tween();
-			t.addProperty(new Property(this, "x", path[i][0], path[next][0]));
-			t.addProperty(new Property(this, "y", path[i][1], path[next][1]));
-			t.addProperty(new Property(this, "z", path[i][2], path[next][2]));
-
-			// This could also be written as
-			// Tween t = new Tween(new String[] { "x:" + path[i][0] + "," +
-			// path[next][0], "y:" + path[i][1] + "," + path[next][1], "z:" +
-			// path[i][2] + "," + path[next][2] });
-
-			t.setDuration(50f);
-
-			ts.appendChild(t);
+			ts.add(new Tween(50).add(this, "x", path[next][0])
+					.add(this, "y", path[next][1])
+					.add(this, "z", path[next][2]));
 		}
 
 		ts.repeat();
 		ts.play();
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 
@@ -85,18 +79,13 @@ float[][] path = { { HALF_SIZE, HALF_SIZE, HALF_SIZE },
 
 		translate(x, y, z);
 
-		// This could also be written as
-		// Tween t = ts.getCurrentTween();
-		// translate(t.getPosition("x"), t.getPosition("y"),
-		// t.getPosition("z"));
-
 		fill(0);
 		box(20);
 		popMatrix();
 
 		String time = ts.getTime() + " / " + ts.getDuration();
 
-		fill(lerpColor(0xFFFF0000, 0xFFFF0000, ts.getSeekPosition()));
+		fill(lerpColor(0xFFFF0000, 0xFFFF0000, ts.getPosition()));
 		text(time, width - textWidth(time) - 10, height - 10);
 	}
 }

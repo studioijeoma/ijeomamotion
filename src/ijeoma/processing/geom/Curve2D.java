@@ -32,10 +32,12 @@ import processing.core.PVector;
 
 public class Curve2D {
 	PGraphics g;
-	float x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4;
+	float x1, y1, x2, y2, x3, y3, x4, y4;
 
-	Curve2D(float _x1, float _y1, float _x2, float _y2, float _x3, float _y3,
-			float _x4, float _y4) {
+	public Curve2D(PGraphics _g, float _x1, float _y1, float _x2, float _y2,
+			float _x3, float _y3, float _x4, float _y4) {
+		g = _g;
+
 		x1 = _x1;
 		y1 = _y1;
 

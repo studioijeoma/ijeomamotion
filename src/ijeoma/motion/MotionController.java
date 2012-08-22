@@ -24,7 +24,7 @@
  * @modified    ##date##
  * @version     ##library.prettyVersion## (##library.version##)
  */
- 
+
 package ijeoma.motion;
 
 import ijeoma.motion.event.MotionEventListener;
@@ -40,120 +40,132 @@ import processing.core.PApplet;
 
 public abstract class MotionController extends Motion implements
 		MotionConstant, MotionEventListener {
-	public ArrayList<Motion> children;// = new ArrayList<Motion>();
+	public ArrayList<Motion> children = new ArrayList<Motion>();
 	public ArrayList<Tween> tweens = new ArrayList<Tween>();
 	public ArrayList<TweenParallel> tweenParallels = new ArrayList<TweenParallel>();
 	public ArrayList<TweenSequence> tweenSequences = new ArrayList<TweenSequence>();
 	public ArrayList<Callback> callbacks = new ArrayList<Callback>();
 
-	public HashMap<String, Tween> tweenLUT = new HashMap<String, Tween>();
-	public HashMap<String, TweenParallel> tweenParallelLUT = new HashMap<String, TweenParallel>();
-	public HashMap<String, TweenSequence> tweenSequenceLUT = new HashMap<String, TweenSequence>();
-	public HashMap<String, Callback> callbackLUT = new HashMap<String, Callback>();
-	public HashMap<String, Motion> childrenLUT = new HashMap<String, Motion>();
+	public HashMap<String, Motion> childrenMap = new HashMap<String, Motion>();
+	public HashMap<String, Tween> tweenMap = new HashMap<String, Tween>();
+	public HashMap<String, TweenParallel> tweenParallelMap = new HashMap<String, TweenParallel>();
+	public HashMap<String, TweenSequence> tweenSequenceMap = new HashMap<String, TweenSequence>();
+	public HashMap<String, Callback> callbackMap = new HashMap<String, Callback>();
 
 	protected ArrayList<MotionEventListener> listeners;
 
 	public MotionController() {
 		super();
-		children = new ArrayList<Motion>();
 	}
 
-	public void stop() {
-		for (Motion child : children)
-			if (child.isPlaying)
-				child.stop();
-
-		super.stop();
+	public MotionController(Motion[] _children) {
+		super();
+		this.addAll(_children);
 	}
 
 	@Override
-	public void pause() {
-		for (Motion child : children)
-			child.pause();
+	public MotionController play() {
+		return (MotionController) super.play();
+	}
 
+	@Override
+	public MotionController stop() {
+		super.stop();
+
+		for (Motion c : children)
+			if (c.isPlaying)
+				c.stop();
+
+		return this;
+	}
+
+	@Override
+	public MotionController pause() {
 		super.pause();
+
+		for (Motion c : children)
+			c.pause();
+
+		return this;
 	}
 
 	/**
 	 * Resumes the tween
 	 */
 	@Override
-	public void resume() {
-		for (Motion child : children)
-			child.resume();
-
+	public MotionController resume() {
 		super.resume();
+
+		for (Motion c : children)
+			c.resume();
+
+		return this;
 	}
 
 	/**
 	 * Changes the time of the tween to a time percentange between 0 and 1
 	 */
 	@Override
-	public void seek(float _value) {
+	public MotionController seek(float _value) {
 		super.seek(_value);
 
-		for (Motion child : children) {
-			if (child.isTimeInside(getTime()))
-				child.seek((getTime() - child.getPlayTime())
-						/ child.getDuration());
-			else if (child.isTimeAbove(getTime()))
-				child.seek(1f);
+		for (Motion c : children) {
+			if (c.isAbovePlayTime(time))
+				if (c.isBelowStopTime(time))
+					c.seek((time - c.getPlayTime()) / c.getDuration());
+				else
+					c.seek(1);
 			else
-				child.seek(0f);
+				c.seek(0);
 		}
+
+		return this;
 	}
 
+	@Override
 	public void update() {
 		if (isPlaying()) {
 			updateTime();
 
-			if (time > delay)
-				if (time > 0 && time < getDelayDuration()) {
-					updatePosition();
+			if (isAbovePlayTime(time))
+				if (isBelowStopTime(time)) {
+					updateCallbacks();
 					updateChildren();
 				} else
 					stop();
-			else
-				stop();
 		}
 	}
 
+	@Override
 	public void update(float _time) {
+		super.update();
+
 		if (isPlaying()) {
 			setTime(_time);
 
-			if (time > delay)
-				if (time > 0 && time < getDelayDuration()) {
-					updatePosition();
+			if (isAbovePlayTime(_time))
+				if (isBelowStopTime(_time)) {
+					updateCallbacks();
 					updateChildren();
 				} else
 					stop();
-			else
-				stop();
 		}
 	}
 
 	protected void updateChildren() {
-		for (Motion child : children) {
-			if (child.isTimeInside(getTime())) {
-				if (child.isPlaying())
-					child.update(getTime() - child.getPlayTime());
+		for (Motion c : children) {
+			if (c.isInsidePlayingTime(time))
+				if (c.isPlaying())
+					c.update(time);
 				else
-					child.play();
-			}
-			// else
-			// m.pause();
+					c.play();
 		}
 	}
 
 	protected void updateDuration() {
-		for (Motion child : children)
-			duration = PApplet.max(duration,
-					child.getPlayTime() + child.getDelayDuration());
-
-		setEnd(duration);
-		setChange(duration);
+		for (Motion c : children)
+			duration = PApplet.max(duration, (c.getPlayTime() - getPlayTime())
+					+ c.getDelayedDuration());
 	}
 
 	/**
@@ -170,7 +182,7 @@ public abstract class MotionController extends Motion implements
 	 * Returns a Tween by name
 	 */
 	public Tween getTween(String _name) {
-		return tweenLUT.get(_name);
+		return tweenMap.get(_name);
 	}
 
 	/**
@@ -188,7 +200,7 @@ public abstract class MotionController extends Motion implements
 	 * TweenParallels)
 	 */
 	public TweenParallel getTweenParallel(String _name) {
-		return tweenParallelLUT.get(_name);
+		return tweenParallelMap.get(_name);
 	}
 
 	/**
@@ -207,7 +219,7 @@ public abstract class MotionController extends Motion implements
 	 * TweenSequences)
 	 */
 	public TweenSequence getTweenSequence(String _name) {
-		return tweenSequenceLUT.get(_name);
+		return tweenSequenceMap.get(_name);
 	}
 
 	/**
@@ -226,16 +238,16 @@ public abstract class MotionController extends Motion implements
 	 * Callbacks)
 	 */
 	public Callback getCallback(String _name) {
-		return callbackLUT.get(_name);
+		return callbackMap.get(_name);
 	}
 
-	public float getChildPosition(int _index) {
-		return getChild(_index).getPosition();
-	}
-
-	public float getChildPosition(String _name) {
-		return getChild(_name).getPosition();
-	}
+	// public float getChildPosition(int _index) {
+	// return getChild(_index).getPosition();
+	// }
+	//
+	// public float getChildPosition(String _name) {
+	// return getChild(_name).getPosition();
+	// }
 
 	/**
 	 * Returns all motion objects (Callback, Tween, TweenParallel,
@@ -313,7 +325,7 @@ public abstract class MotionController extends Motion implements
 	 * Returns the Motion object (Tween, TweenParallel, TweenSequence, Callback)
 	 * by id/index
 	 */
-	public Motion getChild(int _index) {
+	public Motion get(int _index) {
 		if (_index < children.size())
 			return children.get(_index);
 		else
@@ -325,13 +337,13 @@ public abstract class MotionController extends Motion implements
 	 * by name
 	 */
 	public Motion getChild(String _name) {
-		return childrenLUT.get(_name);
+		return childrenMap.get(_name);
 	}
 
 	/**
 	 * Returns child Motion object count
 	 */
-	public int getChildCount() {
+	public int getCount() {
 		return children.size();
 	}
 
@@ -364,61 +376,146 @@ public abstract class MotionController extends Motion implements
 	}
 
 	@Override
-	public void setTimeScale(float _timeScale) {
+	public MotionController setTimeScale(float _timeScale) {
 		super.setTimeScale(_timeScale);
 
 		for (Motion child : children)
 			child.setTimeScale(timeScale);
+
+		return this;
 	}
 
 	@Override
-	public void setTimeMode(String _durationMode) {
+	public MotionController setTimeMode(String _durationMode) {
 		super.setTimeMode(_durationMode);
 
 		for (Motion child : children)
 			child.setTimeMode(_durationMode);
+
+		return this;
+	}
+
+	public MotionController add(Motion _child) {
+		return add(_child, null);
+	}
+
+	public MotionController add(Motion _child, String _name) {
+		return insert(_child, _name, 0);
+	}
+
+	protected MotionController insert(Motion _child, String _name, float _time) {
+		_child.setPlayTime(getPlayTime() + _time);
+
+		_child.seek(1);
+
+		// _child.setDelay(0);
+		_child.setTimeMode(timeMode);
+
+		_child.noAutoUpdate();
+
+		_child.addEventListener(this);
+
+		if (_child.isTween()) {
+			tweens.add((Tween) _child);
+			if (_name != null)
+				tweenMap.put(_name, (Tween) _child);
+		} else if (_child.isTweenParallel()) {
+			tweenParallels.add((TweenParallel) _child);
+			if (_name != null)
+				tweenParallelMap.put(_name, (TweenParallel) _child);
+		} else if (_child.isTweenSequence()) {
+			tweenSequences.add((TweenSequence) _child);
+			if (_name != null)
+				tweenSequenceMap.put(_name, (TweenSequence) _child);
+		} else if (_child.isCallback()) {
+			callbacks.add((Callback) _child);
+			if (_name != null)
+				callbackMap.put(_name, (Callback) _child);
+		}
+
+		children.add(_child);
+		if (_name != null)
+			childrenMap.put(_name, _child);
+
+		updateDuration();
+
+		return this;
 	}
 
 	/**
 	 * Removes Motion object
 	 */
-	public void removeChild(Motion _child) {
+	public MotionController removeChild(Motion _child) {
 		if (_child.isTween()) {
 			tweens.remove(_child);
-			tweenLUT.remove(_child.name);
+			// tweenLUT.remove(_child.name);
 		} else if (_child.isTweenParallel()) {
 			tweenParallels.remove(_child);
-			tweenParallelLUT.remove(_child.name);
+			// tweenParallelLUT.remove(_child.name);
 		} else if (_child.isTweenSequence()) {
 			tweenSequences.remove(_child);
-			tweenSequenceLUT.remove(_child.name);
+			// tweenSequenceLUT.remove(_child.name);
 		} else if (_child.isCallback()) {
 			callbacks.remove(_child);
-			callbackLUT.remove(_child.name);
+			// callbackLUT.remove(_child.name);
 		}
 
 		children.remove(_child);
-		childrenLUT.remove(_child.name);
+		// childrenLUT.remove(_child.name);
+
+		return this;
+	}
+
+	public MotionController addTween(Object _tweenObject,
+			String _tweenObjectProperty, float _end, float _duration,
+			float _delay, String _easing) {
+		return add(new Tween(_tweenObject, _tweenObjectProperty, _end,
+				_duration, _delay, _easing), _tweenObjectProperty);
+	}
+
+	public MotionController addTween(Object _tweenObject,
+			String _tweenObjectProperty, float _end, float _duration,
+			float _delay) {
+		return add(new Tween(_tweenObject, _tweenObjectProperty, _end,
+				_duration, _delay), _tweenObjectProperty);
+	}
+
+	public MotionController addTween(Object _tweenObject,
+			String _tweenObjectProperty, float _end, float _duration) {
+		return add(new Tween(_tweenObject, _tweenObjectProperty, _end,
+				_duration), _tweenObjectProperty);
+	}
+
+	/**
+	 * adds multiple Motion objects
+	 */
+	public MotionController addAll(Motion[] _children) {
+		for (int i = 0; i < _children.length; i++)
+			add(_children[i]);
+
+		return this;
 	}
 
 	/**
 	 * Removes all Motion objects
 	 */
-	public void removeChildren() {
+	public MotionController removeAll() {
 		tweens.clear();
-		tweenLUT.clear();
-		
+		tweenMap.clear();
+
 		tweenParallels.clear();
-		tweenParallelLUT.clear();
-		
+		tweenParallelMap.clear();
+
 		tweenSequences.clear();
-		tweenSequenceLUT.clear();
-		
+		tweenSequenceMap.clear();
+
 		callbacks.clear();
-		callbackLUT.clear();
+		callbackMap.clear();
 
 		children.clear();
-		childrenLUT.clear();
+		childrenMap.clear();
+
+		return this;
 	}
 
 	public void printChildren() {
@@ -432,7 +529,7 @@ public abstract class MotionController extends Motion implements
 			i++;
 		}
 
-		logger.println(childrenAsString);
+		// logger.println(childrenAssString);
 	}
 
 	@Override
