@@ -27,17 +27,17 @@
 
 package ijeoma.processing.tween.test;
 
-import processing.core.*;
-
-import ijeoma.motion.*;
+import ijeoma.motion.Motion;
 import ijeoma.processing.geom.Bezier2D;
 import ijeoma.processing.tween.Bezier2DTween;
+import processing.core.PApplet;
 
 public class Bezier2DTween_Basic extends PApplet {
 
 	Bezier2D b1, b2;
 	Bezier2DTween bt;
 
+	@Override
 	public void setup() {
 		size(100, 100);
 		smooth();
@@ -51,6 +51,7 @@ public class Bezier2DTween_Basic extends PApplet {
 		bt.play();
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 
@@ -66,6 +67,7 @@ public class Bezier2DTween_Basic extends PApplet {
 		text(time, width - textWidth(time) - 10, height - 10);
 	}
 
+	@Override
 	public void keyPressed() {
 		bt.play();
 	}

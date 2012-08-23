@@ -40,6 +40,7 @@ public class SVGPath2DTween_Basic extends PApplet {
 	SVGPath2D p;
 	SVGPath2DTween t;
 
+	@Override
 	public void setup() {
 		size(800, 600);
 		smooth();
@@ -56,6 +57,7 @@ public class SVGPath2DTween_Basic extends PApplet {
 		t.play();
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 
@@ -74,6 +76,7 @@ public class SVGPath2DTween_Basic extends PApplet {
 		text(time, width - textWidth(time) - 10, height - 10);
 	}
 
+	@Override
 	public void keyPressed() {
 		t.play();
 	}

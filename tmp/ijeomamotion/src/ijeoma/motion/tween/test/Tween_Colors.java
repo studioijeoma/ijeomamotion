@@ -1,9 +1,9 @@
 package ijeoma.motion.tween.test;
 
 import ijeoma.motion.Motion;
-import ijeoma.motion.property.ColorProperty;
 import ijeoma.motion.tween.Tween;
-import processing.core.*;
+import processing.core.PApplet;
+import processing.core.PFont;
 
 public class Tween_Colors extends PApplet {
 
@@ -12,6 +12,7 @@ public class Tween_Colors extends PApplet {
 
 	int c1, c2;
 
+	@Override
 	public void setup() {
 		size(400, 400);
 		smooth();
@@ -32,6 +33,7 @@ public class Tween_Colors extends PApplet {
 		// .add(new ColorProperty(this, "c2", color(0, 255, 255))).play();
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 
@@ -45,6 +47,7 @@ public class Tween_Colors extends PApplet {
 		text(time, width - textWidth(time) - 10, height - 10);
 	}
 
+	@Override
 	public void keyPressed() {
 		t.play();
 	}

@@ -175,6 +175,7 @@ public class Tween extends Motion { // implements Comparable
 		}
 	}
 
+	@Override
 	public void update() {
 		if (isPlaying()) {
 			updateTime();
@@ -188,6 +189,7 @@ public class Tween extends Motion { // implements Comparable
 		}
 	}
 
+	@Override
 	public void update(float _time) {
 		if (isPlaying()) {
 			setTime(_time);
@@ -223,22 +225,27 @@ public class Tween extends Motion { // implements Comparable
 		}
 	}
 
+	@Override
 	public Tween play() {
 		return (Tween) super.play();
 	}
 
+	@Override
 	public Tween stop() {
 		return (Tween) super.stop();
 	}
 
+	@Override
 	public Tween pause() {
 		return (Tween) super.pause();
 	}
 
+	@Override
 	public Tween resume() {
 		return (Tween) super.resume();
 	}
 
+	@Override
 	public Tween seek(float _value) {
 		super.seek(_value);
 
@@ -247,58 +254,72 @@ public class Tween extends Motion { // implements Comparable
 		return this;
 	}
 
+	@Override
 	public Tween repeat() {
 		return (Tween) super.repeat();
 	}
 
+	@Override
 	public Tween repeat(int _repeatDuration) {
 		return (Tween) super.repeat(_repeatDuration);
 	}
 
+	@Override
 	public Tween noRepeat() {
 		return (Tween) super.noRepeat();
 	}
 
+	@Override
 	public Tween reverse() {
 		return (Tween) super.reverse();
 	}
 
+	@Override
 	public Tween noReverse() {
 		return (Tween) super.noReverse();
 	}
 
+	@Override
 	public Tween setTimeScale(float _timeScale) {
 		return (Tween) super.setTimeScale(_timeScale);
 	}
 
+	@Override
 	public Tween setDuration(float _duration) {
 		return (Tween) super.setDuration(_duration);
 	}
 
+	@Override
 	public Tween setDelay(float _delay) {
 		return (Tween) super.setDelay(_delay);
 	}
 
+	@Override
 	public Tween setEasing(String _easing) {
 		return (Tween) super.setEasing(_easing);
 	}
 
+	@Override
 	public Tween noEasing() {
 		return (Tween) super.noEasing();
 	}
 
+	@Override
 	public Tween setTimeMode(String _timeMode) {
 		return (Tween) super.setTimeMode(_timeMode);
 	}
 
+	@Override
 	public Tween setRepeatDuration(int _repeatCount) {
 		return (Tween) super.setRepeatDuration(_repeatCount);
 	}
 
+	@Override
 	public Tween autoUpdate() {
 		return (Tween) super.autoUpdate();
 	}
 
+	@Override
 	public Tween noAutoUpdate() {
 		return (Tween) super.noAutoUpdate();
 	}
@@ -310,7 +331,7 @@ public class Tween extends Motion { // implements Comparable
 	}
 
 	public Tween add(Property _p) {
-		properties.add(_p); 
+		properties.add(_p);
 
 		return this;
 	}
@@ -387,6 +408,7 @@ public class Tween extends Motion { // implements Comparable
 			return new String[] {};
 	}
 
+	@Override
 	public String toString() {
 		// return "Tween[name: " + getName() + ", playTime: " + getPlayTime() +
 		// ", begin: " + getBegin()

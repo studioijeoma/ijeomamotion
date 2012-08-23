@@ -5,11 +5,11 @@
 
 package ijeoma.motion.tween.test;
 
+import ijeoma.motion.Motion;
+import ijeoma.motion.tween.Tween;
+import ijeoma.motion.tween.TweenSequence;
 import processing.core.PApplet;
 import processing.core.PFont;
-
-import ijeoma.motion.*;
-import ijeoma.motion.tween.*;
 
 public class TweenSequence_Basic extends PApplet {
 
@@ -19,6 +19,7 @@ public class TweenSequence_Basic extends PApplet {
 	float x1, x2, x3, x4;
 	TweenSequence ts;
 
+	@Override
 	public void setup() {
 		size(400, 400);
 
@@ -44,6 +45,7 @@ public class TweenSequence_Basic extends PApplet {
 		ts.repeat().play();
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 
@@ -80,18 +82,22 @@ public class TweenSequence_Basic extends PApplet {
 		text(time, width - textWidth(time) - 10, height - 10);
 	}
 
+	@Override
 	public void keyPressed() {
 		ts.play();
 	}
 
+	@Override
 	public void mousePressed() {
 		ts.pause();
 	}
 
+	@Override
 	public void mouseReleased() {
 		ts.resume();
 	}
 
+	@Override
 	public void mouseDragged() {
 		ts.seek((float) mouseX / width);
 	}

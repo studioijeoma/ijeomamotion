@@ -27,13 +27,11 @@
 
 package ijeoma.processing.tween;
 
-import java.lang.reflect.Method;
-
-
-import ijeoma.motion.Motion;
 import ijeoma.motion.event.MotionEvent;
 import ijeoma.motion.tween.Tween;
 import ijeoma.processing.geom.Bezier3D;
+
+import java.lang.reflect.Method;
 
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -69,6 +67,7 @@ public class Bezier3DTween extends Tween { // implements Comparable {
 	/**
 	 * Sets the events
 	 */
+	@Override
 	protected void setupEvents() {
 		super.setupEvents();
 
@@ -128,8 +127,8 @@ public class Bezier3DTween extends Tween { // implements Comparable {
 	}
 
 	@Override
-	protected void dispatchMotionStartedEvent() { 
- 		if (tweenBezierStartedMethod != null) {
+	protected void dispatchMotionStartedEvent() {
+		if (tweenBezierStartedMethod != null) {
 			try {
 				tweenBezierStartedMethod.invoke(parent, new Object[] { this });
 			} catch (Exception e) {

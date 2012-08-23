@@ -28,7 +28,8 @@
 package ijeoma.geom.test;
 
 import ijeoma.geom.Path2D;
-import processing.core.*;
+import processing.core.PApplet;
+import processing.core.PVector;
 
 public class Path2D_Basic extends PApplet {
 	Path2D path1;
@@ -85,6 +86,7 @@ public class Path2D_Basic extends PApplet {
 		// ellipse(p.x, p.y, 10, 10);
 	}
 
+	@Override
 	public void mouseMoved() {
 		float t = map(mouseX, 0, width, 0.1f, 5);
 		// path2.set(path1.get());

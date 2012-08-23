@@ -27,11 +27,10 @@
 
 package ijeoma.motion.tween;
 
-import java.lang.reflect.Method;
-
 import ijeoma.geom.Path2D;
-import ijeoma.motion.Motion;
 import ijeoma.motion.event.MotionEvent;
+
+import java.lang.reflect.Method;
 
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -66,9 +65,10 @@ public class Path2DTween extends Tween { // implements Comparable {
 	/**
 	 * Sets the events
 	 */
+	@Override
 	protected void setupEvents() {
 		super.setupEvents();
-		
+
 		Class<? extends PApplet> parentClass = parent.getClass();
 
 		try {
@@ -120,7 +120,7 @@ public class Path2DTween extends Tween { // implements Comparable {
 	}
 
 	@Override
-	protected void dispatchMotionStartedEvent() { 
+	protected void dispatchMotionStartedEvent() {
 		if (tweenPathStartedMethod != null) {
 			try {
 				tweenPathStartedMethod.invoke(parent, new Object[] { this });

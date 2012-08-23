@@ -27,8 +27,6 @@
 
 package ijeoma.motion.property;
 
-import java.lang.reflect.Field;
-
 public class Property {
 	// Object object;
 	// Class<? extends Object> objectType;
@@ -51,8 +49,8 @@ public class Property {
 	public void setPosition(float _position) {
 
 	}
-	
+
 	public void resetValue() {
-		 
+
 	}
 }

@@ -5,16 +5,16 @@
 
 package ijeoma.motion.tween.test;
 
-import processing.core.*;
-
-import ijeoma.motion.*;
-import ijeoma.motion.tween.*;
+import ijeoma.motion.Motion;
+import ijeoma.motion.tween.TweenParallel;
+import processing.core.PApplet;
 
 public class TweenParallel_Delay extends PApplet {
 	TweenParallel tp;
 
 	float w1 = 0, w2 = 0;
 
+	@Override
 	public void setup() {
 		size(400, 200);
 		smooth();
@@ -30,6 +30,7 @@ public class TweenParallel_Delay extends PApplet {
 		// .add(new Tween(this, "w2", width, 100, 50)).play();
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 
@@ -59,18 +60,22 @@ public class TweenParallel_Delay extends PApplet {
 		text(time, width - textWidth(time) - 10, height - 10);
 	}
 
+	@Override
 	public void keyPressed() {
 		tp.play();
 	}
 
+	@Override
 	public void mousePressed() {
 		tp.pause();
 	}
 
+	@Override
 	public void mouseReleased() {
 		tp.resume();
 	}
 
+	@Override
 	public void mouseDragged() {
 		tp.seek((float) mouseX / width);
 	}

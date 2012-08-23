@@ -18,6 +18,7 @@ public class TweenSequence_GML extends PApplet {
 
 	PVector[] points;
 
+	@Override
 	public void setup() {
 		size(800, 580);
 
@@ -72,6 +73,7 @@ public class TweenSequence_GML extends PApplet {
 		}
 	}
 
+	@Override
 	public void draw() {
 		background(0);
 

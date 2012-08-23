@@ -5,11 +5,13 @@
 
 package ijeoma.motion.tween.test;
 
-import processing.core.*;
-
-import ijeoma.motion.*;
-import ijeoma.motion.event.*;
-import ijeoma.motion.tween.*;
+import ijeoma.motion.Motion;
+import ijeoma.motion.event.MotionEvent;
+import ijeoma.motion.event.MotionEventListener;
+import ijeoma.motion.tween.Tween;
+import ijeoma.motion.tween.TweenParallel;
+import processing.core.PApplet;
+import processing.core.PFont;
 
 public class TweenParallel_Events_2 extends PApplet {
 	PFont f;
@@ -19,6 +21,7 @@ public class TweenParallel_Events_2 extends PApplet {
 	float x1 = -width;
 	float x2 = width;
 
+	@Override
 	public void setup() {
 		size(400, 200);
 
@@ -37,6 +40,7 @@ public class TweenParallel_Events_2 extends PApplet {
 		tp.repeat().play();
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 
@@ -65,20 +69,22 @@ public class TweenParallel_Events_2 extends PApplet {
 		text(time, width - textWidth(time) - 10, height - 10);
 	}
 
+	@Override
 	public void keyPressed() {
 		tp.play();
 	}
 
 	class TweenParallelEventListener implements MotionEventListener {
+		@Override
 		public void onMotionEvent(MotionEvent te) {
 			if (te.type == MotionEvent.TWEEN_PARALLEL_STARTED)
-				println(((TweenParallel) te.getSource()) + " started");
+				println(te.getSource() + " started");
 			else if (te.type == MotionEvent.TWEEN_PARALLEL_ENDED)
-				println(((TweenParallel) te.getSource()) + " ended");
+				println(te.getSource() + " ended");
 			// else if (te.type == MotionEvent.TWEEN_PARALLEL_CHANGED)
 			// println(((TweenParallel) te.getSource()).getName() + " changed");
 			else if (te.type == MotionEvent.TWEEN_PARALLEL_REPEATED)
-				println(((TweenParallel) te.getSource()) + " repeated");
+				println(te.getSource() + " repeated");
 		}
 	}
 }

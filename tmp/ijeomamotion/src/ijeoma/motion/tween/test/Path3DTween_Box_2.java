@@ -30,7 +30,8 @@ package ijeoma.motion.tween.test;
 import ijeoma.geom.Path3D;
 import ijeoma.motion.Motion;
 import ijeoma.motion.tween.Path3DTween;
-import processing.core.*;
+import processing.core.PApplet;
+import processing.core.PVector;
 
 public class Path3DTween_Box_2 extends PApplet {
 	PVector[] points;
@@ -45,6 +46,7 @@ public class Path3DTween_Box_2 extends PApplet {
 			{ -HALF_SIZE * 1.5f, 0, 0 }, { -HALF_SIZE, HALF_SIZE, -HALF_SIZE },
 			{ 0, HALF_SIZE * 1.5f, 0 } };
 
+	@Override
 	public void setup() {
 		size(400, 400, P3D);
 		smooth();
@@ -65,6 +67,7 @@ public class Path3DTween_Box_2 extends PApplet {
 		tp.play();
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 
@@ -96,6 +99,7 @@ public class Path3DTween_Box_2 extends PApplet {
 		box(20);
 	}
 
+	@Override
 	public void keyPressed() {
 		// Path3D(PApplet _parent, PVector[] _points, String _pathMode)
 		// _pathMode is set to CUBIC by default but can also be set to LINEAR,

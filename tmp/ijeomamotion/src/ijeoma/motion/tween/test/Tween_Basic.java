@@ -1,15 +1,15 @@
 package ijeoma.motion.tween.test;
 
-import processing.core.*;
-
 import ijeoma.motion.Motion;
 import ijeoma.motion.tween.Tween;
+import processing.core.PApplet;
 
 public class Tween_Basic extends PApplet {
 	Tween t;
 
 	float w = 0;
 
+	@Override
 	public void setup() {
 		size(400, 100);
 		smooth();
@@ -22,6 +22,7 @@ public class Tween_Basic extends PApplet {
 		// t = new Tween(100).add(this, "w", width).play();
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 
@@ -36,6 +37,7 @@ public class Tween_Basic extends PApplet {
 		text(time, width - textWidth(time) - 10, height - 10);
 	}
 
+	@Override
 	public void keyPressed() {
 		t.play();
 	}

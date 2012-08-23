@@ -24,7 +24,7 @@
  * @modified    08/21/2012
  * @version     4 (26)
  */
- 
+
 package ijeoma.motion;
 
 public interface MotionConstant {

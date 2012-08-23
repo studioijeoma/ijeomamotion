@@ -27,11 +27,11 @@
 
 package ijeoma.motion.timeline.test;
 
+import ijeoma.motion.Callback;
+import ijeoma.motion.Motion;
+import ijeoma.motion.timeline.Timeline;
 import processing.core.PApplet;
 import processing.core.PFont;
-
-import ijeoma.motion.*;
-import ijeoma.motion.timeline.*;
 
 public class Timeline_Callback_Basic extends PApplet {
 	PFont font;
@@ -40,6 +40,7 @@ public class Timeline_Callback_Basic extends PApplet {
 
 	String word = "";
 
+	@Override
 	public void setup() {
 		size(400, 200);
 
@@ -63,6 +64,7 @@ public class Timeline_Callback_Basic extends PApplet {
 		tl.repeat().play();
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 
@@ -105,18 +107,22 @@ public class Timeline_Callback_Basic extends PApplet {
 		println(word);
 	}
 
+	@Override
 	public void keyPressed() {
 		tl.play();
 	}
 
+	@Override
 	public void mousePressed() {
 		tl.pause();
 	}
 
+	@Override
 	public void mouseReleased() {
 		tl.resume();
 	}
 
+	@Override
 	public void mouseDragged() {
 		tl.seek(norm(mouseX, 0, width));
 	}

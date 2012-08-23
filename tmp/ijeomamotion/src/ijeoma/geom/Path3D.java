@@ -1,4 +1,5 @@
 /**
+
  * ijeomamotion
  * A collection of utilities creating flash-like animations.
  * http://ekeneijeoma.com/processing/ijeomamotion/

@@ -28,11 +28,10 @@
 package ijeoma.motion.tween;
 
 import ijeoma.motion.Motion;
-import ijeoma.motion.MotionController; 
+import ijeoma.motion.MotionController;
 import ijeoma.motion.event.MotionEvent;
 
 import java.lang.reflect.Method;
-import java.util.Collections;
 
 import processing.core.PApplet;
 
@@ -67,11 +66,12 @@ public class TweenParallel extends MotionController {
 		super();
 		addAll(_children);
 		setupEvents();
-	} 
+	}
 
 	/**
 	 * Sets the events
 	 */
+	@Override
 	protected void setupEvents() {
 		super.setupEvents();
 
@@ -105,79 +105,98 @@ public class TweenParallel extends MotionController {
 		} catch (Exception e) {
 		}
 	}
-	
+
+	@Override
 	public TweenParallel play() {
 		return (TweenParallel) super.play();
 	}
 
+	@Override
 	public TweenParallel stop() {
 		return (TweenParallel) super.stop();
 	}
 
+	@Override
 	public TweenParallel pause() {
 		return (TweenParallel) super.pause();
 	}
 
+	@Override
 	public TweenParallel resume() {
 		return (TweenParallel) super.resume();
 	}
 
+	@Override
 	public TweenParallel seek(float _value) {
-		return (TweenParallel) super.seek(_value);  
+		return (TweenParallel) super.seek(_value);
 	}
 
+	@Override
 	public TweenParallel repeat() {
 		return (TweenParallel) super.repeat();
 	}
 
+	@Override
 	public TweenParallel repeat(int _repeatDuration) {
 		return (TweenParallel) super.repeat(_repeatDuration);
 	}
 
+	@Override
 	public TweenParallel noRepeat() {
 		return (TweenParallel) super.noRepeat();
 	}
 
+	@Override
 	public TweenParallel reverse() {
 		return (TweenParallel) super.reverse();
 	}
 
+	@Override
 	public TweenParallel noReverse() {
 		return (TweenParallel) super.noReverse();
 	}
 
+	@Override
 	public TweenParallel setTimeScale(float _timeScale) {
 		return (TweenParallel) super.setTimeScale(_timeScale);
 	}
 
+	@Override
 	public TweenParallel setDuration(float _duration) {
 		return (TweenParallel) super.setDuration(_duration);
 	}
 
+	@Override
 	public TweenParallel setDelay(float _delay) {
 		return (TweenParallel) super.setDelay(_delay);
 	}
 
+	@Override
 	public TweenParallel setEasing(String _easing) {
 		return (TweenParallel) super.setEasing(_easing);
 	}
 
+	@Override
 	public TweenParallel noEasing() {
 		return (TweenParallel) super.noEasing();
 	}
 
+	@Override
 	public TweenParallel setTimeMode(String _timeMode) {
 		return (TweenParallel) super.setTimeMode(_timeMode);
 	}
 
+	@Override
 	public TweenParallel setRepeatDuration(int _repeatCount) {
 		return (TweenParallel) super.setRepeatDuration(_repeatCount);
 	}
 
+	@Override
 	public TweenParallel autoUpdate() {
 		return (TweenParallel) super.autoUpdate();
 	}
 
+	@Override
 	public TweenParallel noAutoUpdate() {
 		return (TweenParallel) super.noAutoUpdate();
 	}
@@ -248,6 +267,7 @@ public class TweenParallel extends MotionController {
 		return ("TweenParallel[tweens: {" + tweens + "}]");
 	}
 
+	@Override
 	public void onMotionEvent(MotionEvent te) {
 		// TODO Auto-generated method stub
 	}

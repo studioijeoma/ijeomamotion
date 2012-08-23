@@ -27,15 +27,14 @@
 
 package ijeoma.processing.geom.test;
 
-import processing.core.*;
-
-import ijeoma.processing.*;
 import ijeoma.processing.geom.Curve2D;
+import processing.core.PApplet;
 
 public class Curve2D_Basic extends PApplet {
 
 	Curve2D c;
 
+	@Override
 	public void setup() {
 		size(100, 100);
 		smooth();
@@ -43,6 +42,7 @@ public class Curve2D_Basic extends PApplet {
 		c = new Curve2D(g, 5, 26, 5, 26, 73, 24, 73, 61);
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 

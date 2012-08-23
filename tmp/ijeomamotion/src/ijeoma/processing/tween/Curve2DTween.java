@@ -27,12 +27,11 @@
 
 package ijeoma.processing.tween;
 
-import java.lang.reflect.Method;
-
-import ijeoma.motion.Motion;
 import ijeoma.motion.event.MotionEvent;
 import ijeoma.motion.tween.Tween;
 import ijeoma.processing.geom.Curve2D;
+
+import java.lang.reflect.Method;
 
 import processing.core.PApplet;
 import processing.core.PVector;

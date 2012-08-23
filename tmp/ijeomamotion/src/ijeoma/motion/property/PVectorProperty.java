@@ -27,9 +27,6 @@
 
 package ijeoma.motion.property;
 
-import java.lang.reflect.Field;
-
-import processing.core.PApplet;
 import processing.core.PVector;
 
 public class PVectorProperty extends Property {
@@ -47,6 +44,7 @@ public class PVectorProperty extends Property {
 		position = 0;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -83,6 +81,7 @@ public class PVectorProperty extends Property {
 		return position;
 	}
 
+	@Override
 	public void setPosition(float _position) {
 		position = _position;
 
@@ -93,6 +92,7 @@ public class PVectorProperty extends Property {
 		vector.lerp(end, position);
 	}
 
+	@Override
 	public void resetValue() {
 		vector = begin.get();
 	}

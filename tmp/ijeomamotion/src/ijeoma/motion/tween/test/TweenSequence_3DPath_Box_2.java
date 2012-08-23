@@ -6,11 +6,11 @@
 
 package ijeoma.motion.tween.test;
 
+import ijeoma.motion.Motion;
+import ijeoma.motion.tween.Tween;
+import ijeoma.motion.tween.TweenSequence;
 import processing.core.PApplet;
-import processing.core.PFont; 
-
-import ijeoma.motion.*;
-import ijeoma.motion.tween.*;
+import processing.core.PFont;
 
 public class TweenSequence_3DPath_Box_2 extends PApplet {
 	PFont f;
@@ -26,6 +26,7 @@ public class TweenSequence_3DPath_Box_2 extends PApplet {
 
 	public float x, y, z;
 
+	@Override
 	public void setup() {
 		size(400, 400, P3D);
 
@@ -55,6 +56,7 @@ public class TweenSequence_3DPath_Box_2 extends PApplet {
 		ts.play();
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 

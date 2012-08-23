@@ -27,11 +27,10 @@
 
 package ijeoma.motion.tween;
 
-import java.lang.reflect.Method;
-
 import ijeoma.geom.Path3D;
-import ijeoma.motion.Motion;
 import ijeoma.motion.event.MotionEvent;
+
+import java.lang.reflect.Method;
 
 import processing.core.PApplet;
 import processing.core.PVector;

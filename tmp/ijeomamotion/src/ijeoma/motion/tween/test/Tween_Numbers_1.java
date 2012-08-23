@@ -2,7 +2,8 @@ package ijeoma.motion.tween.test;
 
 import ijeoma.motion.Motion;
 import ijeoma.motion.tween.Tween;
-import processing.core.*;
+import processing.core.PApplet;
+import processing.core.PFont;
 
 public class Tween_Numbers_1 extends PApplet {
 
@@ -12,6 +13,7 @@ public class Tween_Numbers_1 extends PApplet {
 	public float x = 0;
 	public float y = 400;
 
+	@Override
 	public void setup() {
 		size(400, 400);
 		smooth();
@@ -29,6 +31,7 @@ public class Tween_Numbers_1 extends PApplet {
 		// t = new Tween(this, "x", 400, 100).add(this, "y", 0).repeat().play();
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 
@@ -42,6 +45,7 @@ public class Tween_Numbers_1 extends PApplet {
 		text(time, width - textWidth(time) - 10, height - 10);
 	}
 
+	@Override
 	public void keyPressed() {
 		t.play();
 	}

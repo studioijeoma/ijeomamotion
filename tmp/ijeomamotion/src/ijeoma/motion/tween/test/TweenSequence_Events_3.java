@@ -5,14 +5,13 @@
 
 package ijeoma.motion.tween.test;
 
-import processing.core.PApplet;
-import processing.core.PFont;
-
-import ijeoma.motion.*;
+import ijeoma.motion.Motion;
 import ijeoma.motion.event.MotionEvent;
 import ijeoma.motion.event.MotionEventListener;
-import ijeoma.motion.tween.*;
-import ijeoma.motion.tween.test.TweenSequence_Events_2.TweenSequenceEventListener;
+import ijeoma.motion.tween.Tween;
+import ijeoma.motion.tween.TweenSequence;
+import processing.core.PApplet;
+import processing.core.PFont;
 
 public class TweenSequence_Events_3 extends PApplet {
 
@@ -26,6 +25,7 @@ public class TweenSequence_Events_3 extends PApplet {
 	int c1, c2, c3, c4;
 	float x1, x2, x3, x4;
 
+	@Override
 	public void setup() {
 		size(400, 400);
 
@@ -55,6 +55,7 @@ public class TweenSequence_Events_3 extends PApplet {
 		ts.repeat().play();
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 
@@ -91,29 +92,32 @@ public class TweenSequence_Events_3 extends PApplet {
 		text(time, width - textWidth(time) - 10, height - 10);
 	}
 
+	@Override
 	public void keyPressed() {
 		ts.play();
 	}
 
 	class TweenEventListener implements MotionEventListener {
+		@Override
 		public void onMotionEvent(MotionEvent te) {
 			if (te.type == MotionEvent.TWEEN_STARTED)
-				println(((Tween) te.getSource()) + " started");
+				println(te.getSource() + " started");
 			else if (te.type == MotionEvent.TWEEN_ENDED)
-				println(((Tween) te.getSource()) + " ended");
+				println(te.getSource() + " ended");
 		}
 	}
 
 	class TweenSequenceEventListener implements MotionEventListener {
+		@Override
 		public void onMotionEvent(MotionEvent te) {
 			if (te.type == MotionEvent.TWEEN_SEQUENCE_STARTED)
-				println(((TweenSequence) te.getSource()) + " started");
+				println(te.getSource() + " started");
 			else if (te.type == MotionEvent.TWEEN_SEQUENCE_ENDED)
-				println(((TweenSequence) te.getSource()) + " ended");
+				println(te.getSource() + " ended");
 			// else if (te.type == MotionEvent.TWEEN_SEQUENCE_CHANGED)
 			// println(((TweenSequence) te.getSource()) + " changed");
 			else if (te.type == MotionEvent.TWEEN_SEQUENCE_REPEATED)
-				println(((TweenSequence) te.getSource()) + " repeated");
+				println(te.getSource() + " repeated");
 		}
 	}
 }

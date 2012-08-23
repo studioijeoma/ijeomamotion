@@ -1,7 +1,39 @@
+/**
+
+ * ijeomamotion
+ * A collection of utilities creating flash-like animations.
+ * http://ekeneijeoma.com/processing/ijeomamotion/
+ *
+ * Copyright (C) 2012 Ekene Ijeoma http://ekeneijeoma.com
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General
+ * Public License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA  02111-1307  USA
+ * 
+ * @author      Ekene Ijeoma http://ekeneijeoma.com
+ * @modified    08/21/2012
+ * @version     4 (26)
+ */
+
 package ijeoma.geom.utils;
 
 import java.util.Iterator;
-import processing.core.*;
+
+import processing.core.PApplet;
+import processing.core.PConstants;
+import processing.core.PGraphics;
+import processing.core.PImage;
 
 public class Contourer extends Conrec implements Iterable<Contour> {
 	PApplet parent;
@@ -143,13 +175,13 @@ public class Contourer extends Conrec implements Iterable<Contour> {
 	}
 
 	private void createDataImage() {
-		dataImage = parent.createImage(width, height, PApplet.RGB);
+		dataImage = parent.createImage(width, height, PConstants.RGB);
 
 		dataImage.loadPixels();
 		for (int c = 0; c < contourDataXs.length; c++) {
 			for (int r = 0; r < contourDataYs.length; r++) {
-				int cX = (int) (c * resolution);
-				int rY = (int) (r * resolution);
+				int cX = (c * resolution);
+				int rY = (r * resolution);
 
 				for (int x = cX; x < cX + resolution; x++)
 					for (int y = rY; y < rY + resolution; y++)
@@ -163,8 +195,8 @@ public class Contourer extends Conrec implements Iterable<Contour> {
 	public void drawData2D() {
 		for (int c = 0; c < contourDataXs.length; c++) {
 			for (int r = 0; r < contourDataYs.length; r++) {
-				int x = (int) (c * resolution);
-				int y = (int) (r * resolution);
+				int x = (c * resolution);
+				int y = (r * resolution);
 
 				parent.noStroke();
 				parent.fill((int) (contourData[c][r] * 255));
@@ -232,7 +264,7 @@ public class Contourer extends Conrec implements Iterable<Contour> {
 			// parent.vertex(l.bx, l.by, l.bz * contourElevation);
 		}
 		// parent.endShape();0
-		parent.colorMode(parent.RGB, 255, 255, 255);
+		parent.colorMode(PConstants.RGB, 255, 255, 255);
 	}
 
 	public void drawContours3D(int[] _colors) {
@@ -251,7 +283,7 @@ public class Contourer extends Conrec implements Iterable<Contour> {
 		}
 
 		for (int c : _colors) {
-			_pg.beginShape(PApplet.LINE);
+			_pg.beginShape(PConstants.LINE);
 			for (Contour l : contours) {
 				int j = (int) PApplet.map(l.az, zMin, zMax, 0,
 						_colors.length - 1);
@@ -300,7 +332,7 @@ public class Contourer extends Conrec implements Iterable<Contour> {
 	private int[] getImageAverageColorRGBAt(PImage _image, int _x, int _y,
 			int _width, int _height) {
 		int rSum = 0, bSum = 0, gSum = 0;
-		int pCount = (int) (_width * _height);
+		int pCount = (_width * _height);
 
 		for (int i = _x; i < _x + _width; i++) {
 			for (int j = _y; j < _y + _height; j++) {
@@ -325,6 +357,7 @@ public class Contourer extends Conrec implements Iterable<Contour> {
 		return 0.3f * _r + 0.59f * _g + 0.11f * _b;
 	}
 
+	@Override
 	public Iterator<Contour> iterator() {
 		return contours.iterator();
 	}

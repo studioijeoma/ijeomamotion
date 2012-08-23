@@ -27,13 +27,9 @@
 
 package ijeoma.motion;
 
-import ijeoma.motion.tween.Tween;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import processing.core.PApplet;
 
 public class Callback extends Motion {
 
@@ -93,6 +89,7 @@ public class Callback extends Motion {
 		}
 	}
 
+	@Override
 	public void update() {
 		if (isPlaying()) {
 			updateTime();
@@ -105,6 +102,7 @@ public class Callback extends Motion {
 		}
 	}
 
+	@Override
 	public void update(float _time) {
 		if (isPlaying()) {
 			setTime(_time);
@@ -117,7 +115,7 @@ public class Callback extends Motion {
 		}
 	}
 
-	protected void updateObject() { 
+	protected void updateObject() {
 		try {
 			callbackObjectMethod.invoke(callbackObject, null);
 		} catch (IllegalArgumentException e) {
@@ -131,10 +129,11 @@ public class Callback extends Motion {
 			e.printStackTrace();
 		}
 	}
-	
+
+	@Override
 	public Callback seek(float _value) {
 		super.seek(_value);
- 
+
 		updateObject();
 
 		return this;

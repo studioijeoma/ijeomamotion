@@ -58,7 +58,8 @@ public class Interpolator {
 	 * Tension: 1 is high, 0 normal, -1 is low Bias: 0 is even, positive is
 	 * towards first segment, negative towards the other
 	 */
-	public static float hermite(float y0, float y1, float y2, float y3, float mu, float tension, float bias) {
+	public static float hermite(float y0, float y1, float y2, float y3,
+			float mu, float tension, float bias) {
 		float m0, m1, mu2, mu3;
 		float a0, a1, a2, a3;
 

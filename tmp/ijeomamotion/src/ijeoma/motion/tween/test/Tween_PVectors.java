@@ -1,9 +1,10 @@
 package ijeoma.motion.tween.test;
 
 import ijeoma.motion.Motion;
-import ijeoma.motion.property.PVectorProperty;
 import ijeoma.motion.tween.Tween;
-import processing.core.*;
+import processing.core.PApplet;
+import processing.core.PFont;
+import processing.core.PVector;
 
 public class Tween_PVectors extends PApplet {
 
@@ -12,6 +13,7 @@ public class Tween_PVectors extends PApplet {
 
 	PVector v1, v2;
 
+	@Override
 	public void setup() {
 		size(400, 400);
 		smooth();
@@ -34,6 +36,7 @@ public class Tween_PVectors extends PApplet {
 		// .add(new PVectorProperty(v1, new PVector(0, height))).play();
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 
@@ -47,6 +50,7 @@ public class Tween_PVectors extends PApplet {
 		text(time, width - textWidth(time) - 10, height - 10);
 	}
 
+	@Override
 	public void keyPressed() {
 		t.play();
 	}

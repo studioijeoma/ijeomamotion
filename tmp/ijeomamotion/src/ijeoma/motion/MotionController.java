@@ -63,10 +63,12 @@ public abstract class MotionController extends Motion implements
 		this.addAll(_children);
 	}
 
+	@Override
 	public MotionController play() {
 		return (MotionController) super.play();
 	}
-	
+
+	@Override
 	public MotionController stop() {
 		super.stop();
 
@@ -120,6 +122,7 @@ public abstract class MotionController extends Motion implements
 		return this;
 	}
 
+	@Override
 	public void update() {
 		if (isPlaying()) {
 			updateTime();
@@ -133,6 +136,7 @@ public abstract class MotionController extends Motion implements
 		}
 	}
 
+	@Override
 	public void update(float _time) {
 		super.update();
 

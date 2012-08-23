@@ -1,15 +1,15 @@
 package ijeoma.motion.tween.test;
 
-import processing.core.*;
-
-import ijeoma.motion.*;
-import ijeoma.motion.tween.*;
+import ijeoma.motion.Motion;
+import ijeoma.motion.tween.Tween;
+import processing.core.PApplet;
 
 public class Tween_Reverse extends PApplet {
 	Tween t;
 
 	float w = 0;
 
+	@Override
 	public void setup() {
 		size(400, 100);
 		smooth();
@@ -19,6 +19,7 @@ public class Tween_Reverse extends PApplet {
 		t = new Tween(this, "w", width, 100f).repeat().reverse().play();
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 
@@ -35,6 +36,7 @@ public class Tween_Reverse extends PApplet {
 		text(time, width - textWidth(time) - 10, height - 10);
 	}
 
+	@Override
 	public void keyPressed() {
 		t.play();
 	}

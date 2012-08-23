@@ -27,13 +27,11 @@
 
 package ijeoma.motion.tween;
 
-import ijeoma.motion.Callback;
 import ijeoma.motion.Motion;
 import ijeoma.motion.MotionController;
 import ijeoma.motion.event.MotionEvent;
 
 import java.lang.reflect.Method;
-import java.util.Collections;
 
 import processing.core.PApplet;
 
@@ -113,6 +111,7 @@ public class TweenSequence extends MotionController {
 		}
 	}
 
+	@Override
 	public void update(float _time) {
 		super.update(_time);
 
@@ -134,87 +133,108 @@ public class TweenSequence extends MotionController {
 			i++;
 		}
 	}
-	
+
+	@Override
 	public TweenSequence play() {
 		return (TweenSequence) super.play();
 	}
 
+	@Override
 	public TweenSequence stop() {
 		return (TweenSequence) super.stop();
 	}
 
+	@Override
 	public TweenSequence pause() {
 		return (TweenSequence) super.pause();
 	}
 
+	@Override
 	public TweenSequence resume() {
 		return (TweenSequence) super.resume();
 	}
 
+	@Override
 	public TweenSequence seek(float _value) {
-		return (TweenSequence) super.seek(_value);  
+		return (TweenSequence) super.seek(_value);
 	}
 
+	@Override
 	public TweenSequence repeat() {
 		return (TweenSequence) super.repeat();
 	}
 
+	@Override
 	public TweenSequence repeat(int _repeatDuration) {
 		return (TweenSequence) super.repeat(_repeatDuration);
 	}
 
+	@Override
 	public TweenSequence noRepeat() {
 		return (TweenSequence) super.noRepeat();
 	}
 
+	@Override
 	public TweenSequence reverse() {
 		return (TweenSequence) super.reverse();
 	}
 
+	@Override
 	public TweenSequence noReverse() {
 		return (TweenSequence) super.noReverse();
 	}
 
+	@Override
 	public TweenSequence setTimeScale(float _timeScale) {
 		return (TweenSequence) super.setTimeScale(_timeScale);
 	}
 
+	@Override
 	public TweenSequence setDuration(float _duration) {
 		return (TweenSequence) super.setDuration(_duration);
 	}
 
+	@Override
 	public TweenSequence setDelay(float _delay) {
 		return (TweenSequence) super.setDelay(_delay);
 	}
 
+	@Override
 	public TweenSequence setEasing(String _easing) {
 		return (TweenSequence) super.setEasing(_easing);
 	}
 
+	@Override
 	public TweenSequence noEasing() {
 		return (TweenSequence) super.noEasing();
 	}
 
+	@Override
 	public TweenSequence setTimeMode(String _timeMode) {
 		return (TweenSequence) super.setTimeMode(_timeMode);
 	}
 
+	@Override
 	public TweenSequence setRepeatDuration(int _repeatCount) {
 		return (TweenSequence) super.setRepeatDuration(_repeatCount);
 	}
 
+	@Override
 	public TweenSequence autoUpdate() {
 		return (TweenSequence) super.autoUpdate();
 	}
 
+	@Override
 	public TweenSequence noAutoUpdate() {
 		return (TweenSequence) super.noAutoUpdate();
 	}
 
+	@Override
 	public TweenSequence add(Motion _child) {
 		return add(_child, null);
 	}
 
+	@Override
 	public TweenSequence add(Motion _child, String _name) {
 		insert(_child, _name, getDuration());
 
@@ -334,6 +354,7 @@ public class TweenSequence extends MotionController {
 		return ("TweenSequence[tweens: {" + tweens + "}]");
 	}
 
+	@Override
 	public void onMotionEvent(MotionEvent te) {
 		// TODO Auto-generated method stub
 

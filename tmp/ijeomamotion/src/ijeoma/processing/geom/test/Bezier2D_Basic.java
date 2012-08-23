@@ -27,22 +27,22 @@
 
 package ijeoma.processing.geom.test;
 
-import processing.core.*;
-
-import ijeoma.processing.*;
 import ijeoma.processing.geom.Bezier2D;
+import processing.core.PApplet;
 
 public class Bezier2D_Basic extends PApplet {
 
 	Bezier2D b;
 
+	@Override
 	public void setup() {
 		size(100, 100);
 		smooth();
 
-		b = new Bezier2D(g, 85, 20, 10, 10, 90, 90, 15, 80); 
+		b = new Bezier2D(g, 85, 20, 10, 10, 90, 90, 15, 80);
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 

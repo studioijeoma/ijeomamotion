@@ -27,12 +27,11 @@
 
 package ijeoma.processing.tween;
 
-import java.lang.reflect.Method;
-
-import ijeoma.motion.Motion;
 import ijeoma.motion.event.MotionEvent;
 import ijeoma.motion.tween.Tween;
 import ijeoma.processing.geom.Curve3D;
+
+import java.lang.reflect.Method;
 
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -127,7 +126,7 @@ public class Curve3DTween extends Tween { // implements Comparable {
 	}
 
 	@Override
-	protected void dispatchMotionStartedEvent() {  
+	protected void dispatchMotionStartedEvent() {
 		if (tweenCurveStartedMethod != null) {
 			try {
 				tweenCurveStartedMethod.invoke(parent, new Object[] { this });

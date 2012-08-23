@@ -37,6 +37,7 @@ public class SVGPath2D_Basic extends PApplet {
 	PShape s;
 	SVGPath2D p;
 
+	@Override
 	public void setup() {
 		size(800, 600);
 		smooth();
@@ -48,6 +49,7 @@ public class SVGPath2D_Basic extends PApplet {
 		p = new SVGPath2D(g, path);
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 
@@ -58,6 +60,6 @@ public class SVGPath2D_Basic extends PApplet {
 		PVector v = p.getPoint((float) mouseX / width);
 
 		fill(255, 0, 0);
-		ellipse(v.x, v.y, 10, 10); 
+		ellipse(v.x, v.y, 10, 10);
 	}
 }

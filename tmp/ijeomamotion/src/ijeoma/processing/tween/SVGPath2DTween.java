@@ -27,16 +27,13 @@
 
 package ijeoma.processing.tween;
 
-import java.lang.reflect.Method;
-
-import ijeoma.motion.Motion;
 import ijeoma.motion.event.MotionEvent;
 import ijeoma.motion.tween.Tween;
 import ijeoma.processing.geom.SVGPath2D;
 
+import java.lang.reflect.Method;
+
 import processing.core.PApplet;
-import processing.core.PGraphics;
-import processing.core.PShape;
 import processing.core.PVector;
 
 public class SVGPath2DTween extends Tween { // implements Comparable {
@@ -73,7 +70,7 @@ public class SVGPath2DTween extends Tween { // implements Comparable {
 	@Override
 	protected void setupEvents() {
 		super.setupEvents();
-		
+
 		Class<? extends PApplet> parentClass = parent.getClass();
 
 		try {
@@ -126,7 +123,7 @@ public class SVGPath2DTween extends Tween { // implements Comparable {
 	}
 
 	@Override
-	protected void dispatchMotionStartedEvent() { 
+	protected void dispatchMotionStartedEvent() {
 		if (tweenSVGPathStartedMethod != null) {
 			try {
 				tweenSVGPathStartedMethod.invoke(parent, new Object[] { this });

@@ -27,13 +27,13 @@
 
 package ijeoma.motion.timeline;
 
+import ijeoma.motion.Motion;
+import ijeoma.motion.MotionController;
+import ijeoma.motion.event.MotionEvent;
+
 import java.lang.reflect.Method;
-import java.util.Comparator;
 
 import processing.core.PApplet;
-import ijeoma.motion.Motion;
-import ijeoma.motion.MotionController; 
-import ijeoma.motion.event.MotionEvent;
 
 public class KeyFrame extends MotionController {
 	private Method keyframeStartedMethod, keyframeEndedMethod,
@@ -116,6 +116,7 @@ public class KeyFrame extends MotionController {
 		}
 	}
 
+	@Override
 	protected void dispatchMotionChangedEvent() {
 		dispatchEvent(MotionEvent.TIMELINE_CHANGED);
 
@@ -165,6 +166,7 @@ public class KeyFrame extends MotionController {
 				+ duration + ", children[" + children + "]]");
 	}
 
+	@Override
 	public void onMotionEvent(MotionEvent te) {
 		// TODO Auto-generated method stub
 

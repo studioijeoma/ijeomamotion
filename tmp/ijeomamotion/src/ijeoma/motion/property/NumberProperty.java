@@ -145,6 +145,7 @@ public class NumberProperty extends Property {
 		return position;
 	}
 
+	@Override
 	public void setPosition(float _position) {
 		position = _position;
 
@@ -162,10 +163,12 @@ public class NumberProperty extends Property {
 			}
 	}
 
+	@Override
 	public void resetValue() {
 		// field.setFloat(object, PApplet.lerp(begin, end, position));
 	}
 
+	@Override
 	public String toString() {
 		return "Parameter[name: " + getName() + ", begin: " + getBegin()
 				+ ", end: " + getEnd() + ", change: " + getChange()

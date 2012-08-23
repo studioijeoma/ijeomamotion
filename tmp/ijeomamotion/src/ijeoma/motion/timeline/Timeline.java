@@ -27,8 +27,8 @@
 
 package ijeoma.motion.timeline;
 
-import ijeoma.motion.Motion;
 import ijeoma.motion.Callback;
+import ijeoma.motion.Motion;
 import ijeoma.motion.MotionController;
 import ijeoma.motion.event.MotionEvent;
 import ijeoma.motion.tween.Tween;
@@ -37,12 +37,9 @@ import ijeoma.motion.tween.TweenSequence;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections; //import java.util.HashMap;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-//import java.util.Map;
-//import java.util.Set;
 
 import processing.core.PApplet;
 
@@ -103,8 +100,8 @@ public class Timeline extends MotionController {
 		return this;
 	}
 
-	protected MotionController insert(Motion _child, String _name,
-			float _time) {
+	@Override
+	protected MotionController insert(Motion _child, String _name, float _time) {
 		_child.setPlayTime(getPlayTime() + _time);
 
 		_child.seek(1);
@@ -147,6 +144,7 @@ public class Timeline extends MotionController {
 		return this;
 	}
 
+	@Override
 	public Timeline add(Motion _child, String _name) {
 		// PApplet.println("insertChild(" + _child + ", " + _name + ")");
 		KeyFrame c = (KeyFrame) childrenMap.get(_name);
@@ -195,8 +193,7 @@ public class Timeline extends MotionController {
 	}
 
 	public Timeline addKeyFrame(float _time) {
-		return (Timeline) insert(new KeyFrame(_time), PApplet.str(_time),
-				_time);
+		return (Timeline) insert(new KeyFrame(_time), PApplet.str(_time), _time);
 	}
 
 	public Timeline addKeyFrame(float _time, Motion[] _children) {
@@ -209,8 +206,7 @@ public class Timeline extends MotionController {
 	}
 
 	public Timeline addKeyFrame(String _name, float _time, Motion[] _children) {
-		return (Timeline) insert(new KeyFrame(_time, _children), _name,
-				_time);
+		return (Timeline) insert(new KeyFrame(_time, _children), _name, _time);
 	}
 
 	public void removeKeyFrame(int _time) {
@@ -346,6 +342,7 @@ public class Timeline extends MotionController {
 		}
 	}
 
+	@Override
 	protected void dispatchMotionChangedEvent() {
 		dispatchEvent(MotionEvent.TIMELINE_CHANGED);
 
@@ -398,6 +395,7 @@ public class Timeline extends MotionController {
 		PApplet.println(childrenAsString);
 	}
 
+	@Override
 	public void onMotionEvent(MotionEvent te) {
 		// TODO Auto-generated method stub
 

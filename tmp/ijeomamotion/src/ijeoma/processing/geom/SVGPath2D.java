@@ -28,6 +28,7 @@
 package ijeoma.processing.geom;
 
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PShape;
 import processing.core.PVector;
@@ -71,12 +72,10 @@ public class SVGPath2D {
 		if (path.getVertexCodeCount() == 0) {
 			if (path.getVertexCount() == 2) {
 				for (int i = 0; i < path.getVertexCount(); i++) {
-					point.x = PApplet.lerp(
-							path.getVertexX(segmentVertexIndex),
+					point.x = PApplet.lerp(path.getVertexX(segmentVertexIndex),
 							path.getVertexX(segmentVertexIndex + 1),
 							segmentPosition);
-					point.y = PApplet.lerp(
-							path.getVertexX(segmentVertexIndex),
+					point.y = PApplet.lerp(path.getVertexX(segmentVertexIndex),
 							path.getVertexX(segmentVertexIndex + 1),
 							segmentPosition);
 				}
@@ -86,7 +85,7 @@ public class SVGPath2D {
 				for (int j = 0; j < path.getVertexCodeCount(); j++) {
 					switch (path.getVertexCode(j)) {
 
-					case PShape.VERTEX:
+					case PConstants.VERTEX:
 						point.x = PApplet.lerp(
 								path.getVertexX(segmentVertexIndex),
 								path.getVertexX(segmentVertexIndex + 1),
@@ -97,7 +96,7 @@ public class SVGPath2D {
 								segmentPosition);
 						break;
 
-					case PShape.QUAD_BEZIER_VERTEX:
+					case PConstants.QUAD_BEZIER_VERTEX:
 						// g.quadraticVertex(path.getVertexX(index + 0),
 						// path.getVertexY(index + 0),
 						// path.getVertexX(index + 1),
@@ -105,7 +104,7 @@ public class SVGPath2D {
 						// index += 2;
 						break;
 
-					case PShape.BEZIER_VERTEX:
+					case PConstants.BEZIER_VERTEX:
 						point.x = g.bezierPoint(
 								path.getVertexX(segmentVertexIndex),
 								path.getVertexX(segmentVertexIndex + 1),
@@ -121,7 +120,7 @@ public class SVGPath2D {
 								segmentPosition);
 						break;
 
-					case PShape.CURVE_VERTEX:
+					case PConstants.CURVE_VERTEX:
 						point.x = g.curvePoint(
 								path.getVertexX(segmentVertexIndex),
 								path.getVertexX(segmentVertexIndex + 1),

@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PVector;
 
@@ -89,27 +90,27 @@ public class Path2D {
 	}
 
 	public void drawPoints(PGraphics _g) {
-		draw(_g, PApplet.POINTS, 1);
+		draw(_g, PConstants.POINTS, 1);
 	}
 
 	public void drawPoints(PGraphics _g, float _p) {
-		draw(_g, PApplet.POINTS, _p);
+		draw(_g, PConstants.POINTS, _p);
 	}
 
 	public void drawPoints(PGraphics _g, float _d, float _p) {
-		draw(_g, PApplet.POINTS, _d, _p);
+		draw(_g, PConstants.POINTS, _d, _p);
 	}
 
 	public void drawLine(PGraphics _g) {
-		draw(_g, PApplet.LINE, 1);
+		draw(_g, PConstants.LINE, 1);
 	}
 
 	public void drawLine(PGraphics _g, float _p) {
-		draw(_g, PApplet.LINE, _p);
+		draw(_g, PConstants.LINE, _p);
 	}
 
 	public void drawLine(PGraphics _g, float _d, float _p) {
-		draw(_g, PApplet.LINE, _d, _p);
+		draw(_g, PConstants.LINE, _d, _p);
 	}
 
 	public void draw(PGraphics _g, int _mode, float _p) {
@@ -120,7 +121,7 @@ public class Path2D {
 		int pointCount = points.size() * resolution;
 		_d = 1;
 
-		if (_mode == PApplet.LINE)
+		if (_mode == PConstants.LINE)
 			_g.beginShape();
 		else
 			_g.beginShape(_mode);

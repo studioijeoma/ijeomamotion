@@ -28,9 +28,6 @@
 package ijeoma.motion.property;
 
 import ijeoma.motion.Motion;
-
-import java.lang.reflect.Field;
-
 import processing.core.PApplet;
 
 public class ColorProperty extends NumberProperty {
@@ -44,6 +41,7 @@ public class ColorProperty extends NumberProperty {
 		super(_object, _name, _end);
 	}
 
+	@Override
 	public void updateValue() {
 		if (field != null)
 			try {

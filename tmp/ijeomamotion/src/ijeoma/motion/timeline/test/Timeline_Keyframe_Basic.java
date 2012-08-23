@@ -27,13 +27,12 @@
 
 package ijeoma.motion.timeline.test;
 
+import ijeoma.motion.Motion;
+import ijeoma.motion.timeline.KeyFrame;
+import ijeoma.motion.timeline.Timeline;
+import ijeoma.motion.tween.Tween;
 import processing.core.PApplet;
 import processing.core.PFont;
-
-import ijeoma.motion.*;
-import ijeoma.motion.timeline.*;
-import ijeoma.motion.tween.Tween;
-import ijeoma.motion.tween.TweenParallel;
 
 public class Timeline_Keyframe_Basic extends PApplet {
 	PFont font;
@@ -43,6 +42,7 @@ public class Timeline_Keyframe_Basic extends PApplet {
 	float k1y1;
 	float k2y1, k2y2;
 
+	@Override
 	public void setup() {
 		size(400, 200);
 
@@ -97,6 +97,7 @@ public class Timeline_Keyframe_Basic extends PApplet {
 		t.play();
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 
@@ -142,6 +143,7 @@ public class Timeline_Keyframe_Basic extends PApplet {
 		text(timeAsString, width - textWidth(timeAsString) - 10, height - 10);
 	}
 
+	@Override
 	public void keyPressed() {
 		if (key == '1')
 			t.gotoAndPlay("ONE");
@@ -157,14 +159,17 @@ public class Timeline_Keyframe_Basic extends PApplet {
 			t.play();
 	}
 
+	@Override
 	public void mousePressed() {
 		t.pause();
 	}
 
+	@Override
 	public void mouseReleased() {
 		t.resume();
 	}
 
+	@Override
 	public void mouseDragged() {
 		t.seek(norm(mouseX, 0, width));
 	}

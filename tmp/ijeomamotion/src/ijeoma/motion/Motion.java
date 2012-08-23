@@ -29,10 +29,8 @@ package ijeoma.motion;
 
 import ijeoma.motion.event.MotionEvent;
 import ijeoma.motion.event.MotionEventListener;
-import ijeoma.motion.MotionConstant; 
 
 import java.lang.reflect.Method;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -370,7 +368,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	}
 
 	public float getDelayTime() {
-		return (float) time;
+		return time;
 	}
 
 	public Motion setTimeScale(float _timeScale) {
@@ -646,10 +644,12 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	// return PApplet.str(getDuration() - getTime());
 	// }
 
+	@Override
 	public int compareTo(Motion _motion) {
 		return (int) (playTime - _motion.getPlayTime());
 	}
 
+	@Override
 	public int compare(Motion _motion1, Motion _motion2) {
 		return (int) (_motion2.getPlayTime() - _motion1.getPlayTime());
 	}

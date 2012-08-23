@@ -64,6 +64,7 @@ public class Timeline_Basic extends PApplet {
 		tl.repeat().play();
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 
@@ -87,6 +88,7 @@ public class Timeline_Basic extends PApplet {
 		text(time, width - textWidth(time) - 10, height - 10);
 	}
 
+	@Override
 	public void keyPressed() {
 		if (key == '1')
 			tl.gotoAndPlay(0);
@@ -102,14 +104,17 @@ public class Timeline_Basic extends PApplet {
 			tl.play();
 	}
 
+	@Override
 	public void mousePressed() {
 		tl.pause();
 	}
 
+	@Override
 	public void mouseReleased() {
 		tl.resume();
 	}
 
+	@Override
 	public void mouseDragged() {
 		tl.seek(norm(mouseX, 0, width));
 	}

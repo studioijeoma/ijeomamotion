@@ -1,15 +1,16 @@
 package ijeoma.motion.tween.test;
 
-import processing.core.PApplet;
 import ijeoma.motion.Motion;
 import ijeoma.motion.tween.Tween;
 import ijeoma.motion.tween.TweenSequence;
+import processing.core.PApplet;
 
 public class Ani_Sequence_Basics extends PApplet {
 	public float x, y, diameter;
 	// AniSequence seq;
 	TweenSequence ts;
 
+	@Override
 	public void setup() {
 		size(512, 512);
 		smooth();
@@ -47,7 +48,7 @@ public class Ani_Sequence_Basics extends PApplet {
 		Motion.setup(this);
 
 		ts = new TweenSequence();
-//		ts.add(new Tween(100).add(this, "diameter", 50));
+		// ts.add(new Tween(100).add(this, "diameter", 50));
 		ts.add(new Tween(100).add(this, "x", 400).add(this, "y", 100));
 		ts.add(new Tween(100).add(this, "x", 450).add(this, "y", 400));
 		ts.add(new Tween(100).add(this, "x", 100).add(this, "y", 450));
@@ -56,6 +57,7 @@ public class Ani_Sequence_Basics extends PApplet {
 		ts.play();
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 		// fill(255, 5);
@@ -69,18 +71,22 @@ public class Ani_Sequence_Basics extends PApplet {
 		text(time, width - textWidth(time) - 10, height - 10);
 	}
 
+	@Override
 	public void keyPressed() {
 		ts.play();
 	}
 
+	@Override
 	public void mousePressed() {
 		ts.pause();
 	}
 
+	@Override
 	public void mouseReleased() {
 		ts.resume();
 	}
 
+	@Override
 	public void mouseDragged() {
 		ts.seek((float) mouseX / width);
 	}

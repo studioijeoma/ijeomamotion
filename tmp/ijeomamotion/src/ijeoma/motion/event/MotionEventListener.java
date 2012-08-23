@@ -24,13 +24,13 @@
  * @modified    08/21/2012
  * @version     4 (26)
  */
- 
+
 package ijeoma.motion.event;
 
 import java.util.EventListener;
 
 // Declare the listener class. It must extend EventListener.
 // A class must implement this interface to get MyEvents.
-public interface MotionEventListener extends EventListener  {
+public interface MotionEventListener extends EventListener {
 	public void onMotionEvent(MotionEvent te);
 }

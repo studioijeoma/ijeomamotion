@@ -27,12 +27,11 @@
 
 package ijeoma.processing.tween;
 
-import java.lang.reflect.Method;
-
-import ijeoma.motion.Motion;
 import ijeoma.motion.event.MotionEvent;
 import ijeoma.motion.tween.Tween;
 import ijeoma.processing.geom.Bezier2D;
+
+import java.lang.reflect.Method;
 
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -71,7 +70,7 @@ public class Bezier2DTween extends Tween { // implements Comparable {
 	@Override
 	protected void setupEvents() {
 		super.setupEvents();
-		
+
 		Class<? extends PApplet> parentClass = parent.getClass();
 
 		try {
@@ -102,7 +101,7 @@ public class Bezier2DTween extends Tween { // implements Comparable {
 		} catch (Exception e) {
 		}
 	}
-	
+
 	public PVector getPoint() {
 		return bezier.getPoint(getPosition());
 	}

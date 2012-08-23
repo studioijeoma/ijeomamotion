@@ -1,10 +1,9 @@
 package ijeoma.motion.tween.test;
 
-import processing.core.*;
-
 import ijeoma.motion.Motion;
-import ijeoma.motion.MotionConstant;
 import ijeoma.motion.tween.Tween;
+import processing.core.PApplet;
+import processing.core.PFont;
 
 public class Tween_Delay extends PApplet {
 	PFont font;
@@ -26,6 +25,7 @@ public class Tween_Delay extends PApplet {
 		t = new Tween(this, "w", width, 50, 50).play();
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 
@@ -38,6 +38,7 @@ public class Tween_Delay extends PApplet {
 		text(time, width - textWidth(time) - 10, height - 10);
 	}
 
+	@Override
 	public void keyPressed() {
 		t.play();
 	}

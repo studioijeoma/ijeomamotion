@@ -1,6 +1,6 @@
 package ijeoma.motion.tween.test;
 
-import ijeoma.motion.*;
+import ijeoma.motion.Motion;
 import ijeoma.motion.event.MotionEvent;
 import ijeoma.motion.event.MotionEventListener;
 import ijeoma.motion.tween.Tween;
@@ -14,6 +14,7 @@ public class Tween_Events_2 extends PApplet {
 
 	float w = 0;
 
+	@Override
 	public void setup() {
 		size(400, 100);
 		smooth();
@@ -24,6 +25,7 @@ public class Tween_Events_2 extends PApplet {
 				new TweenEventListener()).play();
 	}
 
+	@Override
 	public void draw() {
 		background(255);
 
@@ -38,20 +40,22 @@ public class Tween_Events_2 extends PApplet {
 		text(time, width - textWidth(time) - 10, height - 10);
 	}
 
+	@Override
 	public void keyPressed() {
 		t.play();
 	}
 
 	public class TweenEventListener implements MotionEventListener {
+		@Override
 		public void onMotionEvent(MotionEvent te) {
 			if (te.type == MotionEvent.TWEEN_STARTED)
-				println(((Tween) te.getSource()) + " started");
+				println(te.getSource() + " started");
 			else if (te.type == MotionEvent.TWEEN_ENDED)
-				println(((Tween) te.getSource()) + " ended");
+				println(te.getSource() + " ended");
 			// else if (te.type == MotionEvent.TWEEN_CHANGED)
 			// println(((Tween) te.getSource()).getName() + " changed");
 			else if (te.type == MotionEvent.TWEEN_REPEATED)
-				println(((Tween) te.getSource()) + " repeated");
+				println(te.getSource() + " repeated");
 		}
 	}
 }
