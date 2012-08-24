@@ -1,1 +1,1 @@
-Up-to-date instructions can be found at http://code.google.com/p/processing/wiki/LibraryTemplate
+Processing library for creating flash-like animations. Read more at ekeneijeoma.com/processing/ijeomamotion.

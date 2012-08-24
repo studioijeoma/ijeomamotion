@@ -23,50 +23,51 @@
  * @author      ##author##
  * @modified    ##date##
  * @version     ##library.prettyVersion## (##library.version##)
- */ 
- 
+ */
+
 import ijeoma.motion.*;
 import ijeoma.motion.property.*;
 import ijeoma.motion.tween.*; 
 
-	Tween t;
-	PFont f;
+Tween t;
+PFont f;
 
-	int c1, c2;
+int c1, c2;
 
-	void setup() {
-		size(400, 400);
-		smooth();
+void setup() {
+  size(400, 400);
+  smooth();
 
-		f = createFont("Arial", 12);
+  f = createFont("Arial", 12);
 
-		c1 = color(255, 0, 0);
-		c2 = color(255, 255, 0);
+  c1 = color(255, 0, 0);
+  c2 = color(255, 255, 0);
 
-		Motion.setup(this);
+  Motion.setup(this);
 
-		t = new Tween(100).addColor(this, "c1", color(0, 0, 255))
-				.addColor(this, "c2", color(0, 255, 255)).play();
+  t = new Tween(100).addColor(this, "c1", color(0, 0, 255))
+    .addColor(this, "c2", color(0, 255, 255)).play();
 
-		// The above could also be written as
-		// t = new Tween(100).add(new ColorProperty(this, "c1", color(0, 0,
-		// 255)))
-		// .add(new ColorProperty(this, "c2", color(0, 255, 255))).play();
-	}
+  // The above could also be written as
+  // t = new Tween(100).add(new ColorProperty(this, "c1", color(0, 0,
+  // 255)))
+  // .add(new ColorProperty(this, "c2", color(0, 255, 255))).play();
+}
 
-	void draw() {
-		background(255);
+void draw() {
+  background(255);
 
-		fill(c1);
-		rect(0, 0, width / 2, height);
-		fill(c2);
-		rect(width / 2, 0, width / 2, height);
+  fill(c1);
+  rect(0, 0, width / 2, height);
+  fill(c2);
+  rect(width / 2, 0, width / 2, height);
 
-		String time = t.getTime() + " / " + t.getDuration();
-		fill(0);
-		text(time, width - textWidth(time) - 10, height - 10);
-	}
+  String time = t.getTime() + " / " + t.getDuration();
+  fill(0);
+  text(time, width - textWidth(time) - 10, height - 10);
+}
 
-	void keyPressed() {
-		t.play();
-	}
+void keyPressed() {
+  t.play();
+}
+

@@ -23,55 +23,56 @@
  * @author      ##author##
  * @modified    ##date##
  * @version     ##library.prettyVersion## (##library.version##)
- */ 
- 
+ */
+
 import ijeoma.motion.*;
 import ijeoma.motion.event.*;
 import ijeoma.motion.tween.*;
- 
-	PFont f;
 
-	Tween t;
+PFont f;
 
-	float w = 0;
+Tween t;
 
-	void setup() {
-		size(400, 100);
-		smooth();
+float w = 0;
 
-		Motion.setup(this);
+void setup() {
+  size(400, 100);
+  smooth();
 
-		t = new Tween(this, "w", width, 100).addEventListener(
-				new TweenEventListener()).play();
-	}
+  Motion.setup(this);
 
-	void draw() {
-		background(255);
+  t = new Tween(this, "w", width, 100).addEventListener(
+  new TweenEventListener()).play();
+}
 
-		noStroke();
+void draw() {
+  background(255);
 
-		fill(255 / 2f);
-		rect(0, 0, w, height);
+  noStroke();
 
-		String time = t.getTime() + " / " + t.getDuration();
+  fill(255 / 2f);
+  rect(0, 0, w, height);
 
-		fill(0);
-		text(time, width - textWidth(time) - 10, height - 10);
-	}
+  String time = t.getTime() + " / " + t.getDuration();
 
-	void keyPressed() {
-		t.play();
-	}
+  fill(0);
+  text(time, width - textWidth(time) - 10, height - 10);
+}
 
-	public class TweenEventListener implements MotionEventListener {
-		void onMotionEvent(MotionEvent te) {
-			if (te.type == MotionEvent.TWEEN_STARTED)
-				println(((Tween) te.getSource()) + " started");
-			else if (te.type == MotionEvent.TWEEN_ENDED)
-				println(((Tween) te.getSource()) + " ended");
-			// else if (te.type == MotionEvent.TWEEN_CHANGED)
-			// println(((Tween) te.getSource()).getName() + " changed");
-			else if (te.type == MotionEvent.TWEEN_REPEATED)
-				println(((Tween) te.getSource()) + " repeated");
-		}
-	} 
+void keyPressed() {
+  t.play();
+}
+
+public class TweenEventListener implements MotionEventListener {
+  void onMotionEvent(MotionEvent te) {
+    if (te.type == MotionEvent.TWEEN_STARTED)
+      println(((Tween) te.getSource()) + " started");
+    else if (te.type == MotionEvent.TWEEN_ENDED)
+      println(((Tween) te.getSource()) + " ended");
+    // else if (te.type == MotionEvent.TWEEN_CHANGED)
+    // println(((Tween) te.getSource()).getName() + " changed");
+    else if (te.type == MotionEvent.TWEEN_REPEATED)
+      println(((Tween) te.getSource()) + " repeated");
+  }
+} 
+

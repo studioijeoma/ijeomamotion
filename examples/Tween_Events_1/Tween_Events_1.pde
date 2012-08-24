@@ -23,54 +23,55 @@
  * @author      ##author##
  * @modified    ##date##
  * @version     ##library.prettyVersion## (##library.version##)
- */ 
- 
-  import ijeoma.motion.*;
+ */
+
+import ijeoma.motion.*;
 import ijeoma.motion.tween.*;
- 
-	Tween t;
 
-	float w = 0;
+Tween t;
 
-	void setup() {
-		size(400, 100);
-		smooth();
+float w = 0;
 
-		Motion.setup(this);
+void setup() {
+  size(400, 100);
+  smooth();
 
-		t = new Tween(this, "w", width, 100).play();
-	}
+  Motion.setup(this);
 
-	void draw() {
-		background(255);
+  t = new Tween(this, "w", width, 100).play();
+}
 
-		noStroke();
+void draw() {
+  background(255);
 
-		fill(255 / 2f);
-		rect(0, 0, w, height);
+  noStroke();
 
-		String time = t.getTime() + " / " + t.getDuration();
+  fill(255 / 2f);
+  rect(0, 0, w, height);
 
-		fill(0);
-		text(time, width - textWidth(time) - 10, height - 10);
-	}
+  String time = t.getTime() + " / " + t.getDuration();
 
-	void keyPressed() {
-		t.play();
-	}
+  fill(0);
+  text(time, width - textWidth(time) - 10, height - 10);
+}
 
-	void tweenStarted(Tween _t) {
-		println(_t + " started");
-	}
+void keyPressed() {
+  t.play();
+}
 
-	void tweenEnded(Tween _t) {
-		println(_t + " ended");
-	}
-	
-	// void tweenChanged(Tween _t) {
-	// println(_t + " changed");
-	// }
-	
-	void tweenRepeated(Tween _t) {
-		println(_t + " repeated");
-	} 
+void tweenStarted(Tween _t) {
+  println(_t + " started");
+}
+
+void tweenEnded(Tween _t) {
+  println(_t + " ended");
+}
+
+// void tweenChanged(Tween _t) {
+// println(_t + " changed");
+// }
+
+void tweenRepeated(Tween _t) {
+  println(_t + " repeated");
+} 
+

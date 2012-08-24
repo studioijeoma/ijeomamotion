@@ -27,6 +27,7 @@
 
 package ijeoma.motion.property;
 
+import processing.core.PApplet;
 import processing.core.PVector;
 
 public class PVectorProperty extends Property {
@@ -89,7 +90,13 @@ public class PVectorProperty extends Property {
 	}
 
 	public void updateValue() {
-		vector.lerp(end, position);
+		// vector.lerp(end, position);
+
+		float x = PApplet.lerp(vector.x, end.x, position);
+		float y = PApplet.lerp(vector.y, end.y, position);
+		float z = PApplet.lerp(vector.z, end.z, position);
+
+		vector.set(x, y, z);
 	}
 
 	@Override

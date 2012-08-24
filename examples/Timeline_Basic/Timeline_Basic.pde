@@ -23,89 +23,90 @@
  * @author      ##author##
  * @modified    ##date##
  * @version     ##library.prettyVersion## (##library.version##)
- */ 
+ */
 
 import ijeoma.motion.*;
 import ijeoma.motion.timeline.*;
 import ijeoma.motion.tween.*; 
- 
-	int c1, c2, c3, c4, c5;
-	float y1, y2, y3, y4, y5;
 
-	Timeline tl;
+int c1, c2, c3, c4, c5;
+float y1, y2, y3, y4, y5;
 
-	@Override
-	void setup() {
-		size(400, 200);
-		smooth();
+Timeline tl;
 
-		Motion.setup(this);
+@Override
+void setup() {
+  size(400, 200);
+  smooth();
 
-		c1 = c2 = c3 = c4 = c5 = color(255);
+  Motion.setup(this);
 
-		y1 = y3 = y5 = -height;
-		y2 = y4 = height;
+  c1 = c2 = c3 = c4 = c5 = color(255);
 
-		tl = new Timeline();
-		tl.add(new Tween(50).add(this, "y1", height).addColor(this, "c1",
-				color(0)), 0);
-		tl.add(new Tween(50).add(this, "y2", -height).addColor(this, "c2",
-				color(0)), 50);
-		tl.add(new Tween(50).add(this, "y3", height).addColor(this, "c3",
-				color(0)), 100);
-		tl.add(new Tween(50).add(this, "y4", -height).addColor(this, "c4",
-				color(0)), 150);
-		tl.add(new Tween(50).add(this, "y5", height).addColor(this, "c5",
-				color(0)), 200);
-		tl.repeat().play();
-	}
+  y1 = y3 = y5 = -height;
+  y2 = y4 = height;
 
-	void draw() {
-		background(255);
+  tl = new Timeline();
+  tl.add(new Tween(50).add(this, "y1", height).addColor(this, "c1", 
+  color(0)), 0);
+  tl.add(new Tween(50).add(this, "y2", -height).addColor(this, "c2", 
+  color(0)), 50);
+  tl.add(new Tween(50).add(this, "y3", height).addColor(this, "c3", 
+  color(0)), 100);
+  tl.add(new Tween(50).add(this, "y4", -height).addColor(this, "c4", 
+  color(0)), 150);
+  tl.add(new Tween(50).add(this, "y5", height).addColor(this, "c5", 
+  color(0)), 200);
+  tl.repeat().play();
+}
 
-		noStroke();
-		fill(0);
+void draw() {
+  background(255);
 
-		noStroke();
-		fill(c1);
-		rect(0, y1, 80, height);
-		fill(c2);
-		rect(80, y2, 80, height);
-		fill(c3);
-		rect(160, y3, 80, height);
-		fill(c4);
-		rect(240, y4, 80, height);
-		fill(c5);
-		rect(320, y5, 80, height);
+  noStroke();
+  fill(0);
 
-		fill(0);
-		String time = (int) tl.getTime() + " / " + (int) tl.getDuration();
-		text(time, width - textWidth(time) - 10, height - 10);
-	}
+  noStroke();
+  fill(c1);
+  rect(0, y1, 80, height);
+  fill(c2);
+  rect(80, y2, 80, height);
+  fill(c3);
+  rect(160, y3, 80, height);
+  fill(c4);
+  rect(240, y4, 80, height);
+  fill(c5);
+  rect(320, y5, 80, height);
 
-	void keyPressed() {
-		if (key == '1')
-			tl.gotoAndPlay(0);
-		else if (key == '2')
-			tl.gotoAndPlay(50);
-		else if (key == '3')
-			tl.gotoAndPlay(100);
-		else if (key == '4')
-			tl.gotoAndPlay(150);
-		else if (key == '5')
-			tl.gotoAndPlay(200);
-		else
-			tl.play();
-	}
+  fill(0);
+  String time = (int) tl.getTime() + " / " + (int) tl.getDuration();
+  text(time, width - textWidth(time) - 10, height - 10);
+}
 
-	void mousePressed() {
-		tl.pause();
-	}
+void keyPressed() {
+  if (key == '1')
+    tl.gotoAndPlay(0);
+  else if (key == '2')
+    tl.gotoAndPlay(50);
+  else if (key == '3')
+    tl.gotoAndPlay(100);
+  else if (key == '4')
+    tl.gotoAndPlay(150);
+  else if (key == '5')
+    tl.gotoAndPlay(200);
+  else
+    tl.play();
+}
 
-	void mouseReleased() {
-		tl.resume();
-	}
+void mousePressed() {
+  tl.pause();
+}
 
-	void mouseDragged() {
-		tl.seek(norm(mouseX, 0, width));
-	} 
+void mouseReleased() {
+  tl.resume();
+}
+
+void mouseDragged() {
+  tl.seek(norm(mouseX, 0, width));
+} 
+

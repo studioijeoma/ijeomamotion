@@ -23,52 +23,53 @@
  * @author      ##author##
  * @modified    ##date##
  * @version     ##library.prettyVersion## (##library.version##)
- */ 
- 
+ */
+
 import ijeoma.motion.*;
 import ijeoma.motion.tween.*; 
- 
-	PFont f;
 
-	Tween t;
-	Rect r;
+PFont f;
 
-	void setup() {
-		size(400, 400);
-		smooth();
+Tween t;
+Rect r;
 
-		f = createFont("Arial", 12);
+void setup() {
+  size(400, 400);
+  smooth();
 
-		Motion.setup(this);
+  f = createFont("Arial", 12);
 
-		r = new Rect();
+  Motion.setup(this);
 
-		t = new Tween(100).add(r, "y", 400).play();
+  r = new Rect();
 
-		// The above could also be written as
-		// t = new Tween(r, "x", 400, 100).add(r, "y", 400).play();
-	}
+  t = new Tween(100).add(r, "y", 400).play();
 
-	void draw() {
-		background(255);
+  // The above could also be written as
+  // t = new Tween(r, "x", 400, 100).add(r, "y", 400).play();
+}
 
-		r.draw();
+void draw() {
+  background(255);
 
-		String time = t.getTime() + " / " + t.getDuration();
-		fill(0);
-		text(time, width - textWidth(time) - 10, height - 10);
-	}
+  r.draw();
 
-	void keyPressed() {
-		t.play();
-	}
+  String time = t.getTime() + " / " + t.getDuration();
+  fill(0);
+  text(time, width - textWidth(time) - 10, height - 10);
+}
 
-	public class Rect {
-		public float x, y;
+void keyPressed() {
+  t.play();
+}
 
-		void draw() {
-			noStroke();
-			fill(255 / 2f);
-			rect(x, y, 50, 50);
-		}
-	} 
+public class Rect {
+  public float x, y;
+
+  void draw() {
+    noStroke();
+    fill(255 / 2f);
+    rect(x, y, 50, 50);
+  }
+} 
+

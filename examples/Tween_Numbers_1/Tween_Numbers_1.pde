@@ -23,47 +23,48 @@
  * @author      ##author##
  * @modified    ##date##
  * @version     ##library.prettyVersion## (##library.version##)
- */ 
- 
- import ijeoma.motion.*;
+ */
+
+import ijeoma.motion.*;
 import ijeoma.motion.tween.*;
 
-	Tween t;
-	PFont f;
+Tween t;
+PFont f;
 
-	public float x = 0;
-	public float y = 400;
+public float x = 0;
+public float y = 400;
 
-	void setup() {
-		size(400, 400);
-		smooth();
+void setup() {
+  size(400, 400);
+  smooth();
 
-		rectMode(CENTER);
+  rectMode(CENTER);
 
-		f = createFont("Arial", 12);
+  f = createFont("Arial", 12);
 
-		Motion.setup(this);
+  Motion.setup(this);
 
-		t = new Tween(100).add(this, "x", 400).add(this, "y", 0).repeat()
-				.play();
+  t = new Tween(100).add(this, "x", 400).add(this, "y", 0).repeat()
+    .play();
 
-		// The above could also be written as
-		// t = new Tween(this, "x", 400, 100).add(this, "y", 0).repeat().play();
-	}
+  // The above could also be written as
+  // t = new Tween(this, "x", 400, 100).add(this, "y", 0).repeat().play();
+}
 
-	void draw() {
-		background(255);
+void draw() {
+  background(255);
 
-		noStroke();
+  noStroke();
 
-		fill(255 / 2f);
-		rect(x, y, 50, 50);
+  fill(255 / 2f);
+  rect(x, y, 50, 50);
 
-		String time = t.getTime() + " / " + t.getDuration();
-		fill(0);
-		text(time, width - textWidth(time) - 10, height - 10);
-	}
+  String time = t.getTime() + " / " + t.getDuration();
+  fill(0);
+  text(time, width - textWidth(time) - 10, height - 10);
+}
 
-	void keyPressed() {
-		t.play();
-	} 
+void keyPressed() {
+  t.play();
+} 
+

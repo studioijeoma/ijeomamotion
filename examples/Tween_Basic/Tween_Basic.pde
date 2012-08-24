@@ -23,41 +23,42 @@
  * @author      ##author##
  * @modified    ##date##
  * @version     ##library.prettyVersion## (##library.version##)
- */ 
- 
+ */
+
 import ijeoma.motion.*;
 import ijeoma.motion.tween.*;
 
-	Tween t;
+Tween t;
 
-	float w = 0;
+float w = 0;
 
-	void setup() {
-		size(400, 100);
-		smooth();
+void setup() {
+  size(400, 100);
+  smooth();
 
-		Motion.setup(this);
+  Motion.setup(this);
 
-		t = new Tween(this, "w", width, 100).play();
+  t = new Tween(this, "w", width, 100).play();
 
-		// The above could also be written as
-		// t = new Tween(100).add(this, "w", width).play();
-	}
+  // The above could also be written as
+  // t = new Tween(100).add(this, "w", width).play();
+}
 
-	void draw() {
-		background(255);
+void draw() {
+  background(255);
 
-		noStroke();
+  noStroke();
 
-		fill(255 / 2f);
-		rect(0, 0, w, height);
+  fill(255 / 2f);
+  rect(0, 0, w, height);
 
-		String time = t.getTime() + " / " + t.getDuration();
+  String time = t.getTime() + " / " + t.getDuration();
 
-		fill(0);
-		text(time, width - textWidth(time) - 10, height - 10);
-	}
+  fill(0);
+  text(time, width - textWidth(time) - 10, height - 10);
+}
 
-	void keyPressed() {
-		t.play();
-	}
+void keyPressed() {
+  t.play();
+}
+
