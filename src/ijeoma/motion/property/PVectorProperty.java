@@ -99,13 +99,7 @@ public class PVectorProperty implements Property {
 	}
 
 	public void updateValue() {
-		// vector.lerp(end, position);
-
-		float x = PApplet.lerp(vector.x, end.x, position);
-		float y = PApplet.lerp(vector.y, end.y, position);
-		float z = PApplet.lerp(vector.z, end.z, position);
-
-		vector.set(x, y, z);
+		vector.lerp(end, position);
 	}
 
 	// public void resetValue() {
