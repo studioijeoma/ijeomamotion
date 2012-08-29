@@ -34,7 +34,6 @@ float y1, y2, y3, y4, y5;
 
 Timeline tl;
 
-@Override
 void setup() {
   size(400, 200);
   smooth();
@@ -47,15 +46,15 @@ void setup() {
   y2 = y4 = height;
 
   tl = new Timeline();
-  tl.add(new Tween(50).add(this, "y1", height).addColor(this, "c1", 
+  tl.add(new Tween(50).add(this, "y1", (float)height).add(this, "c1", 
   color(0)), 0);
-  tl.add(new Tween(50).add(this, "y2", -height).addColor(this, "c2", 
+  tl.add(new Tween(50).add(this, "y2", (float)-height).add(this, "c2", 
   color(0)), 50);
-  tl.add(new Tween(50).add(this, "y3", height).addColor(this, "c3", 
+  tl.add(new Tween(50).add(this, "y3", (float)height).add(this, "c3", 
   color(0)), 100);
-  tl.add(new Tween(50).add(this, "y4", -height).addColor(this, "c4", 
+  tl.add(new Tween(50).add(this, "y4", (float)-height).add(this, "c4", 
   color(0)), 150);
-  tl.add(new Tween(50).add(this, "y5", height).addColor(this, "c5", 
+  tl.add(new Tween(50).add(this, "y5", (float)height).add(this, "c5", 
   color(0)), 200);
   tl.repeat().play();
 }

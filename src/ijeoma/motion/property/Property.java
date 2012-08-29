@@ -27,30 +27,44 @@
 
 package ijeoma.motion.property;
 
-public class Property {
-	// Object object;
-	// Class<? extends Object> objectType;
+import java.lang.reflect.Field;
+
+import processing.core.PApplet;
+
+public interface Property {
+	// Object object = new Object();
+	// Class objectType;
 	// Field field;
 	// String fieldName;
 	// Class<?> fieldType;
+	//
+	// Object begin, end, change;
+	// Object position;
+	//
+	// String name = "";
 
-	protected String name = "";
+	public String getName();
 
-	protected float position = 0;
+	public void setName(String _name);
 
-	public Property() {
+	public Object getBegin();
 
-	}
+	public void setBegin(Object _begin);
 
-	public String getName() {
-		return name;
-	}
+	public void setEnd(Object _end);
 
-	public void setPosition(float _position) {
+	public Object getEnd();
 
-	}
+	public Object getChange();
 
-	public void resetValue() {
+	public void setChange(Object _change);
 
-	}
+	public Object getPosition();
+
+	public void setPosition(Object _position);
+
+	public void updateValue();
+
+	@Override
+	public String toString();
 }

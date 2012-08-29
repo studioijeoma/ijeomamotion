@@ -31,18 +31,17 @@ import java.lang.reflect.Field;
 
 import processing.core.PApplet;
 
-public class NumberProperty extends Property {
+public class NumberProperty implements Property {
 	protected Object object;
 	protected Class<? extends Object> objectType;
 	protected Field field;
 	protected String fieldName;
 	protected Class<?> fieldType;
 
-	protected float begin, end, change;
+	String name = "";
 
-	// public Property(String _name, float _end) {
-	// setup(_name, _end);
-	// }
+	protected float begin, end, change;
+	protected float position;
 
 	public NumberProperty() {
 
@@ -99,7 +98,17 @@ public class NumberProperty extends Property {
 			}
 	}
 
-	public float getBegin() {
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void setName(String _name) {
+		name = _name;
+	}
+
+	public Float getBegin() {
 		return begin;
 	}
 
@@ -117,41 +126,52 @@ public class NumberProperty extends Property {
 		setChange(end - begin);
 	}
 
-	public void setBegin(float _begin) {
-		begin = _begin;
+	public void setBegin(Object _begin) {
+		begin = (Float) _begin;
 
 		setChange(end - begin);
 	}
 
-	public void setEnd(float _end) {
-		end = _end;
-
-		setChange(end - begin);
-	}
-
-	public float getEnd() {
+	public Float getEnd() {
 		return end;
 	}
 
-	public float getChange() {
+	public void setEnd(Object _end) {
+		if (field != null) {
+			try {
+				begin = field.getFloat(object);
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		}
+
+		end = (Float) _end;
+
+		setChange(end - begin);
+	}
+
+	public Float getChange() {
 		return change;
 	}
 
-	public void setChange(float _change) {
-		change = _change;
+	public void setChange(Object _change) {
+		change = (Float) _change;
 	}
 
-	public float getPosition() {
+	public Float getPosition() {
 		return position;
 	}
 
 	@Override
-	public void setPosition(float _position) {
-		position = _position;
+	public void setPosition(Object _position) {
+		position = (Float) _position;
 
 		updateValue();
 	}
 
+	@Override
 	public void updateValue() {
 		if (field != null)
 			try {
@@ -161,11 +181,6 @@ public class NumberProperty extends Property {
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			}
-	}
-
-	@Override
-	public void resetValue() {
-		// field.setFloat(object, PApplet.lerp(begin, end, position));
 	}
 
 	@Override

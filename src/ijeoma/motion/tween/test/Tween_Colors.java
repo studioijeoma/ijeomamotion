@@ -24,8 +24,8 @@ public class Tween_Colors extends PApplet {
 
 		Motion.setup(this);
 
-		t = new Tween(100).addColor(this, "c1", color(0, 0, 255))
-				.addColor(this, "c2", color(0, 255, 255)).play();
+		t = new Tween(100).add(this, "c1", color(0, 0, 255))
+				.add(this, "c2", color(0, 255, 255)).play();
 
 		// The above could also be written as
 		// t = new Tween(100).add(new ColorProperty(this, "c1", color(0, 0,

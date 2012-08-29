@@ -30,8 +30,11 @@ package ijeoma.motion.property;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public class PVectorProperty extends Property {
-	protected PVector vector, begin, end, change;
+public class PVectorProperty implements Property {
+	protected String name = "";
+	protected PVector vector;
+	protected PVector begin, end, change;
+	protected float position;
 
 	// public Property(String _name, float _end) {
 	// setup(_name, _end);
@@ -50,18 +53,17 @@ public class PVectorProperty extends Property {
 		return name;
 	}
 
+	@Override
+	public void setName(String _name) {
+		name = _name;
+	}
+
 	public PVector getBegin() {
 		return begin;
 	}
 
-	public void setBegin(PVector _begin) {
-		begin = _begin;
-
-		setChange(PVector.sub(end, begin));
-	}
-
-	public void setEnd(PVector _end) {
-		end = _end;
+	public void setBegin(Object _begin) {
+		begin = (PVector) _begin;
 
 		setChange(PVector.sub(end, begin));
 	}
@@ -70,21 +72,28 @@ public class PVectorProperty extends Property {
 		return end;
 	}
 
+	public void setEnd(Object _end) {
+		begin = vector.get();
+		end = (PVector) _end;
+
+		setChange(PVector.sub(end, begin));
+	}
+
 	public PVector getChange() {
 		return change;
 	}
 
-	public void setChange(PVector _change) {
-		change = _change;
+	public void setChange(Object _change) {
+		change = (PVector) _change;
 	}
 
-	public float getPosition() {
+	public Float getPosition() {
 		return position;
 	}
 
 	@Override
-	public void setPosition(float _position) {
-		position = _position;
+	public void setPosition(Object _position) {
+		position = (Float) _position;
 
 		updateValue();
 	}
@@ -99,14 +108,13 @@ public class PVectorProperty extends Property {
 		vector.set(x, y, z);
 	}
 
-	@Override
-	public void resetValue() {
-		vector = begin.get();
-	}
-
-	// public String toString() {
-	// return "Parameter[name: " + getName() + ", begin: " + getBegin()
-	// + ", end: " + getEnd() + ", change: " + getChange()
-	// + ", position: " + getPosition() + "]";
+	// public void resetValue() {
+	// vector = begin.get();
 	// }
+
+	public String toString() {
+		return "Parameter[name: " + getName() + ", begin: " + getBegin()
+				+ ", end: " + getEnd() + ", change: " + getChange()
+				+ ", position: " + getPosition() + "]";
+	}
 }

@@ -44,13 +44,13 @@ public class TweenSequence_Events_3 extends PApplet {
 
 		ts = new TweenSequence();
 		ts.add(new Tween(100).add(this, "x1", width)
-				.addColor(this, "c1", color(0)).addEventListener(tel), "x1");
+				.add(this, "c1", color(0)).addEventListener(tel), "x1");
 		ts.add(new Tween(75).add(this, "x2", width)
-				.addColor(this, "c2", color(0)).addEventListener(tel), "x2");
+				.add(this, "c2", color(0)).addEventListener(tel), "x2");
 		ts.add(new Tween(50).add(this, "x3", width)
-				.addColor(this, "c3", color(0)).addEventListener(tel), "x3");
+				.add(this, "c3", color(0)).addEventListener(tel), "x3");
 		ts.add(new Tween(25).add(this, "x4", width)
-				.addColor(this, "c4", color(0)).addEventListener(tel), "x4");
+				.add(this, "c4", color(0)).addEventListener(tel), "x4");
 		ts.addEventListener(tsel);
 		ts.repeat().play();
 	}

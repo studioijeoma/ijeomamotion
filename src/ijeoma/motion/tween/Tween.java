@@ -337,27 +337,27 @@ public class Tween extends Motion { // implements Comparable
 	}
 
 	public Tween add(Object _object, String _name, float _end) {
-		addProperty(new NumberProperty(_object, _name, _end));
+		return addProperty(new NumberProperty(_object, _name, _end));
+	}
 
-		return this;
+	public Tween add(Object _object, String _name, int _end) {
+		return addProperty(new ColorProperty(_object, _name, _end));
+	}
+
+	public Tween add(PVector _vector, PVector _end) {
+		return addProperty(new PVectorProperty(_vector, _end));
 	}
 
 	public Tween addNumber(Object _object, String _name, float _end) {
-		addProperty(new NumberProperty(_object, _name, _end));
-
-		return this;
+		return addProperty(new NumberProperty(_object, _name, _end));
 	}
 
 	public Tween addColor(Object _object, String _name, int _end) {
-		addProperty(new ColorProperty(_object, _name, _end));
-
-		return this;
+		return addProperty(new ColorProperty(_object, _name, _end));
 	}
 
 	public Tween addPVector(PVector _vector, PVector _end) {
-		addProperty(new PVectorProperty(_vector, _end));
-
-		return this;
+		return addProperty(new PVectorProperty(_vector, _end));
 	}
 
 	public Property get(int _index) {
