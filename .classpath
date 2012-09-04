@@ -3,5 +3,9 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/JVM 1.6.0"/>
 	<classpathentry kind="lib" path="/Users/eijeoma/Documents/workspace/libs/core.jar"/>
+	<classpathentry kind="lib" path="/Users/eijeoma/Documents/workspace/libs/gluegen-rt-natives-macosx-universal.jar"/>
+	<classpathentry kind="lib" path="/Users/eijeoma/Documents/workspace/libs/gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="/Users/eijeoma/Documents/workspace/libs/jogl-all-natives-macosx-universal.jar"/>
+	<classpathentry kind="lib" path="/Users/eijeoma/Documents/workspace/libs/jogl-all.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
