@@ -7,14 +7,14 @@ package ijeoma.motion.tween.test;
 
 import ijeoma.motion.Motion;
 import ijeoma.motion.tween.Tween;
-import ijeoma.motion.tween.TweenParallel;
+import ijeoma.motion.tween.Parallel;
 import processing.core.PApplet;
 import processing.core.PFont;
 
 public class TweenParallel_Basic extends PApplet {
 	PFont f;
 
-	TweenParallel tp;
+	Parallel tp;
 
 	float x1 = -width;
 	float x2 = width;
@@ -31,7 +31,7 @@ public class TweenParallel_Basic extends PApplet {
 
 		Motion.setup(this);
 
-		tp = new TweenParallel();
+		tp = new Parallel();
 		tp.add(new Tween(this, "x1", width, 100), "x1")
 				.add(new Tween(this, "x2", -width, 200), "x2").play();
 

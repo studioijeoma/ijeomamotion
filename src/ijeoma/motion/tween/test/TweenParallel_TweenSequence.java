@@ -6,15 +6,15 @@
 package ijeoma.motion.tween.test;
 
 import ijeoma.motion.Motion;
-import ijeoma.motion.tween.TweenParallel;
-import ijeoma.motion.tween.TweenSequence;
+import ijeoma.motion.tween.Parallel;
+import ijeoma.motion.tween.Sequence;
 import processing.core.PApplet;
 
 public class TweenParallel_TweenSequence extends PApplet {
 	float x1, x2;
 
-	TweenParallel tp;
-	TweenSequence ts1, ts2;
+	Parallel tp;
+	Sequence ts1, ts2;
 
 	@Override
 	public void setup() {
@@ -27,13 +27,13 @@ public class TweenParallel_TweenSequence extends PApplet {
 
 		x1 = x2 = -width;
 
-		ts1 = new TweenSequence();
+		ts1 = new Sequence();
 		ts1.addTween(this, "x1", width, 100).addTween(this, "x1", width, 75);
 
-		ts2 = new TweenSequence();
+		ts2 = new Sequence();
 		ts2.addTween(this, "x2", width, 50).addTween(this, "x2", width, 25);
 
-		tp = new TweenParallel();
+		tp = new Parallel();
 		tp.add(ts1).add(ts2).repeat().play();
 	}
 

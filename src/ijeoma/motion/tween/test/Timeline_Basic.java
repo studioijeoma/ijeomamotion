@@ -25,37 +25,42 @@
  * @version     ##library.prettyVersion## (##library.version##)
  */
 
-package ijeoma.motion.timeline.test;
+package ijeoma.motion.tween.test;
 
-import ijeoma.motion.Callback;
 import ijeoma.motion.Motion;
-import ijeoma.motion.timeline.Timeline;
+import ijeoma.motion.tween.Timeline;
+import ijeoma.motion.tween.Tween;
 import processing.core.PApplet;
-import processing.core.PFont;
 
-public class Timeline_Callback_Basic extends PApplet {
-	PFont font;
+public class Timeline_Basic extends PApplet {
+	int c1, c2, c3, c4, c5;
+	float y1, y2, y3, y4, y5;
 
 	Timeline tl;
-
-	String word = "";
 
 	@Override
 	public void setup() {
 		size(400, 200);
-
-		ellipseMode(CORNER);
 		smooth();
-
-		font = createFont("Arial", 50);
-		textFont(font);
 
 		Motion.setup(this);
 
+		c1 = c2 = c3 = c4 = c5 = color(255);
+
+		y1 = y3 = y5 = -height;
+		y2 = y4 = height;
+
 		tl = new Timeline();
-		tl.call(this, "zero", 0).call(this, "one", 100).call(this, "two", 200)
-				.call(this, "three", 300).call(this, "four", 400)
-				.call(this, "five", 500);
+		tl.add(new Tween(50).add(this, "y1", height).add(this, "c1",
+				color(0)), 0);
+		tl.add(new Tween(50).add(this, "y2", -height).add(this, "c2",
+				color(0)), 50);
+		tl.add(new Tween(50).add(this, "y3", height).add(this, "c3",
+				color(0)), 100);
+		tl.add(new Tween(50).add(this, "y4", -height).add(this, "c4",
+				color(0)), 150);
+		tl.add(new Tween(50).add(this, "y5", height).add(this, "c5",
+				color(0)), 200);
 		tl.repeat().play();
 	}
 
@@ -63,48 +68,40 @@ public class Timeline_Callback_Basic extends PApplet {
 	public void draw() {
 		background(255);
 
+		noStroke();
 		fill(0);
-		textFont(font, 36);
-		text(word, width / 2 - textWidth(word) / 2, height / 2 + 36 / 2);
 
-		textFont(font, 12);
+		noStroke();
+		fill(c1);
+		rect(0, y1, 80, height);
+		fill(c2);
+		rect(80, y2, 80, height);
+		fill(c3);
+		rect(160, y3, 80, height);
+		fill(c4);
+		rect(240, y4, 80, height);
+		fill(c5);
+		rect(320, y5, 80, height);
+
+		fill(0);
 		String time = (int) tl.getTime() + " / " + (int) tl.getDuration();
 		text(time, width - textWidth(time) - 10, height - 10);
 	}
 
-	public void zero() {
-		word = "ZERO";
-		println(word);
-	}
-
-	public void one() {
-		word = "ONE";
-		println(word);
-	}
-
-	public void two() {
-		word = "TWO";
-		println(word);
-	}
-
-	public void three() {
-		word = "THREE";
-		println(word);
-	}
-
-	public void four() {
-		word = "FOUR";
-		println(word);
-	}
-
-	public void five() {
-		word = "FIVE";
-		println(word);
-	}
-
 	@Override
 	public void keyPressed() {
-		tl.play();
+		if (key == '1')
+			tl.gotoAndPlay(0);
+		else if (key == '2')
+			tl.gotoAndPlay(50);
+		else if (key == '3')
+			tl.gotoAndPlay(100);
+		else if (key == '4')
+			tl.gotoAndPlay(150);
+		else if (key == '5')
+			tl.gotoAndPlay(200);
+		else
+			tl.play();
 	}
 
 	@Override

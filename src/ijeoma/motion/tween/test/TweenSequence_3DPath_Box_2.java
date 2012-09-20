@@ -8,14 +8,14 @@ package ijeoma.motion.tween.test;
 
 import ijeoma.motion.Motion;
 import ijeoma.motion.tween.Tween;
-import ijeoma.motion.tween.TweenSequence;
+import ijeoma.motion.tween.Sequence;
 import processing.core.PApplet;
 import processing.core.PFont;
 
 public class TweenSequence_3DPath_Box_2 extends PApplet {
 	PFont f;
 
-	TweenSequence ts;
+	Sequence ts;
 
 	int HALF_SIZE = 100;
 	float[][] path = { { HALF_SIZE, HALF_SIZE, HALF_SIZE },
@@ -42,7 +42,7 @@ public class TweenSequence_3DPath_Box_2 extends PApplet {
 
 		Motion.setup(this);
 
-		ts = new TweenSequence();
+		ts = new Sequence();
 
 		for (int i = 0; i < path.length; i++) {
 			int next = ((i + 1) == path.length) ? 0 : i + 1;

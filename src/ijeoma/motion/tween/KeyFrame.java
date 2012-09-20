@@ -25,7 +25,7 @@
  * @version     ##library.prettyVersion## (##library.version##)
  */
 
-package ijeoma.motion.timeline;
+package ijeoma.motion.tween;
 
 import ijeoma.motion.Motion;
 import ijeoma.motion.MotionController;

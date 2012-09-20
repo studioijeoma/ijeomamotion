@@ -25,15 +25,12 @@
  * @version     ##library.prettyVersion## (##library.version##)
  */
 
-package ijeoma.motion.timeline;
+package ijeoma.motion.tween;
 
 import ijeoma.motion.Callback;
 import ijeoma.motion.Motion;
 import ijeoma.motion.MotionController;
 import ijeoma.motion.event.MotionEvent;
-import ijeoma.motion.tween.Tween;
-import ijeoma.motion.tween.TweenParallel;
-import ijeoma.motion.tween.TweenSequence;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -122,13 +119,13 @@ public class Timeline extends MotionController {
 			if (_name != null)
 				tweenMap.put(_name, (Tween) _child);
 		} else if (_child.isTweenParallel()) {
-			tweenParallels.add((TweenParallel) _child);
+			tweenParallels.add((Parallel) _child);
 			if (_name != null)
-				tweenParallelMap.put(_name, (TweenParallel) _child);
+				tweenParallelMap.put(_name, (Parallel) _child);
 		} else if (_child.isTweenSequence()) {
-			tweenSequences.add((TweenSequence) _child);
+			tweenSequences.add((Sequence) _child);
 			if (_name != null)
-				tweenSequenceMap.put(_name, (TweenSequence) _child);
+				tweenSequenceMap.put(_name, (Sequence) _child);
 		} 
 		
 		// else if (_child.isCallback()) {

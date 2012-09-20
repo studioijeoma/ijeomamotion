@@ -30,7 +30,7 @@ package ijeoma.motion;
 import ijeoma.motion.event.MotionEvent;
 import ijeoma.motion.event.MotionEventListener;
 import ijeoma.motion.tween.Tween;
-import ijeoma.motion.tween.TweenSequence;
+import ijeoma.motion.tween.Sequence;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

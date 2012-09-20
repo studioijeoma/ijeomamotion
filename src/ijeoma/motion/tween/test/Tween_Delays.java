@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import ijeoma.motion.Motion;
 import ijeoma.motion.property.Property;
 import ijeoma.motion.tween.Tween;
-import ijeoma.motion.tween.TweenParallel;
+import ijeoma.motion.tween.Parallel;
 import processing.core.*;
 import processing.opengl.*;
 
@@ -16,7 +16,7 @@ public class Tween_Delays extends PApplet {
 	int boxCount = 10;
 	ArrayList<Box> boxes = new ArrayList();
 
-	TweenParallel tp;
+	Parallel tp;
 
 	@Override
 	public void setup() {
@@ -63,7 +63,7 @@ public class Tween_Delays extends PApplet {
 		for (int i = 0; i < boxCount; i++)
 			boxes.add(new Box("", i * w, 0, w, h));
 
-		tp = new TweenParallel();
+		tp = new Parallel();
 
 		for (Box b : boxes)
 			tp.add(new Tween(100).add(b, "a", random(255)).add(b, "d",
@@ -72,7 +72,7 @@ public class Tween_Delays extends PApplet {
 		tp.play();
 	}
 
-	public void tweenParallelEnded(TweenParallel tp) {
+	public void tweenParallelEnded(Parallel tp) {
 		for (Tween t : tp.getTweens())
 			t.get("d").setEnd(random(200));
 

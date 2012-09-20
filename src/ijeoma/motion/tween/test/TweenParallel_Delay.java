@@ -6,11 +6,11 @@
 package ijeoma.motion.tween.test;
 
 import ijeoma.motion.Motion;
-import ijeoma.motion.tween.TweenParallel;
+import ijeoma.motion.tween.Parallel;
 import processing.core.PApplet;
 
 public class TweenParallel_Delay extends PApplet {
-	TweenParallel tp;
+	Parallel tp;
 
 	float w1 = 0, w2 = 0;
 
@@ -21,7 +21,7 @@ public class TweenParallel_Delay extends PApplet {
 
 		Motion.setup(this);
 
-		tp = new TweenParallel();
+		tp = new Parallel();
 		tp.addTween(this, "w1", width, 100, 0)
 				.addTween(this, "w2", width, 100, 50).play();
 

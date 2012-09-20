@@ -9,7 +9,7 @@ import ijeoma.motion.Motion;
 import ijeoma.motion.event.MotionEvent;
 import ijeoma.motion.event.MotionEventListener;
 import ijeoma.motion.tween.Tween;
-import ijeoma.motion.tween.TweenSequence;
+import ijeoma.motion.tween.Sequence;
 import processing.core.PApplet;
 import processing.core.PFont;
 
@@ -17,7 +17,7 @@ public class TweenSequence_Events_3 extends PApplet {
 
 	PFont font;
 
-	TweenSequence ts;
+	Sequence ts;
 
 	TweenEventListener tel;
 	TweenSequenceEventListener tsel;
@@ -42,7 +42,7 @@ public class TweenSequence_Events_3 extends PApplet {
 
 		Motion.setup(this);
 
-		ts = new TweenSequence();
+		ts = new Sequence();
 		ts.add(new Tween(100).add(this, "x1", width)
 				.add(this, "c1", color(0)).addEventListener(tel), "x1");
 		ts.add(new Tween(75).add(this, "x2", width)

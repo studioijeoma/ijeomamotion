@@ -2,13 +2,13 @@ package ijeoma.motion.tween.test;
 
 import ijeoma.motion.Motion;
 import ijeoma.motion.tween.Tween;
-import ijeoma.motion.tween.TweenSequence;
+import ijeoma.motion.tween.Sequence;
 import processing.core.PApplet;
 
 public class Ani_Sequence_Basics extends PApplet {
 	public float x, y, diameter;
 	// AniSequence seq;
-	TweenSequence ts;
+	Sequence ts;
 
 	@Override
 	public void setup() {
@@ -47,7 +47,7 @@ public class Ani_Sequence_Basics extends PApplet {
 
 		Motion.setup(this);
 
-		ts = new TweenSequence();
+		ts = new Sequence();
 		// ts.add(new Tween(100).add(this, "diameter", 50));
 		ts.add(new Tween(100).add(this, "x", 400).add(this, "y", 100));
 		ts.add(new Tween(100).add(this, "x", 450).add(this, "y", 400));

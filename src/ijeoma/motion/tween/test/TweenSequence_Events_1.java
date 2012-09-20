@@ -7,7 +7,7 @@ package ijeoma.motion.tween.test;
 
 import ijeoma.motion.Motion;
 import ijeoma.motion.tween.Tween;
-import ijeoma.motion.tween.TweenSequence;
+import ijeoma.motion.tween.Sequence;
 import processing.core.PApplet;
 import processing.core.PFont;
 
@@ -17,7 +17,7 @@ public class TweenSequence_Events_1 extends PApplet {
 
 	int c1, c2, c3, c4;
 	float x1, x2, x3, x4;
-	TweenSequence ts;
+	Sequence ts;
 
 	@Override
 	public void setup() {
@@ -33,7 +33,7 @@ public class TweenSequence_Events_1 extends PApplet {
 		c1 = c2 = c3 = c4 = color(255);
 		x1 = x2 = x3 = x4 = -width;
 
-		ts = new TweenSequence();
+		ts = new Sequence();
 		ts.add(new Tween(100).add(this, "x1", width).add(this, "c1",
 				color(0)), "x1");
 		ts.add(new Tween(75).add(this, "x2", width).add(this, "c2",
@@ -91,11 +91,11 @@ public class TweenSequence_Events_1 extends PApplet {
 		println(t + " started");
 	}
 
-	public void tweenSequenceStarted(TweenSequence ts) {
+	public void tweenSequenceStarted(Sequence ts) {
 		println(ts + " started");
 	}
 
-	public void tweenSequenceEnded(TweenSequence ts) {
+	public void tweenSequenceEnded(Sequence ts) {
 		println(ts + " ended");
 	}
 
@@ -103,7 +103,7 @@ public class TweenSequence_Events_1 extends PApplet {
 	// println(ts + " changed");
 	// }
 
-	public void tweenSequenceRepeated(TweenSequence ts) {
+	public void tweenSequenceRepeated(Sequence ts) {
 		println(ts + " repeated");
 	}
 }

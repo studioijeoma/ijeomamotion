@@ -25,11 +25,11 @@
  * @version     ##library.prettyVersion## (##library.version##)
  */
 
-package ijeoma.motion.timeline.test;
+package ijeoma.motion.tween.test;
 
 import ijeoma.motion.Motion;
-import ijeoma.motion.timeline.KeyFrame;
-import ijeoma.motion.timeline.Timeline;
+import ijeoma.motion.tween.KeyFrame;
+import ijeoma.motion.tween.Timeline;
 import ijeoma.motion.tween.Tween;
 import processing.core.PApplet;
 import processing.core.PFont;

@@ -29,8 +29,8 @@ package ijeoma.motion;
 
 import ijeoma.motion.event.MotionEventListener;
 import ijeoma.motion.tween.Tween;
-import ijeoma.motion.tween.TweenParallel;
-import ijeoma.motion.tween.TweenSequence;
+import ijeoma.motion.tween.Parallel;
+import ijeoma.motion.tween.Sequence;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,13 +42,13 @@ public abstract class MotionController extends Motion implements
 		MotionConstant, MotionEventListener {
 	public ArrayList<Motion> children = new ArrayList<Motion>();
 	public ArrayList<Tween> tweens = new ArrayList<Tween>();
-	public ArrayList<TweenParallel> tweenParallels = new ArrayList<TweenParallel>();
-	public ArrayList<TweenSequence> tweenSequences = new ArrayList<TweenSequence>();
+	public ArrayList<Parallel> tweenParallels = new ArrayList<Parallel>();
+	public ArrayList<Sequence> tweenSequences = new ArrayList<Sequence>();
 
 	public HashMap<String, Motion> childrenMap = new HashMap<String, Motion>();
 	public HashMap<String, Tween> tweenMap = new HashMap<String, Tween>();
-	public HashMap<String, TweenParallel> tweenParallelMap = new HashMap<String, TweenParallel>();
-	public HashMap<String, TweenSequence> tweenSequenceMap = new HashMap<String, TweenSequence>();
+	public HashMap<String, Parallel> tweenParallelMap = new HashMap<String, Parallel>();
+	public HashMap<String, Sequence> tweenSequenceMap = new HashMap<String, Sequence>();
 
 	protected ArrayList<MotionEventListener> listeners;
 
@@ -187,7 +187,7 @@ public abstract class MotionController extends Motion implements
 	/**
 	 * Returns a TweenParallel by id/index
 	 */
-	public TweenParallel getTweenParallel(int _index) {
+	public Parallel getTweenParallel(int _index) {
 		if (_index < tweenParallels.size())
 			return tweenParallels.get(_index);
 		else
@@ -198,7 +198,7 @@ public abstract class MotionController extends Motion implements
 	 * Returns a TweenParallel by name (useful if you're only controlling
 	 * TweenParallels)
 	 */
-	public TweenParallel getTweenParallel(String _name) {
+	public Parallel getTweenParallel(String _name) {
 		return tweenParallelMap.get(_name);
 	}
 
@@ -206,7 +206,7 @@ public abstract class MotionController extends Motion implements
 	 * Returns a Tween by id/index (useful if you're only controlling
 	 * TweenSequences)
 	 */
-	public TweenSequence getTweenSequence(int _index) {
+	public Sequence getTweenSequence(int _index) {
 		if (_index < tweenSequences.size())
 			return tweenSequences.get(_index);
 		else
@@ -217,7 +217,7 @@ public abstract class MotionController extends Motion implements
 	 * Returns a Tween by id/index (useful if you're only controlling
 	 * TweenSequences)
 	 */
-	public TweenSequence getTweenSequence(String _name) {
+	public Sequence getTweenSequence(String _name) {
 		return tweenSequenceMap.get(_name);
 	}
 
@@ -262,28 +262,28 @@ public abstract class MotionController extends Motion implements
 	/**
 	 * Returns all TweenParallels
 	 */
-	public TweenParallel[] getTweenParallels() {
-		return tweenParallels.toArray(new TweenParallel[tweenParallels.size()]);
+	public Parallel[] getTweenParallels() {
+		return tweenParallels.toArray(new Parallel[tweenParallels.size()]);
 	}
 
 	/**
 	 * Returns all TweenParallels as a list
 	 */
-	public List<TweenParallel> getTweenParallelList() {
+	public List<Parallel> getTweenParallelList() {
 		return tweenParallels;
 	}
 
 	/**
 	 * Returns all TweenSequences
 	 */
-	public TweenSequence[] getTweenSequences() {
-		return tweenSequences.toArray(new TweenSequence[tweenSequences.size()]);
+	public Sequence[] getTweenSequences() {
+		return tweenSequences.toArray(new Sequence[tweenSequences.size()]);
 	}
 
 	/**
 	 * Returns all TweenSequences as a list
 	 */
-	public List<TweenSequence> getTweenSequenceList() {
+	public List<Sequence> getTweenSequenceList() {
 		return tweenSequences;
 	}
 
@@ -379,13 +379,13 @@ public abstract class MotionController extends Motion implements
 			if (_name != null)
 				tweenMap.put(_name, (Tween) _child);
 		} else if (_child.isTweenParallel()) {
-			tweenParallels.add((TweenParallel) _child);
+			tweenParallels.add((Parallel) _child);
 			if (_name != null)
-				tweenParallelMap.put(_name, (TweenParallel) _child);
+				tweenParallelMap.put(_name, (Parallel) _child);
 		} else if (_child.isTweenSequence()) {
-			tweenSequences.add((TweenSequence) _child);
+			tweenSequences.add((Sequence) _child);
 			if (_name != null)
-				tweenSequenceMap.put(_name, (TweenSequence) _child);
+				tweenSequenceMap.put(_name, (Sequence) _child);
 		}
 
 		// else if (_child.isCallback()) {

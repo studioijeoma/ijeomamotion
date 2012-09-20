@@ -7,7 +7,7 @@ import processing.data.XML;
 
 
 public class TweenSequence_GML extends PApplet {
-	TweenSequence ts;
+	Sequence ts;
 
 	PFont font;
 
@@ -29,7 +29,7 @@ public class TweenSequence_GML extends PApplet {
 		Motion.setup(this);
 
 		x = y = 0;
-		ts = new TweenSequence();
+		ts = new Sequence();
 
 		// loadGML("818.gml");
 		loadGML("http://000000book.com/data/42481.gml");
@@ -98,10 +98,10 @@ public class TweenSequence_GML extends PApplet {
 		// }
 	}
 
-	public void tweenSequenceStarted(TweenSequence _ts) {
+	public void tweenSequenceStarted(Sequence _ts) {
 	}
 
-	public void tweenSequenceEnded(TweenSequence _ts) {
+	public void tweenSequenceEnded(Sequence _ts) {
 		// loadGML("http://000000book.com/random.gml");
 		// println("ts.getChildCount =" + ts.getChildCount());
 		// println("ts.getDuration =" + ts.getDuration());

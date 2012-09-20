@@ -7,7 +7,7 @@ package ijeoma.motion.tween.test;
 
 import ijeoma.motion.Motion;
 import ijeoma.motion.tween.Tween;
-import ijeoma.motion.tween.TweenSequence;
+import ijeoma.motion.tween.Sequence;
 import processing.core.PApplet;
 import processing.core.PFont;
 
@@ -17,7 +17,7 @@ public class TweenSequence_Basic extends PApplet {
 
 	int c1, c2, c3, c4;
 	float x1, x2, x3, x4;
-	TweenSequence ts;
+	Sequence ts;
 
 	@Override
 	public void setup() {
@@ -33,7 +33,7 @@ public class TweenSequence_Basic extends PApplet {
 		c1 = c2 = c3 = c4 = color(255);
 		x1 = x2 = x3 = x4 = -width;
 
-		ts = new TweenSequence();
+		ts = new Sequence();
 		ts.add(new Tween(100).add(this, "x1", (float) width).add(this, "c1",
 				color(0)), "x1");
 		ts.add(new Tween(75).add(this, "x2", (float) width).add(this, "c2",

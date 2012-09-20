@@ -30,7 +30,7 @@ import ijeoma.motion.tween.*;
 
 PFont f;
 
-TweenParallel tp;
+Parallel tp;
 
 float x1 = -width;
 float x2 = width;
@@ -46,7 +46,7 @@ public void setup() {
 
   Motion.setup(this);
 
-  tp = new TweenParallel();
+  tp = new Parallel();
   tp.add(new Tween(this, "x1", width, 100), "x1")
     .add(new Tween(this, "x2", -width, 200), "x2").play();
 
@@ -56,7 +56,7 @@ public void setup() {
 
   // except the tween's name is set using the variable's name by default
   // The tween's name is used to access the Tween using the
-  // TweenParallel.getTween(name) method
+  // Parallel.getTween(name) method
 }
 
 public void draw() {

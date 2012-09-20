@@ -35,7 +35,7 @@ import java.lang.reflect.Method;
 
 import processing.core.PApplet;
 
-public class TweenParallel extends MotionController {
+public class Parallel extends MotionController {
 	private Method tweenParallelStartedMethod, tweenParallelEndedMethod,
 			tweenParallelChangedMethod, tweenParallelRepeatedMethod;
 
@@ -45,7 +45,7 @@ public class TweenParallel extends MotionController {
 	 * @param g
 	 *            refers to PApplet and is usually 'this'
 	 */
-	public TweenParallel() {
+	public Parallel() {
 		super();
 		setupEvents();
 	}
@@ -62,7 +62,7 @@ public class TweenParallel extends MotionController {
 	 *            is an array of type Object[] can contain Tweens and/or
 	 *            TweenParallels
 	 */
-	public TweenParallel(Motion[] _children) {
+	public Parallel(Motion[] _children) {
 		super();
 		addAll(_children);
 		setupEvents();
@@ -80,125 +80,125 @@ public class TweenParallel extends MotionController {
 		try {
 			tweenParallelStartedMethod = parentClass.getMethod(
 					MotionEvent.TWEEN_PARALLEL_STARTED,
-					new Class[] { TweenParallel.class });
+					new Class[] { Parallel.class });
 		} catch (Exception e) {
 		}
 
 		try {
 			tweenParallelEndedMethod = parentClass.getMethod(
 					MotionEvent.TWEEN_PARALLEL_ENDED,
-					new Class[] { TweenParallel.class });
+					new Class[] { Parallel.class });
 		} catch (Exception e) {
 		}
 
 		try {
 			tweenParallelChangedMethod = parentClass.getMethod(
 					MotionEvent.TWEEN_PARALLEL_CHANGED,
-					new Class[] { TweenParallel.class });
+					new Class[] { Parallel.class });
 		} catch (Exception e) {
 		}
 
 		try {
 			tweenParallelRepeatedMethod = parentClass.getMethod(
 					MotionEvent.TWEEN_PARALLEL_REPEATED,
-					new Class[] { TweenParallel.class });
+					new Class[] { Parallel.class });
 		} catch (Exception e) {
 		}
 	}
 
 	@Override
-	public TweenParallel play() {
-		return (TweenParallel) super.play();
+	public Parallel play() {
+		return (Parallel) super.play();
 	}
 
 	@Override
-	public TweenParallel stop() {
-		return (TweenParallel) super.stop();
+	public Parallel stop() {
+		return (Parallel) super.stop();
 	}
 
 	@Override
-	public TweenParallel pause() {
-		return (TweenParallel) super.pause();
+	public Parallel pause() {
+		return (Parallel) super.pause();
 	}
 
 	@Override
-	public TweenParallel resume() {
-		return (TweenParallel) super.resume();
+	public Parallel resume() {
+		return (Parallel) super.resume();
 	}
 
 	@Override
-	public TweenParallel seek(float _value) {
-		return (TweenParallel) super.seek(_value);
+	public Parallel seek(float _value) {
+		return (Parallel) super.seek(_value);
 	}
 
 	@Override
-	public TweenParallel repeat() {
-		return (TweenParallel) super.repeat();
+	public Parallel repeat() {
+		return (Parallel) super.repeat();
 	}
 
 	@Override
-	public TweenParallel repeat(int _repeatDuration) {
-		return (TweenParallel) super.repeat(_repeatDuration);
+	public Parallel repeat(int _repeatDuration) {
+		return (Parallel) super.repeat(_repeatDuration);
 	}
 
 	@Override
-	public TweenParallel noRepeat() {
-		return (TweenParallel) super.noRepeat();
+	public Parallel noRepeat() {
+		return (Parallel) super.noRepeat();
 	}
 
 	@Override
-	public TweenParallel reverse() {
-		return (TweenParallel) super.reverse();
+	public Parallel reverse() {
+		return (Parallel) super.reverse();
 	}
 
 	@Override
-	public TweenParallel noReverse() {
-		return (TweenParallel) super.noReverse();
+	public Parallel noReverse() {
+		return (Parallel) super.noReverse();
 	}
 
 	@Override
-	public TweenParallel setTimeScale(float _timeScale) {
-		return (TweenParallel) super.setTimeScale(_timeScale);
+	public Parallel setTimeScale(float _timeScale) {
+		return (Parallel) super.setTimeScale(_timeScale);
 	}
 
 	@Override
-	public TweenParallel setDuration(float _duration) {
-		return (TweenParallel) super.setDuration(_duration);
+	public Parallel setDuration(float _duration) {
+		return (Parallel) super.setDuration(_duration);
 	}
 
 	@Override
-	public TweenParallel setDelay(float _delay) {
-		return (TweenParallel) super.setDelay(_delay);
+	public Parallel setDelay(float _delay) {
+		return (Parallel) super.setDelay(_delay);
 	}
 
 	@Override
-	public TweenParallel setEasing(String _easing) {
-		return (TweenParallel) super.setEasing(_easing);
+	public Parallel setEasing(String _easing) {
+		return (Parallel) super.setEasing(_easing);
 	}
 
 	@Override
-	public TweenParallel noEasing() {
-		return (TweenParallel) super.noEasing();
+	public Parallel noEasing() {
+		return (Parallel) super.noEasing();
 	}
 
 	@Override
-	public TweenParallel setTimeMode(String _timeMode) {
-		return (TweenParallel) super.setTimeMode(_timeMode);
+	public Parallel setTimeMode(String _timeMode) {
+		return (Parallel) super.setTimeMode(_timeMode);
 	}
 
 	@Override
-	public TweenParallel setRepeatDuration(int _repeatCount) {
-		return (TweenParallel) super.setRepeatDuration(_repeatCount);
+	public Parallel setRepeatDuration(int _repeatCount) {
+		return (Parallel) super.setRepeatDuration(_repeatCount);
 	}
 
 	@Override
-	public TweenParallel autoUpdate() {
-		return (TweenParallel) super.autoUpdate();
+	public Parallel autoUpdate() {
+		return (Parallel) super.autoUpdate();
 	}
 
 	@Override
-	public TweenParallel noAutoUpdate() {
-		return (TweenParallel) super.noAutoUpdate();
+	public Parallel noAutoUpdate() {
+		return (Parallel) super.noAutoUpdate();
 	}
 
 	@Override

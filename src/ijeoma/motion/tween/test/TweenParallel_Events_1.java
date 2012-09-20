@@ -7,14 +7,14 @@ package ijeoma.motion.tween.test;
 
 import ijeoma.motion.Motion;
 import ijeoma.motion.tween.Tween;
-import ijeoma.motion.tween.TweenParallel;
+import ijeoma.motion.tween.Parallel;
 import processing.core.PApplet;
 import processing.core.PFont;
 
 public class TweenParallel_Events_1 extends PApplet {
 	PFont f;
 
-	TweenParallel tp;
+	Parallel tp;
 
 	float x1 = -width;
 	float x2 = width;
@@ -31,7 +31,7 @@ public class TweenParallel_Events_1 extends PApplet {
 
 		Motion.setup(this);
 
-		tp = new TweenParallel();
+		tp = new Parallel();
 		tp.add(new Tween(this, "x1", width, 100), "x1").add(
 				new Tween(this, "x2", -width, 200), "x2");
 		tp.repeat().play();
@@ -86,11 +86,11 @@ public class TweenParallel_Events_1 extends PApplet {
 		tp.seek((float) mouseX / width);
 	}
 
-	public void tweenParallelStarted(TweenParallel _tp) {
+	public void tweenParallelStarted(Parallel _tp) {
 		println(_tp + " started");
 	}
 
-	public void tweenParallelEnded(TweenParallel _tp) {
+	public void tweenParallelEnded(Parallel _tp) {
 		println(_tp + " ended");
 	}
 
@@ -98,7 +98,7 @@ public class TweenParallel_Events_1 extends PApplet {
 	// println(_tp.getName() + " resumed");
 	// }
 
-	public void tweenParallelRepeated(TweenParallel _tp) {
+	public void tweenParallelRepeated(Parallel _tp) {
 		println(_tp + " repeated");
 	}
 }

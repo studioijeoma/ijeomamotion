@@ -35,7 +35,7 @@ import java.lang.reflect.Method;
 
 import processing.core.PApplet;
 
-public class TweenSequence extends MotionController {
+public class Sequence extends MotionController {
 
 	private Motion currentChild;
 
@@ -44,12 +44,12 @@ public class TweenSequence extends MotionController {
 	private Method tweenSequenceStartedMethod, tweenSequenceEndedMethod,
 			tweenSequenceChangedMethod, tweenSequenceRepeatedMethod;
 
-	public TweenSequence() {
+	public Sequence() {
 		super();
 		setupEvents();
 	}
 
-	public TweenSequence(Motion[] _children) {
+	public Sequence(Motion[] _children) {
 		super();
 		addAll(_children);
 		setupEvents();
@@ -64,28 +64,28 @@ public class TweenSequence extends MotionController {
 		try {
 			tweenSequenceStartedMethod = parentClass.getMethod(
 					MotionEvent.TWEEN_SEQUENCE_STARTED,
-					new Class[] { TweenSequence.class });
+					new Class[] { Sequence.class });
 		} catch (Exception e) {
 		}
 
 		try {
 			tweenSequenceEndedMethod = parentClass.getMethod(
 					MotionEvent.TWEEN_SEQUENCE_ENDED,
-					new Class[] { TweenSequence.class });
+					new Class[] { Sequence.class });
 		} catch (Exception e) {
 		}
 
 		try {
 			tweenSequenceChangedMethod = parentClass.getMethod(
 					MotionEvent.TWEEN_SEQUENCE_CHANGED,
-					new Class[] { TweenSequence.class });
+					new Class[] { Sequence.class });
 		} catch (Exception e) {
 		}
 
 		try {
 			tweenSequenceRepeatedMethod = parentClass.getMethod(
 					MotionEvent.TWEEN_SEQUENCE_REPEATED,
-					new Class[] { TweenSequence.class });
+					new Class[] { Sequence.class });
 		} catch (Exception e) {
 		}
 	}
@@ -135,107 +135,107 @@ public class TweenSequence extends MotionController {
 	}
 
 	@Override
-	public TweenSequence play() {
-		return (TweenSequence) super.play();
+	public Sequence play() {
+		return (Sequence) super.play();
 	}
 
 	@Override
-	public TweenSequence stop() {
-		return (TweenSequence) super.stop();
+	public Sequence stop() {
+		return (Sequence) super.stop();
 	}
 
 	@Override
-	public TweenSequence pause() {
-		return (TweenSequence) super.pause();
+	public Sequence pause() {
+		return (Sequence) super.pause();
 	}
 
 	@Override
-	public TweenSequence resume() {
-		return (TweenSequence) super.resume();
+	public Sequence resume() {
+		return (Sequence) super.resume();
 	}
 
 	@Override
-	public TweenSequence seek(float _value) {
-		return (TweenSequence) super.seek(_value);
+	public Sequence seek(float _value) {
+		return (Sequence) super.seek(_value);
 	}
 
 	@Override
-	public TweenSequence repeat() {
-		return (TweenSequence) super.repeat();
+	public Sequence repeat() {
+		return (Sequence) super.repeat();
 	}
 
 	@Override
-	public TweenSequence repeat(int _repeatDuration) {
-		return (TweenSequence) super.repeat(_repeatDuration);
+	public Sequence repeat(int _repeatDuration) {
+		return (Sequence) super.repeat(_repeatDuration);
 	}
 
 	@Override
-	public TweenSequence noRepeat() {
-		return (TweenSequence) super.noRepeat();
+	public Sequence noRepeat() {
+		return (Sequence) super.noRepeat();
 	}
 
 	@Override
-	public TweenSequence reverse() {
-		return (TweenSequence) super.reverse();
+	public Sequence reverse() {
+		return (Sequence) super.reverse();
 	}
 
 	@Override
-	public TweenSequence noReverse() {
-		return (TweenSequence) super.noReverse();
+	public Sequence noReverse() {
+		return (Sequence) super.noReverse();
 	}
 
 	@Override
-	public TweenSequence setTimeScale(float _timeScale) {
-		return (TweenSequence) super.setTimeScale(_timeScale);
+	public Sequence setTimeScale(float _timeScale) {
+		return (Sequence) super.setTimeScale(_timeScale);
 	}
 
 	@Override
-	public TweenSequence setDuration(float _duration) {
-		return (TweenSequence) super.setDuration(_duration);
+	public Sequence setDuration(float _duration) {
+		return (Sequence) super.setDuration(_duration);
 	}
 
 	@Override
-	public TweenSequence setDelay(float _delay) {
-		return (TweenSequence) super.setDelay(_delay);
+	public Sequence setDelay(float _delay) {
+		return (Sequence) super.setDelay(_delay);
 	}
 
 	@Override
-	public TweenSequence setEasing(String _easing) {
-		return (TweenSequence) super.setEasing(_easing);
+	public Sequence setEasing(String _easing) {
+		return (Sequence) super.setEasing(_easing);
 	}
 
 	@Override
-	public TweenSequence noEasing() {
-		return (TweenSequence) super.noEasing();
+	public Sequence noEasing() {
+		return (Sequence) super.noEasing();
 	}
 
 	@Override
-	public TweenSequence setTimeMode(String _timeMode) {
-		return (TweenSequence) super.setTimeMode(_timeMode);
+	public Sequence setTimeMode(String _timeMode) {
+		return (Sequence) super.setTimeMode(_timeMode);
 	}
 
 	@Override
-	public TweenSequence setRepeatDuration(int _repeatCount) {
-		return (TweenSequence) super.setRepeatDuration(_repeatCount);
+	public Sequence setRepeatDuration(int _repeatCount) {
+		return (Sequence) super.setRepeatDuration(_repeatCount);
 	}
 
 	@Override
-	public TweenSequence autoUpdate() {
-		return (TweenSequence) super.autoUpdate();
+	public Sequence autoUpdate() {
+		return (Sequence) super.autoUpdate();
 	}
 
 	@Override
-	public TweenSequence noAutoUpdate() {
-		return (TweenSequence) super.noAutoUpdate();
+	public Sequence noAutoUpdate() {
+		return (Sequence) super.noAutoUpdate();
 	}
 
 	@Override
-	public TweenSequence add(Motion _child) {
+	public Sequence add(Motion _child) {
 		return add(_child, null);
 	}
 
 	@Override
-	public TweenSequence add(Motion _child, String _name) {
+	public Sequence add(Motion _child, String _name) {
 		insert(_child, _name, getDuration());
 
 		currentChild = _child;
