@@ -29,11 +29,15 @@ package ijeoma.motion;
 
 import ijeoma.motion.event.MotionEvent;
 import ijeoma.motion.event.MotionEventListener;
+import ijeoma.motion.tween.Tween;
+import ijeoma.motion.tween.TweenSequence;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import processing.core.PApplet;
 
@@ -45,7 +49,8 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	// protected int id;
 	protected String type;
 
-	protected ArrayList<Callback> callbacks = new ArrayList<Callback>();
+	protected ArrayList<Callback> calls = new ArrayList<Callback>();
+	public HashMap<String, Callback> callMap = new HashMap<String, Callback>();
 
 	protected float playTime = 0;
 
@@ -248,6 +253,8 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	public Motion seek(float _value) {
 		beginTime = time = getPlayTime() + _value * getDelayedDuration();
 
+		updateCallbacks();
+
 		return this;
 	}
 
@@ -299,31 +306,35 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 	public void update() {
 		if (isPlaying()) {
-			updateTime();
-
 			if (isAbovePlayTime(time))
 				if (isBelowStopTime(time))
 					updateCallbacks();
 				else
 					stop();
+
+			updateTime();
 		}
 	}
 
 	public void update(float _time) {
 		if (isPlaying()) {
-			setTime(_time);
-
 			if (isAbovePlayTime(time))
 				if (isBelowStopTime(time))
 					updateCallbacks();
 				else
 					stop();
+
+			setTime(_time);
 		}
 	}
 
 	public void updateCallbacks() {
-		for (Callback callback : callbacks)
-			callback.update();
+		for (Callback c : calls)
+			if (getTime() >= c.getTime() && getTime() <= c.getTime()) {
+				// if (!c.hasInvoked())
+				c.invoke();
+			} else
+				c.noInvoke();
 	}
 
 	protected void updateTime() {
@@ -342,6 +353,59 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 			throw new LibraryNotInitializedException();
 
 		return parent;
+	}
+
+	public Motion call(Object _object, String _name) {
+		return addCall(new Callback(_object, _name, duration));
+	}
+
+	public Motion call(Object _object, String _name, float _time) {
+		return addCall(new Callback(_object, _name, _time));
+	}
+
+	public Motion addCall(Callback _call) {
+		calls.add(_call);
+		return this;
+	}
+
+	/**
+	 * Returns a Callback by id/index (useful if you're only controlling
+	 * Callbacks)
+	 */
+	public Callback getCallback(int _index) {
+		if (_index < calls.size())
+			return calls.get(_index);
+		else
+			return null;
+	}
+
+	/**
+	 * Returns a Callback by id/index (useful if you're only controlling
+	 * Callbacks)
+	 */
+	public Callback getCallback(String _name) {
+		return callMap.get(_name);
+	}
+
+	/**
+	 * Returns all Callbacks
+	 */
+	public Callback[] getCallbacks() {
+		return calls.toArray(new Callback[calls.size()]);
+	}
+
+	/**
+	 * Returns all Callbacks
+	 */
+	public List<Callback> getCallbackList() {
+		return calls;
+	}
+
+	/**
+	 * Returns child Callback object count
+	 */
+	public int getCallbackCount() {
+		return calls.size();
 	}
 
 	public void setPlayTime(float _playTime) {

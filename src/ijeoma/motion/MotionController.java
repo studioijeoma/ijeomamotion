@@ -44,13 +44,11 @@ public abstract class MotionController extends Motion implements
 	public ArrayList<Tween> tweens = new ArrayList<Tween>();
 	public ArrayList<TweenParallel> tweenParallels = new ArrayList<TweenParallel>();
 	public ArrayList<TweenSequence> tweenSequences = new ArrayList<TweenSequence>();
-	public ArrayList<Callback> callbacks = new ArrayList<Callback>();
 
 	public HashMap<String, Motion> childrenMap = new HashMap<String, Motion>();
 	public HashMap<String, Tween> tweenMap = new HashMap<String, Tween>();
 	public HashMap<String, TweenParallel> tweenParallelMap = new HashMap<String, TweenParallel>();
 	public HashMap<String, TweenSequence> tweenSequenceMap = new HashMap<String, TweenSequence>();
-	public HashMap<String, Callback> callbackMap = new HashMap<String, Callback>();
 
 	protected ArrayList<MotionEventListener> listeners;
 
@@ -125,41 +123,28 @@ public abstract class MotionController extends Motion implements
 	@Override
 	public void update() {
 		if (isPlaying()) {
-			updateTime();
-
 			if (isAbovePlayTime(time))
 				if (isBelowStopTime(time)) {
-					updateCallbacks();
 					updateChildren();
+					updateCallbacks();
 				} else
 					stop();
+			
+			updateTime();
 		}
 	}
-
-	// public void update(float _time) {
-	// if (isPlaying()) {
-	// setTime(_time);
-	//
-	// if (isAbovePlayTime(time))
-	// if (isBelowStopTime(time)) {
-	// updateCallbacks();
-	// updateProperties();
-	// } else
-	// stop();
-	// }
-	// }
 
 	@Override
 	public void update(float _time) {
 		if (isPlaying()) {
-			setTime(_time);
-
 			if (isAbovePlayTime(time))
 				if (isBelowStopTime(time)) {
-					updateCallbacks();
 					updateChildren();
+					updateCallbacks();
 				} else
 					stop();
+			
+			setTime(_time);
 		}
 	}
 
@@ -177,6 +162,9 @@ public abstract class MotionController extends Motion implements
 		for (Motion c : children)
 			duration = PApplet.max(duration, (c.getPlayTime() - getPlayTime())
 					+ c.getDelayedDuration());
+
+		for (Callback c : calls)
+			duration = PApplet.max(duration, c.getTime() - getPlayTime());
 	}
 
 	/**
@@ -231,25 +219,6 @@ public abstract class MotionController extends Motion implements
 	 */
 	public TweenSequence getTweenSequence(String _name) {
 		return tweenSequenceMap.get(_name);
-	}
-
-	/**
-	 * Returns a Callback by id/index (useful if you're only controlling
-	 * Callbacks)
-	 */
-	public Callback getCallback(int _index) {
-		if (_index < callbacks.size())
-			return callbacks.get(_index);
-		else
-			return null;
-	}
-
-	/**
-	 * Returns a Callback by id/index (useful if you're only controlling
-	 * Callbacks)
-	 */
-	public Callback getCallback(String _name) {
-		return callbackMap.get(_name);
 	}
 
 	// public float getChildPosition(int _index) {
@@ -319,20 +288,6 @@ public abstract class MotionController extends Motion implements
 	}
 
 	/**
-	 * Returns all Callbacks
-	 */
-	public Callback[] getCallbacks() {
-		return callbacks.toArray(new Callback[callbacks.size()]);
-	}
-
-	/**
-	 * Returns all Callbacks
-	 */
-	public List<Callback> getCallbackList() {
-		return callbacks;
-	}
-
-	/**
 	 * Returns the Motion object (Tween, TweenParallel, TweenSequence, Callback)
 	 * by id/index
 	 */
@@ -377,13 +332,6 @@ public abstract class MotionController extends Motion implements
 	 */
 	public int getTweenSequenceCount() {
 		return tweenSequences.size();
-	}
-
-	/**
-	 * Returns child Callback object count
-	 */
-	public int getCallbackCount() {
-		return callbacks.size();
 	}
 
 	@Override
@@ -438,11 +386,13 @@ public abstract class MotionController extends Motion implements
 			tweenSequences.add((TweenSequence) _child);
 			if (_name != null)
 				tweenSequenceMap.put(_name, (TweenSequence) _child);
-		} else if (_child.isCallback()) {
-			callbacks.add((Callback) _child);
-			if (_name != null)
-				callbackMap.put(_name, (Callback) _child);
 		}
+
+		// else if (_child.isCallback()) {
+		// callbacks.add((Callback) _child);
+		// if (_name != null)
+		// callbackMap.put(_name, (Callback) _child);
+		// }
 
 		children.add(_child);
 		if (_name != null)
@@ -466,9 +416,6 @@ public abstract class MotionController extends Motion implements
 		} else if (_child.isTweenSequence()) {
 			tweenSequences.remove(_child);
 			// tweenSequenceLUT.remove(_child.name);
-		} else if (_child.isCallback()) {
-			callbacks.remove(_child);
-			// callbackLUT.remove(_child.name);
 		}
 
 		children.remove(_child);
@@ -507,6 +454,14 @@ public abstract class MotionController extends Motion implements
 		return this;
 	}
 
+	public MotionController addCall(Callback _call) {
+		calls.add(_call);
+
+		updateDuration();
+
+		return this;
+	}
+
 	/**
 	 * Removes all Motion objects
 	 */
@@ -520,8 +475,8 @@ public abstract class MotionController extends Motion implements
 		tweenSequences.clear();
 		tweenSequenceMap.clear();
 
-		callbacks.clear();
-		callbackMap.clear();
+		calls.clear();
+		callMap.clear();
 
 		children.clear();
 		childrenMap.clear();

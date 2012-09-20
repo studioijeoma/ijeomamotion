@@ -28,6 +28,7 @@
 package ijeoma.motion.tween;
 
 import ijeoma.motion.Motion;
+import ijeoma.motion.Callback;
 import ijeoma.motion.event.MotionEvent;
 import ijeoma.motion.event.MotionEventListener;
 import ijeoma.motion.property.ColorProperty;
@@ -206,16 +207,6 @@ public class Tween extends Motion { // implements Comparable
 	protected void updateProperties() {
 		try {
 			for (Property p : properties) {
-				// float t = getTime();
-				//
-				// if (isReversing && reverseTime != 0)
-				// t = reverseTime - t;
-
-				// Object[] args = { new Float(t), new Float(p.getBegin()),
-				// new Float(p.getChange()), new Float(getDuration()) };
-				// p.setPosition(((Float) easingMethod.invoke(parent, args))
-				// .floatValue());
-
 				Object[] args = { getPosition(), 0, 1, 1 };
 				p.setPosition(((Float) easingMethod.invoke(parent, args))
 						.floatValue());
@@ -358,6 +349,19 @@ public class Tween extends Motion { // implements Comparable
 
 	public Tween addPVector(PVector _vector, PVector _end) {
 		return addProperty(new PVectorProperty(_vector, _end));
+	}
+
+	public Tween call(Object _object, String _name) {
+		return addCall(new Callback(_object, _name, duration));
+	}
+
+	public Tween call(Object _object, String _name, float _time) {
+		return addCall(new Callback(_object, _name, _time));
+	}
+
+	public Tween addCall(Callback _call) {
+		calls.add(_call);
+		return this;
 	}
 
 	public Property get(int _index) {

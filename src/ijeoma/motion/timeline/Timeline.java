@@ -129,11 +129,13 @@ public class Timeline extends MotionController {
 			tweenSequences.add((TweenSequence) _child);
 			if (_name != null)
 				tweenSequenceMap.put(_name, (TweenSequence) _child);
-		} else if (_child.isCallback()) {
-			callbacks.add((Callback) _child);
-			if (_name != null)
-				callbackMap.put(_name, (Callback) _child);
-		}
+		} 
+		
+		// else if (_child.isCallback()) {
+		// callbacks.add((Callback) _child);
+		// if (_name != null)
+		// callbackMap.put(_name, (Callback) _child);
+		// }
 
 		children.add(_child);
 		if (_name != null)

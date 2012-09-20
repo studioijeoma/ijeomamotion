@@ -53,14 +53,9 @@ public class Timeline_Callback_Basic extends PApplet {
 		Motion.setup(this);
 
 		tl = new Timeline();
-		// Timeline.addCallback(String _callbackObjectMethodName, float _time,
-		// float _duration)
-		tl.add(new Callback("zero"), 0);
-		tl.add(new Callback("one"), 100);
-		tl.add(new Callback("two"), 200);
-		tl.add(new Callback("three"), 300);
-		tl.add(new Callback("four"), 400);
-		tl.add(new Callback("five"), 500);
+		tl.call(this, "zero", 0).call(this, "one", 100).call(this, "two", 200)
+				.call(this, "three", 300).call(this, "four", 400)
+				.call(this, "five", 500);
 		tl.repeat().play();
 	}
 
