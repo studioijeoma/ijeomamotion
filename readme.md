@@ -1,6 +1,7 @@
 #Ijeomamotion
  
-A library for sketching animations with numbers, colors vectors, beziers, curves and more! Read more at ekeneijeoma.com/processing/ijeomamotion.
+A library for sketching animations with numbers, colors vectors, beziers, curves and more! Read more at (here)(ekeneijeoma.com/processing/ijeomamotion).
+Please post issues on [Github](github.com/ekeneijeoma/ijeomamotion/issues) or [Processing's forums](forum.processing.org) under "Contributed Libraries".
 
 #Install
 Unzip and put the extracted ijeomamotion folder into the libraries folder of your Processing Sketches. Reference and examples are included in the ijeomamotion folder.
@@ -62,6 +63,8 @@ Tween t = new Tween(100).add(this, "x", 100).add(this,"c", color(255)).add(v1, n
 Tweens can be controlled using Sequences, Parallels or Timelines/KeyFrames.
 More coming soon. 
 
+#Javadocs
+(http://ekeneijeoma.com/processing/ijeomamotion/reference/index.html)
 
 #Examples
 
@@ -73,8 +76,7 @@ Tween t;
 float w = 0;
 
 void setup() {
-  size(400, 100);
-  smooth();
+  size(400, 100); 
 
   Motion.setup(this);
 
@@ -85,8 +87,8 @@ void draw() {
   background(255);
 
   noStroke();
-
-  fill(255 / 2f); 
+  fill(255 / 2f);
+  rect(0, 0, w, height); 
 }
 ```
 
@@ -151,7 +153,6 @@ void draw() {
   background(255);
 
   noStroke();
-
   fill(c1);
   rect(x1, 0, width, 100);
   fill(c2);
@@ -197,10 +198,7 @@ void setup() {
 
 void draw() {
   background(255);
-
-  noStroke();
-  fill(0);
-
+ 
   noStroke();
   fill(c1);
   rect(0, y1, 80, height);
