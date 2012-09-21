@@ -73,8 +73,7 @@ Tween t;
 float w = 0;
 
 void setup() {
-  size(400, 100);
-  smooth();
+  size(400, 100); 
 
   Motion.setup(this);
 
@@ -85,8 +84,8 @@ void draw() {
   background(255);
 
   noStroke();
-
-  fill(255 / 2f); 
+  fill(255 / 2f);
+  rect(0, 0, w, height); 
 }
 ```
 
@@ -151,7 +150,6 @@ void draw() {
   background(255);
 
   noStroke();
-
   fill(c1);
   rect(x1, 0, width, 100);
   fill(c2);
@@ -197,10 +195,7 @@ void setup() {
 
 void draw() {
   background(255);
-
-  noStroke();
-  fill(0);
-
+ 
   noStroke();
   fill(c1);
   rect(0, y1, 80, height);
