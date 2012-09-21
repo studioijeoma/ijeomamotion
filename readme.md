@@ -3,10 +3,10 @@
 A Processing library for sketching flash-like animations. Read more at ekeneijeoma.com/processing/ijeomamotion.
 
 #Install
-Unzip and put the extracted ijeomamotion folder into the libraries folder of your Processing sketches. Reference and examples are included in the ijeomamotion folder.
+Unzip and put the extracted ijeomamotion folder into the libraries folder of your Processing Sketches. Reference and examples are included in the ijeomamotion folder.
 
 #Getting Started
-First import the library into your sketch via Sketch->Import Library->ijeomamotion.
+First import the library into your Sketch via Sketch->Import Library->ijeomamotion.
 Then call
 
 `Motion.setup(this);`
@@ -15,9 +15,10 @@ in setup. After you can try out the examples below.
 
 #Examples
 
-Basic Tween
+Sketch a basic tween
 
-`Tween t;
+```java
+Tween t;
 
 float w = 0;
 
@@ -39,11 +40,13 @@ void draw() {
   noStroke();
 
   fill(255 / 2f); 
-}`
+}
+```
 
-Basic Parallel
+Sketch a basic parallel animation
 
-`Parallel tp;
+```java
+Parallel tp;
 
 float x1, x2;
 
@@ -71,11 +74,13 @@ public void draw() {
   fill(255 / 2f);
   rect(x1, 0, width, height / 2);
   rect(x2, height / 2, width, height / 2);
-}`
+}
+```
 
-Basic Sequence
+Sketch a basic sequence animation
 
-`int c1, c2, c3, c4;
+```java
+int c1, c2, c3, c4;
 float x1, x2, x3, x4;
 Sequence ts;
 
@@ -112,11 +117,13 @@ void draw() {
   rect(x3, 200, width, 100);
   fill(c4);
   rect(x4, 300, width, 100);
-}`
+}
+```
 
-Basic Timeline
+Sketch a basic timeline animation
 
-`int c1, c2, c3, c4, c5;
+```java
+int c1, c2, c3, c4, c5;
 float y1, y2, y3, y4, y5;
 
 Timeline tl;
@@ -162,4 +169,5 @@ void draw() {
   rect(240, y4, 80, height);
   fill(c5);
   rect(320, y5, 80, height); 
-}`
+}
+```
