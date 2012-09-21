@@ -1,6 +1,6 @@
 #Ijeomamotion
  
-A library for sketching animations with numbers, colors vectors, beziers, curves and more! Read more at (here)(ekeneijeoma.com/processing/ijeomamotion).
+A library for sketching animations with numbers, colors vectors, beziers, curves and more! Read more at [here](ekeneijeoma.com/processing/ijeomamotion).
 Please post issues on [Github](github.com/ekeneijeoma/ijeomamotion/issues) or [Processing's forums](forum.processing.org) under "Contributed Libraries".
 
 #Install
@@ -64,7 +64,7 @@ Tweens can be controlled using Sequences, Parallels or Timelines/KeyFrames.
 More coming soon. 
 
 #Javadocs
-(http://ekeneijeoma.com/processing/ijeomamotion/reference/index.html)
+http://ekeneijeoma.com/processing/ijeomamotion/reference/index.html
 
 #Examples
 
