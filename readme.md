@@ -93,14 +93,14 @@ void setup() {
   x1 = x2 = x3 = x4 = -width;
 
   ts = new Sequence();
-  ts.add(new Tween(100).add(this, "x1", (float)width).add(this, "c1", 
-  color(0)), "x1");
-  ts.add(new Tween(75).add(this, "x2", (float)width).add(this, "c2", 
-  color(0)), "x2");
-  ts.add(new Tween(50).add(this, "x3", (float)width).add(this, "c3", 
-  color(0)), "x3");
-  ts.add(new Tween(25).add(this, "x4", (float)width).add(this, "c4", 
-  color(0)), "x4");
+  ts.add(new Tween(100).add(this, "x1", (float)width).
+  add(this, "c1", color(0)), "x1");
+  ts.add(new Tween(75).add(this, "x2", (float)width).
+  add(this, "c2", color(0)), "x2");
+  ts.add(new Tween(50).add(this, "x3", (float)width).
+  add(this, "c3", color(0)), "x3");
+  ts.add(new Tween(25).add(this, "x4", (float)width).
+  add(this, "c4", color(0)), "x4");
   ts.repeat().play();
 }
 
@@ -139,16 +139,16 @@ void setup() {
   y2 = y4 = height;
 
   tl = new Timeline();
-  tl.add(new Tween(50).add(this, "y1", (float)height).add(this, "c1", 
-  color(0)), 0);
-  tl.add(new Tween(50).add(this, "y2", (float)-height).add(this, "c2", 
-  color(0)), 50);
-  tl.add(new Tween(50).add(this, "y3", (float)height).add(this, "c3", 
-  color(0)), 100);
-  tl.add(new Tween(50).add(this, "y4", (float)-height).add(this, "c4", 
-  color(0)), 150);
-  tl.add(new Tween(50).add(this, "y5", (float)height).add(this, "c5", 
-  color(0)), 200);
+  tl.add(new Tween(50).add(this, "y1", (float)height).
+  add(this, "c1", color(0)), 0);
+  tl.add(new Tween(50).add(this, "y2", (float)-height).
+  add(this, "c2", color(0)), 50);
+  tl.add(new Tween(50).add(this, "y3", (float)height).
+  add(this, "c3", color(0)), 100);
+  tl.add(new Tween(50).add(this, "y4", (float)-height).
+  add(this, "c4", color(0)), 150);
+  tl.add(new Tween(50).add(this, "y5", (float)height).
+  add(this, "c5", color(0)), 200);
   tl.repeat().play();
 }
 
