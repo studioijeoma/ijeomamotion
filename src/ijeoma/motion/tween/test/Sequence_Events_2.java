@@ -13,7 +13,7 @@ import ijeoma.motion.tween.Sequence;
 import processing.core.PApplet;
 import processing.core.PFont;
 
-public class TweenSequence_Events_2 extends PApplet {
+public class Sequence_Events_2 extends PApplet {
 
 	PFont font;
 

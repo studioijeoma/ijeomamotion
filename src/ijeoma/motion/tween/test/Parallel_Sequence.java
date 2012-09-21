@@ -10,7 +10,7 @@ import ijeoma.motion.tween.Parallel;
 import ijeoma.motion.tween.Sequence;
 import processing.core.PApplet;
 
-public class TweenParallel_TweenSequence extends PApplet {
+public class Parallel_Sequence extends PApplet {
 	float x1, x2;
 
 	Parallel tp;

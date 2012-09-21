@@ -26,7 +26,6 @@
  */
 
 import ijeoma.motion.*;
-import ijeoma.motion.timeline.*;
 import ijeoma.motion.tween.*; 
 
 int c1, c2, c3, c4, c5;

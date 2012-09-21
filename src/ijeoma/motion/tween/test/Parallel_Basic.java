@@ -11,7 +11,7 @@ import ijeoma.motion.tween.Parallel;
 import processing.core.PApplet;
 import processing.core.PFont;
 
-public class TweenParallel_Basic extends PApplet {
+public class Parallel_Basic extends PApplet {
 	PFont f;
 
 	Parallel tp;

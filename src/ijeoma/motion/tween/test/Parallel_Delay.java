@@ -9,7 +9,7 @@ import ijeoma.motion.Motion;
 import ijeoma.motion.tween.Parallel;
 import processing.core.PApplet;
 
-public class TweenParallel_Delay extends PApplet {
+public class Parallel_Delay extends PApplet {
 	Parallel tp;
 
 	float w1 = 0, w2 = 0;

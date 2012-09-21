@@ -6,8 +6,6 @@ ijeoma.motion
 ijeoma.motion.easing
 ijeoma.motion.event
 ijeoma.motion.property
-ijeoma.motion.timeline
-ijeoma.motion.timeline.test
 ijeoma.motion.tween
 ijeoma.motion.tween.test
 ijeoma.processing.geom

@@ -6,7 +6,7 @@ import processing.core.*;
 import processing.data.XML;
 
 
-public class TweenSequence_GML extends PApplet {
+public class Sequence_GML extends PApplet {
 	Sequence ts;
 
 	PFont font;

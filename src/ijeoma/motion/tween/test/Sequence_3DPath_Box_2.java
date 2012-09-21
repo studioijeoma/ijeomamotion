@@ -12,7 +12,7 @@ import ijeoma.motion.tween.Sequence;
 import processing.core.PApplet;
 import processing.core.PFont;
 
-public class TweenSequence_3DPath_Box_2 extends PApplet {
+public class Sequence_3DPath_Box_2 extends PApplet {
 	PFont f;
 
 	Sequence ts;
