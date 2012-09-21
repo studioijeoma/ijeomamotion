@@ -118,11 +118,11 @@ public class Timeline extends MotionController {
 			tweens.add((Tween) _child);
 			if (_name != null)
 				tweenMap.put(_name, (Tween) _child);
-		} else if (_child.isTweenParallel()) {
+		} else if (_child.isParallel()) {
 			parallels.add((Parallel) _child);
 			if (_name != null)
 				parallelMap.put(_name, (Parallel) _child);
-		} else if (_child.isTweenSequence()) {
+		} else if (_child.isSequence()) {
 			sequences.add((Sequence) _child);
 			if (_name != null)
 				sequenceMap.put(_name, (Sequence) _child);

@@ -669,12 +669,12 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return type.equals(PROPERTY);
 	}
 
-	public boolean isTweenParallel() {
-		return type.equals(TWEEN_PARALLEL);
+	public boolean isParallel() {
+		return type.equals(PARALLEL);
 	}
 
-	public boolean isTweenSequence() {
-		return type.equals(TWEEN_SEQUENCE);
+	public boolean isSequence() {
+		return type.equals(SEQUENCE);
 	}
 
 	public boolean isTimeline() {

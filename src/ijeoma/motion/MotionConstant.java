@@ -31,8 +31,8 @@ public interface MotionConstant {
 
 	public static String TWEEN = "Tween";
 	public static String PROPERTY = "Property";
-	public static String TWEEN_PARALLEL = "TweenParallel";
-	public static String TWEEN_SEQUENCE = "TweenSequence";
+	public static String PARALLEL = "TweenParallel";
+	public static String SEQUENCE = "TweenSequence";
 	public static String TIMELINE = "Timeline";
 	public static String KEYFRAME = "KeyFrame";
 	public static String CALLBACK = "Callback";

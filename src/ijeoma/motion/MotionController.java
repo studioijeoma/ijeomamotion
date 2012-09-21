@@ -187,7 +187,7 @@ public abstract class MotionController extends Motion implements
 	/**
 	 * Returns a TweenParallel by id/index
 	 */
-	public Parallel getTweenParallel(int _index) {
+	public Parallel getParallel(int _index) {
 		if (_index < parallels.size())
 			return parallels.get(_index);
 		else
@@ -198,7 +198,7 @@ public abstract class MotionController extends Motion implements
 	 * Returns a TweenParallel by name (useful if you're only controlling
 	 * TweenParallels)
 	 */
-	public Parallel getTweenParallel(String _name) {
+	public Parallel getParallel(String _name) {
 		return parallelMap.get(_name);
 	}
 
@@ -206,7 +206,7 @@ public abstract class MotionController extends Motion implements
 	 * Returns a Tween by id/index (useful if you're only controlling
 	 * TweenSequences)
 	 */
-	public Sequence getTweenSequence(int _index) {
+	public Sequence getSequence(int _index) {
 		if (_index < sequences.size())
 			return sequences.get(_index);
 		else
@@ -217,7 +217,7 @@ public abstract class MotionController extends Motion implements
 	 * Returns a Tween by id/index (useful if you're only controlling
 	 * TweenSequences)
 	 */
-	public Sequence getTweenSequence(String _name) {
+	public Sequence getSequence(String _name) {
 		return sequenceMap.get(_name);
 	}
 
@@ -262,28 +262,28 @@ public abstract class MotionController extends Motion implements
 	/**
 	 * Returns all TweenParallels
 	 */
-	public Parallel[] getTweenParallels() {
+	public Parallel[] getParallels() {
 		return parallels.toArray(new Parallel[parallels.size()]);
 	}
 
 	/**
 	 * Returns all TweenParallels as a list
 	 */
-	public List<Parallel> getTweenParallelList() {
+	public List<Parallel> getParallelList() {
 		return parallels;
 	}
 
 	/**
 	 * Returns all TweenSequences
 	 */
-	public Sequence[] getTweenSequences() {
+	public Sequence[] getSequences() {
 		return sequences.toArray(new Sequence[sequences.size()]);
 	}
 
 	/**
 	 * Returns all TweenSequences as a list
 	 */
-	public List<Sequence> getTweenSequenceList() {
+	public List<Sequence> getSequenceList() {
 		return sequences;
 	}
 
@@ -323,14 +323,14 @@ public abstract class MotionController extends Motion implements
 	/**
 	 * Returns child TweenParallel object count
 	 */
-	public int getTweenParallelCount() {
+	public int getParallelCount() {
 		return parallels.size();
 	}
 
 	/**
 	 * Returns child TweenSequeunce object count
 	 */
-	public int getTweenSequenceCount() {
+	public int getSequenceCount() {
 		return sequences.size();
 	}
 
@@ -378,11 +378,11 @@ public abstract class MotionController extends Motion implements
 			tweens.add((Tween) _child);
 			if (_name != null)
 				tweenMap.put(_name, (Tween) _child);
-		} else if (_child.isTweenParallel()) {
+		} else if (_child.isParallel()) {
 			parallels.add((Parallel) _child);
 			if (_name != null)
 				parallelMap.put(_name, (Parallel) _child);
-		} else if (_child.isTweenSequence()) {
+		} else if (_child.isSequence()) {
 			sequences.add((Sequence) _child);
 			if (_name != null)
 				sequenceMap.put(_name, (Sequence) _child);
@@ -410,10 +410,10 @@ public abstract class MotionController extends Motion implements
 		if (_child.isTween()) {
 			tweens.remove(_child);
 			// tweenLUT.remove(_child.name);
-		} else if (_child.isTweenParallel()) {
+		} else if (_child.isParallel()) {
 			parallels.remove(_child);
 			// tweenParallelLUT.remove(_child.name);
-		} else if (_child.isTweenSequence()) {
+		} else if (_child.isSequence()) {
 			sequences.remove(_child);
 			// tweenSequenceLUT.remove(_child.name);
 		}
