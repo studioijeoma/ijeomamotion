@@ -11,11 +11,11 @@ Then call
 
 `Motion.setup(this);`
 
-in setup. After you can try out the examples below.
+in setup. After you can try out the examples below. Please also check the examples in the download.
 
 #Examples
 
-Sketch a basic tween
+Sketch a basic tween animation:
 
 ```java
 Tween t;
@@ -43,7 +43,7 @@ void draw() {
 }
 ```
 
-Sketch a basic parallel animation
+Sketch a basic parallel animation:
 
 ```java
 Parallel tp;
@@ -77,7 +77,7 @@ public void draw() {
 }
 ```
 
-Sketch a basic sequence animation
+Sketch a basic sequence animation:
 
 ```java
 int c1, c2, c3, c4;
@@ -120,7 +120,7 @@ void draw() {
 }
 ```
 
-Sketch a basic timeline animation
+Sketch a basic timeline animation:
 
 ```java
 int c1, c2, c3, c4, c5;
