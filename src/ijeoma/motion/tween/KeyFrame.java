@@ -47,6 +47,7 @@ public class KeyFrame extends MotionController {
 	public KeyFrame(float _time, Motion[] _children) {
 		super();
 		setPlayTime(_time);
+		addAll(_children);
 	}
 
 	@Override

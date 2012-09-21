@@ -119,13 +119,13 @@ public class Timeline extends MotionController {
 			if (_name != null)
 				tweenMap.put(_name, (Tween) _child);
 		} else if (_child.isTweenParallel()) {
-			tweenParallels.add((Parallel) _child);
+			parallels.add((Parallel) _child);
 			if (_name != null)
-				tweenParallelMap.put(_name, (Parallel) _child);
+				parallelMap.put(_name, (Parallel) _child);
 		} else if (_child.isTweenSequence()) {
-			tweenSequences.add((Sequence) _child);
+			sequences.add((Sequence) _child);
 			if (_name != null)
-				tweenSequenceMap.put(_name, (Sequence) _child);
+				sequenceMap.put(_name, (Sequence) _child);
 		} 
 		
 		// else if (_child.isCallback()) {
@@ -251,6 +251,10 @@ public class Timeline extends MotionController {
 			indices[i] = indicesList.get(i);
 
 		return indices;
+	}
+	
+	public KeyFrame getKeyFrame(int _index) {
+		return (KeyFrame) children.get(_index);
 	}
 
 	public KeyFrame getKeyFrame(float _time) {

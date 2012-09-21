@@ -28,6 +28,7 @@
 package ijeoma.motion.tween.test;
 
 import ijeoma.motion.Motion;
+import ijeoma.motion.tween.KeyFrame;
 import ijeoma.motion.tween.Timeline;
 import ijeoma.motion.tween.Tween;
 import processing.core.PApplet;
@@ -51,15 +52,15 @@ public class Timeline_Basic extends PApplet {
 		y2 = y4 = height;
 
 		tl = new Timeline();
-		tl.add(new Tween(50).add(this, "y1", height).add(this, "c1",
+		tl.add(new Tween(50).add(this, "y1", (float) height).add(this, "c1",
 				color(0)), 0);
-		tl.add(new Tween(50).add(this, "y2", -height).add(this, "c2",
+		tl.add(new Tween(50).add(this, "y2", (float) -height).add(this, "c2",
 				color(0)), 50);
-		tl.add(new Tween(50).add(this, "y3", height).add(this, "c3",
+		tl.add(new Tween(50).add(this, "y3", (float) height).add(this, "c3",
 				color(0)), 100);
-		tl.add(new Tween(50).add(this, "y4", -height).add(this, "c4",
+		tl.add(new Tween(50).add(this, "y4", (float) -height).add(this, "c4",
 				color(0)), 150);
-		tl.add(new Tween(50).add(this, "y5", height).add(this, "c5",
+		tl.add(new Tween(50).add(this, "y5", (float) height).add(this, "c5",
 				color(0)), 200);
 		tl.repeat().play();
 	}
@@ -84,7 +85,13 @@ public class Timeline_Basic extends PApplet {
 		rect(320, y5, 80, height);
 
 		fill(0);
-		String time = (int) tl.getTime() + " / " + (int) tl.getDuration();
+		println();
+		Tween t = tl.getKeyFrame(1).getTween(0); 
+		String time = (int) t.getTime() + " / " + (int) t.getDuration();
+//		String time = (int) t.() + " / " + (int) t.getDuration();
+		text(time, width - textWidth(time) - 10, height - 30);
+
+		time = (int) tl.getTime() + " / " + (int) tl.getDuration();
 		text(time, width - textWidth(time) - 10, height - 10);
 	}
 
