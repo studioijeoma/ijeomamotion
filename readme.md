@@ -16,7 +16,7 @@ in setup.
 ##How to create a basic animations
 
 ###Numbers (floats)
-You can either tween a number which must be a float or a color which must be either an int or Processing color variable.
+You can either tween a number which must be a float. The end value must either have a decimal or be casted to a float either using (float) or f.
 There are 2 ways to Tween a number. Say we want to tween a float variable named x which has a value of 0 to 100 in 100 frames.
 ```java
 Tween t = new Tween(this, "x", 100f, 100).play();
@@ -28,11 +28,11 @@ Tween t = new Tween(100).add(this, "x", 100f).play();
 
 The 2nd way lets you chain/add more properties to the Tween. Say we want to tween a float variable name x and another name y which both have values of 0 to 100 in 100 frames.
 ```java
-Tween t = new Tween(100).add(this, "x", 100).add(this, "y", 100).play();
+Tween t = new Tween(100).add(this, "x", 100f).add(this, "y", 100f).play();
 ```
  
 ###Colors (ints)
-There are also 2 ways to Tween a color. Say we want to tween a color variable named c which has a value of color(0) (black) to color(255) (white) in 100 frames.
+There are also 2 ways to Tween a color The end value must be an int. Say we want to tween a color variable named c which has a value of color(0) (black) to color(255) (white) in 100 frames.
 ```java
 Tween t = new Tween(this, "c", color(255), 100).play();
 ```
@@ -49,7 +49,13 @@ Tween t = new Tween(100).add(this, "c1", color(255)).add(this, "c2", color(200))
 ###PVectors
 You can also tween PVectors. Say we want to tween 2 PVectors v1 and v2 which both have values of new PVector(0,0) to PVector(50, 50) and PVector(100, 100).
 ```java
-t = new Tween(100).add(v1, new PVector(50, 50)).add(v2, new PVector(100, 100)).play();
+Tween t = new Tween(100).add(v1, new PVector(50, 50)).add(v2, new PVector(100, 100)).play();
+```
+
+###All in 1!
+You can tween multiples properties of any type in 1 Tween!
+```java
+Tween t = new Tween(100).add(this, "x", 100).add(this,"c", color(255)).add(v1, new PVector(100, 100)).play();
 ```
 
 ##How to create sequenced and keyframed animations
