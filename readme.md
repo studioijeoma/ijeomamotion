@@ -61,8 +61,7 @@ You can also tween multiples properties of any type in 1 Tween!
 Tween t = new Tween(100).add(this, "x", 100).add(this,"c", color(255)).add(v1, new PVector(100, 100)).play();
 ```
 
-##How to control Tweens
-###Example:
+##How to control Tweens 
 ```java
 Tween t;
 
