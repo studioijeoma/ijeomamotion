@@ -61,7 +61,33 @@ You can also tween multiples properties of any type in 1 Tween!
 Tween t = new Tween(100).add(this, "x", 100).add(this,"c", color(255)).add(v1, new PVector(100, 100)).play();
 ```
 
-##How to control Tweens 
+##How to playback Tweens 
+##Delaying
+```java
+Tween t;
+float w = 0;
+
+public void setup() {
+  size(400, 100);
+  
+  Motion.setup(this);
+
+  t = new Tween(this, "w", width, 50, 50).play();
+}
+
+public void draw() {
+  background(255);
+
+  noStroke();
+  fill(255 / 2f);
+  rect(0, 0, w, height);
+}
+
+public void keyPressed() {
+  t.play();
+}
+```
+##Pausing, Resuming "Scrubbing"
 ```java
 Tween t;
 
@@ -100,6 +126,33 @@ void mouseDragged() {
   t.seek((float) mouseX / width);
 } 
 ```
+##Repeating
+```java
+Tween t;
+
+float w = 0;
+
+public void setup() {
+  size(400, 100);
+  
+  Motion.setup(this);
+
+  t = new Tween(this, "w", width, 100f).repeat().play();
+}
+
+public void draw() {
+  background(255);
+
+  noStroke();
+  fill(255 / 2f);
+  rect(0, 0, w, height);
+}
+
+public void keyPressed() {
+  t.play();
+}
+```
+
 ##How to use Processing-style events with Tweens
 ```java
 Tween t;
