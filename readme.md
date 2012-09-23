@@ -62,7 +62,7 @@ Tween t = new Tween(100).add(this, "x", 100).add(this,"c", color(255)).add(v1, n
 ```
 
 ##How to playback Tweens 
-##Delaying
+###Delaying
 ```java
 Tween t;
 float w = 0;
@@ -87,7 +87,7 @@ public void keyPressed() {
   t.play();
 }
 ```
-##Pausing, Resuming "Scrubbing"
+###Pausing, Resuming "Scrubbing"
 ```java
 Tween t;
 
@@ -126,7 +126,7 @@ void mouseDragged() {
   t.seek((float) mouseX / width);
 } 
 ```
-##Repeating
+###Repeating
 ```java
 Tween t;
 
