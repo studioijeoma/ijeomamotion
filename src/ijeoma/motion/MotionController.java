@@ -122,35 +122,23 @@ public abstract class MotionController extends Motion implements
 
 	@Override
 	public void update() {
-		if (isPlaying()) {
-			if (isAbovePlayTime(time))
-				if (isBelowStopTime(time)) {
-					updateChildren();
-					updateCallbacks();
-				} else
-					stop();
-			
-			updateTime();
-		}
+		super.update();
+
+		if (isPlaying())
+			updateChildren();
 	}
 
 	@Override
 	public void update(float _time) {
-		 if (isPlaying()) {
-			if (isAbovePlayTime(time))
-				if (isBelowStopTime(time)) {
-					updateChildren();
-					updateCallbacks();
-				} else
-					stop();
-			
-			setTime(_time);
-		}
+		super.update(_time);
+
+		if (isPlaying())
+			updateChildren();
 	}
 
 	protected void updateChildren() {
 		for (Motion c : children) {
-			if (c.isInsidePlayingTime(time))
+			if (c.isPlayingTime(time))
 				if (c.isPlaying())
 					c.update(time);
 				else
@@ -195,16 +183,14 @@ public abstract class MotionController extends Motion implements
 	}
 
 	/**
-	 * Returns a Parallel by name (useful if you're only controlling
-	 * Parallels)
+	 * Returns a Parallel by name (useful if you're only controlling Parallels)
 	 */
 	public Parallel getParallel(String _name) {
 		return parallelMap.get(_name);
 	}
 
 	/**
-	 * Returns a Tween by id/index (useful if you're only controlling
-	 * Sequences)
+	 * Returns a Tween by id/index (useful if you're only controlling Sequences)
 	 */
 	public Sequence getSequence(int _index) {
 		if (_index < sequences.size())
@@ -214,8 +200,7 @@ public abstract class MotionController extends Motion implements
 	}
 
 	/**
-	 * Returns a Tween by id/index (useful if you're only controlling
-	 * Sequences)
+	 * Returns a Tween by id/index (useful if you're only controlling Sequences)
 	 */
 	public Sequence getSequence(String _name) {
 		return sequenceMap.get(_name);
@@ -230,16 +215,14 @@ public abstract class MotionController extends Motion implements
 	// }
 
 	/**
-	 * Returns all motion objects (Callback, Tween, Parallel,
-	 * Sequence)
+	 * Returns all motion objects (Callback, Tween, Parallel, Sequence)
 	 */
 	public Motion[] getChildren() {
 		return children.toArray(new Motion[children.size()]);
 	}
 
 	/**
-	 * Returns all motion objects as a list(Callback, Tween, Parallel,
-	 * Sequence)
+	 * Returns all motion objects as a list(Callback, Tween, Parallel, Sequence)
 	 */
 	public List<Motion> getChildrenList() {
 		return children;
@@ -288,8 +271,8 @@ public abstract class MotionController extends Motion implements
 	}
 
 	/**
-	 * Returns the Motion object (Tween, Parallel, Sequence, Callback)
-	 * by id/index
+	 * Returns the Motion object (Tween, Parallel, Sequence, Callback) by
+	 * id/index
 	 */
 	public Motion get(int _index) {
 		if (_index < children.size())
@@ -299,8 +282,7 @@ public abstract class MotionController extends Motion implements
 	}
 
 	/**
-	 * Returns a motion object (Tween, Parallel, Sequence, Callback)
-	 * by name
+	 * Returns a motion object (Tween, Parallel, Sequence, Callback) by name
 	 */
 	public Motion getChild(String _name) {
 		return childrenMap.get(_name);

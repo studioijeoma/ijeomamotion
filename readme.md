@@ -3,22 +3,27 @@
 A library for sketching animations with numbers, colors vectors, beziers, curves and more! Read more at [here](ekeneijeoma.com/processing/ijeomamotion).
 Please post issues on [Github](github.com/ekeneijeoma/ijeomamotion/issues) or [Processing's forums](forum.processing.org) under "Contributed Libraries".
 
+#Download
+In Processing 2.0 download the library using Sketch->Add Library...->Animation->ijeomamotion. Otherwise go to download zip and read below to install.
+
 #Install
 Unzip and put the extracted ijeomamotion folder into the libraries folder of your Processing Sketches. Reference and examples are included in the ijeomamotion folder.
 
+#Update
+
 #Getting Started
-First import the library into your Sketch via Sketch->Import Library->ijeomamotion.
+First, import the library into your Sketch via Sketch->Import Library->ijeomamotion.	
 Then call
 
 `Motion.setup(this);`
 
 in setup.
 
-##How to create a basic animations
+##How to Tween properties
 
 ###Numbers (floats)
-You can either tween a number which must be a float. The end value must either have a decimal or be casted to a float either using (float) or f.
-There are 2 ways to Tween a number. Say we want to tween a float variable named x which has a value of 0 to 100 in 100 frames.
+There are 2 ways to Tween a number. Say you want to tween a `float x = 0` to 100 in 100 frames.
+Note: To tween a number it MUST BE a float. So if you give it an end value of '100' it must be written as 100.0, 100f or (float)100.
 ```java
 Tween t = new Tween(this, "x", 100f, 100).play();
 ```
@@ -27,13 +32,13 @@ or
 Tween t = new Tween(100).add(this, "x", 100f).play();
 ```
 
-The 2nd way lets you chain/add more properties to the Tween. Say we want to tween a float variable name x and another name y which both have values of 0 to 100 in 100 frames.
+The 2nd way lets you chain/add more properties to the Tween. Say we want to tween a float x = 0 and float y = 0 to x = 100 and y = 100 in 100 frames.
 ```java
 Tween t = new Tween(100).add(this, "x", 100f).add(this, "y", 100f).play();
 ```
  
 ###Colors (ints)
-There are also 2 ways to Tween a color The end value must be an int. Say we want to tween a color variable named c which has a value of color(0) (black) to color(255) (white) in 100 frames.
+There are also 2 ways to Tween a color the end value must be an int. Say we want to tween a color int c = color(0) to c = color(255) in 100 frames.
 ```java
 Tween t = new Tween(this, "c", color(255), 100).play();
 ```
@@ -42,41 +47,32 @@ or
 Tween t = new Tween(100).add(this, "c", color(255)).play();
 ```
 
-Same as with a number you can also chain/add more properties
+In the same was as with numbers you can also chain/add more color properties
 ```java
 Tween t = new Tween(100).add(this, "c1", color(255)).add(this, "c2", color(200)).play();
 ```
 
 ###PVectors
-You can also tween PVectors. Say we want to tween 2 PVectors v1 and v2 which both have values of new PVector(0,0) to PVector(50, 50) and PVector(100, 100).
+You can also tween PVectors. Say we want to tween PVectors `v1 = PVector(0,0)` and `v2 = PVector(0,0)` to `v1 = PVector(50, 50)` and `v2 = PVector(100, 100)`.
 ```java
 Tween t = new Tween(100).add(v1, new PVector(50, 50)).add(v2, new PVector(100, 100)).play();
 ```
 
 ###All in 1!
-You can tween multiples properties of any type in 1 Tween!
+You can also tween multiples properties of any type in 1 Tween!
 ```java
 Tween t = new Tween(100).add(this, "x", 100).add(this,"c", color(255)).add(v1, new PVector(100, 100)).play();
 ```
 
-##How to create sequenced and keyframed animations
-Tweens can be controlled using Sequences, Parallels or Timelines/KeyFrames.
-More coming soon. 
-
-#Javadocs
-http://ekeneijeoma.com/processing/ijeomamotion/reference/index.html
-
-#Examples
-
-Sketch a basic tween animation:
-
+##How to control a Tween 
 ```java
 Tween t;
 
 float w = 0;
 
 void setup() {
-  size(400, 100); 
+  size(400, 100);
+  smooth();
 
   Motion.setup(this);
 
@@ -87,11 +83,105 @@ void draw() {
   background(255);
 
   noStroke();
+  fill(0);
+  rect(0, 0, w, height); 
+}
+
+void keyPressed() {
+  t.play();
+}
+
+void mousePressed() {
+  t.pause();
+}
+
+void mouseReleased() {
+  t.resume();
+}
+
+void mouseDragged() {
+  t.seek((float) mouseX / width);
+} 
+```
+##How to use Processing style events with Tweens
+```java
+Tween t;
+
+float w = 0;
+
+void setup() {
+  size(400, 100);
+  smooth();
+
+  Motion.setup(this);
+
+  t = new Tween(this, "w", width, 100).play();
+}
+
+void draw() {
+  background(255);
+
+  noStroke();
   fill(255 / 2f);
   rect(0, 0, w, height); 
 }
+
+void keyPressed() {
+  t.play();
+}
+
+void tweenStarted(Tween _t) {
+  println(_t + " started");
+}
+
+void tweenEnded(Tween _t) {
+  println(_t + " ended");
+} 
+
+void tweenRepeated(Tween _t) {
+  println(_t + " repeated");
+} 
 ```
 
+##How to use delayed calls with Tweens
+Example:
+```java
+Tween t;
+
+float w = 0;
+
+public void setup() {
+  size(400, 100);
+  smooth();
+
+  Motion.setup(this);
+
+  t = new Tween(100).call(this, "test", 25).play();
+}
+
+public void test() {
+  println("test");
+}
+
+public void draw() {
+  background(255);
+
+  String time = t.getTime() + " / " + t.getDuration();
+
+  fill(0);
+  text(time, width - textWidth(time) - 10, height - 10);
+}
+
+public void keyPressed() {
+  t.play();
+}
+```
+
+##How to create sequenced and keyframed animations
+#Javadocs
+http://ekeneijeoma.com/processing/ijeomamotion/reference/index.html
+
+#Examples
 Sketch a basic parallel animation:
 
 ```java

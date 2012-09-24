@@ -62,3 +62,16 @@ void keyPressed() {
   t.play();
 }
 
+void mousePressed() {
+  t.pause();
+}
+
+void mouseReleased() {
+  t.resume();
+}
+
+void mouseDragged() {
+  t.seek((float) mouseX / width);
+} 
+
+

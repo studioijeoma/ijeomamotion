@@ -43,7 +43,7 @@ public class Timeline_Basic extends PApplet {
 	public void setup() {
 		size(400, 200);
 		smooth();
-
+		
 		Motion.setup(this);
 
 		c1 = c2 = c3 = c4 = c5 = color(255);

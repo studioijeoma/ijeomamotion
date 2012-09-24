@@ -3,7 +3,7 @@ package ijeoma.motion.tween.test;
 import java.util.ArrayList;
 
 import ijeoma.motion.Motion;
-import ijeoma.motion.property.Property;
+import ijeoma.motion.tween.IProperty;
 import ijeoma.motion.tween.Tween;
 import ijeoma.motion.tween.Parallel;
 import processing.core.*;

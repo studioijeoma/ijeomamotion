@@ -53,7 +53,7 @@ public class Sequence_Basic extends PApplet {
 
 		fill(0);
 		fill(c1);
-		rect(x1, 0, width, 100); 
+		rect(x1, 0, width, 100);
 		fill(c2);
 		rect(x2, 100, width, 100);
 		fill(c3);

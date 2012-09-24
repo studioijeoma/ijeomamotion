@@ -9,7 +9,6 @@ public class Tween_Basic extends PApplet {
 
 	float w = 0;
 
-	@Override
 	public void setup() {
 		size(400, 100);
 		smooth();
@@ -22,12 +21,13 @@ public class Tween_Basic extends PApplet {
 		// t = new Tween(100).add(this, "w", width).play();
 	}
 
-	@Override
 	public void draw() {
 		background(255);
 
-		noStroke();
+		float s = map(mouseX, 0, width, 0, 1); 
+		// t.setTimeScale(s); 
 
+		noStroke();
 		fill(255 / 2f);
 		rect(0, 0, w, height);
 
@@ -37,8 +37,19 @@ public class Tween_Basic extends PApplet {
 		text(time, width - textWidth(time) - 10, height - 10);
 	}
 
-	@Override
 	public void keyPressed() {
 		t.play();
+	}
+
+	public void mousePressed() {
+		t.pause();
+	}
+
+	public void mouseReleased() {
+		t.resume();
+	}
+
+	public void mouseDragged() {
+		t.seek((float) mouseX / width);
 	}
 }

@@ -171,13 +171,9 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 		repeatCount = 0;
 
-		// if (delay == 0) {
-		// setProperties();
-
 		isPlaying = true;
 
 		dispatchMotionStartedEvent();
-		// }
 
 		return this;
 	}
@@ -191,9 +187,8 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		if (isRepeating
 				&& (repeatDuration == 0 || repeatCount < repeatDuration)) {
 
-			// PApplet.println("repeatCount = " + repeatCount);
 			if (isReversing)
-				reverse();
+				reverseTime = (reverseTime == 0) ? duration : 0;
 
 			seek(0);
 			resume();
@@ -205,9 +200,9 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 			isPlaying = false;
 
 			if (isReversing)
-				reverse();
+				reverseTime = (reverseTime == 0) ? duration : 0;
 
-			seek(1.0f);
+			// seek(1.0f);
 
 			dispatchMotionEndedEvent();
 
@@ -225,8 +220,6 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 		beginTime = time;
 
-		// dispatchMotionEndedEvent();
-
 		return this;
 	}
 
@@ -241,9 +234,6 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		beginTime = (timeMode == SECONDS) ? (getParent().millis() - beginTime * 1000)
 				: (getParent().frameCount - beginTime);
 
-		// if(time == 0)
-		// dispatchMotionStartedEvent();
-
 		return this;
 	}
 
@@ -253,7 +243,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	public Motion seek(float _value) {
 		beginTime = time = getPlayTime() + _value * getDelayedDuration();
 
-		updateCallbacks();
+		updateCalls();
 
 		return this;
 	}
@@ -292,7 +282,6 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	 */
 	public Motion reverse() {
 		isReversing = true;
-		reverseTime = (reverseTime == 0) ? duration : 0;
 
 		return this;
 	}
@@ -306,29 +295,25 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 	public void update() {
 		if (isPlaying()) {
-			if (isAbovePlayTime(time))
-				if (isBelowStopTime(time))
-					updateCallbacks();
-				else
-					stop();
-
-			updateTime();
+			if (isPlayingTime(time)) {
+				updateTime();
+				updateCalls();
+			} else
+				stop();
 		}
 	}
 
 	public void update(float _time) {
 		if (isPlaying()) {
-			if (isAbovePlayTime(time))
-				if (isBelowStopTime(time))
-					updateCallbacks();
-				else
-					stop();
-
-			setTime(_time);
+			if (isPlayingTime(time)) {
+				setTime(_time);
+				updateCalls();
+			} else
+				stop();
 		}
 	}
 
-	public void updateCallbacks() {
+	public void updateCalls() {
 		for (Callback c : calls)
 			if (getTime() >= c.getTime() && getTime() <= c.getTime()) {
 				// if (!c.hasInvoked())
@@ -341,6 +326,9 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		time = ((timeMode == SECONDS) ? ((getParent().millis() - beginTime) / 1000)
 				: (getParent().frameCount - beginTime))
 				* timeScale;
+
+		// if (isReversing() && reverseTime != 0)
+		// time = reverseTime - time;
 	}
 
 	public void pre() {
@@ -567,20 +555,20 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	}
 
 	public boolean isAbovePlayTime(float _value) {
-		return (_value >= getDelayedPlayTime() + 1) ? true : false;
+		return (_value >= getDelayedPlayTime()) ? true : false;
 	}
 
 	public boolean isBelowStopTime(float _value) {
-		return (_value <= getDelayedPlayTime() + getDuration() + 1) ? true
-				: false;
+		return (_value < getDelayedPlayTime() + getDuration()) ? true : false;
 	}
 
-	public boolean isInsidePlayingTime(float _value) {
-		// return (_value >= getDelayedPlayTime() && _value <=
-		// getDelayedPlayTime()
-		// + getDelayedDuration()) ? true : false;
-		return (_value >= getDelayedPlayTime() && _value <= getDelayedPlayTime()
-				+ getDuration() + 1) ? true : false;
+	public boolean isPlayingTime(float _value) {
+		if (isAutoUpdating)
+			return (_value >= getDelayedPlayTime() && _value < getDelayedPlayTime()
+					+ getDuration()) ? true : false;
+		else
+			return (_value >= getDelayedPlayTime() && _value <= getDelayedPlayTime()
+					+ getDuration()) ? true : false;
 	}
 
 	public Motion addEventListener(MotionEventListener listener) {

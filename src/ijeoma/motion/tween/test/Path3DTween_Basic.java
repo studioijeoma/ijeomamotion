@@ -28,8 +28,8 @@ package ijeoma.motion.tween.test;
  */
 
 import ijeoma.geom.Path3D;
+import ijeoma.geom.tween.Path3DTween;
 import ijeoma.motion.Motion;
-import ijeoma.motion.tween.Path3DTween;
 import processing.core.PApplet;
 import processing.core.PVector;
 

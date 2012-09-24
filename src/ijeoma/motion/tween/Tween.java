@@ -31,10 +31,6 @@ import ijeoma.motion.Motion;
 import ijeoma.motion.Callback;
 import ijeoma.motion.event.MotionEvent;
 import ijeoma.motion.event.MotionEventListener;
-import ijeoma.motion.property.ColorProperty;
-import ijeoma.motion.property.NumberProperty;
-import ijeoma.motion.property.PVectorProperty;
-import ijeoma.motion.property.Property;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -44,7 +40,7 @@ import processing.core.PApplet;
 import processing.core.PVector;
 
 public class Tween extends Motion { // implements Comparable
-	protected ArrayList<Property> properties = new ArrayList<Property>();
+	protected ArrayList<IProperty> properties = new ArrayList<IProperty>();
 
 	protected Method tweenStartedMethod, tweenEndedMethod, tweenChangedMethod,
 			tweenRepeatedMethod;
@@ -114,7 +110,7 @@ public class Tween extends Motion { // implements Comparable
 	 */
 	public Tween(Object _tweenObject, String _tweenObjectProperty, float _end,
 			float _duration, float _delay, String _easing) {
-		Property p = new NumberProperty(_tweenObject, _tweenObjectProperty,
+		IProperty p = new NumberProperty(_tweenObject, _tweenObjectProperty,
 				_end);
 
 		setup(p, _duration, _delay, _easing);
@@ -123,7 +119,7 @@ public class Tween extends Motion { // implements Comparable
 
 	public Tween(Object _tweenObject, String _tweenObjectProperty, float _end,
 			float _duration, float _delay) {
-		Property p = new NumberProperty(_tweenObject, _tweenObjectProperty,
+		IProperty p = new NumberProperty(_tweenObject, _tweenObjectProperty,
 				_end);
 
 		setup(p, _duration, _delay, easing);
@@ -132,14 +128,14 @@ public class Tween extends Motion { // implements Comparable
 
 	public Tween(Object _tweenObject, String _tweenObjectProperty, float _end,
 			float _duration) {
-		Property p = new NumberProperty(_tweenObject, _tweenObjectProperty,
+		IProperty p = new NumberProperty(_tweenObject, _tweenObjectProperty,
 				_end);
 
 		setup(p, _duration, delay, easing);
 		setupEvents();
 	}
 
-	protected void setup(Property _p, float _duration, float _delay,
+	protected void setup(IProperty _p, float _duration, float _delay,
 			String easing) {
 		setup(_duration, _delay, easing);
 		addProperty(_p);
@@ -178,35 +174,23 @@ public class Tween extends Motion { // implements Comparable
 
 	@Override
 	public void update() {
-		if (isPlaying()) {
-			updateTime();
+		super.update();
 
-			if (isAbovePlayTime(time))
-				if (isBelowStopTime(time)) {
-					updateCallbacks();
-					updateProperties();
-				} else
-					stop();
-		}
+		if (isPlaying())
+			updateProperties();
 	}
 
 	@Override
 	public void update(float _time) {
-		if (isPlaying()) {
-			setTime(_time);
+		super.update(_time);
 
-			if (isAbovePlayTime(time))
-				if (isBelowStopTime(time)) {
-					updateCallbacks();
-					updateProperties();
-				} else
-					stop();
-		}
+		if (isPlaying())
+			updateProperties();
 	}
 
 	protected void updateProperties() {
 		try {
-			for (Property p : properties) {
+			for (IProperty p : properties) {
 				Object[] args = { getPosition(), 0, 1, 1 };
 				p.setPosition(((Float) easingMethod.invoke(parent, args))
 						.floatValue());
@@ -315,13 +299,13 @@ public class Tween extends Motion { // implements Comparable
 		return (Tween) super.noAutoUpdate();
 	}
 
-	public Tween addProperty(Property _p) {
+	public Tween addProperty(IProperty _p) {
 		properties.add(_p);
 
 		return this;
 	}
 
-	public Tween add(Property _p) {
+	public Tween add(IProperty _p) {
 		properties.add(_p);
 
 		return this;
@@ -364,20 +348,20 @@ public class Tween extends Motion { // implements Comparable
 		return this;
 	}
 
-	public Property get(int _index) {
+	public IProperty get(int _index) {
 		return getProperty(_index);
 	}
 
-	public Property get(String _name) {
+	public IProperty get(String _name) {
 		return getProperty(_name);
 	}
 
-	public Property getProperty(int _index) {
+	public IProperty getProperty(int _index) {
 		return properties.get(_index);
 	}
 
-	public Property getProperty(String _name) {
-		Property mp = null;
+	public IProperty getProperty(String _name) {
+		IProperty mp = null;
 
 		for (int i = 0; i < properties.size(); i++)
 			if (properties.get(i).getName().equals(_name)) {
@@ -388,8 +372,8 @@ public class Tween extends Motion { // implements Comparable
 		return mp;
 	}
 
-	public Property[] getProperties() {
-		return properties.toArray(new Property[properties.size()]);
+	public IProperty[] getProperties() {
+		return properties.toArray(new IProperty[properties.size()]);
 	}
 
 	public int getPropertyCount() {

@@ -18,7 +18,7 @@ url = http://ekeneijeoma.com/processing/ijeomamotion/
 # 
 # If a value other than those listed is used, your library will listed as 
 # "Other".
-category = Animation, Geometry, Math, Utilities
+category = "Animation", "Geometry", "Math", "Utilities"
 
 # A short sentence (or fragment) to summarize the library's function. This will 
 # be shown from inside the PDE when the library is being installed. Avoid 
@@ -31,7 +31,7 @@ sentence = A library for sketching animations with numbers, colors vectors, bezi
 # 'sentence' always will be prepended, so you should start by writing the
 # second sentence here. If your library only works on certain operating systems,
 # mention it here.
-paragraph =  
+paragraph = A library for sketching animations with numbers, colors vectors, beziers, curves and more! It can play tweens in parallel, in a sequence or in a timeline/keyframes. Parallels can playback Sequences and vice versa. Timelines can also playback Parallels and Sequences too! You can also use all of aforementioed to call functions!. 
 
 # Links in the 'sentence' and 'paragraph' attributes can be inserted using the
 # same syntax as for authors. 
