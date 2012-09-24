@@ -16,7 +16,8 @@ public class Tween_Callback extends PApplet {
 
 		Motion.setup(this);
 
-		t = new Tween(100).call(this, "test", 25).play();
+		t = new Tween(10).call(this, "test", 5).setTimeMode(Tween.SECONDS)
+				.play();
 
 		// The above could also be written as
 		// t = new Tween(100).add(this, "w", width).play();

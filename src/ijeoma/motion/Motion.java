@@ -315,9 +315,9 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 	public void updateCalls() {
 		for (Callback c : calls)
-			if (getTime() >= c.getTime() && getTime() <= c.getTime()) {
-				// if (!c.hasInvoked())
-				c.invoke();
+			if (getTime() > c.getTime()) {
+				if (!c.hasInvoked())
+  					c.invoke();
 			} else
 				c.noInvoke();
 	}
