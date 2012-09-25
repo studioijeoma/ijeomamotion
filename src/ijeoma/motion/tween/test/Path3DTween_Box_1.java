@@ -79,7 +79,7 @@ public class Path3DTween_Box_1 extends PApplet {
 		// This draws the path
 		noFill();
 		stroke(100);
-		p.draw(g);
+		p.drawLine(g);
 
 		// This draws the small black box
 		fill(0);

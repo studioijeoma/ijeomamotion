@@ -81,7 +81,7 @@ public class Path3D_Basic extends PApplet {
 		translate(0, height / 2, 0);
 		noFill();
 		stroke(0);
-		path.draw(g);
+		path.drawLine(g);
 
 		PVector pathVertex = path.get((float) mouseX / width);
 

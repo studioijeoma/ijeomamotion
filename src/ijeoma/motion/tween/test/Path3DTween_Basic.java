@@ -91,7 +91,7 @@ public class Path3DTween_Basic extends PApplet {
 		translate(0, height / 2, 0);
 		noFill();
 		stroke(0);
-		p.draw(g);
+		p.drawLine(g);
 
 		pushMatrix();
 		translate(tp.getX(), tp.getY(), tp.getZ());
