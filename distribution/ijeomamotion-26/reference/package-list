@@ -1,15 +1,10 @@
 ijeoma.geom
 ijeoma.geom.test
 ijeoma.geom.tween
-ijeoma.geom.utils
+ijeoma.geom.tween.test
 ijeoma.math
 ijeoma.motion
 ijeoma.motion.easing
 ijeoma.motion.event
-ijeoma.motion.property
 ijeoma.motion.tween
 ijeoma.motion.tween.test
-ijeoma.processing.geom
-ijeoma.processing.geom.test
-ijeoma.processing.tween
-ijeoma.processing.tween.test
