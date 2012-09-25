@@ -295,21 +295,21 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 	public void update() {
 		if (isPlaying()) {
-			if (isPlayingTime(time)) {
-				updateTime();
-				updateCalls();
-			} else
+			if (isAboveStopTime(time))
 				stop();
+
+			updateTime();
+			updateCalls();
 		}
 	}
 
 	public void update(float _time) {
 		if (isPlaying()) {
-			if (isPlayingTime(time)) {
-				setTime(_time);
-				updateCalls();
-			} else
+			if (isAboveStopTime(time))
 				stop();
+
+			setTime(_time);
+			updateCalls();
 		}
 	}
 
@@ -317,7 +317,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		for (Callback c : calls)
 			if (getTime() > c.getTime()) {
 				if (!c.hasInvoked())
-  					c.invoke();
+					c.invoke();
 			} else
 				c.noInvoke();
 	}
@@ -419,10 +419,6 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 				: (time - getDelayedPlayTime());
 	}
 
-	public float getDelayTime() {
-		return time;
-	}
-
 	public Motion setTimeScale(float _timeScale) {
 		timeScale = _timeScale;
 
@@ -434,7 +430,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	}
 
 	public float getPosition() {
-		return getTime() / getDelayedDuration();
+		return getTime() / getDuration();
 	}
 
 	public Motion setDuration(float _duration) {
@@ -559,16 +555,16 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	}
 
 	public boolean isBelowStopTime(float _value) {
-		return (_value < getDelayedPlayTime() + getDuration()) ? true : false;
+		return (_value <= getDelayedPlayTime() + getDuration()) ? true : false;
+	}
+
+	public boolean isAboveStopTime(float _value) {
+		return (_value >= getDelayedPlayTime() + getDuration()) ? true : false;
 	}
 
 	public boolean isPlayingTime(float _value) {
-		if (isAutoUpdating)
-			return (_value >= getDelayedPlayTime() && _value < getDelayedPlayTime()
-					+ getDuration()) ? true : false;
-		else
-			return (_value >= getDelayedPlayTime() && _value <= getDelayedPlayTime()
-					+ getDuration()) ? true : false;
+		return (_value >= getDelayedPlayTime() && _value <= getDelayedPlayTime()
+				+ getDuration()) ? true : false;
 	}
 
 	public Motion addEventListener(MotionEventListener listener) {

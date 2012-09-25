@@ -33,7 +33,9 @@ public class Tween_Delay extends PApplet {
 		fill(255 / 2f);
 		rect(0, 0, w, height);
 
-		String time = t.getDelayTime() + " / " + t.getDelayedDuration();
+		// String time = t.getDelayTime() + " / " + t.getDelayedDuration();
+		String time = t.getPosition() + "/" + t.getTime() + " / "
+				+ t.getDuration();
 		fill(0);
 		text(time, width - textWidth(time) - 10, height - 10);
 	}

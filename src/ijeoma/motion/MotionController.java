@@ -124,7 +124,7 @@ public abstract class MotionController extends Motion implements
 	public void update() {
 		super.update();
 
-		if (isPlaying())
+		if (isPlayingTime(time))
 			updateChildren();
 	}
 
@@ -132,7 +132,7 @@ public abstract class MotionController extends Motion implements
 	public void update(float _time) {
 		super.update(_time);
 
-		if (isPlaying())
+		if (isPlayingTime(time))
 			updateChildren();
 	}
 
