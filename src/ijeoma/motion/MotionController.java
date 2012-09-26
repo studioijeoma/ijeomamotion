@@ -71,8 +71,9 @@ public abstract class MotionController extends Motion implements
 		super.stop();
 
 		for (Motion c : children)
-			if (c.isPlaying)
-				c.stop();
+			c.stop();
+		// if (c.isPlaying())
+		// c.stop();
 
 		return this;
 	}
@@ -107,14 +108,21 @@ public abstract class MotionController extends Motion implements
 	public MotionController seek(float _value) {
 		super.seek(_value);
 
-		for (Motion c : children) {
-			if (c.isAbovePlayTime(getTime()))
-				if (c.isBelowStopTime(getTime()))
-					c.seek((getTime() - c.getPlayTime()) / c.getDuration());
-				else
-					c.seek(1);
+		for (Motion c : children) { 
+			if (c.isInsidePlayingTime(getTime()))
+				c.seek((getTime() - c.getPlayTime()) / c.getDuration());
+			else if (c.isAbovePlayTime(getTime()))
+				c.seek(1);
 			else
 				c.seek(0);
+
+			// if (c.isAbovePlayTime(getTime()))
+			// if (c.isBelowStopTime(getTime()))
+			// c.seek((getTime() - c.getPlayTime()) / c.getDuration());
+			// else
+			// c.seek(1);
+			// else
+			// c.seek(0);
 		}
 
 		return this;
@@ -124,21 +132,22 @@ public abstract class MotionController extends Motion implements
 	public void update() {
 		super.update();
 
-		if (isPlayingTime(time))
-			updateChildren();
+		// if (isPlayingTime(time))
+		updateChildren();
 	}
 
 	@Override
 	public void update(float _time) {
 		super.update(_time);
 
-		if (isPlayingTime(time))
-			updateChildren();
+		// if (isPlayingTime(time))
+		// if (isPlaying())
+		updateChildren();
 	}
 
 	protected void updateChildren() {
 		for (Motion c : children) {
-			if (c.isPlayingTime(time))
+			if (c.isInsidePlayingTime(time))
 				if (c.isPlaying())
 					c.update(time);
 				else

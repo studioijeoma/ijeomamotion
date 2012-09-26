@@ -100,7 +100,7 @@ public class Sequence extends MotionController {
 		// currentChild = null;
 
 		for (Motion c : children) {
-			if (c.isPlayingTime(time)) {
+			if (c.isInsidePlayingTime(time)) {
 				currentChildIndex = i;
 				currentChild = c;
 
@@ -123,7 +123,7 @@ public class Sequence extends MotionController {
 		// currentChild = null;
 
 		for (Motion c : children) {
-			if (c.isPlayingTime(time)) {
+			if (c.isInsidePlayingTime(time)) {
 				currentChildIndex = i;
 				currentChild = c;
 

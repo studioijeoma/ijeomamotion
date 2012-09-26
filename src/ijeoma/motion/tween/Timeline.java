@@ -231,7 +231,7 @@ public class Timeline extends MotionController {
 		ArrayList<KeyFrame> currentKeyFrames = new ArrayList<KeyFrame>();
 
 		for (int i = 0; i < children.size(); i++)
-			if (children.get(i).isPlayingTime(getTime()))
+			if (children.get(i).isInsidePlayingTime(getTime()))
 				currentKeyFrames.add((KeyFrame) children.get(i));
 
 		return currentKeyFrames.toArray(new KeyFrame[currentKeyFrames.size()]);
@@ -242,7 +242,7 @@ public class Timeline extends MotionController {
 		int[] indices;
 
 		for (int i = 0; i < children.size(); i++)
-			if (children.get(i).isPlayingTime(getTime()))
+			if (children.get(i).isInsidePlayingTime(getTime()))
 				indicesList.add(i);
 
 		indices = new int[indicesList.size()];

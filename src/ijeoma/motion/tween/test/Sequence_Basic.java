@@ -42,7 +42,7 @@ public class Sequence_Basic extends PApplet {
 				color(0)), "x3");
 		ts.add(new Tween(25).add(this, "x4", (float) width).add(this, "c4",
 				color(0)), "x4");
-		ts.repeat().play();
+		ts.play();
 	}
 
 	@Override

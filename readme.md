@@ -188,7 +188,10 @@ void tweenEnded(Tween _t) {
   println(_t + " ended");
 }  
 ```
-
+###Reversing
+```java 
+Tween t = new Tween(this, "w", width, 100f).repeat().reverse().play();
+```
 ##How to use Java-style events with Tweens
 ```java 
 Tween t;

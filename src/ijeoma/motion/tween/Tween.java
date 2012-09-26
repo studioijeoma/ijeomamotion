@@ -176,7 +176,8 @@ public class Tween extends Motion { // implements Comparable
 	public void update() {
 		super.update();
 
-		if (isPlayingTime(time))
+		// if (isPlayingTime(time))
+		if (isPlaying())
 			updateProperties();
 	}
 
@@ -188,9 +189,9 @@ public class Tween extends Motion { // implements Comparable
 			updateProperties();
 	}
 
-	protected void updateProperties() {
+	protected void updateProperties() { 
 		try {
-			for (IProperty p : properties) {
+			for (IProperty p : properties) { 
 				Object[] args = { getPosition(), 0, 1, 1 };
 				p.setPosition(((Float) easingMethod.invoke(parent, args))
 						.floatValue());
@@ -223,8 +224,6 @@ public class Tween extends Motion { // implements Comparable
 	@Override
 	public Tween seek(float _value) {
 		super.seek(_value);
-
-		updateProperties();
 
 		return this;
 	}
@@ -354,6 +353,30 @@ public class Tween extends Motion { // implements Comparable
 
 	public IProperty get(String _name) {
 		return getProperty(_name);
+	}
+
+	public NumberProperty getNumber(int _index) {
+		return (NumberProperty) getProperty(_index);
+	}
+
+	public NumberProperty getNumber(String _name) {
+		return (NumberProperty) getProperty(_name);
+	}
+
+	public ColorProperty getColor(int _index) {
+		return (ColorProperty) getProperty(_index);
+	}
+
+	public ColorProperty getColor(String _name) {
+		return (ColorProperty) getProperty(_name);
+	}
+
+	public PVectorProperty getPVector(int _index) {
+		return (PVectorProperty) getProperty(_index);
+	}
+
+	public PVectorProperty getPVector(String _name) {
+		return (PVectorProperty) getProperty(_name);
 	}
 
 	public IProperty getProperty(int _index) {

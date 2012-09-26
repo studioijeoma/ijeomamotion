@@ -84,8 +84,7 @@ public class Timeline_Basic extends PApplet {
 		fill(c5);
 		rect(320, y5, 80, height);
 
-		fill(0);
-		println();
+		fill(0); 
 		Tween t = tl.getKeyFrame(1).getTween(0); 
 		String time = (int) t.getTime() + " / " + (int) t.getDuration();
 //		String time = (int) t.() + " / " + (int) t.getDuration();

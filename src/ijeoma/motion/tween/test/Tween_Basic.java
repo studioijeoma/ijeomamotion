@@ -15,7 +15,7 @@ public class Tween_Basic extends PApplet {
 
 		Motion.setup(this);
 
-		t = new Tween(this, "w", width, 100).play();
+		t = new Tween(this, "w", (float) width, 2).play();
 
 		// The above could also be written as
 		// t = new Tween(100).add(this, "w", width).play();
@@ -24,8 +24,8 @@ public class Tween_Basic extends PApplet {
 	public void draw() {
 		background(255);
 
-		float s = map(mouseX, 0, width, 0, 1); 
-		// t.setTimeScale(s); 
+		float s = map(mouseX, 0, width, 0, 1);
+		// t.setTimeScale(s);
 
 		noStroke();
 		fill(255 / 2f);
@@ -39,6 +39,8 @@ public class Tween_Basic extends PApplet {
 
 	public void keyPressed() {
 		t.play();
+		// w = 0;
+		// t = new Tween(100).add(this, "w", (float) width).play();
 	}
 
 	public void mousePressed() {

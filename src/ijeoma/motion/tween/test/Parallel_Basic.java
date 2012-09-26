@@ -33,7 +33,7 @@ public class Parallel_Basic extends PApplet {
 
 		tp = new Parallel();
 		tp.add(new Tween(this, "x1", width, 100), "x1")
-				.add(new Tween(this, "x2", -width, 200), "x2").play();
+				.add(new Tween(this, "x2", -width, 200), "x2").repeat().reverse().play();
 
 		// The above could also be written as...
 		// tp.addTween(this, "x1", width, 100).addTween(this, "x2", -width,
