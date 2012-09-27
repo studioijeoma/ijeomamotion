@@ -9,6 +9,9 @@ In Processing 2.0 you can do an auto download and install by going Sketch->Add L
 #Javadocs
 http://ekeneijeoma.com/processing/ijeomamotion/reference/index.html
 
+#Demo
+![alt text](http://goo.gl/NZjG8 "Arcs")
+
 #Getting Started
 First, import the library into your Sketch via Sketch->Import Library->ijeomamotion. 
 Then call
