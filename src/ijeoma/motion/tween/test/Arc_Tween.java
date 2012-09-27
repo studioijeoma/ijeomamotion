@@ -1,119 +1,149 @@
 package ijeoma.motion.tween.test;
 
 import ijeoma.motion.Motion;
-import ijeoma.motion.tween.Parallel;
 import ijeoma.motion.tween.Tween;
 import processing.core.PApplet;
+import processing.core.PVector;
 
 public class Arc_Tween extends PApplet {
-	Tween t;
-
 	int arcCount = 100;
 	Arc[] arcs;
-	Parallel arcTweens;
 
-	Tween rotationTween;
 	float rx, ry, rz;
+	Tween ryt;
+
+	PVector p;
+	Tween pt;
+
+	boolean isFlashing = false;
 
 	public void setup() {
-		size(400, 400, P3D);
+		size(500, 500, P3D);
 		smooth();
 
 		Motion.setup(this);
 
 		setupArcs();
 
-		rotationTween = new Tween(300).add(this, "ry", TWO_PI).repeat().play();
+		ryt = new Tween(100).add(this, "ry", TWO_PI).repeat().play();
+
+		p = new PVector(width / 2, height / 2);
+		pt = new Tween(50).add(p, "x", random(200, width - 200))
+				.add(p, "y", random(200, height - 200))
+				.setEasing(Tween.CIRC_OUT).play();
+
 	}
 
 	public void setupArcs() {
-		arcCount = 10;
-		float arcRMax = 400;
+		arcCount = 100;
 
 		arcs = new Arc[arcCount];
-		arcTweens = new Parallel();
 
-		for (int i = 0; i < arcCount; i++) {
-			arcs[i] = new Arc();
-			arcs[i].r = i * arcRMax / arcCount;
-			arcs[i].b = random(TWO_PI);
-			arcs[i].e = arcs[i].b + random(PI / 4, PI);
-			arcs[i].p = arcs[i].b;
-
-			arcTweens.add(new Tween(100).add(arcs[i], "p", arcs[i].e));
-		}
-
-		arcTweens.play();
+		for (int i = 0; i < arcCount; i++)
+			arcs[i] = new Arc(i * 400f / arcCount);
 	}
 
 	public void draw() {
 		background(0);
-		// lights();
-		// smooth();
+		lights();
+		smooth();
 
+		pushMatrix();
 		translate(width / 2, height / 2);
-		// rotateY(ry);
-		for (int i = 0; i < arcs.length; i++)
-			arcs[i].draw();
+		// translate(mouseX, mouseY);
+		// translate(p.x, p.y);
+		rotateY(ry);
+		rotateZ(TWO_PI - ry);
+
+		colorMode(RGB);
+		strokeWeight(2);
+		stroke(255, 100);
+		noFill();
+		box(400);
+
+		for (Arc a : arcs)
+			a.draw();
+		popMatrix();
+
+		isFlashing = false;
+
+		// String time = pt.getTime() + " / " + pt.getDuration();
+		//
+		// fill(255);
+		// text(time, width - textWidth(time) - 10, height - 10);
 	}
 
 	class Arc {
-		float r, w;
+		float r;
 		float b, e, p;
-		int c;
-		float rx, ry;
+		int w, c;
+		float rx, ry, rz;
 
-		Arc() {
+		Tween rzt, pt;
+		float rztd;
+
+		Arc(float r) {
+			this.r = r;
 			c = color(random(255), random(255), random(255));
-			w = random(1, 10);
+			w = (int) random(1, 10);
 			rx = random(TWO_PI);
 			ry = random(TWO_PI);
+
+			rz = 0;
+			rztd = random(25,50);
+			rzt = new Tween(rztd).add(this, "rz", TWO_PI).repeat().play();
+
+			b = random(TWO_PI);
+			e = b + random(PI / 6, PI / 2);
+
+			p = b;
+			pt = new Tween(50).add(this, "p", e).play();
 		}
 
 		void draw() {
+			colorMode(HSB);
 			strokeWeight(w);
-			stroke(c);
+			if (isFlashing)
+				stroke(0, 0, 360);
+			else
+				stroke(360 * rzt.getPosition(), 360, 360,
+						360 - 360 * rzt.getPosition());
 			noFill();
 			pushMatrix();
-			// rotateX(rx);
-			// rotateY(ry);
+			rotateX(rx);
+			rotateY(ry);
+			rotateZ(rz);
 			arc(0, 0, r, r, b, p);
 			popMatrix();
 		}
 	}
 
+	public void tweenRepeated(Tween t) {
+
+	}
+
 	public void tweenEnded(Tween t) {
-		// t.setDelay(random(100));
-		// t.setDelay(0);
-		// t.setDuration(random(10, 100));
+		// isFlashing = true;
 
-		// float b = t.getNumber("p").getEnd();
-		// float e = random(PI / 4, PI);
-
-		//
-		// t.getNumber("p").setBegin(b);
-		// t.getNumber("p").setEnd(e);
-
-		arcTweens.play();
+		t.getNumber("x").setEnd(random(200, width - 200));
+		t.getNumber("y").setEnd(random(200, height - 200));
+		t.setEasing(Tween.EXPO_BOTH);
+		t.play();
 	}
 
 	public void keyPressed() {
 		setupArcs();
-		// rotationTween.play();
 	}
 
 	public void mousePressed() {
-		arcTweens.pause();
-		rotationTween.pause();
+		ryt.pause();
 	}
 
 	public void mouseReleased() {
-		arcTweens.resume();
-		rotationTween.resume();
+		ryt.resume();
 	}
 
 	public void mouseDragged() {
-		// arcTweens.seek((float) mouseX / width);
-		rotationTween.seek((float) mouseX / width);
+		ryt.seek((float) mouseX / width);
 	}
 }

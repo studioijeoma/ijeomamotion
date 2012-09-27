@@ -193,7 +193,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 			if (isReversing)
 				reverseTime = (reverseTime == 0) ? duration : 0;
 
-			PApplet.println(reverseTime);
+			// PApplet.println(reverseTime);
 
 			seek(0);
 			resume();
@@ -258,7 +258,9 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	public Motion seek(float _value) {
 		beginTime = time = getPlayTime() + _value * getDelayedDuration();
 
+		isPlaying = true;
 		update(time);
+		isPlaying = false;
 
 		return this;
 	}
