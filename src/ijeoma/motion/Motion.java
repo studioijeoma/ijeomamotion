@@ -47,6 +47,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	protected static Class parentClass;
 
 	// protected int id;
+	protected String name = "";
 	protected String type;
 
 	protected ArrayList<Callback> calls = new ArrayList<Callback>();
@@ -102,11 +103,19 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	 * 
 	 */
 	public Motion() {
-		setup(duration, delay, easing);
+		setup("", duration, delay, easing);
 		setupEvents();
 	}
 
-	protected void setup(float _duration, float _delay, String _easing) {
+	public Motion(String _name) {
+		setup(_name, duration, delay, easing);
+		setupEvents();
+	}
+
+	protected void setup(String _name, float _duration, float _delay,
+			String _easing) {
+		name = _name;
+
 		duration = _duration;
 
 		delay = _delay;
@@ -117,6 +126,10 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		setEasing(_easing);
 
 		type = this.getClass().getSimpleName();
+	}
+
+	protected void setup(float _duration, float _delay, String _easing) {
+		setup("", _duration, _delay, _easing);
 	}
 
 	public static void setup(PApplet _parent) {
@@ -415,6 +428,14 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return calls.size();
 	}
 
+	public void setName(String _name) {
+		name = _name;
+	}
+
+	public String getName() {
+		return name;
+	}
+
 	public void setPlayTime(float _playTime) {
 		playTime = _playTime;
 	}
@@ -537,7 +558,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return this;
 	}
 
-	public int getRepeatDuration() {
+	public int getRepeatCount() {
 		return repeatCount;
 	}
 
@@ -576,7 +597,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	public boolean isAbovePlayTime(float _value) {
 		return (_value > getDelayedPlayTime()) ? true : false;
 	}
-	
+
 	public boolean isBelowStopTime(float _value) {
 		return (_value < getDelayedPlayTime() + getDuration()) ? true : false;
 	}

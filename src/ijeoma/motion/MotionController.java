@@ -61,6 +61,15 @@ public abstract class MotionController extends Motion implements
 		this.addAll(_children);
 	}
 
+	public MotionController(String _name) {
+		super(_name);
+	}
+
+	public MotionController(String _name, Motion[] _children) {
+		super(_name);
+		this.addAll(_children);
+	}
+
 	@Override
 	public MotionController play() {
 		return (MotionController) super.play();
@@ -108,7 +117,7 @@ public abstract class MotionController extends Motion implements
 	public MotionController seek(float _value) {
 		super.seek(_value);
 
-		for (Motion c : children) { 
+		for (Motion c : children) {
 			if (c.isInsidePlayingTime(getTime()))
 				c.seek((getTime() - c.getPlayTime()) / c.getDuration());
 			else if (c.isAbovePlayTime(getTime()))

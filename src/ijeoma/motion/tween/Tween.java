@@ -52,6 +52,40 @@ public class Tween extends Motion { // implements Comparable
 	/**
 	 * Constructs a Tween
 	 * 
+	 * @param _name
+	 * @param _duration
+	 *            how many seconds/frames you want the tween to take from begin
+	 *            to the end
+	 * @param _delay
+	 *            how many seconds/frames you want the tween to delay before
+	 *            starting
+	 * @param _easing
+	 *            LINEAR_IN, LINEAR_OUT, LINEAR_BOTH, QUAD_IN, QUAD_OUT,
+	 *            QUAD_BOTH, CUBIC_IN, CUBIC_BOTH, CUBIC_OUT, QUART_IN,
+	 *            QUART_OUT, QUART_BOTH, QUINT_IN, QUINT_OUT, QUINT_BOTH,
+	 *            SINE_IN, SINE_OUT,SINE_BOTH, CIRC_IN, CIRC_OUT, CIRC_BOTH,
+	 *            EXPO_IN, EXPO_OUT, EXPO_BOTH, BACK_IN, BACK_OUT, BACK_BOTH,
+	 *            BOUNCE_IN, BOUNCE_OUT, BOUNCE_BOTH, ELASTIC_IN, ELASTIC_OUT,
+	 *            ELASTIC_BOTH
+	 */
+	public Tween(String _name, float _duration, float _delay, String _easing) {
+		setup(_name, _duration, _delay, _easing);
+		setupEvents();
+	}
+
+	public Tween(String _name, float _duration, float _delay) {
+		setup(_name, _duration, _delay, easing);
+		setupEvents();
+	}
+
+	public Tween(String _name, float _duration) {
+		setup(_name, _duration, delay, easing);
+		setupEvents();
+	}
+
+	/**
+	 * Constructs a Tween
+	 * 
 	 * @param _duration
 	 *            how many seconds/frames you want the tween to take from begin
 	 *            to the end
@@ -68,7 +102,7 @@ public class Tween extends Motion { // implements Comparable
 	 *            ELASTIC_BOTH
 	 */
 	public Tween(float _duration, float _delay, String _easing) {
-		setup(_duration, _delay, _easing);
+		setup("", _duration, _delay, _easing);
 		setupEvents();
 	}
 
@@ -87,6 +121,59 @@ public class Tween extends Motion { // implements Comparable
 	 * 
 	 * @param _name
 	 *            the id of the tween
+	 * @param _tweenObject
+	 *            the object you want to tween
+	 * @param _tweenObjectProperty
+	 *            the parameter of the object you want to tween
+	 * @param _end
+	 *            the position you want the tween to end at
+	 * @param _duration
+	 *            how many seconds/frames you want the tween to take from begin
+	 *            to the end
+	 * @param _delay
+	 *            how many seconds/frames you want the tween to delay before
+	 *            starting
+	 * @param _easing
+	 *            LINEAR_IN, LINEAR_OUT, LINEAR_BOTH, QUAD_IN, QUAD_OUT,
+	 *            QUAD_BOTH, CUBIC_IN, CUBIC_BOTH, CUBIC_OUT, QUART_IN,
+	 *            QUART_OUT, QUART_BOTH, QUINT_IN, QUINT_OUT, QUINT_BOTH,
+	 *            SINE_IN, SINE_OUT,SINE_BOTH, CIRC_IN, CIRC_OUT, CIRC_BOTH,
+	 *            EXPO_IN, EXPO_OUT, EXPO_BOTH, BACK_IN, BACK_OUT, BACK_BOTH,
+	 *            BOUNCE_IN, BOUNCE_OUT, BOUNCE_BOTH, ELASTIC_IN, ELASTIC_OUT,
+	 *            ELASTIC_BOTH
+	 */
+	public Tween(String _name, Object _tweenObject,
+			String _tweenObjectProperty, float _end, float _duration,
+			float _delay, String _easing) {
+		IProperty p = new NumberProperty(_tweenObject, _tweenObjectProperty,
+				_end);
+
+		setup(_name, p, _duration, _delay, _easing);
+		setupEvents();
+	}
+
+	public Tween(String _name, Object _tweenObject,
+			String _tweenObjectProperty, float _end, float _duration,
+			float _delay) {
+		IProperty p = new NumberProperty(_tweenObject, _tweenObjectProperty,
+				_end);
+
+		setup(_name, p, _duration, _delay, easing);
+		setupEvents();
+	}
+
+	public Tween(String _name, Object _tweenObject,
+			String _tweenObjectProperty, float _end, float _duration) {
+		IProperty p = new NumberProperty(_tweenObject, _tweenObjectProperty,
+				_end);
+
+		setup(_name, p, _duration, delay, easing);
+		setupEvents();
+	}
+
+	/**
+	 * Constructs a Tween
+	 *  
 	 * @param _tweenObject
 	 *            the object you want to tween
 	 * @param _tweenObjectProperty
@@ -133,6 +220,12 @@ public class Tween extends Motion { // implements Comparable
 
 		setup(p, _duration, delay, easing);
 		setupEvents();
+	}
+
+	protected void setup(String _name, IProperty _p, float _duration,
+			float _delay, String easing) {
+		setup(_name, _duration, _delay, easing);
+		addProperty(_p);
 	}
 
 	protected void setup(IProperty _p, float _duration, float _delay,
@@ -189,9 +282,9 @@ public class Tween extends Motion { // implements Comparable
 			updateProperties();
 	}
 
-	protected void updateProperties() { 
+	protected void updateProperties() {
 		try {
-			for (IProperty p : properties) { 
+			for (IProperty p : properties) {
 				Object[] args = { getPosition(), 0, 1, 1 };
 				p.setPosition(((Float) easingMethod.invoke(parent, args))
 						.floatValue());

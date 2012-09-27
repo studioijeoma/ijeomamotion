@@ -55,6 +55,17 @@ public class Sequence extends MotionController {
 		setupEvents();
 	}
 
+	public Sequence(String _name) {
+		super(_name);
+		setupEvents();
+	}
+
+	public Sequence(String _name, Motion[] _children) {
+		super(_name);
+		addAll(_children);
+		setupEvents();
+	}
+
 	@Override
 	protected void setupEvents() {
 		super.setupEvents();

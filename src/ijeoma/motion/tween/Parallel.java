@@ -40,10 +40,7 @@ public class Parallel extends MotionController {
 			tweenParallelChangedMethod, tweenParallelRepeatedMethod;
 
 	/**
-	 * Constructs a TweenParallel
-	 * 
-	 * @param g
-	 *            refers to PApplet and is usually 'this'
+	 * Constructs a TweenParallel 
 	 */
 	public Parallel() {
 		super();
@@ -52,9 +49,32 @@ public class Parallel extends MotionController {
 
 	/**
 	 * Constructs a TweenParallel
+	 *  
+	 * @param children
+	 *            is an array of type Object[] can contain Tweens and/or
+	 *            TweenParallels
+	 */
+	public Parallel(Motion[] _children) {
+		super();
+		addAll(_children);
+		setupEvents();
+	}
+
+	/**
+	 * Constructs a TweenParallel
 	 * 
-	 * @param g
-	 *            refers to PApplet and is usually 'this'
+	 * @param name
+	 *            is used to find a TweenParallel with in another TweenParallel
+	 *            or TweenSequence
+	 */
+	public Parallel(String _name) {
+		super(_name);
+		setupEvents();
+	}
+
+	/**
+	 * Constructs a TweenParallel
+	 *  
 	 * @param name
 	 *            is used to find a TweenParallel with in another TweenParallel
 	 *            or TweenSequence
@@ -62,8 +82,8 @@ public class Parallel extends MotionController {
 	 *            is an array of type Object[] can contain Tweens and/or
 	 *            TweenParallels
 	 */
-	public Parallel(Motion[] _children) {
-		super();
+	public Parallel(String _name, Motion[] _children) {
+		super(_name);
 		addAll(_children);
 		setupEvents();
 	}

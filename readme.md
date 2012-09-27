@@ -11,6 +11,7 @@ http://ekeneijeoma.com/processing/ijeomamotion/reference/index.html
 
 #Demo
 ![alt text](http://goo.gl/NZjG8 "Arcs")
+![alt text](http://goo.gl/nUiH9 "Lines")
 
 #Getting Started
 First, import the library into your Sketch via Sketch->Import Library->ijeomamotion. 

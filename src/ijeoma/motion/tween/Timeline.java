@@ -56,6 +56,14 @@ public class Timeline extends MotionController {
 		super(_children);
 	}
 
+	public Timeline(String _name) {
+		super(_name);
+	}
+
+	public Timeline(String _name, Motion[] _children) {
+		super(_name, _children);
+	}
+
 	@Override
 	protected void setupEvents() {
 		super.setupEvents();
@@ -126,8 +134,8 @@ public class Timeline extends MotionController {
 			sequences.add((Sequence) _child);
 			if (_name != null)
 				sequenceMap.put(_name, (Sequence) _child);
-		} 
-		
+		}
+
 		// else if (_child.isCallback()) {
 		// callbacks.add((Callback) _child);
 		// if (_name != null)
@@ -252,7 +260,7 @@ public class Timeline extends MotionController {
 
 		return indices;
 	}
-	
+
 	public KeyFrame getKeyFrame(int _index) {
 		return (KeyFrame) children.get(_index);
 	}
