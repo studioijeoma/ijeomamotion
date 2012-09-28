@@ -40,12 +40,23 @@ public class KeyFrame extends MotionController {
 			keyframeChangedMethod, keyframeRepeatedMethod;
 
 	public KeyFrame(float _time) {
-		super();
+		super(PApplet.str(_time));
 		setPlayTime(_time);
 	}
 
 	public KeyFrame(float _time, Motion[] _children) {
-		super();
+		super(PApplet.str(_time));
+		setPlayTime(_time);
+		addAll(_children);
+	}
+
+	public KeyFrame(String _name, float _time) {
+		super(_name);
+		setPlayTime(_time);
+	}
+
+	public KeyFrame(String _name, float _time, Motion[] _children) {
+		super(_name);
 		setPlayTime(_time);
 		addAll(_children);
 	}

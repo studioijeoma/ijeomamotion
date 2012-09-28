@@ -34,16 +34,17 @@ public class Sequence_Basic extends PApplet {
 		x1 = x2 = x3 = x4 = -width;
 
 		ts = new Sequence();
-		ts.add(new Tween(100).add(this, "x1", (float) width).add(this, "c1",
-				color(0)), "x1");
-		ts.add(new Tween(75).add(this, "x2", (float) width).add(this, "c2",
-				color(0)), "x2");
+		ts.add(new Tween("x1", 100).add(this, "x1", (float) width).add(this,
+				"c1", color(0)));
+		ts.add(new Tween("x2", 75).add(this, "x2", (float) width).add(this,
+				"c2", color(0)));
 		ts.play();
-		ts.add(new Tween(50).add(this, "x3", (float) width).add(this, "c3",
-				color(0)), "x3");
-		ts.add(new Tween(25).add(this, "x4", (float) width).add(this, "c4",
-				color(0)), "x4");
-//		ts.reverse().repeat().play();
+		ts.add(new Tween("x3", 50).add(this, "x3", (float) width).add(this,
+				"c3", color(0)));
+		ts.add(new Tween("x4", 25).add(this, "x4", (float) width).add(this,
+				"c4", color(0)));
+		ts.delay(25);
+		// ts.reverse().repeat().play();
 		ts.play();
 	}
 

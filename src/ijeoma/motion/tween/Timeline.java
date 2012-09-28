@@ -91,70 +91,22 @@ public class Timeline extends MotionController {
 		}
 	}
 
-	public Timeline add(Motion _child, float _time) {
-		KeyFrame kf = getKeyFrame(PApplet.str(_time));
-
-		if (kf == null) {
-			kf = new KeyFrame(_time);
-			kf.add(_child);
-
-			addKeyFrame(kf, PApplet.str(_time));
-		} else
-			kf.add(_child);
-
-		return this;
-	}
-
 	@Override
-	protected MotionController insert(Motion _child, String _name, float _time) {
-		_child.setPlayTime(getPlayTime() + _time);
-
-		_child.seek(1);
-
-		// _child.setDelay(0);
-		_child.setTimeMode(timeMode);
-
-		_child.noAutoUpdate();
-
-		_child.addEventListener(this);
+	protected Timeline insert(Motion _child, float _time) {
+		super.insert(_child, _time);
 
 		if (_child.isKeyFrame()) {
 			keyFrames.add((KeyFrame) _child);
-			if (_name != null)
-				keyFrameMap.put(_name, (KeyFrame) _child);
-		} else if (_child.isTween()) {
-			tweens.add((Tween) _child);
-			if (_name != null)
-				tweenMap.put(_name, (Tween) _child);
-		} else if (_child.isParallel()) {
-			parallels.add((Parallel) _child);
-			if (_name != null)
-				parallelMap.put(_name, (Parallel) _child);
-		} else if (_child.isSequence()) {
-			sequences.add((Sequence) _child);
-			if (_name != null)
-				sequenceMap.put(_name, (Sequence) _child);
+			if (_child.getName() != null)
+				keyFrameMap.put(_child.getName(), (KeyFrame) _child);
 		}
-
-		// else if (_child.isCallback()) {
-		// callbacks.add((Callback) _child);
-		// if (_name != null)
-		// callbackMap.put(_name, (Callback) _child);
-		// }
-
-		children.add(_child);
-		if (_name != null)
-			childrenMap.put(_name, _child);
-
-		updateDuration();
 
 		return this;
 	}
 
 	@Override
-	public Timeline add(Motion _child, String _name) {
-		// PApplet.println("insertChild(" + _child + ", " + _name + ")");
-		KeyFrame c = (KeyFrame) childrenMap.get(_name);
+	public Timeline add(Motion _child) {
+		KeyFrame c = (KeyFrame) childrenMap.get(_child.getName());
 		c.add(_child);
 
 		children.set(children.indexOf(c), c);
@@ -162,21 +114,35 @@ public class Timeline extends MotionController {
 		return this;
 	}
 
+	public Timeline add(Motion _child, float _time) {
+		KeyFrame kf = getKeyFrame(PApplet.str(_time));
+
+		if (kf == null) {
+			kf = new KeyFrame(PApplet.str(_time), _time);
+			kf.add(_child);
+
+			insert(kf, _time);
+		} else
+			kf.add(_child);
+
+		PApplet.println(kf.getDuration());
+
+		return this;
+	}
+
 	public Timeline addAll(Motion[] _children, float _time) {
-		// PApplet.println("insertChildren(" + _children + ", " + _time + ")");
+		KeyFrame kf = getKeyFrame(_time);
 
-		KeyFrame keyFrame = getKeyFrame(_time);
-
-		if (keyFrame == null) {
-			keyFrame = new KeyFrame(_time);
+		if (kf == null) {
+			kf = new KeyFrame(PApplet.str(_time), _time);
 
 			for (int j = 0; j < _children.length; j++)
-				keyFrame.add(_children[j]);
+				kf.add(_children[j]);
 
-			addKeyFrame(keyFrame, PApplet.str(_time));
+			insert(kf, _time);
 		} else
 			for (int j = 0; j < _children.length; j++)
-				keyFrame.add(_children[j]);
+				kf.add(_children[j]);
 
 		return this;
 	}
@@ -189,31 +155,6 @@ public class Timeline extends MotionController {
 		children.set(children.indexOf(c), c);
 
 		return this;
-	}
-
-	public Timeline addKeyFrame(KeyFrame _keyFrame) {
-		return (Timeline) insert(_keyFrame, null, _keyFrame.getPlayTime());
-	}
-
-	public Timeline addKeyFrame(KeyFrame _keyFrame, String _name) {
-		return (Timeline) insert(_keyFrame, _name, _keyFrame.getPlayTime());
-	}
-
-	public Timeline addKeyFrame(float _time) {
-		return (Timeline) insert(new KeyFrame(_time), PApplet.str(_time), _time);
-	}
-
-	public Timeline addKeyFrame(float _time, Motion[] _children) {
-		return (Timeline) insert(new KeyFrame(_time, _children),
-				PApplet.str(_time), _time);
-	}
-
-	public Timeline addKeyFrame(String _name, float _time) {
-		return (Timeline) insert(new KeyFrame(_time), _name, _time);
-	}
-
-	public Timeline addKeyFrame(String _name, float _time, Motion[] _children) {
-		return (Timeline) insert(new KeyFrame(_time, _children), _name, _time);
 	}
 
 	public void removeKeyFrame(int _time) {

@@ -237,16 +237,8 @@ public class Sequence extends MotionController {
 
 	@Override
 	public Sequence add(Motion _child) {
-		return add(_child, null);
-	}
-
-	@Override
-	public Sequence add(Motion _child, String _name) {
-		insert(_child, _name, getDuration());
-
 		currentChild = _child;
-
-		return this;
+		return (Sequence) super.insert(_child, getDuration());
 	}
 
 	/**

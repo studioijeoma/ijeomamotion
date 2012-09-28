@@ -32,8 +32,8 @@ public class Parallel_Events_1 extends PApplet {
 		Motion.setup(this);
 
 		tp = new Parallel();
-		tp.add(new Tween(this, "x1", width, 100), "x1").add(
-				new Tween(this, "x2", -width, 200), "x2");
+		tp.add(new Tween("x1", this, "x1", width, 100)).add(
+				new Tween("x2", this, "x2", -width, 200));
 		tp.repeat().play();
 	}
 

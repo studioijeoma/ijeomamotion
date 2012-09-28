@@ -43,14 +43,14 @@ public class Sequence_Events_3 extends PApplet {
 		Motion.setup(this);
 
 		ts = new Sequence();
-		ts.add(new Tween(100).add(this, "x1", width)
-				.add(this, "c1", color(0)).addEventListener(tel), "x1");
-		ts.add(new Tween(75).add(this, "x2", width)
-				.add(this, "c2", color(0)).addEventListener(tel), "x2");
-		ts.add(new Tween(50).add(this, "x3", width)
-				.add(this, "c3", color(0)).addEventListener(tel), "x3");
-		ts.add(new Tween(25).add(this, "x4", width)
-				.add(this, "c4", color(0)).addEventListener(tel), "x4");
+		ts.add(new Tween("c1", 100).add(this, "x1", width)
+				.add(this, "c1", color(0)).addEventListener(tel));
+		ts.add(new Tween("c2", 75).add(this, "x2", width)
+				.add(this, "c2", color(0)).addEventListener(tel));
+		ts.add(new Tween("c3", 50).add(this, "x3", width)
+				.add(this, "c3", color(0)).addEventListener(tel));
+		ts.add(new Tween("c4", 25).add(this, "x4", width)
+				.add(this, "c4", color(0)).addEventListener(tel));
 		ts.addEventListener(tsel);
 		ts.repeat().play();
 	}

@@ -104,19 +104,19 @@ public class Tween_BarChart extends PApplet {
 			b.draw();
 		popMatrix();
 
-		String time = (int) ts.getParallel(1).get(0).getTime() + " / "
-				+ (int) ts.getParallel(1).get(0).getDuration();
+		// String time = (int) ts.getParallel(1).get(0).getTime() + " / "
+		// + (int) ts.getParallel(1).get(0).getDuration();
+		//
+		// fill(0);
+		// text(time, width - textWidth(time) - 10, height - 50);
+		//
+		// time = (int) ts.getParallel(1).getTime() + " / "
+		// + (int) ts.getParallel(1).getDuration();
+		//
+		// fill(0);
+		// text(time, width - textWidth(time) - 10, height - 30);
 
-		fill(0);
-		text(time, width - textWidth(time) - 10, height - 50);
-
-		time = (int) ts.getParallel(1).getTime() + " / "
-				+ (int) ts.getParallel(1).getDuration();
-
-		fill(0);
-		text(time, width - textWidth(time) - 10, height - 30);
-
-		time = (int) ts.getTime() + " / " + (int) ts.getDuration();
+		String time = (int) ts.getTime() + " / " + (int) ts.getDuration();
 
 		fill(0);
 		text(time, width - textWidth(time) - 10, height - 10);

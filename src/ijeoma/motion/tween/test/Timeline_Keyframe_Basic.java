@@ -86,8 +86,8 @@ public class Timeline_Keyframe_Basic extends PApplet {
 		// kf5.add(new Tween(height, -height, 100));
 		// kf5.add(new Tween(-height, height, 100));
 
-		t.addKeyFrame(kf1, "100");
-		t.addKeyFrame(kf2, "200");
+		// t.addKeyFrame(kf1, "100");
+		// t.addKeyFrame(kf2, "200");
 		// t.addKeyFrame(kf3, "300");
 		// t.addKeyFrame(kf4, "400");
 		// t.addKeyFrame(kf5, "500");

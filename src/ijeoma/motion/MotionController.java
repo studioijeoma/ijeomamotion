@@ -163,10 +163,10 @@ public abstract class MotionController extends Motion implements
 		}
 	}
 
-	protected void updateDuration() {
-		for (Motion c : children)
-			duration = PApplet.max(duration, (c.getPlayTime() - getPlayTime())
-					+ c.getDelayedDuration());
+	protected void updateDuration() { 
+		for (Motion c : children)  
+			duration = PApplet.max(duration,
+					c.getPlayTime() + c.getDelayedDuration()); 
 
 		for (Callback c : calls)
 			duration = PApplet.max(duration, c.getTime() - getPlayTime());
@@ -354,19 +354,17 @@ public abstract class MotionController extends Motion implements
 	}
 
 	public MotionController add(Motion _child) {
-		return add(_child, null);
+		insert(_child, 0);
+		return this;
 	}
 
-	public MotionController add(Motion _child, String _name) {
-		return insert(_child, _name, 0);
-	}
-
-	protected MotionController insert(Motion _child, String _name, float _time) {
-		_child.setPlayTime(getPlayTime() + _time);
+	protected Motion insert(Motion _child, float _time) {
+		// _child.setDelay(0);
+		// _child.setPlayTime(getPlayTime() + _time);
+		_child.setPlayTime(_time);
 
 		_child.seek(1);
 
-		// _child.setDelay(0);
 		_child.setTimeMode(timeMode);
 
 		_child.noAutoUpdate();
@@ -375,27 +373,21 @@ public abstract class MotionController extends Motion implements
 
 		if (_child.isTween()) {
 			tweens.add((Tween) _child);
-			if (_name != null)
-				tweenMap.put(_name, (Tween) _child);
+			if (_child.getName() != null)
+				tweenMap.put(_child.getName(), (Tween) _child);
 		} else if (_child.isParallel()) {
 			parallels.add((Parallel) _child);
-			if (_name != null)
-				parallelMap.put(_name, (Parallel) _child);
+			if (_child.getName() != null)
+				parallelMap.put(_child.getName(), (Parallel) _child);
 		} else if (_child.isSequence()) {
 			sequences.add((Sequence) _child);
-			if (_name != null)
-				sequenceMap.put(_name, (Sequence) _child);
+			if (_child.getName() != null)
+				sequenceMap.put(_child.getName(), (Sequence) _child);
 		}
 
-		// else if (_child.isCallback()) {
-		// callbacks.add((Callback) _child);
-		// if (_name != null)
-		// callbackMap.put(_name, (Callback) _child);
-		// }
-
 		children.add(_child);
-		if (_name != null)
-			childrenMap.put(_name, _child);
+		if (_child.getName() != null)
+			childrenMap.put(_child.getName(), _child);
 
 		updateDuration();
 
@@ -427,20 +419,20 @@ public abstract class MotionController extends Motion implements
 			String _tweenObjectProperty, float _end, float _duration,
 			float _delay, String _easing) {
 		return add(new Tween(_tweenObject, _tweenObjectProperty, _end,
-				_duration, _delay, _easing), _tweenObjectProperty);
+				_duration, _delay, _easing));
 	}
 
 	public MotionController addTween(Object _tweenObject,
 			String _tweenObjectProperty, float _end, float _duration,
 			float _delay) {
 		return add(new Tween(_tweenObject, _tweenObjectProperty, _end,
-				_duration, _delay), _tweenObjectProperty);
+				_duration, _delay));
 	}
 
 	public MotionController addTween(Object _tweenObject,
 			String _tweenObjectProperty, float _end, float _duration) {
 		return add(new Tween(_tweenObject, _tweenObjectProperty, _end,
-				_duration), _tweenObjectProperty);
+				_duration));
 	}
 
 	/**

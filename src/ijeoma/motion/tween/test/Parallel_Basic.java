@@ -32,9 +32,9 @@ public class Parallel_Basic extends PApplet {
 		Motion.setup(this);
 
 		tp = new Parallel();
-		tp.add(new Tween(this, "x1", width, 100), "x1")
-				.add(new Tween(this, "x2", -width, 200), "x2").reverse().repeat()
-				.play();
+		tp.add(new Tween("x1", this, "x1", width, 100))
+				.add(new Tween("x2", this, "x2", -width, 200)).reverse()
+				.repeat().play();
 
 		// The above could also be written as...
 		// tp.addTween(this, "x1", width, 100).addTween(this, "x2", -width,
