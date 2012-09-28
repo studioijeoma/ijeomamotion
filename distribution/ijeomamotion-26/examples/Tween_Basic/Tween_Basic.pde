@@ -11,7 +11,7 @@ void setup() {
 
   Motion.setup(this);
 
-  t = new Tween(this, "w", width, 100f).play();
+  t = new Tween(this, "w", width, 100f).reverse().repeat().play();
 
   // The above could also be written as
   // t = new Tween(100).add(this, "w", width).play();

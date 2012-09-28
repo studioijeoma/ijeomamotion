@@ -28,7 +28,7 @@ void setup() {
 	  color(0)), 150);
 	  tl.add(new Tween(50).add(this, "y5", (float)height).add(this, "c5", 
 	  color(0)), 200);
-  tl.repeat().play();
+  tl.reverse().repeat().play();
 }
 
 void draw() {

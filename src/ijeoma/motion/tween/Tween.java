@@ -268,8 +268,7 @@ public class Tween extends Motion { // implements Comparable
 	@Override
 	public void update() {
 		super.update();
-
-		// if (isPlayingTime(time))
+ 
 		if (isPlaying())
 			updateProperties();
 	}

@@ -38,11 +38,13 @@ public class Sequence_Basic extends PApplet {
 				color(0)), "x1");
 		ts.add(new Tween(75).add(this, "x2", (float) width).add(this, "c2",
 				color(0)), "x2");
+		ts.play();
 		ts.add(new Tween(50).add(this, "x3", (float) width).add(this, "c3",
 				color(0)), "x3");
 		ts.add(new Tween(25).add(this, "x4", (float) width).add(this, "c4",
 				color(0)), "x4");
-		ts.reverse().repeat().play();
+//		ts.reverse().repeat().play();
+		ts.play();
 	}
 
 	@Override

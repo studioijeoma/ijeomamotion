@@ -22,6 +22,8 @@ public class Tween_BarChart extends PApplet {
 	Sequence ts;
 	float d = 75;
 
+	Tween t;
+
 	public void setup() {
 		size(800, 600);
 		smooth();
@@ -49,10 +51,12 @@ public class Tween_BarChart extends PApplet {
 
 		Collections.sort(bars, new ValueComparator());
 
-		Parallel tp2 = new Parallel();
+		Parallel tp2 = new Parallel("tp2");
 		for (int i = 0; i < bars.size(); i++)
 			tp2.add((new Tween(d)).add(bars.get(i), "x", i * w).setEasing(
 					Tween.EXPO_OUT));
+
+		t = tp2.getTween(0);
 
 		Collections.sort(bars, Collections.reverseOrder(new ValueComparator()));
 
@@ -100,7 +104,19 @@ public class Tween_BarChart extends PApplet {
 			b.draw();
 		popMatrix();
 
-		String time = (int) ts.getTime() + " / " + (int) ts.getDuration();
+		String time = (int) ts.getParallel(1).get(0).getTime() + " / "
+				+ (int) ts.getParallel(1).get(0).getDuration();
+
+		fill(0);
+		text(time, width - textWidth(time) - 10, height - 50);
+
+		time = (int) ts.getParallel(1).getTime() + " / "
+				+ (int) ts.getParallel(1).getDuration();
+
+		fill(0);
+		text(time, width - textWidth(time) - 10, height - 30);
+
+		time = (int) ts.getTime() + " / " + (int) ts.getDuration();
 
 		fill(0);
 		text(time, width - textWidth(time) - 10, height - 10);
@@ -132,7 +148,7 @@ public class Tween_BarChart extends PApplet {
 		int v;
 
 		float x, y, w, h;
-		int c; 
+		int c;
 
 		Bar(String name, float value, float x, float y, float w, float h) {
 			this.name = name;

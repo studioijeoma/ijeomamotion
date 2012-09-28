@@ -141,24 +141,23 @@ public abstract class MotionController extends Motion implements
 	public void update() {
 		super.update();
 
-		// if (isPlayingTime(time))
-		updateChildren();
+		if (isPlaying())
+			updateChildren();
 	}
 
 	@Override
 	public void update(float _time) {
 		super.update(_time);
 
-		// if (isPlayingTime(time))
-		// if (isPlaying())
-		updateChildren();
+		if (isPlaying())
+			updateChildren();
 	}
 
 	protected void updateChildren() {
 		for (Motion c : children) {
-			if (c.isInsidePlayingTime(time))
+			if (c.isInsidePlayingTime(getTime()))
 				if (c.isPlaying())
-					c.update(time);
+					c.update(getTime());
 				else
 					c.play();
 		}
