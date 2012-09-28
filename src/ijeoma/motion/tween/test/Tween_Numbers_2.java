@@ -22,7 +22,8 @@ public class Tween_Numbers_2 extends PApplet {
 
 		r = new Rect();
 
-		t = new Tween(100).add(r, "y", 400).play();
+		// end value must be a float
+		t = new Tween(100).add(r, "x", 400f).add(r, "y", 400f).repeat().play();
 
 		// The above could also be written as
 		// t = new Tween(r, "x", 400, 100).add(r, "y", 400).play();

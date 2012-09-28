@@ -173,7 +173,7 @@ public class Tween extends Motion { // implements Comparable
 
 	/**
 	 * Constructs a Tween
-	 *  
+	 * 
 	 * @param _tweenObject
 	 *            the object you want to tween
 	 * @param _tweenObjectProperty
@@ -317,6 +317,8 @@ public class Tween extends Motion { // implements Comparable
 	@Override
 	public Tween seek(float _value) {
 		super.seek(_value);
+
+		updateProperties();
 
 		return this;
 	}

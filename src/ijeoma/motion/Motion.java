@@ -176,11 +176,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	 */
 	public Motion play() {
 		seek(0);
-
-		time = beginTime;
-
-		beginTime = (timeMode == SECONDS) ? (getParent().millis() - beginTime * 1000)
-				: (getParent().frameCount - beginTime);
+		resume();
 
 		repeatCount = 0;
 
@@ -200,38 +196,25 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	 * Ends the tween at the ending position
 	 */
 	public Motion stop() {
+		if (isReversing)
+			reverseTime = (reverseTime == 0) ? getDelayedDuration() : 0;
+
 		if (isRepeating
 				&& (repeatDuration == 0 || repeatCount < repeatDuration)) {
-
-			if (isReversing)
-				reverseTime = (reverseTime == 0) ? duration : 0;
-
-			// PApplet.println(reverseTime);
-
 			seek(0);
 			resume();
 
-			dispatchMotionRepeatedEvent();
-
 			repeatCount++;
+
+			dispatchMotionRepeatedEvent();
 		} else {
-			isPlaying = false;
-
-			if (isReversing)
-				reverseTime = (reverseTime == 0) ? duration : 0;
-
-			// seek(1.0f);
-
-			if (isRegistered) {
-				getParent().unregisterPre(this);
-				isRegistered = false;
-			}
-
-			dispatchMotionEndedEvent();
+			seek(1);
+			pause();
 
 			repeatCount = 0;
-		}
 
+			dispatchMotionEndedEvent();
+		}
 		return this;
 	}
 
@@ -243,6 +226,11 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 		beginTime = time;
 
+		if (isRegistered) {
+			getParent().unregisterPre(this);
+			isRegistered = false;
+		}
+
 		return this;
 	}
 
@@ -251,8 +239,6 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	 */
 	public Motion resume() {
 		isPlaying = true;
-
-		time = beginTime;
 
 		beginTime = (timeMode == SECONDS) ? (getParent().millis() - beginTime * 1000)
 				: (getParent().frameCount - beginTime);
@@ -269,11 +255,10 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	 * Changes the time of the tween to a time percentange between 0 and 1
 	 */
 	public Motion seek(float _value) {
-		beginTime = time = getPlayTime() + _value * getDelayedDuration();
+		beginTime = getPlayTime() + _value * getDelayedDuration();
 
-		isPlaying = true;
-		update(time);
-		isPlaying = false;
+		setTime(beginTime);
+		updateCalls();
 
 		return this;
 	}
@@ -325,23 +310,25 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 	public void update() {
 		if (isPlaying()) {
+			updateTime();
+			updateCalls();
+
 			if (isOutsidePlayingTime(time)) {
 				stop();
 				return;
 			}
-
-			updateTime();
-			updateCalls();
 		}
 	}
 
 	public void update(float _time) {
 		if (isPlaying()) {
-			if (isOutsidePlayingTime(time))
-				stop();
-
 			setTime(_time);
 			updateCalls();
+
+			if (isOutsidePlayingTime(time)) {
+				stop();
+				return;
+			}
 		}
 	}
 
@@ -449,9 +436,10 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	}
 
 	protected void setTime(float _time) {
-		// logger.println(".setTime(" + _time + ")");
-
 		time = _time;
+
+		if (isReversing() && reverseTime != 0)
+			time = reverseTime - time;
 	}
 
 	public float getTime() {
@@ -590,29 +578,25 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return isReversing;
 	}
 
-	public boolean isBelowZero(float _value) {
-		return _value < 0;
-	}
-
 	public boolean isAbovePlayTime(float _value) {
 		return (_value > getDelayedPlayTime()) ? true : false;
 	}
 
-	public boolean isBelowStopTime(float _value) {
-		return (_value < getDelayedPlayTime() + getDuration()) ? true : false;
-	}
-
-	public boolean isAboveStopTime(float _value) {
-		return (_value > getDelayedPlayTime() + getDuration()) ? true : false;
-	}
+	// public boolean isBelowStopTime(float _value) {
+	// return (_value < getDelayedPlayTime() + getDuration()) ? true : false;
+	// }
+	//
+	// public boolean isAboveStopTime(float _value) {
+	// return (_value > getDelayedPlayTime() + getDuration()) ? true : false;
+	// }
 
 	public boolean isInsidePlayingTime(float _value) {
-		return (_value > getDelayedPlayTime() && _value < getDelayedPlayTime()
+		return (_value >= getDelayedPlayTime() && _value <= getDelayedPlayTime()
 				+ getDuration()) ? true : false;
 	}
 
 	public boolean isOutsidePlayingTime(float _value) {
-		return (_value < 0 || _value >= getDelayedPlayTime() + getDuration());
+		return (_value < 0 || _value > getDelayedPlayTime() + getDuration());
 	}
 
 	public Motion addEventListener(MotionEventListener listener) {

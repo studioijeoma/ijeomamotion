@@ -24,7 +24,7 @@ public class Tween_Numbers_1 extends PApplet {
 
 		Motion.setup(this);
 
-		t = new Tween(100).add(this, "x", 400).add(this, "y", 0).repeat()
+		t = new Tween(100).add(this, "x", 400f).add(this, "y", 0f).repeat()
 				.play();
 
 		// The above could also be written as

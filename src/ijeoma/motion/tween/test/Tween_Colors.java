@@ -1,18 +1,15 @@
 package ijeoma.motion.tween.test;
 
-import ijeoma.motion.Motion;
-import ijeoma.motion.tween.Tween;
-import processing.core.PApplet;
-import processing.core.PFont;
+import ijeoma.motion.*;
+import ijeoma.motion.tween.*;
+import processing.core.*;
 
 public class Tween_Colors extends PApplet {
-
 	Tween t;
 	PFont f;
 
 	int c1, c2;
 
-	@Override
 	public void setup() {
 		size(400, 400);
 		smooth();
@@ -24,31 +21,44 @@ public class Tween_Colors extends PApplet {
 
 		Motion.setup(this);
 
-		t = new Tween(100).add(this, "c1", color(0, 0, 255))
-				.add(this, "c2", color(0, 255, 255)).play();
+		t = new Tween(100)
+				.add(this, "c1", color(random(255), random(255), random(255)))
+				.add(this, "c2", color(random(255), random(255), random(255)))
+				.play();
 
 		// The above could also be written as
+		// t = new Tween(100).addColor(this, "c1", color(0, 0, 255))
+		// .addColor(this, "c2", color(0, 255, 255)).play();
+		//
+		// or
+		//
 		// t = new Tween(100).add(new ColorProperty(this, "c1", color(0, 0,
 		// 255)))
 		// .add(new ColorProperty(this, "c2", color(0, 255, 255))).play();
 	}
 
-	@Override
 	public void draw() {
 		background(255);
 
+		noStroke();
 		fill(c1);
 		rect(0, 0, width / 2, height);
 		fill(c2);
 		rect(width / 2, 0, width / 2, height);
 
-		String time = t.getTime() + " / " + t.getDuration();
+		String time = (int) t.getTime() + " / " + (int) t.getDuration();
 		fill(0);
 		text(time, width - textWidth(time) - 10, height - 10);
 	}
 
-	@Override
 	public void keyPressed() {
 		t.play();
 	}
+
+	void tweenEnded(Tween t) {
+		t.getColor("c1").setEnd(color(random(255), random(255), random(255)));
+		t.getColor("c2").setEnd(color(random(255), random(255), random(255)));
+		t.play();
+	}
+
 }
