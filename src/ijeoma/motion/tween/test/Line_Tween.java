@@ -82,7 +82,7 @@ public class Line_Tween extends PApplet {
 
 			l = 0;
 			lt = new Tween(this, "l", s, random(50, 250))
-					.addEventListener(this).setDelay(random(250)).repeat()
+					.addEventListener(this).delay(random(250)).repeat()
 					.play();
 			lt.setEasing(Tween.CUBIC_BOTH);
 			c = color(random(255), random(255), random(255));
@@ -116,7 +116,7 @@ public class Line_Tween extends PApplet {
 			// fill(c);
 
 			colorMode(HSB);
-			float h = map((lt.getRepeatCount() % 4) + lt.getPosition(), 0, 3,
+			float h = map((lt.getRepeat() % 4) + lt.getPosition(), 0, 3,
 					0, 360);
 			// float a = 360 - 360 * map(
 			// (lt.getRepeatCount() % 4) + lt.getPosition(), 0, 3, 0, 1);
@@ -141,7 +141,7 @@ public class Line_Tween extends PApplet {
 		public void onMotionEvent(MotionEvent te) {
 			if (te.type == MotionEvent.TWEEN_REPEATED) {
 				if (te.getSource().equals(lt)) {
-					lt.setDelay(0);
+					lt.delay(0);
 					ry += PI / 2f;
 				}
 			} else if (te.type == MotionEvent.TWEEN_ENDED) {

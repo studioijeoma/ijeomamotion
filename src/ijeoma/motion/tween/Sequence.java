@@ -206,8 +206,8 @@ public class Sequence extends MotionController {
 	}
 
 	@Override
-	public Sequence setDelay(float _delay) {
-		return (Sequence) super.setDelay(_delay);
+	public Sequence delay(float _delay) {
+		return (Sequence) super.delay(_delay);
 	}
 
 	@Override
@@ -223,11 +223,6 @@ public class Sequence extends MotionController {
 	@Override
 	public Sequence setTimeMode(String _timeMode) {
 		return (Sequence) super.setTimeMode(_timeMode);
-	}
-
-	@Override
-	public Sequence setRepeatDuration(int _repeatCount) {
-		return (Sequence) super.setRepeatDuration(_repeatCount);
 	}
 
 	@Override

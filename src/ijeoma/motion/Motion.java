@@ -68,7 +68,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	protected Class<?> easingClass;
 	protected Method easingMethod;
 
-	protected int repeatCount = 0;
+	protected int repeatTime = 0;
 	protected int repeatDuration = 0;
 
 	protected boolean isPlaying = false;
@@ -178,7 +178,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		seek(0);
 		resume();
 
-		repeatCount = 0;
+		repeatTime = 0;
 
 		isPlaying = true;
 
@@ -200,18 +200,18 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 			reverseTime = (reverseTime == 0) ? getDelayedDuration() : 0;
 
 		if (isRepeating
-				&& (repeatDuration == 0 || repeatCount < repeatDuration)) {
+				&& (repeatDuration == 0 || repeatTime < repeatDuration)) {
 			seek(0);
 			resume();
 
-			repeatCount++;
+			repeatTime++;
 
 			dispatchMotionRepeatedEvent();
 		} else {
 			seek(1);
 			pause();
 
-			repeatCount = 0;
+			repeatTime = 0;
 
 			dispatchMotionEndedEvent();
 		}
@@ -275,9 +275,9 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	/**
 	 * 
 	 */
-	public Motion repeat(int _repeatDuration) {
+	public Motion repeat(int _repeat) {
 		isRepeating = true;
-		repeatDuration = _repeatDuration;
+		repeatDuration = _repeat;
 
 		return this;
 	}
@@ -475,8 +475,14 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return duration + delay;
 	}
 
-	public Motion setDelay(float _delay) {
+	public Motion delay(float _delay) {
 		delay = _delay;
+
+		return this;
+	}
+
+	public Motion noDelay() {
+		delay = 0;
 
 		return this;
 	}
@@ -538,16 +544,10 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 	public String getTimeMode() {
 		return timeMode;
-	}
+	} 
 
-	public Motion setRepeatDuration(int _repeatDuration) {
-		repeatCount = _repeatDuration;
-
-		return this;
-	}
-
-	public int getRepeatCount() {
-		return repeatCount;
+	public int getRepeat() {
+		return repeatTime;
 	}
 
 	public Motion autoUpdate() {

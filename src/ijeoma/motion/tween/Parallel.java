@@ -187,8 +187,8 @@ public class Parallel extends MotionController {
 	}
 
 	@Override
-	public Parallel setDelay(float _delay) {
-		return (Parallel) super.setDelay(_delay);
+	public Parallel delay(float _delay) {
+		return (Parallel) super.delay(_delay);
 	}
 
 	@Override
@@ -205,12 +205,7 @@ public class Parallel extends MotionController {
 	public Parallel setTimeMode(String _timeMode) {
 		return (Parallel) super.setTimeMode(_timeMode);
 	}
-
-	@Override
-	public Parallel setRepeatDuration(int _repeatCount) {
-		return (Parallel) super.setRepeatDuration(_repeatCount);
-	}
-
+ 
 	@Override
 	public Parallel autoUpdate() {
 		return (Parallel) super.autoUpdate();

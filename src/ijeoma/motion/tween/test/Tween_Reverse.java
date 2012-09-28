@@ -29,7 +29,7 @@ public class Tween_Reverse extends PApplet {
 		rect(0, 0, w, height);
 
 		fill(0);
-		text(t.getRepeatCount(), 10, height - 10);
+		text(t.getRepeat(), 10, height - 10);
 
 		String time = t.getTime() + " / " + t.getDuration();
 		fill(0);

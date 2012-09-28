@@ -62,7 +62,7 @@ public class Rect_Tween extends PApplet {
 			x = 0;
 			y = height;
 
-			yt = new Tween(100).add(this, "y", 0f).setDelay(random(100))
+			yt = new Tween(100).add(this, "y", 0f).delay(random(100))
 					.repeat().play();
 
 			a = 0;

@@ -44,7 +44,7 @@ float h = 100;
 float low = 250;
 float high = 1000;
 
-TweenSequence ts;
+Sequence ts;
 float d = 75;
 
 void setup() {
@@ -57,14 +57,14 @@ void setup() {
 }
 
 void setupBars() {
-  ts = new TweenSequence();
+  ts = new Sequence();
 
   bars.clear();
 
   for (int i = 0; i < cities.length; i++)
     bars.add(new Bar(cities[i], random(low, high), i * w, 0, w, 0));
 
-  TweenParallel tp1 = new TweenParallel();
+  Parallel tp1 = new Parallel();
   for (int i = 0; i < bars.size(); i++) {
     float rh = bars.get(i).v / high * h;
 
@@ -74,20 +74,20 @@ void setupBars() {
 
   Collections.sort(bars, new ValueComparator());
 
-  TweenParallel tp2 = new TweenParallel();
+  Parallel tp2 = new Parallel();
   for (int i = 0; i < bars.size(); i++)
     tp2.add((new Tween(d)).add(bars.get(i), "x", i * w).setEasing(
     Tween.EXPO_OUT));
 
   Collections.sort(bars, Collections.reverseOrder(new ValueComparator()));
 
-  TweenParallel tp3 = new TweenParallel();
+  Parallel tp3 = new Parallel();
   for (int i = 0; i < bars.size(); i++)
     tp3.add((new Tween(d)).add(bars.get(i), "c", 
     color(random(255), random(255), random(255))).setEasing(
     Tween.EXPO_OUT));
 
-  TweenParallel tp4 = new TweenParallel();
+  Parallel tp4 = new Parallel();
   for (int i = 0; i < bars.size(); i++)
     tp4.add(new Tween(d).add(bars.get(i), "h", 1f).setEasing(
     Tween.EXPO_OUT));

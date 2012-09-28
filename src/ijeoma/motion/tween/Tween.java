@@ -359,8 +359,8 @@ public class Tween extends Motion { // implements Comparable
 	}
 
 	@Override
-	public Tween setDelay(float _delay) {
-		return (Tween) super.setDelay(_delay);
+	public Tween delay(float _delay) {
+		return (Tween) super.delay(_delay);
 	}
 
 	@Override
@@ -376,11 +376,6 @@ public class Tween extends Motion { // implements Comparable
 	@Override
 	public Tween setTimeMode(String _timeMode) {
 		return (Tween) super.setTimeMode(_timeMode);
-	}
-
-	@Override
-	public Tween setRepeatDuration(int _repeatCount) {
-		return (Tween) super.setRepeatDuration(_repeatCount);
 	}
 
 	@Override
