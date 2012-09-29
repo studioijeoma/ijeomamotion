@@ -25,44 +25,61 @@
  * @version     ##library.prettyVersion## (##library.version##)
  */
 
-package ijeoma.geom;
+package ijeoma.geom.tween.test;
 
-import processing.core.PGraphics;
-import processing.core.PVector;
+import ijeoma.geom.Bezier;
+import ijeoma.geom.tween.BezierTween;
+import ijeoma.motion.Motion;
+import processing.core.PApplet;
 
-public class Bezier3D {
-	PGraphics g;
-	float x1, y1, z1, cx1, cy1, cz1, cx2, cy2, cz2, x2, y2, z2;
-	float position;
+public class BezierTween_Basic extends PApplet {
 
-	Bezier3D(PGraphics _g, float _x1, float _y1, float _z1, float _cx1,
-			float _cy1, float _cz1, float _cx2, float _cy2, float _cz2,
-			float _x2, float _y2, float _z2) {
-		g = _g;
+	Bezier b1, b2;
+	BezierTween bt;
 
-		x1 = _x1;
-		y1 = _y1;
-		z1 = _z1;
-		cx1 = _cx1;
-		cy1 = _cy1;
-		cz1 = _cz1;
-		cx2 = _cx2;
-		cy2 = _cy1;
-		cz2 = _cz1;
-		x2 = _x2;
-		y2 = _y2;
-		z2 = _z2;
+	@Override
+	public void setup() {
+		size(100, 100);
+		smooth();
+
+		b1 = new Bezier(g, 85, 20, 10, 10, 90, 90, 15, 80);
+		b2 = new Bezier(g, 30, 20, 80, 5, 80, 75, 30, 75);
+
+		Motion.setup(this);
+
+		bt = new BezierTween(b1, 0f, 1f, 100f);
+		bt.play();
 	}
 
+	@Override
 	public void draw() {
-		g.bezier(x1, y1, z1, cx1, cy1, cz1, cx2, cy2, cz2, x2, y2, z2);
+		background(255);
+
+		noFill();
+
+		bt.getBezier().draw();
+
+		fill(0);
+		ellipse(bt.getX(), bt.getY(), 10, 10);
+
+		String time = bt.getTime() + " / " + bt.getDuration();
+		fill(0);
+		text(time, width - textWidth(time) - 10, height - 10);
 	}
 
-	public PVector getPoint(float _position) {
-		float x = g.bezierPoint(x1, cx1, cx2, x2, _position);
-		float y = g.bezierPoint(y1, cy1, cy2, y2, _position);
-		float z = g.bezierPoint(z1, cz1, cz2, z2, _position);
+	@Override
+	public void keyPressed() {
+		bt.play();
+	}
 
-		return new PVector(x, y, z);
-	} 
+	public void tweenBezierEnded(BezierTween _tb) {
+		println("asdf");
+
+		if (b1 == _tb.getBezier())
+			_tb.setBezier(b2);
+		else
+			_tb.setBezier(b1);
+
+		_tb.play();
+	}
 }

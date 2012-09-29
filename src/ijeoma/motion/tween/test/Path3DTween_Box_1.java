@@ -26,8 +26,8 @@
  */
 package ijeoma.motion.tween.test;
 
-import ijeoma.geom.Path3D;
-import ijeoma.geom.tween.Path3DTween;
+import ijeoma.geom.Path;
+import ijeoma.geom.tween.PathTween;
 import ijeoma.motion.Motion;
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -35,8 +35,8 @@ import processing.core.PVector;
 public class Path3DTween_Box_1 extends PApplet {
 	PVector[] points;
 
-	Path3D p;
-	Path3DTween tp;
+	Path p;
+	PathTween tp;
 
 	int HALF_SIZE = 100;
 
@@ -53,11 +53,11 @@ public class Path3DTween_Box_1 extends PApplet {
 		for (int i = 0; i < path.length; i++)
 			points[i] = new PVector(path[i][0], path[i][1], path[i][2]);
 
-		p = new Path3D(points);
+		p = new Path(points);
 
 		Motion.setup(this);
 
-		tp = new Path3DTween(p, 0f, 1f, 300f);
+		tp = new PathTween(p, 0f, 1f, 300f);
 		tp.repeat();
 		tp.play();
 	}
@@ -91,18 +91,18 @@ public class Path3DTween_Box_1 extends PApplet {
 
 	@Override
 	public void keyPressed() {
-		// Path3D(PApplet _parent, PVector[] _points, String _pathMode)
+		// Path(PApplet _parent, PVector[] _points, String _pathMode)
 		// _pathMode is set to CUBIC by default but can also be set to LINEAR,
 		// COSINE, HERMITE
 
 		if (key == '1')
-			p.setMode(Path3D.LINEAR);
+			p.setMode(Path.LINEAR);
 		else if (key == '2')
-			p.setMode(Path3D.COSINE);
+			p.setMode(Path.COSINE);
 		else if (key == '3')
-			p.setMode(Path3D.CUBIC);
+			p.setMode(Path.CUBIC);
 		else if (key == '4')
-			p.setMode(Path3D.HERMITE);
+			p.setMode(Path.HERMITE);
 		else
 			tp.play();
 	}

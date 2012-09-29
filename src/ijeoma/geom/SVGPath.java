@@ -32,7 +32,7 @@ import processing.core.PGraphics;
 import processing.core.PShape;
 import processing.core.PVector;
 
-public class SVGPath2D {
+public class SVGPath {
 	PGraphics g;
 	PShape path;
 
@@ -43,7 +43,7 @@ public class SVGPath2D {
 
 	PVector point = new PVector();
 
-	public SVGPath2D(PGraphics _g, PShape _path) {
+	public SVGPath(PGraphics _g, PShape _path) {
 		g = _g;
 		path = _path;
 

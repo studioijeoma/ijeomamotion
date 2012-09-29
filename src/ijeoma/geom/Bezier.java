@@ -30,35 +30,62 @@ package ijeoma.geom;
 import processing.core.PGraphics;
 import processing.core.PVector;
 
-public class Curve2D {
+public class Bezier {
 	PGraphics g;
-	float x1, y1, x2, y2, x3, y3, x4, y4;
+	float x1, y1, z1, cx1, cy1, cz1, cx2, cy2, cz2, x2, y2, z2;
+	float position;
+	boolean is3D = false;
 
-	public Curve2D(PGraphics _g, float _x1, float _y1, float _x2, float _y2,
-			float _x3, float _y3, float _x4, float _y4) {
+	public Bezier(PGraphics _g, float _x1, float _y1, float _cx1, float _cy1,
+			float _cx2, float _cy2, float _x2, float _y2) {
 		g = _g;
 
 		x1 = _x1;
 		y1 = _y1;
-
+		cx1 = _cx1;
+		cy1 = _cy1;
+		cx2 = _cx2;
+		cy2 = _cy1;
 		x2 = _x2;
 		y2 = _y2;
+	}
 
-		x3 = _x3;
-		y3 = _y3;
+	Bezier(PGraphics _g, float _x1, float _y1, float _z1, float _cx1,
+			float _cy1, float _cz1, float _cx2, float _cy2, float _cz2,
+			float _x2, float _y2, float _z2) {
+		g = _g;
 
-		x4 = _x4;
-		y4 = _y4;
+		x1 = _x1;
+		y1 = _y1;
+		z1 = _z1;
+		cx1 = _cx1;
+		cy1 = _cy1;
+		cz1 = _cz1;
+		cx2 = _cx2;
+		cy2 = _cy1;
+		cz2 = _cz1;
+		x2 = _x2;
+		y2 = _y2;
+		z2 = _z2;
+
+		is3D = true;
 	}
 
 	public void draw() {
-		g.curve(x1, y1, x2, y2, x3, y3, x4, y4);
+		if (is3D)
+			g.bezier(x1, y1, z1, cx1, cy1, cz1, cx2, cy2, cz2, x2, y2, z2);
+		else
+			g.bezier(x1, y1, cx1, cy1, cx2, cy2, x2, y2);
 	}
 
 	public PVector getPoint(float _position) {
-		float x = g.curvePoint(x1, x2, x3, x4, _position);
-		float y = g.curvePoint(y1, y2, y3, y4, _position);
+		float x = g.bezierPoint(x1, cx1, cx2, x2, _position);
+		float y = g.bezierPoint(y1, cy1, cy2, y2, _position);
 
-		return new PVector(x, y);
+		if (is3D) {
+			float z = g.bezierPoint(z1, cz1, cz2, z2, _position);
+			return new PVector(x, y, z);
+		} else
+			return new PVector(x, y);
 	}
 }

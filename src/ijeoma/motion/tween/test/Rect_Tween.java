@@ -23,9 +23,9 @@ public class Rect_Tween extends PApplet {
 	}
 
 	public void setupRects() {
-		rects = new Rect[50];
+		rects = new Rect[100];
 
-		ryt = new Tween(100).add(this, "ry", TWO_PI).repeat().play();
+		ryt = new Tween(50).add(this, "ry", TWO_PI).repeat().play();
 
 		for (int i = 0; i < rects.length; i++)
 			rects[i] = new Rect();
@@ -33,15 +33,15 @@ public class Rect_Tween extends PApplet {
 
 	public void draw() {
 		background(0);
-		// lights();
+		lights();
 		// smooth();
 
 		pushMatrix();
 		translate(width / 2, 0);
 		// translate(mouseX, mouseY);
 		// translate(p.x, p.y);
-		// rotateY(ry);
-		rotateX(TWO_PI - ry);
+		// rotateZ(ry);
+		// rotateX(TWO_PI - ry);
 
 		for (Rect r : rects)
 			r.draw();
@@ -52,8 +52,9 @@ public class Rect_Tween extends PApplet {
 		float x, y, z;
 		Tween yt;
 
-		int offset;
-		float scaleVal;
+		float r;
+
+		float s;
 
 		float a;
 		Tween at;
@@ -62,27 +63,26 @@ public class Rect_Tween extends PApplet {
 			x = 0;
 			y = height;
 
-			yt = new Tween(100).add(this, "y", 0f).delay(random(100))
+			yt = new Tween(random(25, 100)).add(this, "y", 0f).delay(0)
 					.repeat().play();
 
-			a = 0;
+			r = random(50, 200);
+			s = random(5, 50);
+
+			a = random(TWO_PI);
 			at = new Tween(100).add(this, "a", TWO_PI).repeat().play();
-
-			offset = (int) random(-50, 50);
-
-			scaleVal = random(100);
 		}
 
 		void draw() {
-			x = offset - sin(a) * scaleVal;
-			z = sin(TWO_PI - a) * scaleVal;
-			// z = 0;
+			x = (cos(a) * r);
+			z = (sin(a) * r);
 
 			pushMatrix();
+			noStroke();
 			fill(360 * yt.getPosition(), 360, 360);
 			translate(x, y, z);
 			// rect(0, 0, 10, 10);
-			box(10);
+			box(s);
 			popMatrix();
 		}
 	}

@@ -37,7 +37,7 @@ import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PVector;
 
-abstract class Path {
+public class Path {
 	protected int segmentIndex = 0;
 	protected int segmentPointIndex = 0;
 	protected float segmentPosition = 0;
@@ -51,21 +51,19 @@ abstract class Path {
 	protected float tolerance = 1;
 
 	protected ArrayList<PVector> points = new ArrayList<PVector>();
-	protected ArrayList<PVector> cachedPoints = new ArrayList<PVector>();
+
+	protected float distance = 0;
+
+	boolean computed = false;
 
 	public static String LINEAR = "linear";
 	public static String COSINE = "cosine";
 	public static String CUBIC = "cubic";
 	public static String HERMITE = "hermite";
 
-	protected String mode = CUBIC;
+	protected String mode = LINEAR;
 
-	protected PVector pointMin, pointMax;
-	protected float width, height;
-
-	protected float distance = 0;
-
-	boolean computed = false;
+	boolean is3D = false;
 
 	public Path() {
 	}
@@ -126,9 +124,13 @@ abstract class Path {
 		else
 			_g.beginShape(_mode);
 
-		for (int i = 0; i < pointCount; i += _d) {
+		for (int i = 0; i <= pointCount; i += _d) {
 			PVector p1 = get((float) i / pointCount);
-			_g.vertex(p1.x, p1.y);
+
+			if (is3D)
+				_g.vertex(p1.x, p1.y, p1.z);
+			else
+				_g.vertex(p1.x, p1.y);
 		}
 		_g.endShape();
 	}
@@ -141,10 +143,6 @@ abstract class Path {
 	// _g.endShape();
 	// }
 
-	void drawBounds(PGraphics _g) {
-		_g.rect(pointMin.x, pointMin.y, pointMin.x + width, pointMin.y + height);
-	}
-
 	public void add(float _x, float _y) {
 		add(new PVector(_x, _y));
 	}
@@ -152,14 +150,11 @@ abstract class Path {
 	public void add(PVector _point) {
 		points.add(_point);
 
-		cachedPoints.add(_point);
-
 		segmentPositionRange = (1f / (points.size() - 1));
 	}
 
 	public void removeAll() {
 		points.clear();
-		cachedPoints.clear();
 	}
 
 	public PVector get(float _position) {
@@ -185,27 +180,21 @@ abstract class Path {
 		v1 = v4 = new PVector();
 
 		if (segmentPointIndex == 0) {
-			PVector segmentBeginPoint = points.get(0);
-			PVector segmentEndPoint = points.get(1);
+			PVector segmentBegin = points.get(0);
+			PVector segmentEnd = points.get(1);
+			PVector segmentSlope = PVector.sub(segmentEnd, segmentBegin);
 
-			float segmentXSlope = (segmentEndPoint.x - segmentBeginPoint.x);
-			float segmentYSlope = (segmentEndPoint.y - segmentBeginPoint.y);
-
-			v1 = new PVector(segmentBeginPoint.x - segmentXSlope,
-					segmentBeginPoint.y - segmentYSlope);
+			v1 = PVector.sub(segmentEnd, segmentSlope);
 		} else {
 			v1 = points.get(segmentPointIndex - 1);
 		}
 
 		if ((segmentPointIndex + 1) == points.size() - 1) {
-			PVector segmentBeginPoint = points.get(points.size() - 2);
-			PVector segmentEndPoint = points.get(points.size() - 1);
+			PVector segmentBegin = points.get(points.size() - 2);
+			PVector segmentEnd = points.get(points.size() - 1);
+			PVector segmentSlope = PVector.sub(segmentEnd, segmentBegin);
 
-			float segmentXSlope = (segmentEndPoint.x - segmentBeginPoint.x);
-			float segmentYSlope = (segmentEndPoint.y - segmentBeginPoint.y);
-
-			v4 = new PVector(segmentEndPoint.x + segmentXSlope,
-					segmentEndPoint.y + segmentYSlope);
+			v4 = PVector.add(segmentEnd, segmentSlope);
 		} else {
 			v4 = points.get((segmentPointIndex + 1) + 1);
 		}
@@ -213,34 +202,46 @@ abstract class Path {
 		if (mode.equals(LINEAR)) {
 			point.x = Interpolator.linear(v2.x, v3.x, segmentPosition);
 			point.y = Interpolator.linear(v2.y, v3.y, segmentPosition);
+			if (is3D)
+				point.z = Interpolator.linear(v2.z, v3.z, segmentPosition);
 		} else if (mode.equals(COSINE)) {
 			point.x = Interpolator.cosine(v2.x, v3.x, segmentPosition);
 			point.y = Interpolator.cosine(v2.y, v3.y, segmentPosition);
+			if (is3D)
+				point.z = Interpolator.cosine(v2.z, v3.z, segmentPosition);
 		} else if (mode.equals(CUBIC)) {
 			point.x = Interpolator.cubic(v1.x, v2.x, v3.x, v4.x,
 					segmentPosition);
 			point.y = Interpolator.cubic(v1.y, v2.y, v3.y, v4.y,
 					segmentPosition);
+			if (is3D)
+				point.z = Interpolator.cubic(v1.z, v2.z, v3.z, v4.z,
+						segmentPosition);
 		} else if (mode.equals(HERMITE)) {
 			point.x = Interpolator.hermite(v1.x, v2.x, v3.x, v4.x,
 					segmentPosition, tension, bias);
 			point.y = Interpolator.hermite(v1.y, v2.y, v3.y, v4.y,
 					segmentPosition, tension, bias);
+			if (is3D)
+				point.z = Interpolator.hermite(v1.z, v2.z, v3.z, v4.z,
+						segmentPosition, tension, bias);
 		}
 
 		return point;
 	}
 
 	public void set(PVector[] _points) {
-		points = new ArrayList<PVector>(Arrays.asList(_points));
-
-		segmentPositionRange = (1f / (points.size() - 1));
-
-		compute();
+		set(new ArrayList<PVector>(Arrays.asList(_points)));
 	}
 
 	public void set(ArrayList<PVector> _points) {
 		points = _points;
+
+		for (PVector p : points)
+			if (p.z != 0) {
+				is3D = true;
+				break;
+			}
 
 		segmentPositionRange = (1f / (points.size() - 1));
 
@@ -272,16 +273,16 @@ abstract class Path {
 	}
 
 	protected void simplifyRadialDistance(float sqTolerance) {
-		int len = cachedPoints.size();
+		int len = points.size();
 
 		PVector point = new PVector();
-		PVector prevPoint = cachedPoints.get(0);
+		PVector prevPoint = points.get(0);
 
 		ArrayList<PVector> newPoints = new ArrayList<PVector>();
 		newPoints.add(prevPoint);
 
 		for (int i = 1; i < len; i++) {
-			point = cachedPoints.get(i);
+			point = points.get(i);
 
 			if (getSquareDistance(point, prevPoint) > sqTolerance) {
 				newPoints.add(point);
@@ -408,7 +409,6 @@ abstract class Path {
 
 	public void compute() {
 		computeDist();
-		computeBounds();
 
 		computed = true;
 	}
@@ -422,29 +422,6 @@ abstract class Path {
 
 			distance += PApplet.dist(d1.x, d1.y, d2.x, d2.y);
 		}
-	}
-
-	public void computeBounds() {
-		float yMin, yMax, xMin, xMax;
-
-		PVector p1 = points.get(0);
-
-		yMin = yMax = p1.y;
-		xMin = xMax = p1.x;
-
-		for (PVector p : points) {
-			yMin = PApplet.min(yMin, p.y);
-			xMin = PApplet.min(xMin, p.x);
-
-			yMax = PApplet.max(yMax, p.y);
-			xMax = PApplet.max(xMax, p.x);
-		}
-
-		pointMin = new PVector(yMax, xMin);
-		pointMax = new PVector(yMin, xMax);
-
-		width = PApplet.abs(xMax - xMin);
-		height = PApplet.abs(yMax - yMin);
 	}
 
 	public void setTension(float _tension) {
@@ -477,14 +454,6 @@ abstract class Path {
 
 	public float getSegmentPosition() {
 		return segmentPosition;
-	}
-
-	public float getWidth() {
-		return width;
-	}
-
-	public float getHeight() {
-		return height;
 	}
 
 	public float getDistance() {

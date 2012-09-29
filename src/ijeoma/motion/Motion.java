@@ -62,7 +62,6 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	protected float duration = 0f;
 
 	protected float delay = 0f;
-	protected float delayTime = 0f;
 
 	protected String easing = LINEAR_IN;
 	protected Class<?> easingClass;
@@ -73,6 +72,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 	protected boolean isPlaying = false;
 	protected boolean isRepeating = false;
+	protected boolean isRepeatingDelay = false;
 	protected boolean isReversing = false;
 
 	public boolean isAutoUpdating = true;
@@ -199,10 +199,12 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		if (isReversing)
 			reverseTime = (reverseTime == 0) ? getDelayedDuration() : 0;
 
-		if (isRepeating
-				&& (repeatDuration == 0 || repeatTime < repeatDuration)) {
+		if (isRepeating && (repeatDuration == 0 || repeatTime < repeatDuration)) {
 			seek(0);
 			resume();
+
+			if (!isRepeatingDelay)
+				delay = 0;
 
 			repeatTime++;
 
@@ -491,6 +493,17 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return delay;
 	}
 
+	public Motion repeatDelay() {
+		isRepeatingDelay = true;
+		;
+		return this;
+	}
+
+	public Motion noRepeatDelay() {
+		isRepeatingDelay = false;
+		return this;
+	}
+
 	/**
 	 * @param _easing
 	 *            LINEAR_IN, LINEAR_OUT, LINEAR_BOTH, QUAD_IN, QUAD_OUT,
@@ -544,7 +557,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 	public String getTimeMode() {
 		return timeMode;
-	} 
+	}
 
 	public int getRepeat() {
 		return repeatTime;

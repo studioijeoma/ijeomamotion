@@ -27,19 +27,19 @@
 
 package ijeoma.geom.test;
 
-import ijeoma.geom.Bezier2D;
+import ijeoma.geom.Curve;
 import processing.core.PApplet;
 
-public class Bezier2D_Basic extends PApplet {
+public class Curve_Basic extends PApplet {
 
-	Bezier2D b;
+	Curve c;
 
 	@Override
 	public void setup() {
 		size(100, 100);
 		smooth();
 
-		b = new Bezier2D(g, 85, 20, 10, 10, 90, 90, 15, 80);
+		c = new Curve(g, 5, 26, 5, 26, 73, 24, 73, 61);
 	}
 
 	@Override
@@ -47,6 +47,6 @@ public class Bezier2D_Basic extends PApplet {
 		background(255);
 
 		noFill();
-		b.draw();
+		c.draw();
 	}
 }

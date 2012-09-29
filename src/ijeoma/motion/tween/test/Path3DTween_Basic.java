@@ -27,8 +27,8 @@ package ijeoma.motion.tween.test;
  * @version     ##library.prettyVersion## (##library.version##)
  */
 
-import ijeoma.geom.Path3D;
-import ijeoma.geom.tween.Path3DTween;
+import ijeoma.geom.Path;
+import ijeoma.geom.tween.PathTween;
 import ijeoma.motion.Motion;
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -39,9 +39,9 @@ public class Path3DTween_Basic extends PApplet {
 
 	PVector[] points = new PVector[pointCount];
 
-	Path3D p;
+	Path p;
 
-	Path3DTween tp;
+	PathTween tp;
 
 	@Override
 	public void setup() {
@@ -69,16 +69,16 @@ public class Path3DTween_Basic extends PApplet {
 		points[pointCount - 1] = new PVector(pEnd, random(100, 200), random(0,
 				10));
 
-		// Path3D(PGraphics _g, PVector[] _vertices)
-		p = new Path3D(points);
+		// Path(PGraphics _g, PVector[] _vertices)
+		p = new Path(points);
 	}
 
 	public void setupPathMotion() {
 		Motion.setup(this);
 
-		// TweenPath3D(String _name, Path3D _path, float _begin,
+		// TweenPath(String _name, Path _path, float _begin,
 		// float _end, float _duration)
-		tp = new Path3DTween(p, 0f, 1f, 300f);
+		tp = new PathTween(p, 0f, 1f, 300f);
 		tp.repeat();
 		tp.play();
 	}
@@ -110,18 +110,18 @@ public class Path3DTween_Basic extends PApplet {
 
 	@Override
 	public void keyPressed() {
-		// Path3D(PGraphics _g, PVector[] _vertices, String _pathMode)
+		// Path(PGraphics _g, PVector[] _vertices, String _pathMode)
 		// _pathMode is set to CUBIC by default but can also be set to LINEAR,
 		// COSINE, HERMITE
 
 		if (key == '1')
-			p.setMode(Path3D.LINEAR);
+			p.setMode(Path.LINEAR);
 		else if (key == '2')
-			p.setMode(Path3D.COSINE);
+			p.setMode(Path.COSINE);
 		else if (key == '3')
-			p.setMode(Path3D.CUBIC);
+			p.setMode(Path.CUBIC);
 		else if (key == '4')
-			p.setMode(Path3D.HERMITE);
+			p.setMode(Path.HERMITE);
 		else {
 			setupPath();
 			setupPathMotion();

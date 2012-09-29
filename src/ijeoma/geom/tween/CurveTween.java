@@ -27,7 +27,7 @@
 
 package ijeoma.geom.tween;
 
-import ijeoma.geom.Path3D;
+import ijeoma.geom.Curve;
 import ijeoma.motion.event.MotionEvent;
 import ijeoma.motion.tween.Tween;
 
@@ -36,31 +36,31 @@ import java.lang.reflect.Method;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public class Path3DTween extends Tween {
-	private Method tweenPathStartedMethod, tweenPathEndedMethod,
-			tweenPathChangedMethod, tweenPathRepeatedMethod;
+public class CurveTween extends Tween { // implements Comparable {
+	private Method tweenCurveStartedMethod, tweenCurveEndedMethod,
+			tweenCurveChangedMethod, tweenCurveRepeatedMethod;
 
-	private Path3D path;
+	private Curve curve;
 
-	public Path3DTween(Path3D _path, float _begin, float _end, float _duration,
-			float _delay, String _easing) {
+	public CurveTween(Curve _path, float _begin, float _end,
+			float _duration, float _delay, String _easing) {
 		super(_duration, _delay, _easing);
-		setupPath(_path);
+		setupCurve(_path);
 	}
 
-	public Path3DTween(Path3D _path, float _begin, float _end, float _duration,
-			float _delay) {
+	public CurveTween(Curve _path, float _begin, float _end,
+			float _duration, float _delay) {
 		super(_duration, _delay);
-		setupPath(_path);
+		setupCurve(_path);
 	}
 
-	public Path3DTween(Path3D _path, float _begin, float _end, float _duration) {
+	public CurveTween(Curve _path, float _begin, float _end, float _duration) {
 		super(_duration);
-		setupPath(_path);
+		setupCurve(_path);
 	}
 
-	protected void setupPath(Path3D _path) {
-		path = _path;
+	protected void setupCurve(Curve _curve) {
+		curve = _curve;
 	}
 
 	/**
@@ -73,35 +73,36 @@ public class Path3DTween extends Tween {
 		Class<? extends PApplet> parentClass = parent.getClass();
 
 		try {
-			tweenPathStartedMethod = parentClass.getMethod(
+			tweenCurveStartedMethod = parentClass.getMethod(
 					MotionEvent.TWEEN_STARTED,
-					new Class[] { Path3DTween.class });
+					new Class[] { CurveTween.class });
 		} catch (Exception e) {
 		}
 
 		try {
-			tweenPathEndedMethod = parentClass.getMethod(
-					MotionEvent.TWEEN_ENDED, new Class[] { Path3DTween.class });
+			tweenCurveEndedMethod = parentClass
+					.getMethod(MotionEvent.TWEEN_ENDED,
+							new Class[] { CurveTween.class });
 		} catch (Exception e) {
 		}
 
 		try {
-			tweenPathChangedMethod = parentClass.getMethod(
+			tweenCurveChangedMethod = parentClass.getMethod(
 					MotionEvent.TWEEN_CHANGED,
-					new Class[] { Path3DTween.class });
+					new Class[] { CurveTween.class });
 		} catch (Exception e) {
 		}
 
 		try {
-			tweenPathRepeatedMethod = parentClass.getMethod(
+			tweenCurveRepeatedMethod = parentClass.getMethod(
 					MotionEvent.TWEEN_REPEATED,
-					new Class[] { Path3DTween.class });
+					new Class[] { CurveTween.class });
 		} catch (Exception e) {
 		}
 	}
 
 	public PVector getPoint() {
-		return path.get(getPosition());
+		return curve.getPoint(getPosition());
 	}
 
 	public float getX() {
@@ -113,25 +114,25 @@ public class Path3DTween extends Tween {
 	}
 
 	public float getZ() {
-		return getPoint().z;
+		return getPoint().y;
 	}
 
-	public void setPath(Path3D _path) {
-		path = _path;
+	public void setCurve(Curve _curve) {
+		curve = _curve;
 	}
 
-	public Path3D getPath() {
-		return path;
+	public Curve getCurve() {
+		return curve;
 	}
 
 	@Override
 	protected void dispatchMotionStartedEvent() {
-		if (tweenPathStartedMethod != null) {
+		if (tweenCurveStartedMethod != null) {
 			try {
-				tweenPathStartedMethod.invoke(parent, new Object[] { this });
+				tweenCurveStartedMethod.invoke(parent, new Object[] { this });
 			} catch (Exception e) {
 				// e.printStackTrace();
-				tweenPathStartedMethod = null;
+				tweenCurveStartedMethod = null;
 			}
 		}
 
@@ -140,12 +141,12 @@ public class Path3DTween extends Tween {
 
 	@Override
 	protected void dispatchMotionEndedEvent() {
-		if (tweenPathEndedMethod != null) {
+		if (tweenCurveEndedMethod != null) {
 			try {
-				tweenPathEndedMethod.invoke(parent, new Object[] { this });
+				tweenCurveEndedMethod.invoke(parent, new Object[] { this });
 			} catch (Exception e) {
 				e.printStackTrace();
-				tweenPathEndedMethod = null;
+				tweenCurveEndedMethod = null;
 			}
 		}
 
@@ -154,12 +155,12 @@ public class Path3DTween extends Tween {
 
 	@Override
 	protected void dispatchMotionChangedEvent() {
-		if (tweenPathChangedMethod != null) {
+		if (tweenCurveChangedMethod != null) {
 			try {
-				tweenPathChangedMethod.invoke(parent, new Object[] { this });
+				tweenCurveChangedMethod.invoke(parent, new Object[] { this });
 			} catch (Exception e) {
 				// e.printStackTrace();
-				tweenPathChangedMethod = null;
+				tweenCurveChangedMethod = null;
 			}
 		}
 
@@ -168,12 +169,12 @@ public class Path3DTween extends Tween {
 
 	@Override
 	protected void dispatchMotionRepeatedEvent() {
-		if (tweenPathRepeatedMethod != null) {
+		if (tweenCurveRepeatedMethod != null) {
 			try {
-				tweenPathRepeatedMethod.invoke(parent, new Object[] { this });
+				tweenCurveRepeatedMethod.invoke(parent, new Object[] { this });
 			} catch (Exception e) {
 				// e.printStackTrace();
-				tweenPathRepeatedMethod = null;
+				tweenCurveRepeatedMethod = null;
 			}
 		}
 

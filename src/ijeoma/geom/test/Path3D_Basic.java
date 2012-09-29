@@ -27,8 +27,7 @@
 
 package ijeoma.geom.test;
 
-import ijeoma.geom.Path2D;
-import ijeoma.geom.Path3D;
+import ijeoma.geom.Path;
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -38,7 +37,7 @@ public class Path3D_Basic extends PApplet {
 
 	PVector[] vertices = new PVector[vertexCount];
 
-	Path3D path;
+	Path path;
 
 	@Override
 	public void setup() {
@@ -70,7 +69,7 @@ public class Path3D_Basic extends PApplet {
 		vertices[vertexCount - 1] = new PVector(pathEnd, random(100, 200),
 				random(0, 10));
 
-		path = new Path3D(vertices);
+		path = new Path(vertices);
 	}
 
 	@Override
@@ -100,12 +99,12 @@ public class Path3D_Basic extends PApplet {
 		if (key == ' ')
 			setupPath();
 		else if (key == '1')
-			path.setMode(Path2D.LINEAR);
+			path.setMode(Path.LINEAR);
 		else if (key == '2')
-			path.setMode(Path2D.COSINE);
+			path.setMode(Path.COSINE);
 		else if (key == '3')
-			path.setMode(Path2D.CUBIC);
+			path.setMode(Path.CUBIC);
 		else if (key == '4')
-			path.setMode(Path2D.HERMITE);
+			path.setMode(Path.HERMITE);
 	}
 }

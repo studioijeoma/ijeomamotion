@@ -89,17 +89,18 @@ public class Line_Tween extends PApplet {
 
 			w = 25;
 
-			rx = PI / 2 * (int) random(1, 4);
-			ry = PI / 2 * (int) random(1, 4);
+//			rx = PI / 2 * (int) random(1, 4);
+//			ry = PI / 2 * (int) random(1, 4);
 
 			wire = (random(100) > 50) ? true : false;
 		}
 
 		void draw() {
 			pushMatrix();
-			if (isRotating)
+//			if (isRotating)
 				rotateX(rx);
-			rotateY(ry);
+//			rotateY(ry);
+			rotateZ(TWO_PI-rx);
 			translate(-s / 2, y / 2 - w / 2, s / 2);
 
 			// fill(c, 255 - 255 * lt.getPosition());

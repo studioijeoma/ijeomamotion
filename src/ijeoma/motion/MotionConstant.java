@@ -79,12 +79,9 @@ public interface MotionConstant {
 
 	public static String REVERSE = "reverse";
 	public static String NO_REVERSE = "noReverse";
-
-	public static String REVERSE_TIME = "reverseTime";
-	public static String REVERSE_POSITION = "reversePosition";
-
-	public static String TIME = "time";
-	public static String TIME_PERCENTAGE = "timePercentage";
+	
+	public static String ONCE = "once";
+	public static String REPEAT = "repeat";
 
 	public static String VERSION = "3.9.6";
 }

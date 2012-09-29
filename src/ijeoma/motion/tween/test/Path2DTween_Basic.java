@@ -26,8 +26,8 @@
  */
 package ijeoma.motion.tween.test;
 
-import ijeoma.geom.Path2D;
-import ijeoma.geom.tween.Path2DTween;
+import ijeoma.geom.Path;
+import ijeoma.geom.tween.PathTween;
 import ijeoma.motion.Motion;
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -35,8 +35,8 @@ import processing.core.PVector;
 public class Path2DTween_Basic extends PApplet {
 	PVector[] points;
 
-	Path2D p;
-	Path2DTween tp;
+	Path p;
+	PathTween tp;
 
 	@Override
 	public void setup() {
@@ -49,7 +49,7 @@ public class Path2DTween_Basic extends PApplet {
 	}
 
 	public void setupPath() {
-		p = new Path2D();
+		p = new Path();
 
 		float x = 0;
 
@@ -61,7 +61,7 @@ public class Path2DTween_Basic extends PApplet {
 
 		p.add(width, random(200, 400));
 
-		tp = new Path2DTween(p, 0f, 1f, 300f);
+		tp = new PathTween(p, 0f, 1f, 300f);
 		tp.repeat();
 		tp.play();
 	}
@@ -88,13 +88,13 @@ public class Path2DTween_Basic extends PApplet {
 		// COSINE, HERMITE
 
 		if (key == '1')
-			p.setMode(Path2D.LINEAR);
+			p.setMode(Path.LINEAR);
 		else if (key == '2')
-			p.setMode(Path2D.COSINE);
+			p.setMode(Path.COSINE);
 		else if (key == '3')
-			p.setMode(Path2D.CUBIC);
+			p.setMode(Path.CUBIC);
 		else if (key == '4')
-			p.setMode(Path2D.HERMITE);
+			p.setMode(Path.HERMITE);
 		else if (key == ' ')
 			setupPath();
 		else

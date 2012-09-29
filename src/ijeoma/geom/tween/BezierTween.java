@@ -27,7 +27,7 @@
 
 package ijeoma.geom.tween;
 
-import ijeoma.geom.Bezier2D;
+import ijeoma.geom.Bezier;
 import ijeoma.motion.event.MotionEvent;
 import ijeoma.motion.tween.Tween;
 
@@ -36,31 +36,31 @@ import java.lang.reflect.Method;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public class Bezier2DTween extends Tween { // implements Comparable {
+public class BezierTween extends Tween { // implements Comparable {
 	private Method tweenBezierStartedMethod, tweenBezierEndedMethod,
 			tweenBezierChangedMethod, tweenBezierRepeatedMethod;
 
-	private Bezier2D bezier;
+	private Bezier bezier;
 
-	public Bezier2DTween(Bezier2D _path, float _begin, float _end,
+	public BezierTween(Bezier _path, float _begin, float _end,
 			float _duration, float _delay, String _easing) {
 		super(_duration, _delay, _easing);
 		setupBezier(_path);
 	}
 
-	public Bezier2DTween(Bezier2D _path, float _begin, float _end,
+	public BezierTween(Bezier _path, float _begin, float _end,
 			float _duration, float _delay) {
 		super(_duration, _delay);
 		setupBezier(_path);
 	}
 
-	public Bezier2DTween(Bezier2D _path, float _begin, float _end,
+	public BezierTween(Bezier _path, float _begin, float _end,
 			float _duration) {
 		super(_duration);
 		setupBezier(_path);
 	}
 
-	protected void setupBezier(Bezier2D _bezier) {
+	protected void setupBezier(Bezier _bezier) {
 		bezier = _bezier;
 	}
 
@@ -76,28 +76,28 @@ public class Bezier2DTween extends Tween { // implements Comparable {
 		try {
 			tweenBezierStartedMethod = parentClass.getMethod(
 					MotionEvent.TWEEN_STARTED,
-					new Class[] { Bezier2DTween.class });
+					new Class[] { BezierTween.class });
 		} catch (Exception e) {
 		}
 
 		try {
 			tweenBezierEndedMethod = parentClass.getMethod(
 					MotionEvent.TWEEN_ENDED,
-					new Class[] { Bezier2DTween.class });
+					new Class[] { BezierTween.class });
 		} catch (Exception e) {
 		}
 
 		try {
 			tweenBezierChangedMethod = parentClass.getMethod(
 					MotionEvent.TWEEN_CHANGED,
-					new Class[] { Bezier2DTween.class });
+					new Class[] { BezierTween.class });
 		} catch (Exception e) {
 		}
 
 		try {
 			tweenBezierRepeatedMethod = parentClass.getMethod(
 					MotionEvent.TWEEN_REPEATED,
-					new Class[] { Bezier2DTween.class });
+					new Class[] { BezierTween.class });
 		} catch (Exception e) {
 		}
 	}
@@ -114,18 +114,20 @@ public class Bezier2DTween extends Tween { // implements Comparable {
 		return getPoint().y;
 	}
 
-	public void setBezier(Bezier2D _bezier) {
+	public float getZ() {
+		return getPoint().y;
+	}
+
+	public void setBezier(Bezier _bezier) {
 		bezier = _bezier;
 	}
 
-	public Bezier2D getBezier() {
+	public Bezier getBezier() {
 		return bezier;
 	}
 
 	@Override
 	protected void dispatchMotionStartedEvent() {
-		// logger.println("dispatchMotionStartedEvent tweengroup");
-
 		if (tweenBezierStartedMethod != null) {
 			try {
 				tweenBezierStartedMethod.invoke(parent, new Object[] { this });
