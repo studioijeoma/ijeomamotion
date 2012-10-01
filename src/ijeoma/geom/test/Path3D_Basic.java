@@ -32,10 +32,10 @@ import processing.core.PApplet;
 import processing.core.PVector;
 
 public class Path3D_Basic extends PApplet {
-	int vertexCount = 5;
-	float pathBegin, pathEnd, pathLength, pathSegmentLength;
+	int pointCount = 5;
+	float begin, end, length, segmentLength;
 
-	PVector[] vertices = new PVector[vertexCount];
+	PVector[] points = new PVector[pointCount];
 
 	Path path;
 
@@ -43,33 +43,33 @@ public class Path3D_Basic extends PApplet {
 	public void setup() {
 		size(300, 300, P3D);
 
-		pathBegin = 0;
-		pathEnd = width;
-		pathLength = pathEnd - pathBegin;
-		pathSegmentLength = pathLength / (vertexCount - 1);
+		begin = 0;
+		end = width;
+		length = end - begin;
+		segmentLength = length / (pointCount - 1);
 
 		setupPath();
 	}
 
 	public void setupPath() {
-		for (int i = 0; i < vertexCount - 1; i++) {
-			float x = pathBegin + pathSegmentLength * i;
+		for (int i = 0; i < pointCount - 1; i++) {
+			float x = begin + segmentLength * i;
 			float y = random(-75, 75);
 
 			float z;
 
-			if (i == 0 || i == vertexCount - 1)
+			if (i == 0 || i == pointCount - 1)
 				z = 0;
 			else
 				z = random(-100, 100);
 
-			vertices[i] = new PVector(x, y, z);
+			points[i] = new PVector(x, y, z);
 		}
 
-		vertices[vertexCount - 1] = new PVector(pathEnd, random(100, 200),
+		points[pointCount - 1] = new PVector(end, random(100, 200),
 				random(0, 10));
 
-		path = new Path(vertices);
+		path = new Path(points);
 	}
 
 	@Override

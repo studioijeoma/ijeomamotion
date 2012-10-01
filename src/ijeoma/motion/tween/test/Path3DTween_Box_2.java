@@ -75,20 +75,17 @@ public class Path3DTween_Box_2 extends PApplet {
 		rotateY(frameCount / 100.0f);
 		rotateX(2.0f);
 		rotateZ(frameCount / 200.0f);
-
-		// This draws the large box
+ 
 		noFill();
 		stroke(200);
 		box(HALF_SIZE * 2);
-
-		// This draws the path
+ 
 		noFill();
 		stroke(100);
 		beginShape();
 		p.drawLine(g);
 		endShape();
-
-		// This draws the small black box
+ 
 		fill(0);
 		translate(tp.getX(), tp.getY(), tp.getZ());
 
@@ -101,10 +98,6 @@ public class Path3DTween_Box_2 extends PApplet {
 
 	@Override
 	public void keyPressed() {
-		// Path(PApplet _parent, PVector[] _points, String _pathMode)
-		// _pathMode is set to CUBIC by default but can also be set to LINEAR,
-		// COSINE, HERMITE
-
 		if (key == '1')
 			p.setMode(Path.LINEAR);
 		else if (key == '2')

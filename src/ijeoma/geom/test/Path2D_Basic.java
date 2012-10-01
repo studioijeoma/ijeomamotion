@@ -58,8 +58,7 @@ public class Path2D_Basic extends PApplet {
 		println("path1.getCount() = " + path1.getCount());
 
 		path2 = new Path(path1.get());
-		path2.simplify(8, false);
-		// path2.simplify();
+		path2.simplify(5, true); 
 
 		println("path2.getCount() = " + path2.getCount());
 	}
@@ -69,7 +68,7 @@ public class Path2D_Basic extends PApplet {
 		background(255);
 
 		stroke(0);
-		strokeWeight(2);
+		strokeWeight(3);
 		noFill();
 		// path1.drawLine(g);
 		path1.drawPoints(g);
@@ -77,7 +76,8 @@ public class Path2D_Basic extends PApplet {
 		noFill();
 		stroke(255, 0, 0);
 		strokeWeight(2);
-		path2.drawLine(g);
+		// path2.drawLine(g);
+		path2.drawPoints(g);
 
 		PVector p = path2.get((float) mouseX / width);
 		noStroke();

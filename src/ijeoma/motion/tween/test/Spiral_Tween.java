@@ -26,6 +26,8 @@ public class Spiral_Tween extends PApplet {
 	}
 
 	public void setupSpirals() {
+		background(0);
+
 		spirals = new Spiral[1];
 
 		for (int i = 0; i < spirals.length; i++)
@@ -34,7 +36,7 @@ public class Spiral_Tween extends PApplet {
 
 	public void draw() {
 		background(0);
-		// lights();
+		lights();
 		smooth();
 
 		pushMatrix();
@@ -65,39 +67,36 @@ public class Spiral_Tween extends PApplet {
 		float r;
 		float d;
 
-		Tween t;
+		Tween dt, rt;
 
 		Spiral() {
-			begin = random(1);
 			count = (int) random(10, 20);
-			spacing = (int) random(0, 20);
 			rate = random(5);
 			c = color(random(255), random(255), random(255));
-			d = 0;
+			d = -100;
 
-			t = new Tween(random(100, 200)).add(this, "d", 360 * count)
-					.delay(random(100)).repeat().play();
+			r = 0;
+
+			dt = new Tween(200).add(this, "d", TWO_PI).delay(0).repeat().play();
+			rt = new Tween(400).add(this, "r", width / 2).delay(0).repeat()
+					.play();
 		}
 
 		void draw() {
-			// float r = begin;
+			float x = cos(d) * r;
+			float y = sin(d) * r;
 
-			// for (int i = 0; i < 360 * count; i += spacing) {
-			float a = radians(d);
-			float x = cos(a) * r;
-			float y = sin(a) * r;
-
-			noStroke();
-			fill(c);
 			pushMatrix();
 			translate(x, y, 0);
-			// ellipse(0, 0, 10, 10);
-			box(10);
+			stroke(255);
+			noFill();
+			// box(10);
+			ellipse(0, 0, 10, 10);
 			popMatrix();
 
-			r += .3;
-			// r = r + .5f;
-			// }
+			stroke(255);
+			noFill();
+			ellipse(0, 0, r, r);
 		}
 	}
 }
