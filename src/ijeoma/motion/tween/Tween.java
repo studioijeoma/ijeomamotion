@@ -268,7 +268,7 @@ public class Tween extends Motion { // implements Comparable
 	@Override
 	public void update() {
 		super.update();
- 
+
 		if (isPlaying())
 			updateProperties();
 	}
@@ -509,14 +509,8 @@ public class Tween extends Motion { // implements Comparable
 	}
 
 	@Override
-	public String toString() {
-		// return "Tween[name: " + getName() + ", playTime: " + getPlayTime() +
-		// ", begin: " + getBegin()
-		// + ", end: " + getEnd() + ", duration: " + getDuration()
-		// + ", properties[" + parameterNames + "]]";
-		return "Tween[time: " + getPlayTime() + ", duration: " + getDuration()
-				+ "]";
-		// + ", properties[" + getPropertyNames() + "]]";
+	public String toString() { 
+		return "Tween[time: " + delay + ", duration: " + getDuration() + "]";
 	}
 
 	@Override

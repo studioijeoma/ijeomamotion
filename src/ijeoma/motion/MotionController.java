@@ -119,19 +119,11 @@ public abstract class MotionController extends Motion implements
 
 		for (Motion c : children) {
 			if (c.isInsidePlayingTime(getTime()))
-				c.seek((getTime() - c.getPlayTime()) / c.getDuration());
+				c.seek((getTime() - c.getDelay()) / c.getDuration());
 			else if (c.isAbovePlayTime(getTime()))
 				c.seek(1);
 			else
 				c.seek(0);
-
-			// if (c.isAbovePlayTime(getTime()))
-			// if (c.isBelowStopTime(getTime()))
-			// c.seek((getTime() - c.getPlayTime()) / c.getDuration());
-			// else
-			// c.seek(1);
-			// else
-			// c.seek(0);
 		}
 
 		return this;
@@ -163,13 +155,13 @@ public abstract class MotionController extends Motion implements
 		}
 	}
 
-	protected void updateDuration() { 
-		for (Motion c : children)  
-			duration = PApplet.max(duration,
-					c.getPlayTime() + c.getDelayedDuration()); 
+	protected void updateDuration() {
+		for (Motion c : children) {
+			duration = PApplet.max(duration, c.getDelay() + c.getDuration());
+		}
 
 		for (Callback c : calls)
-			duration = PApplet.max(duration, c.getTime() - getPlayTime());
+			duration = PApplet.max(duration, c.getTime() - getDelay());
 	}
 
 	/**
@@ -359,10 +351,7 @@ public abstract class MotionController extends Motion implements
 	}
 
 	protected Motion insert(Motion _child, float _time) {
-		// _child.setDelay(0);
-		// _child.setPlayTime(getPlayTime() + _time);
-		_child.setPlayTime(_time);
-
+		_child.delay(_time);
 		_child.seek(1);
 
 		_child.setTimeMode(timeMode);

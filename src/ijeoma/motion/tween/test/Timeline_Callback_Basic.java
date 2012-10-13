@@ -115,6 +115,7 @@ public class Timeline_Callback_Basic extends PApplet {
 	@Override
 	public void mouseReleased() {
 		tl.resume();
+		word = "";
 	}
 
 	@Override

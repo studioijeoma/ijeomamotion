@@ -36,7 +36,7 @@ public class Tween_Callback extends PApplet {
 		fill(255 / 2f);
 		rect(0, 0, w, height);
 
-		String time = t.getTime() + " / " + t.getDuration();
+		String time = (int) t.getTime() + " / " + (int) t.getDuration();
 
 		fill(0);
 		text(time, width - textWidth(time) - 10, height - 10);

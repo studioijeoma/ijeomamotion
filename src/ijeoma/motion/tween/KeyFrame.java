@@ -40,24 +40,24 @@ public class KeyFrame extends MotionController {
 			keyframeChangedMethod, keyframeRepeatedMethod;
 
 	public KeyFrame(float _time) {
-		super(PApplet.str(_time));
-		setPlayTime(_time);
+		super(PApplet.str(_time)); 
+		delay(_time);
 	}
 
 	public KeyFrame(float _time, Motion[] _children) {
-		super(PApplet.str(_time));
-		setPlayTime(_time);
+		super(PApplet.str(_time)); 
+		delay(_time);
 		addAll(_children);
 	}
 
 	public KeyFrame(String _name, float _time) {
 		super(_name);
-		setPlayTime(_time);
+		delay(_time); 
 	}
 
 	public KeyFrame(String _name, float _time, Motion[] _children) {
-		super(_name);
-		setPlayTime(_time);
+		super(_name); 
+		delay(_time);
 		addAll(_children);
 	}
 
@@ -92,13 +92,6 @@ public class KeyFrame extends MotionController {
 		} catch (Exception e) {
 		}
 	}
-
-	// public void setPlayTime(float _playTime) {
-	// super.setPlayTime(_playTime);
-	//
-	// for (int i = 0; i < children.size(); i++)
-	// children.get(i).setPlayTime(_playTime);
-	// }
 
 	@Override
 	protected void dispatchMotionStartedEvent() {
@@ -159,22 +152,8 @@ public class KeyFrame extends MotionController {
 	@Override
 	public String toString() {
 		String childrenNames = "";
-
-		// for (int i = 0; i < children.size(); i++) {
-		// if (children.get(i).getClass().getSuperclass().getSimpleName()
-		// .equals("Motion"))
-		// childrenNames += (children.get(i)).getName();
-		// else
-		// childrenNames += ((MotionController) children.get(i))
-		// .toString();
-		//
-		// childrenNames += (i < children.size() - 1) ? ", " : "";
-		// }
-
-		// return ("KeyFrame[name: " + name + ", time:" +
-		// Float.toString(playTime)
-		// + ", children[" + childrenNames + "]]");
-		return ("KeyFrame[time:" + Float.toString(playTime) + ", duration: "
+ 
+		return ("KeyFrame[time:" + Float.toString(delay) + ", duration: "
 				+ duration + ", children[" + children + "]]");
 	}
 

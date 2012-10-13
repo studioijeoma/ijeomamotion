@@ -147,8 +147,7 @@ public class Timeline extends MotionController {
 		return this;
 	}
 
-	public Timeline addAll(Motion[] _children, String _name) {
-		// PApplet.println("insertChildren(" + _children + ", " + _name + ")");
+	public Timeline addAll(Motion[] _children, String _name) { 
 		KeyFrame c = (KeyFrame) childrenMap.get(_name);
 		c.addAll(_children);
 
@@ -158,8 +157,8 @@ public class Timeline extends MotionController {
 	}
 
 	public void removeKeyFrame(int _time) {
-		for (Motion c : children)
-			if (c.getPlayTime() == _time) {
+		for (Motion c : children) 
+			if (c.getDelay() == _time) {
 				children.remove(children.indexOf(c));
 				childrenMap.remove(c);
 			}
@@ -239,13 +238,13 @@ public class Timeline extends MotionController {
 
 	public void gotoAndPlay(String _name) {
 		KeyFrame kf = getKeyFrame(_name);
-
-		seek(kf.getPlayTime() / duration);
+ 
+		seek(kf.getDelay() / duration);
 		resume();
 	}
 
-	public void gotoAndPlay(KeyFrame _kf) {
-		seek(_kf.getPlayTime() / duration);
+	public void gotoAndPlay(KeyFrame _kf) { 
+		seek(_kf.getDelay() / duration);
 		resume();
 	}
 
@@ -256,13 +255,13 @@ public class Timeline extends MotionController {
 
 	public void gotoAndStop(String _name) {
 		KeyFrame kf = getKeyFrame(_name);
-
-		seek(kf.getPlayTime() / duration);
+		
+		seek(kf.getDelay() / duration);
 		pause();
 	}
 
-	public void gotoAndStop(KeyFrame _kf) {
-		seek(_kf.getPlayTime() / duration);
+	public void gotoAndStop(KeyFrame _kf) { 
+		seek(_kf.getDelay() / duration);
 		pause();
 	}
 
