@@ -31,9 +31,10 @@ public class Tween_Basic extends PApplet {
 
 		noStroke();
 		fill(255 / 2f);
-		rect(0, 0, w, height);
+		rect(0, 0, w, height); 
 
 		String time = t.getTime() + " / " + t.getDuration();
+		// String time = t.getPosition() + " / 1";
 
 		fill(0);
 		text(time, width - textWidth(time) - 10, height - 10);

@@ -306,7 +306,8 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 				stop();
 				return;
 			}
-		}
+		} else
+			return;
 	}
 
 	public void update(float _time) {
@@ -434,7 +435,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	}
 
 	public float getPosition() {
-		return getTime() / delay;
+		return getTime() / duration;
 	}
 
 	public Motion setDuration(float _duration) {
@@ -464,8 +465,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	}
 
 	public Motion repeatDelay() {
-		isRepeatingDelay = true;
-		;
+		isRepeatingDelay = true; 
 		return this;
 	}
 
@@ -550,7 +550,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	}
 
 	boolean isDelaying() {
-		return (time >= delay);
+		return (time <= delay);
 	}
 
 	public boolean isPlaying() {

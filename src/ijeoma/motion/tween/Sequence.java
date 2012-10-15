@@ -110,16 +110,17 @@ public class Sequence extends MotionController {
 		// currentChildIndex = 0;
 		// currentChild = null;
 
-		for (Motion c : children) {
-			if (c.isInsidePlayingTime(time)) {
-				currentChildIndex = i;
-				currentChild = c;
+		if (isPlaying)
+			for (Motion c : children) {
+				if (c.isInsidePlayingTime(time)) {
+					currentChildIndex = i;
+					currentChild = c;
 
-				break;
+					break;
+				}
+
+				i++;
 			}
-
-			i++;
-		}
 	}
 
 	@Override
@@ -238,7 +239,7 @@ public class Sequence extends MotionController {
 	@Override
 	public Sequence add(Motion _child) {
 		currentChild = _child;
-		return (Sequence) super.insert(_child, getDuration());
+		return (Sequence) super.insert(_child, duration);
 	}
 
 	/**

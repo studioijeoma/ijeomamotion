@@ -509,7 +509,7 @@ public class Tween extends Motion { // implements Comparable
 	}
 
 	@Override
-	public String toString() { 
+	public String toString() {
 		return "Tween[time: " + delay + ", duration: " + getDuration() + "]";
 	}
 
@@ -530,9 +530,8 @@ public class Tween extends Motion { // implements Comparable
 
 		Iterator<MotionEventListener> ls = listeners.iterator();
 
-		while (ls.hasNext()) {
+		while (ls.hasNext())
 			ls.next().onMotionEvent(te);
-		}
 	}
 
 	@Override
@@ -543,7 +542,6 @@ public class Tween extends Motion { // implements Comparable
 			try {
 				tweenStartedMethod.invoke(parent, new Object[] { this });
 			} catch (Exception e) {
-				// e.printStackTrace();
 				tweenStartedMethod = null;
 			}
 		}
@@ -557,7 +555,6 @@ public class Tween extends Motion { // implements Comparable
 			try {
 				tweenEndedMethod.invoke(parent, new Object[] { this });
 			} catch (Exception e) {
-				// e.printStackTrace();
 				tweenEndedMethod = null;
 			}
 		}
@@ -571,7 +568,6 @@ public class Tween extends Motion { // implements Comparable
 			try {
 				tweenChangedMethod.invoke(parent, new Object[] { this });
 			} catch (Exception e) {
-				// e.printStackTrace();
 				tweenChangedMethod = null;
 			}
 		}
@@ -585,7 +581,6 @@ public class Tween extends Motion { // implements Comparable
 			try {
 				tweenRepeatedMethod.invoke(parent, new Object[] { this });
 			} catch (Exception e) {
-				// e.printStackTrace();
 				tweenRepeatedMethod = null;
 			}
 		}

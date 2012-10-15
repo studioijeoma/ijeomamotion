@@ -156,9 +156,8 @@ public abstract class MotionController extends Motion implements
 	}
 
 	protected void updateDuration() {
-		for (Motion c : children) {
+		for (Motion c : children) 
 			duration = PApplet.max(duration, c.getDelay() + c.getDuration());
-		}
 
 		for (Callback c : calls)
 			duration = PApplet.max(duration, c.getTime() - getDelay());
@@ -352,12 +351,9 @@ public abstract class MotionController extends Motion implements
 
 	protected Motion insert(Motion _child, float _time) {
 		_child.delay(_time);
-		_child.seek(1);
-
+//		_child.seek(1);
 		_child.setTimeMode(timeMode);
-
 		_child.noAutoUpdate();
-
 		_child.addEventListener(this);
 
 		if (_child.isTween()) {
