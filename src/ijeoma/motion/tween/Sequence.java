@@ -106,10 +106,7 @@ public class Sequence extends MotionController {
 		super.update();
 
 		int i = 0;
-
-		// currentChildIndex = 0;
-		// currentChild = null;
-
+ 
 		if (isPlaying)
 			for (Motion c : children) {
 				if (c.isInsidePlayingTime(time)) {
@@ -125,14 +122,9 @@ public class Sequence extends MotionController {
 
 	@Override
 	public void update(float _time) {
-		super.update(_time);
-
-		// setTime(_time);
-
-		int i = 0;
-
-		// currentChildIndex = 0;
-		// currentChild = null;
+		super.update(_time); 
+		
+		int i = 0; 
 
 		for (Motion c : children) {
 			if (c.isInsidePlayingTime(time)) {

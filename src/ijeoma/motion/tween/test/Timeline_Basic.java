@@ -43,7 +43,7 @@ public class Timeline_Basic extends PApplet {
 	public void setup() {
 		size(400, 200);
 		smooth();
-		
+
 		Motion.setup(this);
 
 		c1 = c2 = c3 = c4 = c5 = color(255);
@@ -52,16 +52,16 @@ public class Timeline_Basic extends PApplet {
 		y2 = y4 = height;
 
 		tl = new Timeline();
-		tl.add(new Tween(50).add(this, "y1", (float) height).add(this, "c1",
-				color(0)), 0);
-		tl.add(new Tween(50).add(this, "y2", (float) -height).add(this, "c2",
-				color(0)), 50);
-		tl.add(new Tween(50).add(this, "y3", (float) height).add(this, "c3",
-				color(0)), 100);
-		tl.add(new Tween(50).add(this, "y4", (float) -height).add(this, "c4",
-				color(0)), 150);
-		tl.add(new Tween(50).add(this, "y5", (float) height).add(this, "c5",
-				color(0)), 200);
+		tl.add(new Tween(50).add(this, "y1", (float) height).addColor(this,
+				"c1", color(0)), 0);
+		tl.add(new Tween(50).add(this, "y2", (float) -height).addColor(this,
+				"c2", color(0)), 50);
+		tl.add(new Tween(50).add(this, "y3", (float) height).addColor(this,
+				"c3", color(0)), 100);
+		tl.add(new Tween(50).add(this, "y4", (float) -height).addColor(this,
+				"c4", color(0)), 150);
+		tl.add(new Tween(50).add(this, "y5", (float) height).addColor(this,
+				"c5", color(0)), 200);
 		tl.repeat().play();
 	}
 
@@ -84,10 +84,10 @@ public class Timeline_Basic extends PApplet {
 		fill(c5);
 		rect(320, y5, 80, height);
 
-		fill(0); 
-		Tween t = tl.getKeyFrame(1).getTween(0); 
+		fill(0);
+		Tween t = tl.getKeyFrame(1).getTween(0);
 		String time = (int) t.getTime() + " / " + (int) t.getDuration();
-//		String time = (int) t.() + " / " + (int) t.getDuration();
+		// String time = (int) t.() + " / " + (int) t.getDuration();
 		text(time, width - textWidth(time) - 10, height - 30);
 
 		time = (int) tl.getTime() + " / " + (int) tl.getDuration();

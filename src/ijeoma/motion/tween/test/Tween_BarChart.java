@@ -62,21 +62,21 @@ public class Tween_BarChart extends PApplet {
 
 		Parallel tp3 = new Parallel();
 		for (int i = 0; i < bars.size(); i++)
-			tp3.add((new Tween(d)).add(bars.get(i), "c",
+			tp3.add((new Tween(d)).addColor(bars.get(i), "c",
 					color(random(255), random(255), random(255))).setEasing(
 					Tween.EXPO_OUT));
 
 		Parallel tp4 = new Parallel();
 		for (int i = 0; i < bars.size(); i++)
-			tp4.add(new Tween(d).add(bars.get(i), "h", 1f).setEasing(
+			tp4.add(new Tween(d).add(bars.get(i), "h", 0).setEasing(
 					Tween.EXPO_OUT));
 
 		ts.add(tp1);
-		ts.add(new Tween(d));
-		ts.add(tp2);
-		ts.add(new Tween(d));
-		ts.add(tp3);
-		ts.add(new Tween(d));
+		// ts.add(new Tween(d));
+//		ts.add(tp2);
+		// ts.add(new Tween(d));
+//		ts.add(tp3);
+		// ts.add(new Tween(d));
 		ts.add(tp4);
 
 		ts.play();
@@ -103,20 +103,21 @@ public class Tween_BarChart extends PApplet {
 		for (Bar b : bars)
 			b.draw();
 		popMatrix();
+		
+		String time = "";
+//		String time = (int) ts.getParallel(2).getTime() + " / "
+//				+ (int) ts.getParallel(2).getDuration();
 
-		// String time = (int) ts.getParallel(1).get(0).getTime() + " / "
-		// + (int) ts.getParallel(1).get(0).getDuration();
-		//
-		// fill(0);
-		// text(time, width - textWidth(time) - 10, height - 50);
-		//
-		// time = (int) ts.getParallel(1).getTime() + " / "
-		// + (int) ts.getParallel(1).getDuration();
-		//
-		// fill(0);
-		// text(time, width - textWidth(time) - 10, height - 30);
+//		fill(0);
+//		text(time, width - textWidth(time) - 10, height - 50);
 
-		String time = (int) ts.getTime() + " / " + (int) ts.getDuration();
+		time = (int) ts.getParallel(1).getTween(0).getTime() + " / "
+				+ (int) ts.getParallel(1).getTween(0).getDuration();
+
+		fill(0);
+		text(time, width - textWidth(time) - 10, height - 30);
+
+		time = (int) ts.getTime() + " / " + (int) ts.getDuration();
 
 		fill(0);
 		text(time, width - textWidth(time) - 10, height - 10);

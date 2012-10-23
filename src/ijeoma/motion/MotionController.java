@@ -91,8 +91,8 @@ public abstract class MotionController extends Motion implements
 	public MotionController pause() {
 		super.pause();
 
-		for (Motion c : children)
-			c.pause();
+		// for (Motion c : children)
+		// c.pause();
 
 		return this;
 	}
@@ -104,8 +104,8 @@ public abstract class MotionController extends Motion implements
 	public MotionController resume() {
 		super.resume();
 
-		for (Motion c : children)
-			c.resume();
+		// for (Motion c : children)
+		// c.resume();
 
 		return this;
 	}
@@ -117,14 +117,8 @@ public abstract class MotionController extends Motion implements
 	public MotionController seek(float _value) {
 		super.seek(_value);
 
-		for (Motion c : children) {
-			if (c.isInsidePlayingTime(getTime()))
-				c.seek((getTime() - c.getDelay()) / c.getDuration());
-			else if (c.isAbovePlayTime(getTime()))
-				c.seek(1);
-			else
-				c.seek(0);
-		}
+		for (Motion c : children)
+			c.seek((getTime() - c.getDelay()) / c.getDuration());
 
 		return this;
 	}
@@ -146,17 +140,12 @@ public abstract class MotionController extends Motion implements
 	}
 
 	protected void updateChildren() {
-		for (Motion c : children) {
-			if (c.isInsidePlayingTime(getTime()))
-				if (c.isPlaying())
-					c.update(getTime());
-				else
-					c.play();
-		}
+		for (Motion c : children)
+			c.update(getTime());
 	}
 
 	protected void updateDuration() {
-		for (Motion c : children) 
+		for (Motion c : children)
 			duration = PApplet.max(duration, c.getDelay() + c.getDuration());
 
 		for (Callback c : calls)
@@ -351,7 +340,7 @@ public abstract class MotionController extends Motion implements
 
 	protected Motion insert(Motion _child, float _time) {
 		_child.delay(_time);
-//		_child.seek(1);
+		// _child.seek(1);
 		_child.setTimeMode(timeMode);
 		_child.noAutoUpdate();
 		_child.addEventListener(this);
@@ -398,26 +387,6 @@ public abstract class MotionController extends Motion implements
 		// childrenLUT.remove(_child.name);
 
 		return this;
-	}
-
-	public MotionController addTween(Object _tweenObject,
-			String _tweenObjectProperty, float _end, float _duration,
-			float _delay, String _easing) {
-		return add(new Tween(_tweenObject, _tweenObjectProperty, _end,
-				_duration, _delay, _easing));
-	}
-
-	public MotionController addTween(Object _tweenObject,
-			String _tweenObjectProperty, float _end, float _duration,
-			float _delay) {
-		return add(new Tween(_tweenObject, _tweenObjectProperty, _end,
-				_duration, _delay));
-	}
-
-	public MotionController addTween(Object _tweenObject,
-			String _tweenObjectProperty, float _end, float _duration) {
-		return add(new Tween(_tweenObject, _tweenObjectProperty, _end,
-				_duration));
 	}
 
 	/**
