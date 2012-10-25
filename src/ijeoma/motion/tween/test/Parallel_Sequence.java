@@ -8,6 +8,7 @@ package ijeoma.motion.tween.test;
 import ijeoma.motion.Motion;
 import ijeoma.motion.tween.Parallel;
 import ijeoma.motion.tween.Sequence;
+import ijeoma.motion.tween.Tween;
 import processing.core.PApplet;
 
 public class Parallel_Sequence extends PApplet {
@@ -28,10 +29,12 @@ public class Parallel_Sequence extends PApplet {
 		x1 = x2 = -width;
 
 		ts1 = new Sequence();
-		ts1.addTween(this, "x1", width, 100).addTween(this, "x1", width, 75);
+		ts1.add(new Tween(this, "x1", width, 100)).add(
+				new Tween(this, "x1", width, 75));
 
 		ts2 = new Sequence();
-		ts2.addTween(this, "x2", width, 50).addTween(this, "x2", width, 25);
+		ts2.add(new Tween(this, "x2", width, 50)).add(
+				new Tween(this, "x2", width, 25));
 
 		tp = new Parallel();
 		tp.add(ts1).add(ts2).repeat().play();

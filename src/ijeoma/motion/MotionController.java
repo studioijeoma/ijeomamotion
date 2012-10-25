@@ -72,6 +72,9 @@ public abstract class MotionController extends Motion implements
 
 	@Override
 	public MotionController play() {
+		for (Tween t : tweens)
+			t.setupProperties();
+
 		return (MotionController) super.play();
 	}
 
@@ -80,21 +83,15 @@ public abstract class MotionController extends Motion implements
 		super.stop();
 
 		for (Motion c : children)
-			c.stop();
-		// if (c.isPlaying())
-		// c.stop();
+			if (c.isPlaying)
+				c.stop();
 
 		return this;
 	}
 
 	@Override
 	public MotionController pause() {
-		super.pause();
-
-		// for (Motion c : children)
-		// c.pause();
-
-		return this;
+		return (MotionController) super.pause();
 	}
 
 	/**
@@ -102,12 +99,7 @@ public abstract class MotionController extends Motion implements
 	 */
 	@Override
 	public MotionController resume() {
-		super.resume();
-
-		// for (Motion c : children)
-		// c.resume();
-
-		return this;
+		return (MotionController) super.resume();
 	}
 
 	/**
@@ -117,26 +109,42 @@ public abstract class MotionController extends Motion implements
 	public MotionController seek(float _value) {
 		super.seek(_value);
 
-		for (Motion c : children)
-			c.seek((getTime() - c.getDelay()) / c.getDuration());
+		for (Motion c : children) {
+			// PApplet.println((getTime() - c.getDelay()) / c.getDuration());
+			if (c.isInsidePlayingTime(getTime()))
+				c.seek((getTime() - c.getDelay()) / c.getDuration());
+			else if (c.isAbovePlayTime(getTime()))
+				c.seek(1);
+			else
+				c.seek(0);
+		}
 
 		return this;
 	}
 
-	@Override
 	public void update() {
-		super.update();
-
-		if (isPlaying())
+		if (isBelowPlayTime(time))
+			updateTime();
+		else if (isInsidePlayingTime(time)) {
+			updateTime();
+			updateCalls();
 			updateChildren();
+		} else if (isPlaying)
+			stop();
 	}
 
-	@Override
 	public void update(float _time) {
-		super.update(_time);
+		if (isInsidePlayingTime(_time)) {
+			if (!isPlaying)
+				play();
 
-		if (isPlaying())
+			setTime(_time);
+			updateCalls();
 			updateChildren();
+
+			if (isOutsidePlayingTime(time))
+				stop();
+		}
 	}
 
 	protected void updateChildren() {

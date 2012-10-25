@@ -67,6 +67,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	protected int repeatDuration = 0;
 
 	protected boolean isPlaying = false;
+	// protected boolean isDelaying = false;
 	protected boolean isRepeating = false;
 	protected boolean isRepeatingDelay = false;
 	protected boolean isReversing = false;
@@ -131,7 +132,6 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 		delay = _delay;
 
-		// playTime = 0;
 		beginTime = 0;
 
 		setEasing(_easing);
@@ -183,8 +183,6 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		resume();
 
 		repeatTime = 0;
-
-		isPlaying = true;
 
 		if (!isRegistered) {
 			parent.registerPre(this);
@@ -305,17 +303,16 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	public Motion noReverse() {
 		isReversing = false;
 		return this;
-	} 
+	}
 
 	public void update() {
-		if (isBelowPlayTime(time) || isInsidePlayingTime(time)) {
-			if (!isPlaying)
-				play();
-
+		if (isBelowPlayTime(time))
+			updateTime();
+		else if (isInsidePlayingTime(time)) {
 			updateTime();
 			updateCalls();
 		} else if (isPlaying)
- 			stop();
+			stop();
 	}
 
 	public void update(float _time) {
@@ -325,8 +322,10 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 			setTime(_time);
 			updateCalls();
-		} else if (isPlaying)
-			stop();
+
+			if (isOutsidePlayingTime(time))
+				stop();
+		}
 	}
 
 	public void updateCalls() {
@@ -456,12 +455,14 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 	public Motion delay(float _delay) {
 		delay = _delay;
+		// isDelaying = true;
 
 		return this;
 	}
 
 	public Motion noDelay() {
 		delay = 0;
+		// isDelaying = false;
 
 		return this;
 	}
@@ -557,10 +558,11 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 	boolean isDelaying() {
 		return (time <= delay);
+		// isDelaying;
 	}
 
 	public boolean isPlaying() {
-		return isPlaying; 
+		return isPlaying;
 	}
 
 	boolean isReversing() {
@@ -580,7 +582,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	}
 
 	public boolean isOutsidePlayingTime(float _value) {
-		return (_value < 0 || _value > delay + duration);
+		return (_value < 0 || _value >= delay + duration);
 	}
 
 	public Motion addEventListener(MotionEventListener listener) {
@@ -604,8 +606,6 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	}
 
 	protected void dispatchMotionStartedEvent() {
-		// logger.println("dispatchMotionStartedEvent motion");
-
 		if (motionStartedMethod != null) {
 			try {
 				motionStartedMethod.invoke(parent, new Object[] { this });
@@ -701,5 +701,10 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	@Override
 	public int compare(Motion _motion1, Motion _motion2) {
 		return (int) (_motion2.getDelay() - _motion1.getDelay());
+	}
+
+	public String toString() {
+		return "Motion[" + (name.equals("") ? "" : name) + "time: " + delay
+				+ ", duration: " + getDuration() + "]";
 	}
 }

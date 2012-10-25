@@ -139,7 +139,7 @@ public class ColorProperty implements IProperty {
 	}
 
 	public void setEnd(Object _end) {
-		if (field != null) {
+		if (field != null)
 			try {
 				begin = field.getInt(object);
 			} catch (IllegalArgumentException e) {
@@ -147,7 +147,6 @@ public class ColorProperty implements IProperty {
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			}
-		}
 
 		end = (Integer) _end;
 
@@ -173,6 +172,19 @@ public class ColorProperty implements IProperty {
 		updateValue();
 	}
 
+	public Integer getValue() {
+		if (field != null)
+			try {
+				return field.getInt(object);
+			} catch (IllegalArgumentException e) {
+				return null;
+			} catch (IllegalAccessException e) {
+				return null;
+			}
+		else
+			return null;
+	}
+
 	@Override
 	public void updateValue() {
 		if (field != null)
@@ -188,7 +200,7 @@ public class ColorProperty implements IProperty {
 
 	@Override
 	public String toString() {
-		return "Parameter[name: " + getName() + ", begin: " + getBegin()
+		return "ColorParameter[name: " + getName() + ", begin: " + getBegin()
 				+ ", end: " + getEnd() + ", change: " + getChange()
 				+ ", position: " + getPosition() + "]";
 	}

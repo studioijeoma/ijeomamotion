@@ -41,6 +41,7 @@ import processing.core.PVector;
 
 public class Tween extends Motion { // implements Comparable
 	protected ArrayList<IProperty> properties = new ArrayList<IProperty>();
+	protected boolean hasSetupProperties = false;
 
 	protected Method tweenStartedMethod, tweenEndedMethod, tweenChangedMethod,
 			tweenRepeatedMethod;
@@ -269,7 +270,7 @@ public class Tween extends Motion { // implements Comparable
 	public void update() {
 		super.update();
 
-		if (isPlaying())
+		if (isPlaying)
 			updateProperties();
 	}
 
@@ -277,16 +278,26 @@ public class Tween extends Motion { // implements Comparable
 	public void update(float _time) {
 		super.update(_time);
 
-		if (isPlaying())
+		if (isPlaying)
 			updateProperties();
 	}
 
-	protected void updateProperties() {
+	public void setupProperties() {
+		if (!hasSetupProperties) {
+			for (IProperty p : properties)
+				p.setBegin();
+
+			hasSetupProperties = true;
+		}
+	}
+
+	public void updateProperties() {
 		try {
 			for (IProperty p : properties) {
 				Object[] args = { getPosition(), 0, 1, 1 };
-				p.setPosition(((Float) easingMethod.invoke(parent, args))
-						.floatValue());
+				float position = ((Float) easingMethod.invoke(parent, args))
+						.floatValue();
+				p.setPosition(position);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -295,6 +306,8 @@ public class Tween extends Motion { // implements Comparable
 
 	@Override
 	public Tween play() {
+		setupProperties();
+
 		return (Tween) super.play();
 	}
 
@@ -502,7 +515,8 @@ public class Tween extends Motion { // implements Comparable
 
 	@Override
 	public String toString() {
-		return "Tween[time: " + delay + ", duration: " + getDuration() + "]";
+		return "Tween[" + (name.equals("") ? "" : "name: " + name + " ")
+				+ "time: " + delay + ", duration: " + getDuration() + "]";
 	}
 
 	@Override
@@ -528,8 +542,6 @@ public class Tween extends Motion { // implements Comparable
 
 	@Override
 	protected void dispatchMotionStartedEvent() {
-		// logger.println("dispatchMotionStartedEvent tween");
-
 		if (tweenStartedMethod != null) {
 			try {
 				tweenStartedMethod.invoke(parent, new Object[] { this });

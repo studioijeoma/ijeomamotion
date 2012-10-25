@@ -12,10 +12,10 @@ import processing.core.PApplet;
 public class Tween_BarChart2 extends PApplet {
 	public float x1, x2, x3;
 
-	Sequence ts;
+	Sequence s;
 
 	public void setup() {
-		size(800, 600);
+		size(400, 400);
 		smooth();
 
 		Motion.setup(this);
@@ -24,33 +24,32 @@ public class Tween_BarChart2 extends PApplet {
 	}
 
 	void setupBars() {
-		x1 = x2 = x3 = -width;
+		x1 = -width;
+		int d = 100;
 
-		ts = new Sequence();
+		s = new Sequence();
 
-		// Parallel tp1 = new Parallel();
-		// tp1.add(new Tween(100).add(this, "x1",
-		// width).setEasing(Tween.EXPO_OUT));
-		//
-		// Parallel tp2 = new Parallel("tp2");
-		// tp2.add((new Tween(100)).add(this, "x1", -width).setEasing(
-		// Tween.EXPO_OUT));
-		//
+		Parallel tp1 = new Parallel();
+		Tween t = new Tween("1st", d).add(this, "x1", width).setEasing(
+				Tween.EXPO_OUT);
+		tp1.add(t);
+		s.add(tp1);
+
+		Parallel tp2 = new Parallel("tp2");
+		t = new Tween("2nd", d).add(this, "x1", -width).setEasing(
+				Tween.EXPO_OUT);
+		tp2.add(t);
+		s.add(tp2);
+
 		// Parallel tp3 = new Parallel("tp2");
-		// tp3.add((new Tween(100)).add(this, "x1", width).setEasing(
-		// Tween.EXPO_OUT));
-		//
-		// ts.add(tp1);
-		// ts.add(tp2);
-		// ts.add(tp3);
-
-		int d = 50;
-		ts.add(new Tween(d).add(this, "x1", width).setEasing(Tween.EXPO_OUT));
-		ts.add(new Tween(d).add(this, "x2", width).setEasing(Tween.EXPO_OUT));
-		// ts.add(new Tween(3).add(this, "x1",
+		// tp3.add(new Tween(d).add(this, "x1",
 		// width).setEasing(Tween.EXPO_OUT));
+		// s.add(tp3);
 
-		ts.play();
+		// s.add(new Tween(d).add(this, "x1", width));
+		// s.add(new Tween(d).add(this, "x1", -width));
+
+		s.play();
 	}
 
 	public void tweenSequenceEnded(Sequence ts) {
@@ -64,37 +63,40 @@ public class Tween_BarChart2 extends PApplet {
 		noStroke();
 
 		rect(x1, 0, width, height);
-		rect(x2, 0, width, height);
-		// rect(x3, 0, width, height);
 
 		String time = "";
 
-		time = (int) ts.getTween(0).getTime() + " / "
-				+ (int) ts.getTween(0).getDuration();
+		time = (int) s.get(0).getTime() + " / " + (int) s.get(0).getDuration();
 
-		if (ts.getTween(0).isPlaying())
+		if (s.get(0).isPlaying())
 			fill(0, 255, 0);
 		else
 			fill(255, 0, 0);
 		text(time, width - textWidth(time) - 10, height - 70);
 
-		time = (int) ts.getTween(1).getTime() + " / "
-				+ (int) ts.getTween(1).getDuration();
+		if (s.get(1) != null) {
+			time = (int) s.get(1).getTime() + " / "
+					+ (int) s.get(1).getDuration();
 
-		if (ts.getTween(1).isPlaying())
-			fill(0, 255, 0);
-		else
-			fill(255, 0, 0);
-		text(time, width - textWidth(time) - 10, height - 50);
+			if (s.get(1).isPlaying())
+				fill(0, 255, 0);
+			else
+				fill(255, 0, 0);
+			text(time, width - textWidth(time) - 10, height - 50);
+		}
 
-		// time = (int) ts.getTween(2).getTime() + " / "
-		// + (int) ts.getTween(2).getDuration();
-		//
-		// if (!ts.getTween(2).isPlaying())
-		// fill(255, 0, 0);
-		// text(time, width - textWidth(time) - 10, height - 30);
+		if (s.get(2) != null) {
+			time = (int) s.get(2).getTime() + " / "
+					+ (int) s.get(2).getDuration();
 
-		time = (int) ts.getTime() + " / " + (int) ts.getDuration();
+			if (s.get(2).isPlaying())
+				fill(0, 255, 0);
+			else
+				fill(255, 0, 0);
+			text(time, width - textWidth(time) - 10, height - 30);
+		}
+
+		time = (int) s.getTime() + " / " + (int) s.getDuration();
 
 		fill(0);
 		text(time, width - textWidth(time) - 10, height - 10);
@@ -102,22 +104,23 @@ public class Tween_BarChart2 extends PApplet {
 
 	public void keyPressed() {
 		if (key == ' ')
-			ts.play();
+			s.play();
 		else
 			setupBars();
 	}
 
 	@Override
 	public void mousePressed() {
-		ts.pause();
+		// s.pause();
+		s.play();
 	}
 
 	@Override
 	public void mouseReleased() {
-		ts.resume();
+		// s.resume();
 	}
 
 	public void mouseDragged() {
-		ts.seek((float) mouseX / width);
+		// s.seek((float) mouseX / width);
 	}
 }

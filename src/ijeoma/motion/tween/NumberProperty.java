@@ -35,7 +35,6 @@ public class NumberProperty implements IProperty {
 	protected Object object;
 	protected Class<? extends Object> objectType;
 	protected Field field;
-	protected String fieldName;
 	protected Class<?> fieldType;
 
 	String name = "";
@@ -64,13 +63,11 @@ public class NumberProperty implements IProperty {
 		object = _object;
 		objectType = object.getClass();
 
-		fieldName = _objectFieldName;
-
 		boolean found = false;
 
 		while (objectType != null) {
 			for (Field f : objectType.getDeclaredFields())
-				if (f.getName().equals(fieldName)) {
+				if (f.getName().equals(_objectFieldName)) {
 					fieldType = f.getType();
 					found = true;
 					break;
@@ -84,7 +81,7 @@ public class NumberProperty implements IProperty {
 
 		if (found)
 			try {
-				field = objectType.getDeclaredField(fieldName);
+				field = objectType.getDeclaredField(_objectFieldName);
 
 				try {
 					field.setAccessible(true);
@@ -96,6 +93,12 @@ public class NumberProperty implements IProperty {
 			} catch (NoSuchFieldException e) {
 				e.printStackTrace();
 			}
+	}
+
+	public void updateObjectField(Object _object) {
+		object = _object;
+
+		setBegin();
 	}
 
 	@Override
@@ -113,7 +116,7 @@ public class NumberProperty implements IProperty {
 	}
 
 	public void setBegin() {
-		if (field != null) {
+		if (field != null)
 			try {
 				begin = field.getFloat(object);
 			} catch (IllegalArgumentException e) {
@@ -121,7 +124,6 @@ public class NumberProperty implements IProperty {
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			}
-		}
 
 		setChange(end - begin);
 	}
@@ -137,7 +139,7 @@ public class NumberProperty implements IProperty {
 	}
 
 	public void setEnd(Object _end) {
-		if (field != null) {
+		if (field != null)
 			try {
 				begin = field.getFloat(object);
 			} catch (IllegalArgumentException e) {
@@ -145,7 +147,6 @@ public class NumberProperty implements IProperty {
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			}
-		}
 
 		end = (Float) _end;
 
@@ -171,10 +172,26 @@ public class NumberProperty implements IProperty {
 		updateValue();
 	}
 
+	public Float getValue() {
+		if (field != null)
+			try {
+				return field.getFloat(object);
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+				return null;
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+				return null;
+			}
+		else
+			return null;
+	}
+
 	@Override
 	public void updateValue() {
 		if (field != null)
 			try {
+				float v = field.getFloat(object);
 				field.setFloat(object, PApplet.lerp(begin, end, position));
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
@@ -185,7 +202,7 @@ public class NumberProperty implements IProperty {
 
 	@Override
 	public String toString() {
-		return "Parameter[name: " + getName() + ", begin: " + getBegin()
+		return "NumberParameter[name: " + getName() + ", begin: " + getBegin()
 				+ ", end: " + getEnd() + ", change: " + getChange()
 				+ ", position: " + getPosition() + "]";
 	}

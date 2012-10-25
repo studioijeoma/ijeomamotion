@@ -72,14 +72,14 @@ public class Tween_BarChart extends PApplet {
 					Tween.EXPO_OUT));
 
 		ts.add(tp1);
-		// ts.add(new Tween(d));
-//		ts.add(tp2);
-		// ts.add(new Tween(d));
-//		ts.add(tp3);
-		// ts.add(new Tween(d));
+		ts.add(new Tween(d));
+		ts.add(tp2);
+		ts.add(new Tween(d));
+		ts.add(tp3);
+		ts.add(new Tween(d));
 		ts.add(tp4);
 
-		ts.play();
+		ts.repeat().play();
 	}
 
 	public void tweenSequenceEnded(Sequence ts) {

@@ -1,4 +1,5 @@
-import ijeoma.motion.*; 
+import ijeoma.motion.*;
+import ijeoma.motion.property.*;
 import ijeoma.motion.tween.*; 
 
 Tween t;
@@ -19,8 +20,8 @@ public void setup() {
 
   Motion.setup(this);
 
-  t = new Tween(100).addPVector(v1, new PVector(width, height))
-    .addPVector(v2, new PVector(0, height)).play();
+  t = new Tween(100).add(v1, new PVector(width, height))
+    .add(v2, new PVector(0, height)).play();
 
   // The above could also be written as
   // t = new Tween(100)
@@ -44,4 +45,5 @@ public void draw() {
 public void keyPressed() {
   t.play();
 } 
+
 

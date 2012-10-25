@@ -27,44 +27,27 @@
 
 package ijeoma.motion.tween;
 
-import java.lang.reflect.Field;
-
-import processing.core.PApplet;
-
-public interface IProperty {
-	// Object object = new Object();
-	// Class objectType;
-	// Field field;
-	// String fieldName;
-	// Class<?> fieldType;
-	//
-	// Object begin, end, change;
-	// Object position;
-	//
-	// String name = "";
-
+public interface IProperty {	
 	public String getName();
-
 	public void setName(String _name);
 
 	public Object getBegin();
-
+	public void setBegin();
 	public void setBegin(Object _begin);
 
+	public Object getEnd();
 	public void setEnd(Object _end);
 
-	public Object getEnd();
-
 	public Object getChange();
-
 	public void setChange(Object _change);
 
 	public Object getPosition();
-
 	public void setPosition(Object _position);
 
-	public void updateValue();
+	public Object getValue();
+	void updateValue();
 
 	@Override
 	public String toString();
+
 }

@@ -83,7 +83,7 @@ void setupBars() {
 
   Parallel tp3 = new Parallel();
   for (int i = 0; i < bars.size(); i++)
-    tp3.add((new Tween(d)).add(bars.get(i), "c", 
+    tp3.add((new Tween(d)).addColor(bars.get(i), "c", 
     color(random(255), random(255), random(255))).setEasing(
     Tween.EXPO_OUT));
 

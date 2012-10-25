@@ -19,8 +19,8 @@ void setup() {
   Motion.setup(this);
 
   t = new Tween(100)
-    .addColor(this, "c1", color(random(255), random(255), random(255)))
-      .addColor(this, "c2", color(random(255), random(255), random(255)))
+    .add(this, "c1", color(random(255), random(255), random(255)))
+      .add(this, "c2", color(random(255), random(255), random(255)))
         .play();
 
   // The above could also be written as
@@ -57,4 +57,5 @@ void tweenEnded(Tween t) {
   t.getColor("c2").setEnd(color(random(255), random(255), random(255)));
   t.play();
 }
+
 

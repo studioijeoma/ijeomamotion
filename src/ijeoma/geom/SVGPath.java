@@ -96,10 +96,11 @@ public class SVGPath {
 						break;
 
 					case PApplet.QUAD_BEZIER_VERTEX:
-						// g.quadraticVertex(path.getVertexX(index + 0),
-						// path.getVertexY(index + 0),
-						// path.getVertexX(index + 1),
-						// path.getVertexY(index + 1));
+						g.quadraticVertex(
+								path.getVertexX(segmentVertexIndex + 0),
+								path.getVertexY(segmentVertexIndex + 0),
+								path.getVertexX(segmentVertexIndex + 1),
+								path.getVertexY(segmentVertexIndex + 1));
 						// index += 2;
 						break;
 
