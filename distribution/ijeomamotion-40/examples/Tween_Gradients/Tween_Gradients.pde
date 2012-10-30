@@ -18,8 +18,8 @@ void setup() {
   Motion.setup(this);
 
   t = new Tween(100)
-    .add(this, "c1", color(random(255), random(255), random(255)))
-      .add(this, "c2", color(random(255), random(255), random(255)))
+    .addColor(this, "c1", color(random(255), random(255), random(255)))
+      .addColor(this, "c2", color(random(255), random(255), random(255)))
         .setEasing(Tween.SINE_BOTH)
           .play();
 }

@@ -11,7 +11,7 @@ void setup() {
 
   Motion.setup(this);
 
-  t = new Tween(this, "w", width, 100f).reverse().repeat().play();
+  t = new Tween(this, "w", width, 100).play();
 
   // The above could also be written as
   // t = new Tween(100).add(this, "w", width).play();
@@ -19,16 +19,16 @@ void setup() {
 
 void draw() {
   background(255);
-
+ 
   noStroke();
 
   fill(255 / 2f);
   rect(0, 0, w, height);
 
   String time = (int)t.getTime() + " / " + (int)t.getDuration();
-
-  fill(0);
-  text(time, width - textWidth(time) - 10, height - 10);
+//
+//  fill(0);
+//  text(time, width - textWidth(time) - 10, height - 10);
 }
 
 void keyPressed() {

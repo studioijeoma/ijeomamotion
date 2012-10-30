@@ -33,24 +33,28 @@ public class Sequence_Basic extends PApplet {
 		c1 = c2 = c3 = c4 = color(255);
 		x1 = x2 = x3 = x4 = -width;
 
+		int d = 100;
+		
 		ts = new Sequence();
-		ts.add(new Tween("x1", 100).add(this, "x1", (float) width).add(this,
-				"c1", color(0)));
-		ts.add(new Tween("x2", 75).add(this, "x2", (float) width).add(this,
-				"c2", color(0)));
-		ts.play();
-		ts.add(new Tween("x3", 50).add(this, "x3", (float) width).add(this,
-				"c3", color(0)));
-		ts.add(new Tween("x4", 25).add(this, "x4", (float) width).add(this,
-				"c4", color(0)));
-		ts.delay(25);
-		// ts.reverse().repeat().play();
-		ts.play();
+		ts.add(new Tween("x1", d).add(this, "x1", (float) width).addColor(
+				this, "c1", color(0)));
+		ts.add(new Tween("x2", d).add(this, "x2", (float) width).addColor(
+				this, "c2", color(0)));
+		ts.add(new Tween("x3", d).add(this, "x3", (float) width).addColor(
+				this, "c3", color(0)));
+		ts.add(new Tween("x4", d).add(this, "x4", (float) width).addColor(
+				this, "c4", color(0)));
+		// ts.delay(25);
+		// ts.play();
+		// ts.noAutoUpdate();
+		ts.reverse().repeat().play();
 	}
 
 	@Override
 	public void draw() {
 		background(255);
+
+		// ts.update();
 
 		noStroke();
 
@@ -68,21 +72,30 @@ public class Sequence_Basic extends PApplet {
 
 		String time = (int) ts.getTween("x1").getTime() + " / "
 				+ (int) ts.getTween("x1").getDuration();
+		fill((ts.getTween("x1").isPlaying() ? color(0, 255, 0) : color(255, 0,
+				0)));
 		text(time, 10, 10 + 12);
 
 		time = (int) ts.getTween("x2").getTime() + " / "
 				+ (int) ts.getTween("x2").getDuration();
+		fill((ts.getTween("x2").isPlaying() ? color(0, 255, 0) : color(255, 0,
+				0)));
 		text(time, 10, 100 + 10 + 12);
 
 		time = (int) ts.getTween("x3").getTime() + " / "
 				+ (int) ts.getTween("x3").getDuration();
+		fill((ts.getTween("x3").isPlaying() ? color(0, 255, 0) : color(255, 0,
+				0)));
 		text(time, 10, 200 + 10 + 12);
 
 		time = (int) ts.getTween("x4").getTime() + " / "
 				+ (int) ts.getTween("x4").getDuration();
+		fill((ts.getTween("x4").isPlaying() ? color(0, 255, 0) : color(255, 0,
+				0)));
 		text(time, 10, 300 + 10 + 12);
 
 		time = (int) ts.getTime() + " / " + (int) ts.getDuration();
+		fill((ts.isPlaying() ? color(0, 255, 0) : color(255, 0, 0)));
 		text(time, width - textWidth(time) - 10, height - 10);
 	}
 

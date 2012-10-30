@@ -108,43 +108,32 @@ public abstract class MotionController extends Motion implements
 	@Override
 	public MotionController seek(float _value) {
 		super.seek(_value);
-
+ 
 		for (Motion c : children) {
-			// PApplet.println((getTime() - c.getDelay()) / c.getDuration());
 			if (c.isInsidePlayingTime(getTime()))
-				c.seek((getTime() - c.getDelay()) / c.getDuration());
-			else if (c.isAbovePlayTime(getTime()))
+				c.seek(getTime() / (c.getDelay() + c.getDuration()));
+			else if (c.isAbovePlayingTime(getTime())) {
 				c.seek(1);
-			else
+			} else {
 				c.seek(0);
+			}
 		}
 
 		return this;
 	}
 
 	public void update() {
-		if (isBelowPlayTime(time))
-			updateTime();
-		else if (isInsidePlayingTime(time)) {
-			updateTime();
-			updateCalls();
+		super.update();
+
+		if (isPlaying)
 			updateChildren();
-		} else if (isPlaying)
-			stop();
 	}
 
 	public void update(float _time) {
-		if (isInsidePlayingTime(_time)) {
-			if (!isPlaying)
-				play();
+		super.update(_time);
 
-			setTime(_time);
-			updateCalls();
+		if (isPlaying)
 			updateChildren();
-
-			if (isOutsidePlayingTime(time))
-				stop();
-		}
 	}
 
 	protected void updateChildren() {
@@ -280,6 +269,17 @@ public abstract class MotionController extends Motion implements
 	 * id/index
 	 */
 	public Motion get(int _index) {
+		if (_index < children.size())
+			return children.get(_index);
+		else
+			return null;
+	}
+
+	public Motion get(String _name) {
+		return childrenMap.get(_name);
+	}
+
+	public Motion getChild(int _index) {
 		if (_index < children.size())
 			return children.get(_index);
 		else

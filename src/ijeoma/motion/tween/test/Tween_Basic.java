@@ -15,9 +15,8 @@ public class Tween_Basic extends PApplet {
 
 		Motion.setup(this);
 
-		// t = new Tween(this, "w", (float) width,
-		// 100).repeat().reverse().play();
-		t = new Tween(this, "w", (float) width, 100).play();
+//		t = new Tween(this, "w", width, 3).repeat().reverse().play();
+		 t = new Tween(this, "w", (float) width, 100).delay(25).play();
 
 		// The above could also be written as
 		// t = new Tween(100).add(this, "w", width).play();
@@ -28,10 +27,11 @@ public class Tween_Basic extends PApplet {
 
 		float s = map(mouseX, 0, width, 0, 1);
 		// t.setTimeScale(s);
+		// t.update();
 
 		noStroke();
 		fill(255 / 2f);
-		rect(0, 0, w, height); 
+		rect(0, 0, w, height);
 
 		String time = t.getTime() + " / " + t.getDuration();
 		// String time = t.getPosition() + " / 1";

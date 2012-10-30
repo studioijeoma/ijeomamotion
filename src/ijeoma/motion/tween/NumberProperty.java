@@ -1,5 +1,5 @@
 /**
- * ##library.name##
+is * ##library.name##
  * ##library.sentence##
  * ##library.url##
  *
@@ -42,6 +42,10 @@ public class NumberProperty implements IProperty {
 	protected float begin, end, change;
 	protected float position;
 
+	protected float value;
+
+	boolean hasVariable = false;
+
 	public NumberProperty() {
 
 	}
@@ -51,10 +55,23 @@ public class NumberProperty implements IProperty {
 		setup(_name, _end);
 	}
 
+	public NumberProperty(String _name, float _begin, float _end) {
+		setup(_name, _begin, _end);
+	}
+
 	private void setup(String _name, float _end) {
 		name = _name;
 
 		setEnd(_end);
+
+		position = 0;
+	}
+
+	private void setup(String _name, float _begin, float _end) {
+		name = _name;
+
+		setEnd(_end);
+		setBegin(_begin);
 
 		position = 0;
 	}
@@ -116,16 +133,18 @@ public class NumberProperty implements IProperty {
 	}
 
 	public void setBegin() {
-		if (field != null)
-			try {
-				begin = field.getFloat(object);
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
+		if (hasVariable) {
+			if (field != null)
+				try {
+					begin = field.getFloat(object);
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
 
-		setChange(end - begin);
+			setChange(end - begin);
+		}
 	}
 
 	public void setBegin(Object _begin) {
@@ -139,14 +158,17 @@ public class NumberProperty implements IProperty {
 	}
 
 	public void setEnd(Object _end) {
-		if (field != null)
-			try {
-				begin = field.getFloat(object);
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
+		if (hasVariable) {
+			if (field != null)
+				try {
+					begin = field.getFloat(object);
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
+		} else
+			begin = getValue();
 
 		end = (Float) _end;
 
@@ -173,37 +195,44 @@ public class NumberProperty implements IProperty {
 	}
 
 	public Float getValue() {
-		if (field != null)
-			try {
-				return field.getFloat(object);
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
+		if (hasVariable) {
+			if (field != null)
+				try {
+					return field.getFloat(object);
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+					return null;
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+					return null;
+				}
+			else
 				return null;
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-				return null;
-			}
-		else
-			return null;
+		} else
+			return value;
 	}
 
 	@Override
 	public void updateValue() {
-		if (field != null)
-			try {
-				float v = field.getFloat(object);
-				field.setFloat(object, PApplet.lerp(begin, end, position));
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
+		value = PApplet.lerp(begin, end, position);
+
+		if (hasVariable)
+			if (field != null)
+				try {
+					field.setFloat(object, value);
+					// PApplet.println(name + ".updateValue: " + begin + " - "
+					// + getValue() + " - " + end);
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
 	}
 
 	@Override
 	public String toString() {
-		return "NumberParameter[name: " + getName() + ", begin: " + getBegin()
-				+ ", end: " + getEnd() + ", change: " + getChange()
-				+ ", position: " + getPosition() + "]";
+		return "NumberParameter[name: " + name + ", begin: " + begin
+				+ ", end: " + end + ", change: " + change + ", position: "
+				+ position + "]";
 	}
 }

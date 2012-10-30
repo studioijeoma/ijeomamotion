@@ -25,19 +25,19 @@ public class Tween_BarChart2 extends PApplet {
 
 	void setupBars() {
 		x1 = -width;
+		x2 = width;
+		
 		int d = 100;
 
 		s = new Sequence();
 
 		Parallel tp1 = new Parallel();
-		Tween t = new Tween("1st", d).add(this, "x1", width).setEasing(
-				Tween.EXPO_OUT);
+		Tween t = new Tween("1st", d).add(this, "x1", width);//.setEasing(Tween.EXPO_OUT);
 		tp1.add(t);
 		s.add(tp1);
 
 		Parallel tp2 = new Parallel("tp2");
-		t = new Tween("2nd", d).add(this, "x1", -width).setEasing(
-				Tween.EXPO_OUT);
+		t = new Tween("2nd", d).add(this, "x1", -width);//.setEasing(Tween.EXPO_OUT);
 		tp2.add(t);
 		s.add(tp2);
 
@@ -63,33 +63,30 @@ public class Tween_BarChart2 extends PApplet {
 		noStroke();
 
 		rect(x1, 0, width, height);
+		// rect(x2, 0, width, height);
 
 		String time = "";
 
-		time = (int) s.get(0).getTime() + " / " + (int) s.get(0).getDuration();
+		if (s.get(0) != null) {
+			time = (int) s.get(0).getTime() + " / "
+					+ (int) s.get(0).getDuration();
+			time += " - " + (int) s.getParallel(0).get(0).getTime() + " / "
+					+ (int) s.getParallel(0).get(0).getDuration();
 
-		if (s.get(0).isPlaying())
-			fill(0, 255, 0);
-		else
-			fill(255, 0, 0);
-		text(time, width - textWidth(time) - 10, height - 70);
-
-		if (s.get(1) != null) {
-			time = (int) s.get(1).getTime() + " / "
-					+ (int) s.get(1).getDuration();
-
-			if (s.get(1).isPlaying())
+			if (s.get(0).isPlaying())
 				fill(0, 255, 0);
 			else
 				fill(255, 0, 0);
 			text(time, width - textWidth(time) - 10, height - 50);
 		}
 
-		if (s.get(2) != null) {
-			time = (int) s.get(2).getTime() + " / "
-					+ (int) s.get(2).getDuration();
+		if (s.get(1) != null) {
+			time = (int) s.get(1).getTime() + " / "
+					+ (int) s.get(1).getDuration();
+			time += " - " + (int) s.getParallel(1).get(0).getTime() + " / "
+					+ (int) s.getParallel(1).get(0).getDuration();
 
-			if (s.get(2).isPlaying())
+			if (s.get(1).isPlaying())
 				fill(0, 255, 0);
 			else
 				fill(255, 0, 0);
@@ -111,16 +108,16 @@ public class Tween_BarChart2 extends PApplet {
 
 	@Override
 	public void mousePressed() {
-		// s.pause();
-		s.play();
+		s.pause();
+		// s.play();
 	}
 
 	@Override
 	public void mouseReleased() {
-		// s.resume();
+		s.resume();
 	}
 
 	public void mouseDragged() {
-		// s.seek((float) mouseX / width);
+		s.seek((float) mouseX / width);
 	}
 }

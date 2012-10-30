@@ -37,13 +37,16 @@ public class ColorProperty implements IProperty {
 	protected Object object;
 	protected Class<? extends Object> objectType;
 	protected Field field;
-	protected String fieldName;
 	protected Class<?> fieldType;
 
 	String name = "";
 
 	protected int begin, end, change;
 	protected float position;
+
+	protected int value;
+
+	boolean hasVariable = false;
 
 	public ColorProperty() {
 
@@ -54,6 +57,10 @@ public class ColorProperty implements IProperty {
 		setup(_name, _end);
 	}
 
+	public ColorProperty(String _name, int _begin, int _end) {
+		setup(_name, _begin, _end);
+	}
+
 	private void setup(String _name, int _end) {
 		name = _name;
 
@@ -62,17 +69,24 @@ public class ColorProperty implements IProperty {
 		position = 0;
 	}
 
+	private void setup(String _name, int _begin, int _end) {
+		name = _name;
+
+		setEnd(_end);
+		setBegin(_begin);
+
+		position = 0;
+	}
+
 	private void setupObjectField(Object _object, String _objectFieldName) {
 		object = _object;
 		objectType = object.getClass();
-
-		fieldName = _objectFieldName;
 
 		boolean found = false;
 
 		while (objectType != null) {
 			for (Field f : objectType.getDeclaredFields())
-				if (f.getName().equals(fieldName)) {
+				if (f.getName().equals(_objectFieldName)) {
 					fieldType = f.getType();
 					found = true;
 					break;
@@ -86,7 +100,7 @@ public class ColorProperty implements IProperty {
 
 		if (found)
 			try {
-				field = objectType.getDeclaredField(fieldName);
+				field = objectType.getDeclaredField(_objectFieldName);
 
 				try {
 					field.setAccessible(true);
@@ -98,6 +112,12 @@ public class ColorProperty implements IProperty {
 			} catch (NoSuchFieldException e) {
 				e.printStackTrace();
 			}
+	}
+
+	public void updateObjectField(Object _object) {
+		object = _object;
+
+		setBegin();
 	}
 
 	@Override
@@ -115,17 +135,18 @@ public class ColorProperty implements IProperty {
 	}
 
 	public void setBegin() {
-		if (field != null) {
-			try {
-				begin = field.getInt(object);
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
-		}
+		if (hasVariable) {
+			if (field != null)
+				try {
+					begin = field.getInt(object);
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
 
-		setChange(end - begin);
+			setChange(end - begin);
+		}
 	}
 
 	public void setBegin(Object _begin) {
@@ -139,14 +160,17 @@ public class ColorProperty implements IProperty {
 	}
 
 	public void setEnd(Object _end) {
-		if (field != null)
-			try {
-				begin = field.getInt(object);
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
+		if (hasVariable) {
+			if (field != null)
+				try {
+					begin = field.getInt(object);
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
+		} else
+			begin = getValue();
 
 		end = (Integer) _end;
 
@@ -173,35 +197,44 @@ public class ColorProperty implements IProperty {
 	}
 
 	public Integer getValue() {
-		if (field != null)
-			try {
-				return field.getInt(object);
-			} catch (IllegalArgumentException e) {
+		if (hasVariable) {
+			if (field != null)
+				try {
+					return field.getInt(object);
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+					return null;
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+					return null;
+				}
+			else
 				return null;
-			} catch (IllegalAccessException e) {
-				return null;
-			}
-		else
-			return null;
+		} else
+			return value;
 	}
 
 	@Override
 	public void updateValue() {
-		if (field != null)
-			try {
-				int c = Motion.getParent().lerpColor(begin, end, position);
-				field.setInt(object, c);
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
+		value = Motion.getParent().lerpColor(begin, end, position);
+
+		if (hasVariable)
+			if (field != null)
+				try {
+					field.setInt(object, value);
+					// PApplet.println(name + ".updateValue: " + begin + " - "
+					// + getValue() + " - " + end);
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
 	}
 
 	@Override
 	public String toString() {
-		return "ColorParameter[name: " + getName() + ", begin: " + getBegin()
-				+ ", end: " + getEnd() + ", change: " + getChange()
-				+ ", position: " + getPosition() + "]";
+		return "ColorParameter[name: " + name + ", begin: " + begin
+				+ ", end: " + end + ", change: " + change + ", position: "
+				+ position + "]";
 	}
 }

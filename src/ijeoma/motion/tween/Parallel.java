@@ -214,8 +214,12 @@ public class Parallel extends MotionController {
 	@Override
 	public Parallel noAutoUpdate() {
 		return (Parallel) super.noAutoUpdate();
+	} 
+	
+	public Parallel add(Motion _child) {
+		return (Parallel) super.add(_child);
 	}
-
+	
 	@Override
 	protected void dispatchMotionStartedEvent() {
 		// logger.println("dispatchMotionStartedEvent tweengroup");
