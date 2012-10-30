@@ -57,15 +57,15 @@ public class PVectorProperty implements IProperty {
 	public void setName(String _name) {
 		name = _name;
 	}
-	
+
 	public PVector getBegin() {
 		return begin;
 	}
 
 	public void setBegin() {
-		
+
 	}
-	
+
 	public void setBegin(Object _begin) {
 		begin = (PVector) _begin;
 
@@ -108,6 +108,10 @@ public class PVectorProperty implements IProperty {
 
 	public void updateValue() {
 		vector.lerp(end, position);
+	}
+
+	public Object getObject() {
+		return vector;
 	}
 
 	public String toString() {

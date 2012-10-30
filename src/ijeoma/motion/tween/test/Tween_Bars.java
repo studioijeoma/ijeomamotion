@@ -26,7 +26,7 @@ public class Tween_Bars extends PApplet {
 		for (Rect r : rects)
 			t = new Tween(100)
 					.add(r, "x", random(width))
-					.add(r, "c",
+					.addColor(r, "c",
 							(int) color(random(255), random(255), random(255)))
 					.play();
 	}

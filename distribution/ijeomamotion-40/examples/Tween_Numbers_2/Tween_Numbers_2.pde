@@ -17,7 +17,6 @@ void setup() {
 
   r = new Rect();
 
-  // end value must be a float
   t = new Tween(100).add(r, "x", 400f).add(r, "y", 400f).repeat().play();
 
   // The above could also be written as

@@ -21,17 +21,7 @@ void setup() {
   t = new Tween(100)
     .addColor(this, "c1", color(random(255), random(255), random(255)))
       .addColor(this, "c2", color(random(255), random(255), random(255)))
-        .play();
-
-  // The above could also be written as
-  // t = new Tween(100).addColor(this, "c1", color(0, 0, 255))
-  // .addColor(this, "c2", color(0, 255, 255)).play();
-  //
-  // or
-  //
-  // t = new Tween(100).add(new ColorProperty(this, "c1", color(0, 0,
-  // 255)))
-  // .add(new ColorProperty(this, "c2", color(0, 255, 255))).play();
+        .play(); 
 }
 
 void draw() {

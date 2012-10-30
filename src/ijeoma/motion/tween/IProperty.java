@@ -46,6 +46,8 @@ public interface IProperty {
 
 	public Object getValue();
 	void updateValue();
+	
+	public Object getObject();
 
 	@Override
 	public String toString();

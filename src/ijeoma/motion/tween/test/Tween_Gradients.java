@@ -1,6 +1,7 @@
 package ijeoma.motion.tween.test;
 
 import ijeoma.motion.Motion;
+import ijeoma.motion.tween.NumberProperty;
 import ijeoma.motion.tween.Tween;
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -25,10 +26,11 @@ public class Tween_Gradients extends PApplet {
 		Motion.setup(this);
 
 		t = new Tween(100)
-				.add(this, "c1", color(random(255), random(255), random(255)))
-				.add(this, "c2", color(random(255), random(255), random(255)))
-				.setEasing(Tween.SINE_BOTH)
-				.play();
+				.addColor(this, "c1",
+						color(random(255), random(255), random(255)))
+				.addColor(this, "c2",
+						color(random(255), random(255), random(255)))
+				.setEasing(Tween.SINE_BOTH).play();
 	}
 
 	@Override
@@ -48,13 +50,13 @@ public class Tween_Gradients extends PApplet {
 	}
 
 	public void tweenEnded(Tween t) {
-		t.get("c1").setEnd(color(random(255), random(255), random(255)));
-		t.get("c2").setEnd(color(random(255), random(255), random(255)));
+		t.getColor("c1").setEnd(color(random(255), random(255), random(255)));
+		t.getColor("c2").setEnd(color(random(255), random(255), random(255)));
 		t.play();
 	}
 
 	@Override
-	public void keyPressed() { 
+	public void keyPressed() {
 		t.play();
 	}
 }

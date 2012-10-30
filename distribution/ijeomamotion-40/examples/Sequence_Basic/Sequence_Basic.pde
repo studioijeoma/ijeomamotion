@@ -48,23 +48,29 @@ void draw() {
 
   fill(0);
 
-  String time = (int) ts.getTween("x1").getTime() + " / "
-    + (int) ts.getTween("x1").getDuration();
+  String time = (int) ts.get("x1").getTime() + " / "
+    + (int) ts.get("x1").getDuration();
+  fill(ts.get("x1").isPlaying() ? color(0, 255, 0) : color(255, 0, 0));
   text(time, 10, 10 + 12);
 
-  time = (int) ts.getTween("x2").getTime() + " / "
-    + (int) ts.getTween("x2").getDuration();
+  time = (int) ts.get("x2").getTime() + " / "
+    + (int) ts.get("x2").getDuration();
+  fill(ts.get("x2").isPlaying() ? color(0, 255, 0) : color(255, 0, 0));
   text(time, 10, 100 + 10 + 12);
 
-  time = (int) ts.getTween("x3").getTime() + " / "
-    + (int) ts.getTween("x3").getDuration();
+  time = (int) ts.get("x3").getTime() + " / "
+    + (int) ts.get("x3").getDuration();
+  fill(ts.get("x3").isPlaying() ? color(0, 255, 0) : color(255, 0, 0));
   text(time, 10, 200 + 10 + 12);
 
-  time = (int) ts.getTween("x4").getTime() + " / "
-    + (int) ts.getTween("x4").getDuration();
+  time = (int) ts.get("x4").getTime() + " / "
+    + (int) ts.get("x4").getDuration();
+  fill(ts.get("x4").isPlaying() ? color(0, 255, 0) : color(255, 0, 0));
+
   text(time, 10, 300 + 10 + 12);
 
   time = (int) ts.getTime() + " / " + (int) ts.getDuration();
+  fill(ts.isPlaying() ? color(0, 255, 0) : color(255, 0, 0));
   text(time, width - textWidth(time) - 10, height - 10);
 }
 

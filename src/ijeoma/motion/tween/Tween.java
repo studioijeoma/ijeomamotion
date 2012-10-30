@@ -34,6 +34,7 @@ import ijeoma.motion.event.MotionEventListener;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import processing.core.PApplet;
@@ -41,6 +42,8 @@ import processing.core.PVector;
 
 public class Tween extends Motion { // implements Comparable
 	protected ArrayList<IProperty> properties = new ArrayList<IProperty>();
+	protected HashMap<String, IProperty> propertyMap = new HashMap<String, IProperty>();
+	
 	protected boolean hasSetupProperties = false;
 
 	protected Method tweenStartedMethod, tweenEndedMethod, tweenChangedMethod,
@@ -501,12 +504,18 @@ public class Tween extends Motion { // implements Comparable
 
 	public Tween addProperty(IProperty _p) {
 		properties.add(_p);
+		
+		if(!_p.getName().equals(""))
+			propertyMap.put(_p.getName(), _p);
 
 		return this;
 	}
 
 	public Tween add(IProperty _p) {
 		properties.add(_p);
+		
+		if(!_p.getName().equals(""))
+			propertyMap.put(_p.getName(), _p);
 
 		return this;
 	}
@@ -589,15 +598,7 @@ public class Tween extends Motion { // implements Comparable
 	}
 
 	public IProperty getProperty(String _name) {
-		IProperty mp = null;
-
-		for (int i = 0; i < properties.size(); i++)
-			if (properties.get(i).getName().equals(_name)) {
-				mp = properties.get(i);
-				break;
-			}
-
-		return mp;
+		return propertyMap.get(_name); 
 	}
 
 	public IProperty[] getProperties() {

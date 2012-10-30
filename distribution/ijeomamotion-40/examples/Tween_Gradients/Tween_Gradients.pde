@@ -40,9 +40,9 @@ void draw() {
   text(time, width - textWidth(time) - 10, height - 10);
 }
 
-void tweenEnded(Tween t) {
-  t.get("c1").setEnd(color(random(255), random(255), random(255)));
-  t.get("c2").setEnd(color(random(255), random(255), random(255)));
+void tweenEnded(Tween t) { 
+  t.getColor("c1").setEnd(color(random(255), random(255), random(255)));
+  t.getColor("c2").setEnd(color(random(255), random(255), random(255)));
   t.play();
 }
 

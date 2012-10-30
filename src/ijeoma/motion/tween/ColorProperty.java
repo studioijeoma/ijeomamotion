@@ -53,6 +53,7 @@ public class ColorProperty implements IProperty {
 	}
 
 	public ColorProperty(Object _object, String _name, int _end) {
+		hasVariable = true;
 		setupObjectField(_object, _name);
 		setup(_name, _end);
 	}
@@ -145,14 +146,13 @@ public class ColorProperty implements IProperty {
 					e.printStackTrace();
 				}
 
-			setChange(end - begin);
+			change = end - begin;
 		}
 	}
 
 	public void setBegin(Object _begin) {
 		begin = (Integer) _begin;
-
-		setChange(end - begin);
+		change = end - begin;
 	}
 
 	public Integer getEnd() {
@@ -170,11 +170,10 @@ public class ColorProperty implements IProperty {
 					e.printStackTrace();
 				}
 		} else
-			begin = getValue();
+			begin = value;
 
 		end = (Integer) _end;
-
-		setChange(end - begin);
+		change = end - begin;
 	}
 
 	public Integer getChange() {
@@ -231,10 +230,13 @@ public class ColorProperty implements IProperty {
 				}
 	}
 
+	public Object getObject() {
+		return object;
+	}
+
 	@Override
 	public String toString() {
-		return "ColorParameter[name: " + name + ", begin: " + begin
-				+ ", end: " + end + ", change: " + change + ", position: "
-				+ position + "]";
+		return "ColorParameter[name: " + name + ", begin: " + begin + ", end: "
+				+ end + ", change: " + change + ", position: " + position + "]";
 	}
 }

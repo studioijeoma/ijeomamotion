@@ -51,6 +51,7 @@ public class NumberProperty implements IProperty {
 	}
 
 	public NumberProperty(Object _object, String _name, float _end) {
+		hasVariable = true;
 		setupObjectField(_object, _name);
 		setup(_name, _end);
 	}
@@ -143,14 +144,13 @@ public class NumberProperty implements IProperty {
 					e.printStackTrace();
 				}
 
-			setChange(end - begin);
+			change = end - begin;
 		}
 	}
 
 	public void setBegin(Object _begin) {
 		begin = (Float) _begin;
-
-		setChange(end - begin);
+		change = end - begin;
 	}
 
 	public Float getEnd() {
@@ -168,11 +168,11 @@ public class NumberProperty implements IProperty {
 					e.printStackTrace();
 				}
 		} else
-			begin = getValue();
+			begin = value;
 
-		end = (Float) _end;
-
-		setChange(end - begin);
+		end = (_end instanceof Integer) ? new Float(_end.toString())
+				: (Float) _end;
+		change = end - begin;
 	}
 
 	public Float getChange() {
@@ -227,6 +227,10 @@ public class NumberProperty implements IProperty {
 				} catch (IllegalAccessException e) {
 					e.printStackTrace();
 				}
+	}
+
+	public Object getObject() {
+		return object;
 	}
 
 	@Override

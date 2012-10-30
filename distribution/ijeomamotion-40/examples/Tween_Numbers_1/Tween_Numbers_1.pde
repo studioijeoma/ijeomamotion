@@ -16,8 +16,7 @@ void setup() {
   f = createFont("Arial", 12);
 
   Motion.setup(this);
-
-  //end values must be floats
+ 
   t = new Tween(100).add(this, "x", 400f).add(this, "y", 0f).repeat()
     .play();
 
