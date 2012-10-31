@@ -192,7 +192,10 @@ void mouseDragged() {
 ```java
 t = new Tween(this, "w", width, 100).repeat().play();
 ```
-
+###Reversing
+```java 
+Tween t = new Tween(this, "w", width, 100).repeat().reverse().play();
+```
 ##How to use Processing-style events with Tweens 
 (Java-mode only but can also be used in Javascript-only Processing.js)
 ```java
@@ -203,10 +206,6 @@ void tweenStarted(Tween _t) {
 void tweenEnded(Tween _t) {
   println(_t + " ended");
 }  
-```
-###Reversing
-```java 
-Tween t = new Tween(this, "w", width, 100).repeat().reverse().play();
 ```
 ##How to use Java-style events with Tweens (Java-mode only)
 ```java 
