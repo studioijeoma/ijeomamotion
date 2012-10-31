@@ -42,24 +42,20 @@ public class CurveTween extends Tween { // implements Comparable {
 
 	private Curve curve;
 
-	public CurveTween(Curve _path, float _begin, float _end,
-			float _duration, float _delay, String _easing) {
+	public CurveTween(Curve _curve, float _begin, float _end, float _duration,
+			float _delay, String _easing) {
 		super(_duration, _delay, _easing);
-		setupCurve(_path);
+		curve = _curve;
 	}
 
-	public CurveTween(Curve _path, float _begin, float _end,
-			float _duration, float _delay) {
+	public CurveTween(Curve _curve, float _begin, float _end, float _duration,
+			float _delay) {
 		super(_duration, _delay);
-		setupCurve(_path);
+		curve = _curve;
 	}
 
-	public CurveTween(Curve _path, float _begin, float _end, float _duration) {
+	public CurveTween(Curve _curve, float _begin, float _end, float _duration) {
 		super(_duration);
-		setupCurve(_path);
-	}
-
-	protected void setupCurve(Curve _curve) {
 		curve = _curve;
 	}
 
@@ -73,23 +69,22 @@ public class CurveTween extends Tween { // implements Comparable {
 		Class<? extends PApplet> parentClass = parent.getClass();
 
 		try {
-			tweenCurveStartedMethod = parentClass.getMethod(
-					MotionEvent.TWEEN_STARTED,
-					new Class[] { CurveTween.class });
-		} catch (Exception e) {
-		}
-
-		try {
-			tweenCurveEndedMethod = parentClass
-					.getMethod(MotionEvent.TWEEN_ENDED,
+			tweenCurveStartedMethod = parentClass
+					.getMethod(MotionEvent.TWEEN_STARTED,
 							new Class[] { CurveTween.class });
 		} catch (Exception e) {
 		}
 
 		try {
-			tweenCurveChangedMethod = parentClass.getMethod(
-					MotionEvent.TWEEN_CHANGED,
-					new Class[] { CurveTween.class });
+			tweenCurveEndedMethod = parentClass.getMethod(
+					MotionEvent.TWEEN_ENDED, new Class[] { CurveTween.class });
+		} catch (Exception e) {
+		}
+
+		try {
+			tweenCurveChangedMethod = parentClass
+					.getMethod(MotionEvent.TWEEN_CHANGED,
+							new Class[] { CurveTween.class });
 		} catch (Exception e) {
 		}
 
@@ -99,6 +94,96 @@ public class CurveTween extends Tween { // implements Comparable {
 					new Class[] { CurveTween.class });
 		} catch (Exception e) {
 		}
+	}
+
+	@Override
+	public CurveTween play() {
+		return (CurveTween) super.play();
+	}
+
+	@Override
+	public CurveTween stop() {
+		return (CurveTween) super.stop();
+	}
+
+	@Override
+	public CurveTween pause() {
+		return (CurveTween) super.pause();
+	}
+
+	@Override
+	public CurveTween resume() {
+		return (CurveTween) super.resume();
+	}
+
+	@Override
+	public CurveTween seek(float _value) {
+		return (CurveTween) super.seek(_value);
+	}
+
+	@Override
+	public CurveTween repeat() {
+		return (CurveTween) super.repeat();
+	}
+
+	@Override
+	public CurveTween repeat(int _repeatDuration) {
+		return (CurveTween) super.repeat(_repeatDuration);
+	}
+
+	@Override
+	public CurveTween noRepeat() {
+		return (CurveTween) super.noRepeat();
+	}
+
+	@Override
+	public CurveTween reverse() {
+		return (CurveTween) super.reverse();
+	}
+
+	@Override
+	public CurveTween noReverse() {
+		return (CurveTween) super.noReverse();
+	}
+
+	@Override
+	public CurveTween setTimeScale(float _timeScale) {
+		return (CurveTween) super.setTimeScale(_timeScale);
+	}
+
+	@Override
+	public CurveTween setDuration(float _duration) {
+		return (CurveTween) super.setDuration(_duration);
+	}
+
+	@Override
+	public CurveTween delay(float _delay) {
+		return (CurveTween) super.delay(_delay);
+	}
+
+	@Override
+	public CurveTween setEasing(String _easing) {
+		return (CurveTween) super.setEasing(_easing);
+	}
+
+	@Override
+	public CurveTween noEasing() {
+		return (CurveTween) super.noEasing();
+	}
+
+	@Override
+	public CurveTween setTimeMode(String _timeMode) {
+		return (CurveTween) super.setTimeMode(_timeMode);
+	}
+
+	@Override
+	public CurveTween autoUpdate() {
+		return (CurveTween) super.autoUpdate();
+	}
+
+	@Override
+	public CurveTween noAutoUpdate() {
+		return (CurveTween) super.noAutoUpdate();
 	}
 
 	public PVector getPoint() {

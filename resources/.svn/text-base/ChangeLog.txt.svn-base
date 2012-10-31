@@ -1,3 +1,7 @@
+2012-10-05  Elie Zananiri
+      * version 0.4.8
+      * updated default classpath on OS X
+
 2012-02-16  Elie Zananiri
       * version 0.4.7
       * fixed up formatting to match new tool template

@@ -42,25 +42,20 @@ public class BezierTween extends Tween { // implements Comparable {
 
 	private Bezier bezier;
 
-	public BezierTween(Bezier _path, float _begin, float _end,
+	public BezierTween(Bezier _bezier, float _begin, float _end,
 			float _duration, float _delay, String _easing) {
 		super(_duration, _delay, _easing);
-		setupBezier(_path);
+		bezier = _bezier;
 	}
 
-	public BezierTween(Bezier _path, float _begin, float _end,
+	public BezierTween(Bezier _bezier, float _begin, float _end,
 			float _duration, float _delay) {
 		super(_duration, _delay);
-		setupBezier(_path);
+		bezier = _bezier;
 	}
 
-	public BezierTween(Bezier _path, float _begin, float _end,
-			float _duration) {
+	public BezierTween(Bezier _bezier, float _begin, float _end, float _duration) {
 		super(_duration);
-		setupBezier(_path);
-	}
-
-	protected void setupBezier(Bezier _bezier) {
 		bezier = _bezier;
 	}
 
@@ -82,8 +77,7 @@ public class BezierTween extends Tween { // implements Comparable {
 
 		try {
 			tweenBezierEndedMethod = parentClass.getMethod(
-					MotionEvent.TWEEN_ENDED,
-					new Class[] { BezierTween.class });
+					MotionEvent.TWEEN_ENDED, new Class[] { BezierTween.class });
 		} catch (Exception e) {
 		}
 
@@ -102,6 +96,96 @@ public class BezierTween extends Tween { // implements Comparable {
 		}
 	}
 
+	@Override
+	public BezierTween play() {
+		return (BezierTween) super.play();
+	}
+
+	@Override
+	public BezierTween stop() {
+		return (BezierTween) super.stop();
+	}
+
+	@Override
+	public BezierTween pause() {
+		return (BezierTween) super.pause();
+	}
+
+	@Override
+	public BezierTween resume() {
+		return (BezierTween) super.resume();
+	}
+
+	@Override
+	public BezierTween seek(float _value) {
+		return (BezierTween) super.seek(_value);
+	}
+
+	@Override
+	public BezierTween repeat() {
+		return (BezierTween) super.repeat();
+	}
+
+	@Override
+	public BezierTween repeat(int _repeatDuration) {
+		return (BezierTween) super.repeat(_repeatDuration);
+	}
+
+	@Override
+	public BezierTween noRepeat() {
+		return (BezierTween) super.noRepeat();
+	}
+
+	@Override
+	public BezierTween reverse() {
+		return (BezierTween) super.reverse();
+	}
+
+	@Override
+	public BezierTween noReverse() {
+		return (BezierTween) super.noReverse();
+	}
+
+	@Override
+	public BezierTween setTimeScale(float _timeScale) {
+		return (BezierTween) super.setTimeScale(_timeScale);
+	}
+
+	@Override
+	public BezierTween setDuration(float _duration) {
+		return (BezierTween) super.setDuration(_duration);
+	}
+
+	@Override
+	public BezierTween delay(float _delay) {
+		return (BezierTween) super.delay(_delay);
+	}
+
+	@Override
+	public BezierTween setEasing(String _easing) {
+		return (BezierTween) super.setEasing(_easing);
+	}
+
+	@Override
+	public BezierTween noEasing() {
+		return (BezierTween) super.noEasing();
+	}
+
+	@Override
+	public BezierTween setTimeMode(String _timeMode) {
+		return (BezierTween) super.setTimeMode(_timeMode);
+	}
+
+	@Override
+	public BezierTween autoUpdate() {
+		return (BezierTween) super.autoUpdate();
+	}
+
+	@Override
+	public BezierTween noAutoUpdate() {
+		return (BezierTween) super.noAutoUpdate();
+	}
+	
 	public PVector getPoint() {
 		return bezier.getPoint(getPosition());
 	}

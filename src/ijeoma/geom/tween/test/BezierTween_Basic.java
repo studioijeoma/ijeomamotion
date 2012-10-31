@@ -47,8 +47,7 @@ public class BezierTween_Basic extends PApplet {
 
 		Motion.setup(this);
 
-		bt = new BezierTween(b1, 0f, 1f, 100f);
-		bt.play();
+		bt = new BezierTween(b1, 0f, 1f, 100f).play();
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 K 25
 svn:wc:ra_dav:version-url
 V 51
-/svn/!svn/ver/9234/trunk/library-template/resources
+/svn/!svn/ver/9241/trunk/library-template/resources
 END
 library.properties
 K 25
@@ -18,8 +18,8 @@ END
 ChangeLog.txt
 K 25
 svn:wc:ra_dav:version-url
-V 65
-/svn/!svn/ver/9241/trunk/library-template/resources/ChangeLog.txt
+V 66
+/svn/!svn/ver/10261/trunk/library-template/resources/ChangeLog.txt
 END
 install_instructions.txt
 K 25
@@ -30,8 +30,8 @@ END
 build.properties
 K 25
 svn:wc:ra_dav:version-url
-V 68
-/svn/!svn/ver/9234/trunk/library-template/resources/build.properties
+V 69
+/svn/!svn/ver/10261/trunk/library-template/resources/build.properties
 END
 build.xml
 K 25

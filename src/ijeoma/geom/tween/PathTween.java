@@ -74,8 +74,7 @@ public class PathTween extends Tween {
 
 		try {
 			tweenPathStartedMethod = parentClass.getMethod(
-					MotionEvent.TWEEN_STARTED,
-					new Class[] { PathTween.class });
+					MotionEvent.TWEEN_STARTED, new Class[] { PathTween.class });
 		} catch (Exception e) {
 		}
 
@@ -87,17 +86,106 @@ public class PathTween extends Tween {
 
 		try {
 			tweenPathChangedMethod = parentClass.getMethod(
-					MotionEvent.TWEEN_CHANGED,
-					new Class[] { PathTween.class });
+					MotionEvent.TWEEN_CHANGED, new Class[] { PathTween.class });
 		} catch (Exception e) {
 		}
 
 		try {
-			tweenPathRepeatedMethod = parentClass.getMethod(
-					MotionEvent.TWEEN_REPEATED,
-					new Class[] { PathTween.class });
+			tweenPathRepeatedMethod = parentClass
+					.getMethod(MotionEvent.TWEEN_REPEATED,
+							new Class[] { PathTween.class });
 		} catch (Exception e) {
 		}
+	}
+
+	@Override
+	public PathTween play() { 
+		return (PathTween) super.play();
+	}
+
+	@Override
+	public PathTween stop() {
+		return (PathTween) super.stop();
+	}
+
+	@Override
+	public PathTween pause() {
+		return (PathTween) super.pause();
+	}
+
+	@Override
+	public PathTween resume() {
+		return (PathTween) super.resume();
+	}
+
+	@Override
+	public PathTween seek(float _value) {
+		return (PathTween) super.seek(_value);
+	}
+
+	@Override
+	public PathTween repeat() {
+		return (PathTween) super.repeat();
+	}
+
+	@Override
+	public PathTween repeat(int _repeatDuration) {
+		return (PathTween) super.repeat(_repeatDuration);
+	}
+
+	@Override
+	public PathTween noRepeat() {
+		return (PathTween) super.noRepeat();
+	}
+
+	@Override
+	public PathTween reverse() {
+		return (PathTween) super.reverse();
+	}
+
+	@Override
+	public PathTween noReverse() {
+		return (PathTween) super.noReverse();
+	}
+
+	@Override
+	public PathTween setTimeScale(float _timeScale) {
+		return (PathTween) super.setTimeScale(_timeScale);
+	}
+
+	@Override
+	public PathTween setDuration(float _duration) {
+		return (PathTween) super.setDuration(_duration);
+	}
+
+	@Override
+	public PathTween delay(float _delay) {
+		return (PathTween) super.delay(_delay);
+	}
+
+	@Override
+	public PathTween setEasing(String _easing) {
+		return (PathTween) super.setEasing(_easing);
+	}
+
+	@Override
+	public PathTween noEasing() {
+		return (PathTween) super.noEasing();
+	}
+
+	@Override
+	public PathTween setTimeMode(String _timeMode) {
+		return (PathTween) super.setTimeMode(_timeMode);
+	}
+
+	@Override
+	public PathTween autoUpdate() {
+		return (PathTween) super.autoUpdate();
+	}
+
+	@Override
+	public PathTween noAutoUpdate() {
+		return (PathTween) super.noAutoUpdate();
 	}
 
 	public PVector getPoint() {

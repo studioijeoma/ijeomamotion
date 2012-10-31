@@ -1,4 +1,10 @@
 package ijeoma.geom.test;
+
+import processing.core.PApplet;
+import processing.core.PShape;
+import processing.core.PVector;
+import ijeoma.geom.SVGPath;
+
 ///**
 // * ##library.name##
 // * ##library.sentence##
@@ -25,42 +31,35 @@ package ijeoma.geom.test;
 // * @modified    ##date##
 // * @version     ##library.prettyVersion## (##library.version##)
 // */
-//
-//package ijeoma.processing.geom.test;
-//
-//import ijeoma.processing.geom.SVGPath2D;
-//import processing.core.PApplet;
-//import processing.core.PShape;
-//import processing.core.PVector;
-//
-//public class SVGPath2D_Basic extends PApplet {
-//
-//	PShape s;
-//	SVGPath2D p;
-//
-//	@Override
-//	public void setup() {
-//		size(800, 600);
-//		smooth();
-//
-//		s = loadShape(dataPath("cloud.svg"));
-//
-//		PShape path = s.getChild(0);
-//
-//		p = new SVGPath2D(g, path);
-//	}
-//
-//	@Override
-//	public void draw() {
-//		background(255);
-//
-//		stroke(0);
-//		noFill();
-//		p.draw();
-//
-//		PVector v = p.getPoint((float) mouseX / width);
-//
-//		fill(255, 0, 0);
-//		ellipse(v.x, v.y, 10, 10);
-//	}
-// }
+
+public class SVGPath2D_Basic extends PApplet {
+
+	PShape s;
+	SVGPath p;
+
+	@Override
+	public void setup() {
+		size(800, 600);
+		smooth();
+
+		s = loadShape(dataPath("cloud.svg"));
+
+		// PShape path = s.getChild(0);
+		//
+		// p = new SVGPath(g, path);
+	}
+
+	@Override
+	public void draw() {
+		// background(255);
+		//
+		// stroke(0);
+		// noFill();
+		// p.draw();
+		//
+		// PVector v = p.getPoint((float) mouseX / width);
+		//
+		// fill(255, 0, 0);
+		// ellipse(v.x, v.y, 10, 10);
+	}
+}
