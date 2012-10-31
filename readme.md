@@ -1,7 +1,7 @@
 #Ijeomamotion
  
-A library for sketching animations with numbers, colors vectors, beziers, curves and more! It can play tweens in parallel, in a sequence or in a timeline/keyframes. Parallels can playback Sequences and vice versa. Timelines can also playback Parallels and Sequences too! You can also use all of aforementioed to call functions!
-Please post issues on [Github](github.com/ekeneijeoma/ijeomamotion/issues) or [Processing's forums](forum.processing.org) under "Contributed Libraries".
+A cross-mode Processing library for sketching animations with numbers, colors vectors, beziers, curves and more! It can play tweens in parallel, in a sequence or in a timeline/keyframes. Parallels can playback Sequences and vice versa. Timelines can also playback Parallels and Sequences too! You can also use all of aforementioed to call functions!
+Cross-mode means that it will run and export in both Processing IDE's Java and Javascript modes. You can also use it in Javascript with or without Processing. Please post issues on [Github](github.com/ekeneijeoma/ijeomamotion/issues) or [Processing's forums](forum.processing.org) under "Contributed Libraries". 
 
 #Download and Install
 In Processing 2.0 you can do an auto download and install by going Sketch->Add Library...->Animation->ijeomamotion. Otherwise download the latest zip and check out INSTALL.txt.
@@ -13,7 +13,7 @@ http://ekeneijeoma.com/processing/ijeomamotion/reference/index.html
 ![alt text](http://goo.gl/NZjG8 "Arcs")
 ![alt text](http://goo.gl/nUiH9 "Lines")
 
-#Getting Started
+#Getting Started 
 First, import the library into your Sketch via Sketch->Import Library->ijeomamotion. 
 Then call
 
@@ -24,22 +24,22 @@ in setup.
 ##How to create Tweens
 
 ###Numbers (floats)
-There are 2 ways to Tween a number. Say you want to tween a `float x = 0` to `x = 100` in 100 frames. To tween a number it MUST BE a float. So if you give it an end value of '100' it must be written as 100.0, 100f or (float)100.
+There are 2 ways to Tween a number using variables. Say you want to tween a `float x = 0` to `x = 100` in 100 frames. (To tween a number it must be a float and not an int. Ints are used to tween colors.)
 ```java
 Tween t = new Tween(this, "x", 100f, 100).play();
 ```
 or
 ```java
-Tween t = new Tween(100).add(this, "x", 100f).play();
+Tween t = new Tween(100).add(this, "x", 100).play();
 ```
 
 The 2nd way lets you chain/add more properties to the Tween. Say we want to tween a `float x = 0` and `loat y = 0` to `x = 100` and `y = 100` in 100 frames.
 ```java
-Tween t = new Tween(100).add(this, "x", 100f).add(this, "y", 100f).play();
+Tween t = new Tween(100).add(this, "x", 100).add(this, "y", 100).play();
 ```
  
 ###Colors (ints)
-There are also 2 ways to Tween a color the end value must be an int. Say we want to tween a color `int c = color(0)` to `c = color(255)` in 100 frames.
+There are also 2 ways to Tween a color using variables. Say we want to tween a color `int c = color(0)` to `c = color(255)` in 100 frames. (To tween a color it must be an int.)
 ```java
 Tween t = new Tween(this, "c", color(255), 100).play();
 ```
@@ -48,21 +48,88 @@ or
 Tween t = new Tween(100).add(this, "c", color(255)).play();
 ```
 
-In the same was as with numbers you can also chain/add more color properties
+In the same way as with numbers you can also chain/add more color properties
 ```java
-Tween t = new Tween(100).add(this, "c1", color(255)).add(this, "c2", color(200)).play();
+Tween t = new Tween(100).addColor(this, "c1", color(255)).addColor(this, "c2", color(200)).play();
 ```
 
 ###PVectors
 You can also tween PVectors. Say we want to tween PVectors `v1 = PVector(0,0)` and `v2 = PVector(0,0)` to `v1 = PVector(50, 50)` and `v2 = PVector(100, 100)`.
 ```java
-Tween t = new Tween(100).add(v1, new PVector(50, 50)).add(v2, new PVector(100, 100)).play();
+Tween t = new Tween(100).addPVector(v1, new PVector(50, 50)).addPVector(v2, new PVector(100, 100)).play();
 ```
 
 ###All in 1!
 You can also tween multiples properties of any type in 1 Tween!
 ```java
 Tween t = new Tween(100).add(this, "x", 100).add(this,"c", color(255)).add(v1, new PVector(100, 100)).play();
+```
+
+###Cross-mode
+To create a cross-mode tween using variables they must not be defined in the global scope but rather in a custom class.
+```java 
+Rect r; 
+Tween t; 
+
+public void setup() {
+  size(400, 400);
+  smooth();
+
+  rectMode(CENTER);
+
+  Motion.setup(this);
+
+  r = new Rect(width / 2, height / 2, 0, 0, 255);
+  t = new Tween(100).add(r, "w", width).add(r, "h", height).addColor(r, "c", 0).play();
+}
+
+public void draw() {
+  background(255);
+  r.draw();
+} 
+
+class Rect {
+  int c;
+  float x, y, w, h; 
+
+  Rect(float x, float y, float w, float h, int c) {
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.c = c;
+  } 
+
+  void draw() { 
+    noStroke();
+    fill(c);
+    rect(x, y, w, h);
+  }
+}
+```
+
+You can also create cross-mode tweens without variables.
+```java 
+Tween t;
+
+public void setup() {
+  size(400, 400);
+  smooth();
+
+  rectMode(CENTER);
+
+  Motion.setup(this);
+
+  t = new Tween(100).add("w", 0, width).add("h", 0, height).addColor("c", 255, 0).play();
+}
+
+public void draw() {
+  background(255);
+
+  noStroke();
+  fill(t.getColor("c").getValue());
+  rect(width / 2, height / 2, t.get("w").getValue(), t.get("h").getValue());
+}
 ```
 
 ##How to playback Tweens 
@@ -77,13 +144,14 @@ public void setup() {
   Motion.setup(this);
 
   t = new Tween(this, "w", width, 50, 50).play();
+  //t = new Tween(50).add(this, "w", width).delay(50).play();
 }
 
 public void draw() {
   background(255);
 
   noStroke();
-  fill(255 / 2f);
+  fill(0);
   rect(0, 0, w, height);
 }
 
@@ -141,14 +209,14 @@ public void setup() {
   
   Motion.setup(this);
 
-  t = new Tween(this, "w", width, 100f).repeat().play();
+  t = new Tween(this, "w", width, 100).repeat().play();
 }
 
 public void draw() {
   background(255);
 
   noStroke();
-  fill(255 / 2f);
+  fill(0);
   rect(0, 0, w, height);
 }
 
@@ -157,7 +225,8 @@ public void keyPressed() {
 }
 ```
 
-##How to use Processing-style events with Tweens
+##How to use Processing-style events with Tweens 
+(Java-mode only but can also be used in Javascript-only Processing.js)
 ```java
 Tween t;
 
@@ -176,7 +245,7 @@ void draw() {
   background(255);
 
   noStroke();
-  fill(255 / 2f);
+  fill(0);
   rect(0, 0, w, height); 
 }
 
@@ -194,9 +263,9 @@ void tweenEnded(Tween _t) {
 ```
 ###Reversing
 ```java 
-Tween t = new Tween(this, "w", width, 100f).repeat().reverse().play();
+Tween t = new Tween(this, "w", width, 100).repeat().reverse().play();
 ```
-##How to use Java-style events with Tweens
+##How to use Java-style events with Tweens (Java-mode only)
 ```java 
 Tween t;
 
@@ -215,7 +284,7 @@ void draw() {
   background(255);
 
   noStroke();
-  fill(255 / 2f);
+  fill(0);
   rect(0, 0, w, height); 
 }
 
@@ -281,16 +350,16 @@ public void setup() {
   x1 = -width;
   x2 = width;
   
-  tp = new Parallel();
-  tp.add(new Tween(this, "x1", width, 100), "x1")
-    .add(new Tween(this, "x2", -width, 200), "x2").play(); 
+  tp = new Parallel()
+  .add(new Tween(this, "x1", width, 100), "x1")
+  .add(new Tween(this, "x2", -width, 200), "x2").play(); 
 }
 
 public void draw() {
   background(255);
 
   stroke(255);
-  fill(255 / 2f);
+  fill(0);
   rect(x1, 0, width, height / 2);
   rect(x2, height / 2, width, height / 2);
 }
@@ -310,16 +379,12 @@ void setup() {
   c1 = c2 = c3 = c4 = color(255);
   x1 = x2 = x3 = x4 = -width;
 
-  ts = new Sequence();
-  ts.add(new Tween(100).add(this, "x1", (float)width).
-  add(this, "c1", color(0)), "x1");
-  ts.add(new Tween(75).add(this, "x2", (float)width).
-  add(this, "c2", color(0)), "x2");
-  ts.add(new Tween(50).add(this, "x3", (float)width).
-  add(this, "c3", color(0)), "x3");
-  ts.add(new Tween(25).add(this, "x4", (float)width).
-  add(this, "c4", color(0)), "x4");
-  ts.repeat().play();
+  ts = new Sequence()
+  .add(new Tween(100).add(this, "x1", width).add(this, "c1", color(0)), "x1");
+  .add(new Tween(75).add(this,  "x2", width).add(this, "c2", color(0)), "x2");
+  .add(new Tween(50).add(this,  "x3", width).add(this, "c3", color(0)), "x3");
+  .add(new Tween(25).add(this,  "x4", width).add(this, "c4", color(0)), "x4");
+  .repeat().play();
 }
 
 void draw() {
@@ -355,16 +420,11 @@ void setup() {
   y2 = y4 = height;
 
   tl = new Timeline();
-  tl.add(new Tween(50).add(this, "y1", (float)height).
-  add(this, "c1", color(0)), 0);
-  tl.add(new Tween(50).add(this, "y2", (float)-height).
-  add(this, "c2", color(0)), 50);
-  tl.add(new Tween(50).add(this, "y3", (float)height).
-  add(this, "c3", color(0)), 100);
-  tl.add(new Tween(50).add(this, "y4", (float)-height).
-  add(this, "c4", color(0)), 150);
-  tl.add(new Tween(50).add(this, "y5", (float)height).
-  add(this, "c5", color(0)), 200);
+  tl.add(new Tween(50).add(this, "y1",  height).add(this, "c1", color(0)), 0);
+  tl.add(new Tween(50).add(this, "y2", -height).add(this, "c2", color(0)), 50);
+  tl.add(new Tween(50).add(this, "y3",  height).add(this, "c3", color(0)), 100);
+  tl.add(new Tween(50).add(this, "y4", -height).add(this, "c4", color(0)), 150);
+  tl.add(new Tween(50).add(this, "y5",  height).add(this, "c5", color(0)), 200);
   tl.repeat().play();
 }
 
