@@ -144,29 +144,10 @@ void keyPressed() {
 ##How to playback Tweens 
 ###Delaying
 ```java
-Tween t;
-float w = 0;
-
-public void setup() {
-  size(400, 100);
-  
-  Motion.setup(this);
-
-  t = new Tween(this, "w", width, 50, 50).play();
-  //t = new Tween(50).add(this, "w", width).delay(50).play();
-}
-
-public void draw() {
-  background(255);
-
-  noStroke();
-  fill(0);
-  rect(0, 0, w, height);
-}
-
-public void keyPressed() {
-  t.play();
-}
+t = new Tween(this, "w", width, 50, 50).play();
+```
+```java
+t = new Tween(50).add(this, "w", width).delay(50).play();
 ```
 ###Pausing, Resuming "Scrubbing"
 ```java
@@ -209,59 +190,12 @@ void mouseDragged() {
 ```
 ###Repeating
 ```java
-Tween t;
-
-float w = 0;
-
-public void setup() {
-  size(400, 100);
-  
-  Motion.setup(this);
-
-  t = new Tween(this, "w", width, 100).repeat().play();
-}
-
-public void draw() {
-  background(255);
-
-  noStroke();
-  fill(0);
-  rect(0, 0, w, height);
-}
-
-public void keyPressed() {
-  t.play();
-}
+t = new Tween(this, "w", width, 100).repeat().play();
 ```
 
 ##How to use Processing-style events with Tweens 
 (Java-mode only but can also be used in Javascript-only Processing.js)
 ```java
-Tween t;
-
-float w = 0;
-
-void setup() {
-  size(400, 100);
-  smooth();
-
-  Motion.setup(this);
-
-  t = new Tween(this, "w", width, 100).play();
-}
-
-void draw() {
-  background(255);
-
-  noStroke();
-  fill(0);
-  rect(0, 0, w, height); 
-}
-
-void keyPressed() {
-  t.play();
-}
-
 void tweenStarted(Tween _t) {
   println(_t + " started");
 }
@@ -276,30 +210,7 @@ Tween t = new Tween(this, "w", width, 100).repeat().reverse().play();
 ```
 ##How to use Java-style events with Tweens (Java-mode only)
 ```java 
-Tween t;
-
-float w = 0;
-
-void setup() {
-  size(400, 100);
-  smooth();
-
-  Motion.setup(this);
-
-  t = new Tween(this, "w", width, 100).addEventListener(new TweenEventListener()).play();
-}
-
-void draw() {
-  background(255);
-
-  noStroke();
-  fill(0);
-  rect(0, 0, w, height); 
-}
-
-void keyPressed() {
-  t.play();
-}
+t = new Tween(this, "w", width, 100).addEventListener(new TweenEventListener()).play();
 
 public class TweenEventListener implements MotionEventListener {
   void onMotionEvent(MotionEvent te) {
@@ -315,141 +226,37 @@ public class TweenEventListener implements MotionEventListener {
 ##How to call functions with Tweens
 Say you want to call a function named `test` at 25 frames in a tween with a duration of a 100 frames.
 ```java
-Tween t;
-
-float w = 0;
-
-public void setup() {
-  size(400, 100); 
-
-  Motion.setup(this);
-
-  t = new Tween(100).call(this, "test", 25).play();
-}
+t = new Tween(100).call(this, "test", 25).play();}
 
 public void test() {
   println("test");
-}
-
-public void draw() {
-  background(255);
-
-  String time = t.getTime() + " / " + t.getDuration();
-
-  fill(0);
-  text(time, width - textWidth(time) - 10, height - 10);
-}
-
-public void keyPressed() {
-  t.play();
 }
 ```
 
 ##How to playback tweens in parallel
 ```java
-Parallel tp;
-
-float x1, x2;
-
-public void setup() {
-  size(400, 200);
- 
-  Motion.setup(this);
-
-  x1 = -width;
-  x2 = width;
-  
-  tp = new Parallel()
+Parallel tp = new Parallel()
   .add(new Tween(this, "x1", width, 100), "x1")
   .add(new Tween(this, "x2", -width, 200), "x2").play(); 
-}
-
-public void draw() {
-  background(255);
-
-  stroke(255);
-  fill(0);
-  rect(x1, 0, width, height / 2);
-  rect(x2, height / 2, width, height / 2);
-}
 ```
 
 ##How to playback tweens in a sequence
 ```java
-int c1, c2, c3, c4;
-float x1, x2, x3, x4;
-Sequence ts;
-
-void setup() {
-  size(400, 400);
-
-  Motion.setup(this);
-
-  c1 = c2 = c3 = c4 = color(255);
-  x1 = x2 = x3 = x4 = -width;
-
-  ts = new Sequence()
+Sequence ts = new Sequence()
   .add(new Tween(100).add(this, "x1", width).add(this, "c1", color(0)), "x1");
   .add(new Tween(75).add(this,  "x2", width).add(this, "c2", color(0)), "x2");
   .add(new Tween(50).add(this,  "x3", width).add(this, "c3", color(0)), "x3");
   .add(new Tween(25).add(this,  "x4", width).add(this, "c4", color(0)), "x4");
   .repeat().play();
-}
-
-void draw() {
-  background(255);
-
-  noStroke();
-  fill(c1);
-  rect(x1, 0, width, 100);
-  fill(c2);
-  rect(x2, 100, width, 100);
-  fill(c3);
-  rect(x3, 200, width, 100);
-  fill(c4);
-  rect(x4, 300, width, 100);
-}
 ```
 
 ##How to playback tweens in a timeline
 ```java
-int c1, c2, c3, c4, c5;
-float y1, y2, y3, y4, y5;
-
-Timeline tl;
-
-void setup() {
-  size(400, 200);
- 
-  Motion.setup(this);
-
-  c1 = c2 = c3 = c4 = c5 = color(255);
-
-  y1 = y3 = y5 = -height;
-  y2 = y4 = height;
-
-  tl = new Timeline();
+Timeline tl = new Timeline();
   tl.add(new Tween(50).add(this, "y1",  height).add(this, "c1", color(0)), 0);
   tl.add(new Tween(50).add(this, "y2", -height).add(this, "c2", color(0)), 50);
   tl.add(new Tween(50).add(this, "y3",  height).add(this, "c3", color(0)), 100);
   tl.add(new Tween(50).add(this, "y4", -height).add(this, "c4", color(0)), 150);
   tl.add(new Tween(50).add(this, "y5",  height).add(this, "c5", color(0)), 200);
   tl.repeat().play();
-}
-
-void draw() {
-  background(255);
- 
-  noStroke();
-  fill(c1);
-  rect(0, y1, 80, height);
-  fill(c2);
-  rect(80, y2, 80, height);
-  fill(c3);
-  rect(160, y3, 80, height);
-  fill(c4);
-  rect(240, y4, 80, height);
-  fill(c5);
-  rect(320, y5, 80, height); 
-}
 ```
