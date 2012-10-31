@@ -62,7 +62,7 @@ Tween t = new Tween(100).addPVector(v1, new PVector(50, 50)).addPVector(v2, new 
 ###All in 1!
 You can also tween multiples properties of any type in 1 Tween!
 ```java
-Tween t = new Tween(100).add(this, "x", 100).add(this,"c", color(255)).add(v1, new PVector(100, 100)).play();
+Tween t = new Tween(100).add(this, "x", 100).addColor(this,"c", color(255)).addPVector(v1, new PVector(100, 100)).play();
 ```
 
 ###Cross-mode
