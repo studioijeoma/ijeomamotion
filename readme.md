@@ -197,7 +197,7 @@ t = new Tween(this, "w", width, 100).repeat().play();
 Tween t = new Tween(this, "w", width, 100).repeat().reverse().play();
 ```
 ##How to use Processing-style events with Tweens 
-(Java-mode only but can also be used in Javascript-only Processing.js)
+This runs in PDE Java-mode only but can also be used in JS-mode with Javascript-only Processing.js.
 ```java
 void tweenStarted(Tween _t) {
   println(_t + " started");
@@ -207,7 +207,7 @@ void tweenEnded(Tween _t) {
   println(_t + " ended");
 }  
 ```
-##How to use Java-style events with Tweens (Java-mode only)
+##How to use Java-style events with Tweens (PDE Java-mode only)
 ```java 
 t = new Tween(this, "w", width, 100).addEventListener(new TweenEventListener()).play();
 
@@ -219,13 +219,12 @@ public class TweenEventListener implements MotionEventListener {
       println(((Tween) te.getSource()) + " ended"); 
   }
 } 
-
 ```
 
 ##How to call functions with Tweens
 Say you want to call a function named `test` at 25 frames in a tween with a duration of a 100 frames.
 ```java
-t = new Tween(100).call(this, "test", 25).play();}
+t = new Tween(100).call(this, "test", 25).play();
 
 public void test() {
   println("test");
@@ -241,12 +240,12 @@ Parallel tp = new Parallel()
 
 ##How to playback tweens in a sequence
 ```java
-Sequence ts = new Sequence()
-  .add(new Tween(100).add(this, "x1", width).add(this, "c1", color(0)), "x1");
-  .add(new Tween(75).add(this,  "x2", width).add(this, "c2", color(0)), "x2");
-  .add(new Tween(50).add(this,  "x3", width).add(this, "c3", color(0)), "x3");
-  .add(new Tween(25).add(this,  "x4", width).add(this, "c4", color(0)), "x4");
-  .repeat().play();
+Sequence ts = new Sequence();
+  ts.add(new Tween(100).add(this, "x1", width).add(this, "c1", color(0)), "x1");
+  ts.add(new Tween(75).add(this,  "x2", width).add(this, "c2", color(0)), "x2");
+  ts.add(new Tween(50).add(this,  "x3", width).add(this, "c3", color(0)), "x3");
+  ts.add(new Tween(25).add(this,  "x4", width).add(this, "c4", color(0)), "x4");
+  ts.repeat().play();
 ```
 
 ##How to playback tweens in a timeline
