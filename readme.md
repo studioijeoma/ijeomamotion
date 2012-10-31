@@ -106,6 +106,10 @@ class Rect {
     rect(x, y, w, h);
   }
 }
+
+void keyPressed() {
+  t.play();
+}
 ```
 
 You can also create cross-mode tweens without variables.
@@ -130,6 +134,11 @@ public void draw() {
   fill(t.getColor("c").getValue());
   rect(width / 2, height / 2, t.get("w").getValue(), t.get("h").getValue());
 }
+
+void keyPressed() {
+  t.play();
+}
+
 ```
 
 ##How to playback Tweens 
