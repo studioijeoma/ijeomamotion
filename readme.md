@@ -1,7 +1,7 @@
 #Ijeomamotion
  
 A cross-mode Processing library for sketching animations with numbers, colors vectors, beziers, curves and more! It can play tweens in parallel, in a sequence or in a timeline/keyframes. Parallels can playback Sequences and vice versa. Timelines can also playback Parallels and Sequences too! You can also use all of aforementioed to call functions!
-Cross-mode means that it will run and export in both Processing IDE's Java and Javascript modes. You can also use it in Javascript with or without Processing. Please post issues on [Github](github.com/ekeneijeoma/ijeomamotion/issues) or [Processing's forums](forum.processing.org) under "Contributed Libraries". 
+Cross-mode means that it will run and export in both Processing IDE's Java and Javascript modes. You can also use it in Javascript with or without Processing. However as of now the javascript port ijeomamotion.js doesnt include the ijeomamotion.tween.Callback class or ijeomamotion.geom and ijeomamotion.math packages but it will soon! Please post issues on [Github](github.com/ekeneijeoma/ijeomamotion/issues) or [Processing's forums](forum.processing.org) under "Contributed Libraries". 
 
 #Download and Install
 In Processing 2.0 you can do an auto download and install by going Sketch->Add Library...->Animation->ijeomamotion. Otherwise download the latest zip and check out INSTALL.txt.
