@@ -30,6 +30,7 @@ package ijeoma.motion.tween;
 import ijeoma.motion.Motion;
 import ijeoma.motion.MotionController;
 import ijeoma.motion.event.MotionEvent;
+import ijeoma.motion.event.MotionEventListener;
 
 import java.lang.reflect.Method;
 
@@ -126,95 +127,97 @@ public class Parallel extends MotionController {
 		}
 	}
 
-	@Override
-	public Parallel play() {
+	public Parallel play() {  
 		return (Parallel) super.play();
 	}
-
-	@Override
+ 
 	public Parallel stop() {
 		return (Parallel) super.stop();
 	}
 
-	@Override
 	public Parallel pause() {
 		return (Parallel) super.pause();
 	}
 
-	@Override
 	public Parallel resume() {
 		return (Parallel) super.resume();
 	}
-
-	@Override
+ 
 	public Parallel seek(float _value) {
 		return (Parallel) super.seek(_value);
 	}
-
-	@Override
-	public Parallel repeat() {
-		return (Parallel) super.repeat();
-	}
-
-	@Override
-	public Parallel repeat(int _repeatDuration) {
-		return (Parallel) super.repeat(_repeatDuration);
-	}
-
-	@Override
-	public Parallel noRepeat() {
-		return (Parallel) super.noRepeat();
-	}
-
-	@Override
-	public Parallel reverse() {
-		return (Parallel) super.reverse();
-	}
-
-	@Override
-	public Parallel noReverse() {
-		return (Parallel) super.noReverse();
-	}
-
-	@Override
-	public Parallel setTimeScale(float _timeScale) {
-		return (Parallel) super.setTimeScale(_timeScale);
-	}
-
-	@Override
-	public Parallel setDuration(float _duration) {
-		return (Parallel) super.setDuration(_duration);
-	}
-
-	@Override
+	
 	public Parallel delay(float _delay) {
 		return (Parallel) super.delay(_delay);
 	}
 
-	@Override
+	public Parallel noDelay() {
+		return (Parallel) super.noDelay();
+	}
+
+	public Parallel repeatDelay() {
+		return (Parallel) super.repeatDelay();
+	}
+
+	public Parallel noRepeatDelay() {
+		return (Parallel) super.noRepeatDelay();
+	}
+
+	public Parallel repeat() {
+		return (Parallel) super.repeat();
+	}
+
+	public Parallel repeat(int _repeat) {
+		return (Parallel) super.repeat(_repeat);
+	}
+
+	public Parallel noRepeat() {
+		return (Parallel) super.noRepeat();
+	}
+
+	public Parallel reverse() {
+		return (Parallel) super.reverse();
+	}
+
+	public Parallel noReverse() {
+		return (Parallel) super.noReverse();
+	}
+
+	public Parallel setName(String _name) {
+		return (Parallel) super.setName(_name);
+	}
+
+	public Parallel setTimeScale(float _timeScale) {
+		return (Parallel) super.setTimeScale(_timeScale);
+	}
+
+	public Parallel setDuration(float _duration) {
+		return (Parallel) super.setDuration(_duration);
+	}
+
 	public Parallel setEasing(String _easing) {
 		return (Parallel) super.setEasing(_easing);
 	}
 
-	@Override
 	public Parallel noEasing() {
 		return (Parallel) super.noEasing();
 	}
 
-	@Override
 	public Parallel setTimeMode(String _timeMode) {
 		return (Parallel) super.setTimeMode(_timeMode);
 	}
- 
-	@Override
+
 	public Parallel autoUpdate() {
 		return (Parallel) super.autoUpdate();
 	}
 
-	@Override
 	public Parallel noAutoUpdate() {
 		return (Parallel) super.noAutoUpdate();
-	} 
+	}
+
+	public Parallel addEventListener(MotionEventListener listener) {
+		return (Parallel) super.addEventListener(listener);
+	}
 	
 	public Parallel add(Motion _child) {
 		return (Parallel) super.add(_child);

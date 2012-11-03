@@ -23,7 +23,7 @@ public class Tween_Delay extends PApplet {
 
 		// Tween(propertyObject, propertyName, begin, end, duration, delay);
 		// t = new Tween(this, "w", width, 50, 50).play();
-		t = new Tween(this, "w", width, 50).delay(50).play();
+		t = new Tween(this, "w", width, 50).delay(50).repeat().repeatDelay().play();
 	}
 
 	@Override

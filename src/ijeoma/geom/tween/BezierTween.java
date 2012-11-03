@@ -28,7 +28,9 @@
 package ijeoma.geom.tween;
 
 import ijeoma.geom.Bezier;
+import ijeoma.motion.MotionConstant;
 import ijeoma.motion.event.MotionEvent;
+import ijeoma.motion.event.MotionEventListener;
 import ijeoma.motion.tween.Tween;
 
 import java.lang.reflect.Method;
@@ -97,7 +99,7 @@ public class BezierTween extends Tween { // implements Comparable {
 	}
 
 	@Override
-	public BezierTween play() {
+	public BezierTween play() { 
 		return (BezierTween) super.play();
 	}
 
@@ -121,69 +123,56 @@ public class BezierTween extends Tween { // implements Comparable {
 		return (BezierTween) super.seek(_value);
 	}
 
-	@Override
-	public BezierTween repeat() {
-		return (BezierTween) super.repeat();
+	public BezierTween setName(String _name) {
+		return (BezierTween) super.setName(_name);
 	}
 
-	@Override
-	public BezierTween repeat(int _repeatDuration) {
-		return (BezierTween) super.repeat(_repeatDuration);
-	}
-
-	@Override
-	public BezierTween noRepeat() {
-		return (BezierTween) super.noRepeat();
-	}
-
-	@Override
-	public BezierTween reverse() {
-		return (BezierTween) super.reverse();
-	}
-
-	@Override
-	public BezierTween noReverse() {
-		return (BezierTween) super.noReverse();
-	}
-
-	@Override
 	public BezierTween setTimeScale(float _timeScale) {
 		return (BezierTween) super.setTimeScale(_timeScale);
 	}
 
-	@Override
 	public BezierTween setDuration(float _duration) {
 		return (BezierTween) super.setDuration(_duration);
 	}
 
-	@Override
 	public BezierTween delay(float _delay) {
 		return (BezierTween) super.delay(_delay);
 	}
 
-	@Override
+	public BezierTween noDelay() {
+		return (BezierTween) super.noDelay();
+	}
+
+	public BezierTween repeatDelay() {
+		return (BezierTween) super.repeatDelay();
+	}
+
+	public BezierTween noRepeatDelay() {
+		return (BezierTween) super.noRepeatDelay();
+	}
+
 	public BezierTween setEasing(String _easing) {
 		return (BezierTween) super.setEasing(_easing);
 	}
 
-	@Override
 	public BezierTween noEasing() {
-		return (BezierTween) super.noEasing();
+		return (BezierTween) super.setEasing(MotionConstant.LINEAR_BOTH);
 	}
 
-	@Override
 	public BezierTween setTimeMode(String _timeMode) {
 		return (BezierTween) super.setTimeMode(_timeMode);
 	}
 
-	@Override
 	public BezierTween autoUpdate() {
 		return (BezierTween) super.autoUpdate();
 	}
 
-	@Override
 	public BezierTween noAutoUpdate() {
 		return (BezierTween) super.noAutoUpdate();
+	}
+
+	public BezierTween addEventListener(MotionEventListener listener) {
+		return (BezierTween) super.addEventListener(listener);
 	}
 	
 	public PVector getPoint() {

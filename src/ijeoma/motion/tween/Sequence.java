@@ -30,6 +30,7 @@ package ijeoma.motion.tween;
 import ijeoma.motion.Motion;
 import ijeoma.motion.MotionController;
 import ijeoma.motion.event.MotionEvent;
+import ijeoma.motion.event.MotionEventListener;
 
 import java.lang.reflect.Method;
 
@@ -138,96 +139,98 @@ public class Sequence extends MotionController {
 		}
 	}
 
-	@Override
-	public Sequence play() {
+	public Sequence play() {  
 		return (Sequence) super.play();
 	}
-
-	@Override
+ 
 	public Sequence stop() {
 		return (Sequence) super.stop();
 	}
 
-	@Override
 	public Sequence pause() {
 		return (Sequence) super.pause();
 	}
 
-	@Override
 	public Sequence resume() {
 		return (Sequence) super.resume();
 	}
-
-	@Override
+ 
 	public Sequence seek(float _value) {
 		return (Sequence) super.seek(_value);
 	}
-
-	@Override
-	public Sequence repeat() {
-		return (Sequence) super.repeat();
-	}
-
-	@Override
-	public Sequence repeat(int _repeatDuration) {
-		return (Sequence) super.repeat(_repeatDuration);
-	}
-
-	@Override
-	public Sequence noRepeat() {
-		return (Sequence) super.noRepeat();
-	}
-
-	@Override
-	public Sequence reverse() {
-		return (Sequence) super.reverse();
-	}
-
-	@Override
-	public Sequence noReverse() {
-		return (Sequence) super.noReverse();
-	}
-
-	@Override
-	public Sequence setTimeScale(float _timeScale) {
-		return (Sequence) super.setTimeScale(_timeScale);
-	}
-
-	@Override
-	public Sequence setDuration(float _duration) {
-		return (Sequence) super.setDuration(_duration);
-	}
-
-	@Override
+	
 	public Sequence delay(float _delay) {
 		return (Sequence) super.delay(_delay);
 	}
 
-	@Override
+	public Sequence noDelay() {
+		return (Sequence) super.noDelay();
+	}
+
+	public Sequence repeatDelay() {
+		return (Sequence) super.repeatDelay();
+	}
+
+	public Sequence noRepeatDelay() {
+		return (Sequence) super.noRepeatDelay();
+	}
+
+	public Sequence repeat() {
+		return (Sequence) super.repeat();
+	}
+
+	public Sequence repeat(int _repeat) {
+		return (Sequence) super.repeat(_repeat);
+	}
+
+	public Sequence noRepeat() {
+		return (Sequence) super.noRepeat();
+	}
+
+	public Sequence reverse() {
+		return (Sequence) super.reverse();
+	}
+
+	public Sequence noReverse() {
+		return (Sequence) super.noReverse();
+	}
+
+	public Sequence setName(String _name) {
+		return (Sequence) super.setName(_name);
+	}
+
+	public Sequence setTimeScale(float _timeScale) {
+		return (Sequence) super.setTimeScale(_timeScale);
+	}
+
+	public Sequence setDuration(float _duration) {
+		return (Sequence) super.setDuration(_duration);
+	}
+
 	public Sequence setEasing(String _easing) {
 		return (Sequence) super.setEasing(_easing);
 	}
 
-	@Override
 	public Sequence noEasing() {
 		return (Sequence) super.noEasing();
 	}
 
-	@Override
 	public Sequence setTimeMode(String _timeMode) {
 		return (Sequence) super.setTimeMode(_timeMode);
 	}
 
-	@Override
 	public Sequence autoUpdate() {
 		return (Sequence) super.autoUpdate();
 	}
 
-	@Override
 	public Sequence noAutoUpdate() {
 		return (Sequence) super.noAutoUpdate();
 	}
 
+	public Sequence addEventListener(MotionEventListener listener) {
+		return (Sequence) super.addEventListener(listener);
+	}
+	
 	@Override
 	public Sequence add(Motion _child) {
 		currentChild = _child;

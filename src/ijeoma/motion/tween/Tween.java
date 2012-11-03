@@ -29,6 +29,7 @@ package ijeoma.motion.tween;
 
 import ijeoma.motion.Motion;
 import ijeoma.motion.Callback;
+import ijeoma.motion.MotionConstant;
 import ijeoma.motion.event.MotionEvent;
 import ijeoma.motion.event.MotionEventListener;
 
@@ -36,6 +37,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -43,7 +45,7 @@ import processing.core.PVector;
 public class Tween extends Motion { // implements Comparable
 	protected ArrayList<IProperty> properties = new ArrayList<IProperty>();
 	protected HashMap<String, IProperty> propertyMap = new HashMap<String, IProperty>();
-	
+
 	protected boolean hasSetupProperties = false;
 
 	protected Method tweenStartedMethod, tweenEndedMethod, tweenChangedMethod,
@@ -437,75 +439,82 @@ public class Tween extends Motion { // implements Comparable
 		return this;
 	}
 
-	@Override
-	public Tween repeat() {
-		return (Tween) super.repeat();
-	}
-
-	@Override
-	public Tween repeat(int _repeatDuration) {
-		return (Tween) super.repeat(_repeatDuration);
-	}
-
-	@Override
-	public Tween noRepeat() {
-		return (Tween) super.noRepeat();
-	}
-
-	@Override
-	public Tween reverse() {
-		return (Tween) super.reverse();
-	}
-
-	@Override
-	public Tween noReverse() {
-		return (Tween) super.noReverse();
-	}
-
-	@Override
-	public Tween setTimeScale(float _timeScale) {
-		return (Tween) super.setTimeScale(_timeScale);
-	}
-
-	@Override
-	public Tween setDuration(float _duration) {
-		return (Tween) super.setDuration(_duration);
-	}
-
-	@Override
 	public Tween delay(float _delay) {
 		return (Tween) super.delay(_delay);
 	}
 
-	@Override
+	public Tween noDelay() {
+		return (Tween) super.noDelay();
+	}
+
+	public Tween repeatDelay() {
+		return (Tween) super.repeatDelay();
+	}
+
+	public Tween noRepeatDelay() {
+		return (Tween) super.noRepeatDelay();
+	}
+
+	public Tween repeat() {
+		return (Tween) super.repeat();
+	}
+
+	public Tween repeat(int _repeat) {
+		return (Tween) super.repeat(_repeat);
+	}
+
+	public Tween noRepeat() {
+		return (Tween) super.noRepeat();
+	}
+
+	public Tween reverse() {
+		return (Tween) super.reverse();
+	}
+
+	public Tween noReverse() {
+		return (Tween) super.noReverse();
+	}
+
+	public Tween setName(String _name) {
+		return (Tween) super.setName(_name);
+	}
+
+	public Tween setTimeScale(float _timeScale) {
+		return (Tween) super.setTimeScale(_timeScale);
+	}
+
+	public Tween setDuration(float _duration) {
+		return (Tween) super.setDuration(_duration);
+	}
+
 	public Tween setEasing(String _easing) {
 		return (Tween) super.setEasing(_easing);
 	}
 
-	@Override
 	public Tween noEasing() {
 		return (Tween) super.noEasing();
 	}
 
-	@Override
 	public Tween setTimeMode(String _timeMode) {
 		return (Tween) super.setTimeMode(_timeMode);
 	}
 
-	@Override
 	public Tween autoUpdate() {
 		return (Tween) super.autoUpdate();
 	}
 
-	@Override
 	public Tween noAutoUpdate() {
 		return (Tween) super.noAutoUpdate();
 	}
 
+	public Tween addEventListener(MotionEventListener listener) {
+		return (Tween) super.addEventListener(listener);
+	}
+
 	public Tween addProperty(IProperty _p) {
 		properties.add(_p);
-		
-		if(!_p.getName().equals(""))
+
+		if (!_p.getName().equals(""))
 			propertyMap.put(_p.getName(), _p);
 
 		return this;
@@ -513,8 +522,8 @@ public class Tween extends Motion { // implements Comparable
 
 	public Tween add(IProperty _p) {
 		properties.add(_p);
-		
-		if(!_p.getName().equals(""))
+
+		if (!_p.getName().equals(""))
 			propertyMap.put(_p.getName(), _p);
 
 		return this;
@@ -548,17 +557,20 @@ public class Tween extends Motion { // implements Comparable
 		return addProperty(new PVectorProperty(_vector, _end));
 	}
 
+	public Tween addArc(PVector _vector, PVector _end) {
+		return addProperty(new ArcProperty(_vector, _end));
+	}
+
 	public Tween call(Object _object, String _name) {
-		return addCall(new Callback(_object, _name, duration));
+		return (Tween) super.call(_object, _name);
 	}
 
 	public Tween call(Object _object, String _name, float _time) {
-		return addCall(new Callback(_object, _name, _time));
+		return (Tween) super.call(_object, _name, _time);
 	}
 
 	public Tween addCall(Callback _call) {
-		calls.add(_call);
-		return this;
+		return (Tween) super.addCall(_call);
 	}
 
 	public NumberProperty get(int _index) {
@@ -598,7 +610,7 @@ public class Tween extends Motion { // implements Comparable
 	}
 
 	public IProperty getProperty(String _name) {
-		return propertyMap.get(_name); 
+		return propertyMap.get(_name);
 	}
 
 	public IProperty[] getProperties() {
@@ -629,17 +641,6 @@ public class Tween extends Motion { // implements Comparable
 	public String toString() {
 		return "Tween[" + (name.equals("") ? "" : "name: " + name + " ")
 				+ "time: " + delay + ", duration: " + getDuration() + "]";
-	}
-
-	@Override
-	public Tween addEventListener(MotionEventListener listener) {
-		listeners.add(listener);
-		return this;
-	}
-
-	@Override
-	public void removeEventListener(MotionEventListener listener) {
-		listeners.remove(listener);
 	}
 
 	@Override

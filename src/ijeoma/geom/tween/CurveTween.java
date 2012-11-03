@@ -29,6 +29,7 @@ package ijeoma.geom.tween;
 
 import ijeoma.geom.Curve;
 import ijeoma.motion.event.MotionEvent;
+import ijeoma.motion.event.MotionEventListener;
 import ijeoma.motion.tween.Tween;
 
 import java.lang.reflect.Method;
@@ -96,94 +97,96 @@ public class CurveTween extends Tween { // implements Comparable {
 		}
 	}
 
-	@Override
 	public CurveTween play() {
 		return (CurveTween) super.play();
 	}
 
-	@Override
 	public CurveTween stop() {
 		return (CurveTween) super.stop();
 	}
 
-	@Override
 	public CurveTween pause() {
 		return (CurveTween) super.pause();
 	}
 
-	@Override
 	public CurveTween resume() {
 		return (CurveTween) super.resume();
 	}
 
-	@Override
 	public CurveTween seek(float _value) {
 		return (CurveTween) super.seek(_value);
 	}
 
-	@Override
-	public CurveTween repeat() {
-		return (CurveTween) super.repeat();
-	}
-
-	@Override
-	public CurveTween repeat(int _repeatDuration) {
-		return (CurveTween) super.repeat(_repeatDuration);
-	}
-
-	@Override
-	public CurveTween noRepeat() {
-		return (CurveTween) super.noRepeat();
-	}
-
-	@Override
-	public CurveTween reverse() {
-		return (CurveTween) super.reverse();
-	}
-
-	@Override
-	public CurveTween noReverse() {
-		return (CurveTween) super.noReverse();
-	}
-
-	@Override
-	public CurveTween setTimeScale(float _timeScale) {
-		return (CurveTween) super.setTimeScale(_timeScale);
-	}
-
-	@Override
-	public CurveTween setDuration(float _duration) {
-		return (CurveTween) super.setDuration(_duration);
-	}
-
-	@Override
 	public CurveTween delay(float _delay) {
 		return (CurveTween) super.delay(_delay);
 	}
 
-	@Override
+	public CurveTween noDelay() {
+		return (CurveTween) super.noDelay();
+	}
+
+	public CurveTween repeatDelay() {
+		return (CurveTween) super.repeatDelay();
+	}
+
+	public CurveTween noRepeatDelay() {
+		return (CurveTween) super.noRepeatDelay();
+	}
+
+	public CurveTween repeat() {
+		return (CurveTween) super.repeat();
+	}
+
+	public CurveTween repeat(int _repeat) {
+		return (CurveTween) super.repeat(_repeat);
+	}
+
+	public CurveTween noRepeat() {
+		return (CurveTween) super.noRepeat();
+	}
+
+	public CurveTween reverse() {
+		return (CurveTween) super.reverse();
+	}
+
+	public CurveTween noReverse() {
+		return (CurveTween) super.noReverse();
+	}
+
+	public CurveTween setName(String _name) {
+		return (CurveTween) super.setName(_name);
+	}
+
+	public CurveTween setTimeScale(float _timeScale) {
+		return (CurveTween) super.setTimeScale(_timeScale);
+	}
+
+	public CurveTween setDuration(float _duration) {
+		return (CurveTween) super.setDuration(_duration);
+	}
+
 	public CurveTween setEasing(String _easing) {
 		return (CurveTween) super.setEasing(_easing);
 	}
 
-	@Override
 	public CurveTween noEasing() {
 		return (CurveTween) super.noEasing();
 	}
 
-	@Override
 	public CurveTween setTimeMode(String _timeMode) {
 		return (CurveTween) super.setTimeMode(_timeMode);
 	}
 
-	@Override
 	public CurveTween autoUpdate() {
 		return (CurveTween) super.autoUpdate();
 	}
 
-	@Override
 	public CurveTween noAutoUpdate() {
 		return (CurveTween) super.noAutoUpdate();
+	}
+
+	public CurveTween addEventListener(MotionEventListener listener) {
+		return (CurveTween) super.addEventListener(listener);
 	}
 
 	public PVector getPoint() {

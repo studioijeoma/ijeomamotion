@@ -27,7 +27,6 @@
 
 package ijeoma.geom;
 
-import ijeoma.math.Simplify;
 import ijeoma.math.Interpolator;
 
 import java.util.ArrayList;
@@ -142,14 +141,16 @@ public class Path {
 	// _g.endShape();
 	// }
 
-	public void add(float _x, float _y) {
-		add(new PVector(_x, _y));
+	public Path add(float _x, float _y) {
+		return add(new PVector(_x, _y));
 	}
 
-	public void add(PVector _point) {
+	public Path add(PVector _point) {
 		points.add(_point);
 
 		segmentPositionRange = (1f / (points.size() - 1));
+
+		return this;
 	}
 
 	public void removeAll() {
@@ -229,11 +230,11 @@ public class Path {
 		return point;
 	}
 
-	public void set(PVector[] _points) {
-		set(new ArrayList<PVector>(Arrays.asList(_points)));
+	public Path set(PVector[] _points) {
+		return set(new ArrayList<PVector>(Arrays.asList(_points)));
 	}
 
-	public void set(ArrayList<PVector> _points) {
+	public Path set(ArrayList<PVector> _points) {
 		points = _points;
 
 		for (PVector p : points)
@@ -245,6 +246,8 @@ public class Path {
 		segmentPositionRange = (1f / (points.size() - 1));
 
 		compute();
+
+		return this;
 	}
 
 	public PVector[] get() {
@@ -255,17 +258,19 @@ public class Path {
 		return points.size();
 	}
 
-	public void simplify(float tolerance) {
+	public Path simplify(float tolerance) {
 		PVector[] simplifiedPoints = Simplify.simplify(
 				points.toArray(new PVector[points.size()]), tolerance);
 		points = new ArrayList<PVector>(Arrays.asList(simplifiedPoints));
+		return this;
 	}
 
-	public void simplify(float tolerance, boolean highestQuality) {
+	public Path simplify(float tolerance, boolean highestQuality) {
 		PVector[] simplifiedPoints = Simplify.simplify(
 				points.toArray(new PVector[points.size()]), tolerance,
 				highestQuality);
 		points = new ArrayList<PVector>(Arrays.asList(simplifiedPoints));
+		return this;
 	}
 
 	public void compute() {
@@ -293,16 +298,18 @@ public class Path {
 		return tension;
 	}
 
-	public void setBias(float _bias) {
+	public Path setBias(float _bias) {
 		bias = _bias;
+		return this;
 	}
 
 	public float getBias() {
 		return bias;
 	}
 
-	public void setMode(String _mode) {
+	public Path setMode(String _mode) {
 		mode = _mode;
+		return this;
 	}
 
 	public int getSegmentIndex() {

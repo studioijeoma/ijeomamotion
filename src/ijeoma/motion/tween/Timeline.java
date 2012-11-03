@@ -31,6 +31,7 @@ import ijeoma.motion.Callback;
 import ijeoma.motion.Motion;
 import ijeoma.motion.MotionController;
 import ijeoma.motion.event.MotionEvent;
+import ijeoma.motion.event.MotionEventListener;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -91,6 +92,98 @@ public class Timeline extends MotionController {
 		}
 	}
 
+	public Timeline play() {  
+		return (Timeline) super.play();
+	}
+ 
+	public Timeline stop() {
+		return (Timeline) super.stop();
+	}
+
+	public Timeline pause() {
+		return (Timeline) super.pause();
+	}
+
+	public Timeline resume() {
+		return (Timeline) super.resume();
+	}
+ 
+	public Timeline seek(float _value) {
+		return (Timeline) super.seek(_value);
+	}
+	
+	public Timeline delay(float _delay) {
+		return (Timeline) super.delay(_delay);
+	}
+
+	public Timeline noDelay() {
+		return (Timeline) super.noDelay();
+	}
+
+	public Timeline repeatDelay() {
+		return (Timeline) super.repeatDelay();
+	}
+
+	public Timeline noRepeatDelay() {
+		return (Timeline) super.noRepeatDelay();
+	}
+
+	public Timeline repeat() {
+		return (Timeline) super.repeat();
+	}
+
+	public Timeline repeat(int _repeat) {
+		return (Timeline) super.repeat(_repeat);
+	}
+
+	public Timeline noRepeat() {
+		return (Timeline) super.noRepeat();
+	}
+
+	public Timeline reverse() {
+		return (Timeline) super.reverse();
+	}
+
+	public Timeline noReverse() {
+		return (Timeline) super.noReverse();
+	}
+
+	public Timeline setName(String _name) {
+		return (Timeline) super.setName(_name);
+	}
+
+	public Timeline setTimeScale(float _timeScale) {
+		return (Timeline) super.setTimeScale(_timeScale);
+	}
+
+	public Timeline setDuration(float _duration) {
+		return (Timeline) super.setDuration(_duration);
+	}
+
+	public Timeline setEasing(String _easing) {
+		return (Timeline) super.setEasing(_easing);
+	}
+
+	public Timeline noEasing() {
+		return (Timeline) super.noEasing();
+	}
+
+	public Timeline setTimeMode(String _timeMode) {
+		return (Timeline) super.setTimeMode(_timeMode);
+	}
+
+	public Timeline autoUpdate() {
+		return (Timeline) super.autoUpdate();
+	}
+
+	public Timeline noAutoUpdate() {
+		return (Timeline) super.noAutoUpdate();
+	}
+
+	public Timeline addEventListener(MotionEventListener listener) {
+		return (Timeline) super.addEventListener(listener);
+	}
+
 	@Override
 	protected Timeline insert(Motion _child, float _time) {
 		super.insert(_child, _time);
@@ -147,7 +240,7 @@ public class Timeline extends MotionController {
 		return this;
 	}
 
-	public Timeline addAll(Motion[] _children, String _name) { 
+	public Timeline addAll(Motion[] _children, String _name) {
 		KeyFrame c = (KeyFrame) childrenMap.get(_name);
 		c.addAll(_children);
 
@@ -157,7 +250,7 @@ public class Timeline extends MotionController {
 	}
 
 	public void removeKeyFrame(int _time) {
-		for (Motion c : children) 
+		for (Motion c : children)
 			if (c.getDelay() == _time) {
 				children.remove(children.indexOf(c));
 				childrenMap.remove(c);
@@ -238,12 +331,12 @@ public class Timeline extends MotionController {
 
 	public void gotoAndPlay(String _name) {
 		KeyFrame kf = getKeyFrame(_name);
- 
+
 		seek(kf.getDelay() / duration);
 		resume();
 	}
 
-	public void gotoAndPlay(KeyFrame _kf) { 
+	public void gotoAndPlay(KeyFrame _kf) {
 		seek(_kf.getDelay() / duration);
 		resume();
 	}
@@ -255,12 +348,12 @@ public class Timeline extends MotionController {
 
 	public void gotoAndStop(String _name) {
 		KeyFrame kf = getKeyFrame(_name);
-		
+
 		seek(kf.getDelay() / duration);
 		pause();
 	}
 
-	public void gotoAndStop(KeyFrame _kf) { 
+	public void gotoAndStop(KeyFrame _kf) {
 		seek(_kf.getDelay() / duration);
 		pause();
 	}

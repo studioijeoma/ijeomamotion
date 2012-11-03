@@ -175,6 +175,51 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		} catch (Exception e) {
 		}
 	}
+	
+	public void update() {
+		if (isRegistered)
+			if (isPlaying) {
+				updateTime();
+				updateCalls();
+
+				if (!isInsideDelayingTime(time) && !isInsidePlayingTime(time))
+					stop();
+			}
+	}
+
+	public void update(float _time) {
+		if (isInsidePlayingTime(_time)) {
+			if (!isPlaying)
+				play();
+
+			setTime(_time);
+			updateCalls();
+		} else if (isPlaying)
+			stop();
+	}
+
+	public void updateCalls() {
+		for (Callback c : calls)
+			if (getTime() > c.getTime()) {
+				if (!c.hasInvoked())
+					c.invoke();
+			} else
+				c.noInvoke();
+	}
+
+	protected void updateTime() {
+		time = ((timeMode == SECONDS) ? ((parent.millis() - playTime) / 1000)
+				: (parent.frameCount - playTime)) * timeScale;
+
+		if (isReversing && reverseTime != 0)
+			time = reverseTime - time;
+	}
+
+	public void pre() {
+		if (isAutoUpdating)
+			update();
+	}
+
 
 	/**
 	 * Starts the tween from the beginning position
@@ -270,6 +315,36 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 		return this;
 	}
+	
+	public Motion delay(float _delay) {
+		delay = _delay;
+		// isDelaying = true;
+
+		return this;
+	}
+
+	public Motion noDelay() {
+		delay = 0;
+		// isDelaying = false;
+
+		return this;
+	}
+
+	public float getDelay() {
+		return delay;
+	}
+
+	public Motion repeatDelay() {
+		isRepeating = true;		 
+		isRepeatingDelay = true;
+		return this;
+	}
+
+	public Motion noRepeatDelay() {
+		isRepeating = false;
+		isRepeatingDelay = false;
+		return this;
+	}
 
 	/**
 	 * Sets the tween to repeat after ending
@@ -310,112 +385,9 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return this;
 	}
 
-	public void update() {
-		if (isRegistered)
-			if (isPlaying) {
-				updateTime();
-				updateCalls();
-
-				if (!isInsideDelayingTime(time) && !isInsidePlayingTime(time))
-					stop();
-			}
-	}
-
-	public void update(float _time) {
-		if (isInsidePlayingTime(_time)) {
-			if (!isPlaying)
-				play();
-
-			setTime(_time);
-			updateCalls();
-		} else if (isPlaying)
-			stop();
-	}
-
-	public void updateCalls() {
-		for (Callback c : calls)
-			if (getTime() > c.getTime()) {
-				if (!c.hasInvoked())
-					c.invoke();
-			} else
-				c.noInvoke();
-	}
-
-	protected void updateTime() {
-		time = ((timeMode == SECONDS) ? ((parent.millis() - playTime) / 1000)
-				: (parent.frameCount - playTime)) * timeScale;
-
-		if (isReversing && reverseTime != 0)
-			time = reverseTime - time;
-	}
-
-	public void pre() {
-		if (isAutoUpdating)
-			update();
-	}
-
-	public static PApplet getParent() {
-		if (parent == null)
-			throw new LibraryNotInitializedException();
-
-		return parent;
-	}
-
-	public Motion call(Object _object, String _name) {
-		return addCall(new Callback(_object, _name, duration));
-	}
-
-	public Motion call(Object _object, String _name, float _time) {
-		return addCall(new Callback(_object, _name, _time));
-	}
-
-	public Motion addCall(Callback _call) {
-		calls.add(_call);
-		return this;
-	}
-
-	/**
-	 * Returns a Callback by id/index (useful if you're only controlling
-	 * Callbacks)
-	 */
-	public Callback getCallback(int _index) {
-		if (_index < calls.size())
-			return calls.get(_index);
-		else
-			return null;
-	}
-
-	/**
-	 * Returns a Callback by id/index (useful if you're only controlling
-	 * Callbacks)
-	 */
-	public Callback getCallback(String _name) {
-		return callMap.get(_name);
-	}
-
-	/**
-	 * Returns all Callbacks
-	 */
-	public Callback[] getCallbacks() {
-		return calls.toArray(new Callback[calls.size()]);
-	}
-
-	/**
-	 * Returns all Callbacks
-	 */
-	public List<Callback> getCallbackList() {
-		return calls;
-	}
-
-	/**
-	 * Returns child Callback object count
-	 */
-	public int getCallbackCount() {
-		return calls.size();
-	}
-
-	public void setName(String _name) {
+	public Motion setName(String _name) {
 		name = _name;
+		return this;
 	}
 
 	public String getName() {
@@ -455,34 +427,6 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 	public float getDuration() {
 		return duration;
-	}
-
-	public Motion delay(float _delay) {
-		delay = _delay;
-		// isDelaying = true;
-
-		return this;
-	}
-
-	public Motion noDelay() {
-		delay = 0;
-		// isDelaying = false;
-
-		return this;
-	}
-
-	public float getDelay() {
-		return delay;
-	}
-
-	public Motion repeatDelay() {
-		isRepeatingDelay = true;
-		return this;
-	}
-
-	public Motion noRepeatDelay() {
-		isRepeatingDelay = false;
-		return this;
 	}
 
 	/**
@@ -560,7 +504,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return isAutoUpdating;
 	}
 
-	boolean isDelaying() {
+	public boolean isDelaying() {
 		return (time < delay);
 		// isDelaying;
 	}
@@ -583,6 +527,66 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 	public boolean isAbovePlayingTime(float _value) {
 		return _value > delay + duration;
+	}
+	
+	public static PApplet getParent() {
+		if (parent == null)
+			throw new LibraryNotInitializedException();
+
+		return parent;
+	}
+
+	public Motion call(Object _object, String _name) {
+		return addCall(new Callback(_object, _name, duration));
+	}
+
+	public Motion call(Object _object, String _name, float _time) {
+		return addCall(new Callback(_object, _name, _time));
+	}
+
+	public Motion addCall(Callback _call) {
+		calls.add(_call);
+		return this;
+	}
+
+	/**
+	 * Returns a Callback by id/index (useful if you're only controlling
+	 * Callbacks)
+	 */
+	public Callback getCallback(int _index) {
+		if (_index < calls.size())
+			return calls.get(_index);
+		else
+			return null;
+	}
+
+	/**
+	 * Returns a Callback by id/index (useful if you're only controlling
+	 * Callbacks)
+	 */
+	public Callback getCallback(String _name) {
+		return callMap.get(_name);
+	}
+
+	/**
+	 * Returns all Callbacks
+	 */
+	public Callback[] getCallbacks() {
+		return calls.toArray(new Callback[calls.size()]);
+	}
+
+	/**
+	 * Returns all Callbacks
+	 */
+	public List<Callback> getCallbackList() {
+		return calls;
+	}
+
+	/**
+	 * Returns child Callback object count
+	 */
+	public int getCallbackCount() {
+		return calls.size();
 	}
 
 	public Motion addEventListener(MotionEventListener listener) {

@@ -27,8 +27,9 @@
 
 package ijeoma.geom.tween;
 
-import ijeoma.geom.Path;
+import ijeoma.geom.Path; 
 import ijeoma.motion.event.MotionEvent;
+import ijeoma.motion.event.MotionEventListener;
 import ijeoma.motion.tween.Tween;
 
 import java.lang.reflect.Method;
@@ -98,94 +99,96 @@ public class PathTween extends Tween {
 		}
 	}
 
-	@Override
-	public PathTween play() { 
+	public PathTween play() {
 		return (PathTween) super.play();
 	}
 
-	@Override
 	public PathTween stop() {
 		return (PathTween) super.stop();
 	}
 
-	@Override
 	public PathTween pause() {
 		return (PathTween) super.pause();
 	}
 
-	@Override
 	public PathTween resume() {
 		return (PathTween) super.resume();
 	}
 
-	@Override
 	public PathTween seek(float _value) {
 		return (PathTween) super.seek(_value);
 	}
 
-	@Override
-	public PathTween repeat() {
-		return (PathTween) super.repeat();
-	}
-
-	@Override
-	public PathTween repeat(int _repeatDuration) {
-		return (PathTween) super.repeat(_repeatDuration);
-	}
-
-	@Override
-	public PathTween noRepeat() {
-		return (PathTween) super.noRepeat();
-	}
-
-	@Override
-	public PathTween reverse() {
-		return (PathTween) super.reverse();
-	}
-
-	@Override
-	public PathTween noReverse() {
-		return (PathTween) super.noReverse();
-	}
-
-	@Override
-	public PathTween setTimeScale(float _timeScale) {
-		return (PathTween) super.setTimeScale(_timeScale);
-	}
-
-	@Override
-	public PathTween setDuration(float _duration) {
-		return (PathTween) super.setDuration(_duration);
-	}
-
-	@Override
 	public PathTween delay(float _delay) {
 		return (PathTween) super.delay(_delay);
 	}
 
-	@Override
+	public PathTween noDelay() {
+		return (PathTween) super.noDelay();
+	}
+
+	public PathTween repeatDelay() {
+		return (PathTween) super.repeatDelay();
+	}
+
+	public PathTween noRepeatDelay() {
+		return (PathTween) super.noRepeatDelay();
+	}
+
+	public PathTween repeat() {
+		return (PathTween) super.repeat();
+	}
+
+	public PathTween repeat(int _repeat) {
+		return (PathTween) super.repeat(_repeat);
+	}
+
+	public PathTween noRepeat() {
+		return (PathTween) super.noRepeat();
+	}
+
+	public PathTween reverse() {
+		return (PathTween) super.reverse();
+	}
+
+	public PathTween noReverse() {
+		return (PathTween) super.noReverse();
+	}
+
+	public PathTween setName(String _name) {
+		return (PathTween) super.setName(_name);
+	}
+
+	public PathTween setTimeScale(float _timeScale) {
+		return (PathTween) super.setTimeScale(_timeScale);
+	}
+
+	public PathTween setDuration(float _duration) {
+		return (PathTween) super.setDuration(_duration);
+	}
+
 	public PathTween setEasing(String _easing) {
 		return (PathTween) super.setEasing(_easing);
 	}
 
-	@Override
 	public PathTween noEasing() {
 		return (PathTween) super.noEasing();
 	}
 
-	@Override
 	public PathTween setTimeMode(String _timeMode) {
 		return (PathTween) super.setTimeMode(_timeMode);
 	}
 
-	@Override
 	public PathTween autoUpdate() {
 		return (PathTween) super.autoUpdate();
 	}
 
-	@Override
 	public PathTween noAutoUpdate() {
 		return (PathTween) super.noAutoUpdate();
+	}
+
+	public PathTween addEventListener(MotionEventListener listener) {
+		return (PathTween) super.addEventListener(listener);
 	}
 
 	public PVector getPoint() {

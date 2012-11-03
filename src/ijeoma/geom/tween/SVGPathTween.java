@@ -28,7 +28,9 @@ package ijeoma.geom.tween;
  */
 
 import ijeoma.geom.SVGPath;
+import ijeoma.motion.MotionConstant;
 import ijeoma.motion.event.MotionEvent;
+import ijeoma.motion.event.MotionEventListener;
 import ijeoma.motion.tween.Tween;
 
 import java.lang.reflect.Method;
@@ -122,69 +124,56 @@ public class SVGPathTween extends Tween { // implements Comparable {
 		return (SVGPathTween) super.seek(_value);
 	}
 
-	@Override
-	public SVGPathTween repeat() {
-		return (SVGPathTween) super.repeat();
+	public SVGPathTween setName(String _name) {
+		return (SVGPathTween) super.setName(_name);
 	}
 
-	@Override
-	public SVGPathTween repeat(int _repeatDuration) {
-		return (SVGPathTween) super.repeat(_repeatDuration);
-	}
-
-	@Override
-	public SVGPathTween noRepeat() {
-		return (SVGPathTween) super.noRepeat();
-	}
-
-	@Override
-	public SVGPathTween reverse() {
-		return (SVGPathTween) super.reverse();
-	}
-
-	@Override
-	public SVGPathTween noReverse() {
-		return (SVGPathTween) super.noReverse();
-	}
-
-	@Override
 	public SVGPathTween setTimeScale(float _timeScale) {
 		return (SVGPathTween) super.setTimeScale(_timeScale);
 	}
 
-	@Override
 	public SVGPathTween setDuration(float _duration) {
 		return (SVGPathTween) super.setDuration(_duration);
 	}
 
-	@Override
 	public SVGPathTween delay(float _delay) {
 		return (SVGPathTween) super.delay(_delay);
 	}
 
-	@Override
+	public SVGPathTween noDelay() {
+		return (SVGPathTween) super.noDelay();
+	}
+
+	public SVGPathTween repeatDelay() {
+		return (SVGPathTween) super.repeatDelay();
+	}
+
+	public SVGPathTween noRepeatDelay() {
+		return (SVGPathTween) super.noRepeatDelay();
+	}
+
 	public SVGPathTween setEasing(String _easing) {
 		return (SVGPathTween) super.setEasing(_easing);
 	}
 
-	@Override
 	public SVGPathTween noEasing() {
-		return (SVGPathTween) super.noEasing();
+		return (SVGPathTween) super.setEasing(MotionConstant.LINEAR_BOTH);
 	}
 
-	@Override
 	public SVGPathTween setTimeMode(String _timeMode) {
 		return (SVGPathTween) super.setTimeMode(_timeMode);
 	}
 
-	@Override
 	public SVGPathTween autoUpdate() {
 		return (SVGPathTween) super.autoUpdate();
 	}
 
-	@Override
 	public SVGPathTween noAutoUpdate() {
 		return (SVGPathTween) super.noAutoUpdate();
+	}
+
+	public SVGPathTween addEventListener(MotionEventListener listener) {
+		return (SVGPathTween) super.addEventListener(listener);
 	}
 
 	public PVector getPoint() {
