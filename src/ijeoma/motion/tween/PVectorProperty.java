@@ -107,7 +107,7 @@ public class PVectorProperty implements IProperty {
 	}
 
 	public void updateValue() {
-		vector.lerp(end, position);
+		vector.set(PVector.lerp(begin, end, position));
 	}
 
 	public Object getObject() {
