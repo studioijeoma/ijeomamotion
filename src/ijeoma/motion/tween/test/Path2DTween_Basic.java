@@ -54,12 +54,12 @@ public class Path2DTween_Basic extends PApplet {
 		float x = 0;
 
 		while (x < width) {
-			p.add(x, random(200, 400));
+			p.addVertex(x, random(200, 400));
 
 			x += random(10, 20);
 		}
 
-		p.add(width, random(200, 400));
+		p.addVertex(width, random(200, 400));
 
 		tp = new PathTween(p, 0f, 1f, 300f);
 		tp.repeat();

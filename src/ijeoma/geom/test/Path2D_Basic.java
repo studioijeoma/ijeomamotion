@@ -48,19 +48,19 @@ public class Path2D_Basic extends PApplet {
 		float x = 0;
 
 		while (x < width) {
-			path1.add(x, random(250, 400));
+			path1.addVertex(x, random(250, 400));
 
 			x += random(5, 10);
 		}
 
-		path1.add(width, random(200, 400));
+		path1.addVertex(width, random(200, 400));
 
-		println("path1.getCount() = " + path1.getCount());
+		println("path1.getCount() = " + path1.getVertexCount());
 
-		path2 = new Path(path1.get());
-		path2.simplify(5, true); 
+		path2 = new Path(path1.getVertices());
+		path2.simplify(5, true);
 
-		println("path2.getCount() = " + path2.getCount());
+		println("path2.getCount() = " + path2.getVertexCount());
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class Path2D_Basic extends PApplet {
 		// path2.drawLine(g);
 		path2.drawPoints(g);
 
-		PVector p = path2.get((float) mouseX / width);
+		PVector p = path2.getVertexAt((float) mouseX / width);
 		noStroke();
 		fill(255, 0, 0);
 		ellipse(p.x, p.y, 10, 10);

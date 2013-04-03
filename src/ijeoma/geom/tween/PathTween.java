@@ -192,7 +192,7 @@ public class PathTween extends Tween {
 	}
 
 	public PVector getPoint() {
-		return path.get(getPosition());
+		return path.getVertexAt(getPosition());
 	}
 
 	public float getX() {
