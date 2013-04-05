@@ -20,7 +20,7 @@ public class Ani_Sequence_Basics extends PApplet {
 
 		x = 50;
 		y = 50;
-		diameter = 50;
+		diameter = 5;
 
 		// seq = new AniSequence(this);
 		// seq.beginSequence();
@@ -48,7 +48,7 @@ public class Ani_Sequence_Basics extends PApplet {
 		Motion.setup(this);
 
 		ts = new Sequence();
-		ts.add(new Tween(100).add(this, "diameter", 50));
+		ts.add(new Tween(100).add(this, "diameter", 55));
 		ts.add(new Tween(100).add(this, "x", 400).add(this, "y", 100));
 		ts.add(new Tween(100).add(this, "x", 450).add(this, "y", 400));
 		ts.add(new Tween(100).add(this, "x", 100).add(this, "y", 450));

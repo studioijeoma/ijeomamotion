@@ -27,9 +27,8 @@
 
 package ijeoma.motion.tween;
 
-import ijeoma.motion.Motion;
 import ijeoma.motion.Callback;
-import ijeoma.motion.MotionConstant;
+import ijeoma.motion.Motion;
 import ijeoma.motion.event.MotionEvent;
 import ijeoma.motion.event.MotionEventListener;
 
@@ -58,14 +57,14 @@ public class Tween extends Motion { // implements Comparable
 	/**
 	 * Constructs a Tween
 	 * 
-	 * @param _name
-	 * @param _duration
+	 * @param name
+	 * @param duration
 	 *            how many seconds/frames you want the tween to take from begin
 	 *            to the end
-	 * @param _delay
+	 * @param delay
 	 *            how many seconds/frames you want the tween to delay before
 	 *            starting
-	 * @param _easing
+	 * @param easing
 	 *            LINEAR_IN, LINEAR_OUT, LINEAR_BOTH, QUAD_IN, QUAD_OUT,
 	 *            QUAD_BOTH, CUBIC_IN, CUBIC_BOTH, CUBIC_OUT, QUART_IN,
 	 *            QUART_OUT, QUART_BOTH, QUINT_IN, QUINT_OUT, QUINT_BOTH,
@@ -74,31 +73,31 @@ public class Tween extends Motion { // implements Comparable
 	 *            BOUNCE_IN, BOUNCE_OUT, BOUNCE_BOTH, ELASTIC_IN, ELASTIC_OUT,
 	 *            ELASTIC_BOTH
 	 */
-	public Tween(String _name, float _duration, float _delay, String _easing) {
-		setup(_name, _duration, _delay, _easing);
+	public Tween(String name, float duration, float delay, String easing) {
+		setup(name, duration, delay, easing);
 		setupEvents();
 	}
 
-	public Tween(String _name, float _duration, float _delay) {
-		setup(_name, _duration, _delay, easing);
+	public Tween(String name, float duration, float delay) {
+		setup(name, duration, delay, easing);
 		setupEvents();
 	}
 
-	public Tween(String _name, float _duration) {
-		setup(_name, _duration, delay, easing);
+	public Tween(String name, float duration) {
+		setup(name, duration, delay, easing);
 		setupEvents();
 	}
 
 	/**
 	 * Constructs a Tween
 	 * 
-	 * @param _duration
+	 * @param duration
 	 *            how many seconds/frames you want the tween to take from begin
 	 *            to the end
-	 * @param _delay
+	 * @param delay
 	 *            how many seconds/frames you want the tween to delay before
 	 *            starting
-	 * @param _easing
+	 * @param easing
 	 *            LINEAR_IN, LINEAR_OUT, LINEAR_BOTH, QUAD_IN, QUAD_OUT,
 	 *            QUAD_BOTH, CUBIC_IN, CUBIC_BOTH, CUBIC_OUT, QUART_IN,
 	 *            QUART_OUT, QUART_BOTH, QUINT_IN, QUINT_OUT, QUINT_BOTH,
@@ -107,39 +106,39 @@ public class Tween extends Motion { // implements Comparable
 	 *            BOUNCE_IN, BOUNCE_OUT, BOUNCE_BOTH, ELASTIC_IN, ELASTIC_OUT,
 	 *            ELASTIC_BOTH
 	 */
-	public Tween(float _duration, float _delay, String _easing) {
-		setup("", _duration, _delay, _easing);
+	public Tween(float duration, float delay, String easing) {
+		setup("", duration, delay, easing);
 		setupEvents();
 	}
 
-	public Tween(float _duration, float _delay) {
-		setup(_duration, _delay, easing);
+	public Tween(float duration, float delay) {
+		setup(duration, delay, easing);
 		setupEvents();
 	}
 
-	public Tween(float _duration) {
-		setup(_duration, delay, easing);
+	public Tween(float duration) {
+		setup(duration, delay, easing);
 		setupEvents();
 	}
 
 	/**
 	 * Constructs a Tween
 	 * 
-	 * @param _name
+	 * @param name
 	 *            the id of the tween
-	 * @param _tweenObject
+	 * @param propertyObject
 	 *            the object you want to tween
-	 * @param _tweenObjectProperty
+	 * @param propertyName
 	 *            the parameter of the object you want to tween
-	 * @param _end
+	 * @param end
 	 *            the position you want the tween to end at
-	 * @param _duration
+	 * @param duration
 	 *            how many seconds/frames you want the tween to take from begin
 	 *            to the end
-	 * @param _delay
+	 * @param delay
 	 *            how many seconds/frames you want the tween to delay before
 	 *            starting
-	 * @param _easing
+	 * @param easing
 	 *            LINEAR_IN, LINEAR_OUT, LINEAR_BOTH, QUAD_IN, QUAD_OUT,
 	 *            QUAD_BOTH, CUBIC_IN, CUBIC_BOTH, CUBIC_OUT, QUART_IN,
 	 *            QUART_OUT, QUART_BOTH, QUINT_IN, QUINT_OUT, QUINT_BOTH,
@@ -148,51 +147,46 @@ public class Tween extends Motion { // implements Comparable
 	 *            BOUNCE_IN, BOUNCE_OUT, BOUNCE_BOTH, ELASTIC_IN, ELASTIC_OUT,
 	 *            ELASTIC_BOTH
 	 */
-	public Tween(String _name, Object _tweenObject,
-			String _tweenObjectProperty, float _end, float _duration,
-			float _delay, String _easing) {
-		IProperty p = new NumberProperty(_tweenObject, _tweenObjectProperty,
-				_end);
+	public Tween(String name, Object propertyObject, String propertyName,
+			float end, float duration, float delay, String easing) {
+		IProperty p = new NumberProperty(propertyObject, propertyName, end);
 
-		setup(_name, p, _duration, _delay, _easing);
+		setup(name, p, duration, delay, easing);
 		setupEvents();
 	}
 
-	public Tween(String _name, Object _tweenObject,
-			String _tweenObjectProperty, float _end, float _duration,
-			float _delay) {
-		IProperty p = new NumberProperty(_tweenObject, _tweenObjectProperty,
-				_end);
+	public Tween(String name, Object proeprtyObject, String propertyName,
+			float end, float duration, float delay) {
+		IProperty p = new NumberProperty(proeprtyObject, propertyName, end);
 
-		setup(_name, p, _duration, _delay, easing);
+		setup(name, p, duration, delay, easing);
 		setupEvents();
 	}
 
-	public Tween(String _name, Object _tweenObject,
-			String _tweenObjectProperty, float _end, float _duration) {
-		IProperty p = new NumberProperty(_tweenObject, _tweenObjectProperty,
-				_end);
+	public Tween(String name, Object propertyObject, String propertyName,
+			float end, float duration) {
+		IProperty p = new NumberProperty(propertyObject, propertyName, end);
 
-		setup(_name, p, _duration, delay, easing);
+		setup(name, p, duration, delay, easing);
 		setupEvents();
 	}
 
 	/**
 	 * Constructs a Tween
 	 * 
-	 * @param _tweenObject
+	 * @param propertyObject
 	 *            the object you want to tween
-	 * @param _tweenObjectProperty
+	 * @param propertyName
 	 *            the parameter of the object you want to tween
-	 * @param _end
+	 * @param end
 	 *            the position you want the tween to end at
-	 * @param _duration
+	 * @param duration
 	 *            how many seconds/frames you want the tween to take from begin
 	 *            to the end
-	 * @param _delay
+	 * @param delay
 	 *            how many seconds/frames you want the tween to delay before
 	 *            starting
-	 * @param _easing
+	 * @param easing
 	 *            LINEAR_IN, LINEAR_OUT, LINEAR_BOTH, QUAD_IN, QUAD_OUT,
 	 *            QUAD_BOTH, CUBIC_IN, CUBIC_BOTH, CUBIC_OUT, QUART_IN,
 	 *            QUART_OUT, QUART_BOTH, QUINT_IN, QUINT_OUT, QUINT_BOTH,
@@ -201,49 +195,46 @@ public class Tween extends Motion { // implements Comparable
 	 *            BOUNCE_IN, BOUNCE_OUT, BOUNCE_BOTH, ELASTIC_IN, ELASTIC_OUT,
 	 *            ELASTIC_BOTH
 	 */
-	public Tween(Object _tweenObject, String _tweenObjectProperty, float _end,
-			float _duration, float _delay, String _easing) {
-		IProperty p = new NumberProperty(_tweenObject, _tweenObjectProperty,
-				_end);
+	public Tween(Object propertyObject, String propertyName, float end,
+			float duration, float delay, String easing) {
+		IProperty p = new NumberProperty(propertyObject, propertyName, end);
 
-		setup(p, _duration, _delay, _easing);
+		setup(p, duration, delay, easing);
 		setupEvents();
 	}
 
-	public Tween(Object _tweenObject, String _tweenObjectProperty, float _end,
-			float _duration, float _delay) {
-		IProperty p = new NumberProperty(_tweenObject, _tweenObjectProperty,
-				_end);
+	public Tween(Object propertyObject, String propertyName, float end,
+			float duration, float delay) {
+		IProperty p = new NumberProperty(propertyObject, propertyName, end);
 
-		setup(p, _duration, _delay, easing);
+		setup(p, duration, delay, easing);
 		setupEvents();
 	}
 
-	public Tween(Object _tweenObject, String _tweenObjectProperty, float _end,
-			float _duration) {
-		IProperty p = new NumberProperty(_tweenObject, _tweenObjectProperty,
-				_end);
+	public Tween(Object propertyObject, String propertyName, float end,
+			float duration) {
+		IProperty p = new NumberProperty(propertyObject, propertyName, end);
 
-		setup(p, _duration, delay, easing);
+		setup(p, duration, delay, easing);
 		setupEvents();
 	}
 
 	/**
 	 * Constructs a Tween
 	 * 
-	 * @param _name
+	 * @param name
 	 *            the position you want the tween to end at
-	 * @param _begin
+	 * @param begin
 	 *            the position you want the tween to end at
-	 * @param _end
+	 * @param end
 	 *            the position you want the tween to end at
-	 * @param _duration
+	 * @param duration
 	 *            how many seconds/frames you want the tween to take from begin
 	 *            to the end
-	 * @param _delay
+	 * @param delay
 	 *            how many seconds/frames you want the tween to delay before
 	 *            starting
-	 * @param _easing
+	 * @param easing
 	 *            LINEAR_IN, LINEAR_OUT, LINEAR_BOTH, QUAD_IN, QUAD_OUT,
 	 *            QUAD_BOTH, CUBIC_IN, CUBIC_BOTH, CUBIC_OUT, QUART_IN,
 	 *            QUART_OUT, QUART_BOTH, QUINT_IN, QUINT_OUT, QUINT_BOTH,
@@ -252,85 +243,84 @@ public class Tween extends Motion { // implements Comparable
 	 *            BOUNCE_IN, BOUNCE_OUT, BOUNCE_BOTH, ELASTIC_IN, ELASTIC_OUT,
 	 *            ELASTIC_BOTH
 	 */
-	public Tween(float _begin, float _end, float _duration, float _delay,
-			String _easing) {
-		IProperty p = new NumberProperty("", _begin, _end);
-
-		setup(p, _duration, _delay, _easing);
-		setupEvents();
-	}
-
-	public Tween(float _begin, float _end, float _duration, float _delay) {
-		IProperty p = new NumberProperty("", _begin, _end);
-
-		setup(p, _duration, _delay, easing);
-		setupEvents();
-	}
-
-	public Tween(float _begin, float _end, float _duration) {
-		IProperty p = new NumberProperty("", _begin, _end);
-
-		setup(p, _duration, delay, easing);
-		setupEvents();
-	}
-
-	/**
-	 * Constructs a Tween
-	 * 
-	 * @param _name
-	 *            the position you want the tween to end at
-	 * @param _begin
-	 *            the position you want the tween to end at
-	 * @param _end
-	 *            the position you want the tween to end at
-	 * @param _duration
-	 *            how many seconds/frames you want the tween to take from begin
-	 *            to the end
-	 * @param _delay
-	 *            how many seconds/frames you want the tween to delay before
-	 *            starting
-	 * @param _easing
-	 *            LINEAR_IN, LINEAR_OUT, LINEAR_BOTH, QUAD_IN, QUAD_OUT,
-	 *            QUAD_BOTH, CUBIC_IN, CUBIC_BOTH, CUBIC_OUT, QUART_IN,
-	 *            QUART_OUT, QUART_BOTH, QUINT_IN, QUINT_OUT, QUINT_BOTH,
-	 *            SINE_IN, SINE_OUT,SINE_BOTH, CIRC_IN, CIRC_OUT, CIRC_BOTH,
-	 *            EXPO_IN, EXPO_OUT, EXPO_BOTH, BACK_IN, BACK_OUT, BACK_BOTH,
-	 *            BOUNCE_IN, BOUNCE_OUT, BOUNCE_BOTH, ELASTIC_IN, ELASTIC_OUT,
-	 *            ELASTIC_BOTH
-	 */
-	public Tween(String _name, float _begin, float _end, float _duration,
-			float _delay, String _easing) {
-		IProperty p = new NumberProperty(_name, _begin, _end);
-
-		setup(p, _duration, _delay, _easing);
-		setupEvents();
-	}
-
-	public Tween(String _name, float _begin, float _end, float _duration,
-			float _delay) {
-		IProperty p = new NumberProperty(_name, _begin, _end);
-
-		setup(p, _duration, _delay, easing);
-		setupEvents();
-	}
-
-	public Tween(String _name, float _begin, float _end, float _duration) {
-		IProperty p = new NumberProperty(_name, _begin, _end);
-
-		setup(p, _duration, delay, easing);
-		setupEvents();
-	}
-
-	protected void setup(String _name, IProperty _p, float _duration,
-			float _delay, String easing) {
-		setup(_name, _duration, _delay, easing);
-		addProperty(_p);
-	}
-
-	protected void setup(IProperty _p, float _duration, float _delay,
+	public Tween(float begin, float end, float duration, float delay,
 			String easing) {
-		setup(_duration, _delay, easing);
-		addProperty(_p);
+		IProperty p = new NumberProperty("", begin, end);
+
+		setup(p, duration, delay, easing);
+		setupEvents();
+	}
+
+	public Tween(float begin, float end, float duration, float delay) {
+		IProperty p = new NumberProperty("", begin, end);
+
+		setup(p, duration, delay, easing);
+		setupEvents();
+	}
+
+	public Tween(float begin, float end, float duration) {
+		IProperty p = new NumberProperty("", begin, end);
+
+		setup(p, duration, delay, easing);
+		setupEvents();
+	}
+
+	/**
+	 * Constructs a Tween
+	 * 
+	 * @param name
+	 *            the position you want the tween to end at
+	 * @param begin
+	 *            the position you want the tween to end at
+	 * @param end
+	 *            the position you want the tween to end at
+	 * @param duration
+	 *            how many seconds/frames you want the tween to take from begin
+	 *            to the end
+	 * @param delay
+	 *            how many seconds/frames you want the tween to delay before
+	 *            starting
+	 * @param easing
+	 *            LINEAR_IN, LINEAR_OUT, LINEAR_BOTH, QUAD_IN, QUAD_OUT,
+	 *            QUAD_BOTH, CUBIC_IN, CUBIC_BOTH, CUBIC_OUT, QUART_IN,
+	 *            QUART_OUT, QUART_BOTH, QUINT_IN, QUINT_OUT, QUINT_BOTH,
+	 *            SINE_IN, SINE_OUT,SINE_BOTH, CIRC_IN, CIRC_OUT, CIRC_BOTH,
+	 *            EXPO_IN, EXPO_OUT, EXPO_BOTH, BACK_IN, BACK_OUT, BACK_BOTH,
+	 *            BOUNCE_IN, BOUNCE_OUT, BOUNCE_BOTH, ELASTIC_IN, ELASTIC_OUT,
+	 *            ELASTIC_BOTH
+	 */
+	public Tween(String name, float begin, float end, float duration,
+			float delay, String easing) {
+		IProperty p = new NumberProperty(name, begin, end);
+
+		setup(p, duration, delay, easing);
+		setupEvents();
+	}
+
+	public Tween(String name, float begin, float end, float duration,
+			float delay) {
+		IProperty p = new NumberProperty(name, begin, end);
+
+		setup(p, duration, delay, easing);
+		setupEvents();
+	}
+
+	public Tween(String name, float begin, float end, float duration) {
+		IProperty p = new NumberProperty(name, begin, end);
+
+		setup(p, duration, delay, easing);
+		setupEvents();
+	}
+
+	protected void setup(String name, IProperty p, float duration, float delay,
+			String easing) {
+		setup(name, duration, delay, easing);
+		add(p);
+	}
+
+	protected void setup(IProperty p, float duration, float delay, String easing) {
+		setup(duration, delay, easing);
+		add(p);
 	}
 
 	@Override
@@ -373,20 +363,20 @@ public class Tween extends Motion { // implements Comparable
 	}
 
 	@Override
-	public void update(float _time) {
-		super.update(_time);
+	public void update(float time) {
+		super.update(time);
 
 		if (isPlaying)
 			updateProperties();
 	}
 
 	public void setupProperties() {
-		if (!hasSetupProperties) {
-			for (IProperty p : properties)
-				p.setBegin();
+		// if (!hasSetupProperties) {
+		for (IProperty p : properties)
+			p.setBegin();
 
-			hasSetupProperties = true;
-		}
+		hasSetupProperties = true;
+		// }
 	}
 
 	public void updateProperties() {
@@ -425,10 +415,10 @@ public class Tween extends Motion { // implements Comparable
 	}
 
 	@Override
-	public Tween seek(float _value) {
+	public Tween seek(float value) {
 		// super.seek(_value);
 
-		playTime = (delay + duration) * _value;
+		playTime = (delay + duration) * value;
 
 		if (playTime != time) {
 			setTime(playTime);
@@ -439,8 +429,8 @@ public class Tween extends Motion { // implements Comparable
 		return this;
 	}
 
-	public Tween delay(float _delay) {
-		return (Tween) super.delay(_delay);
+	public Tween delay(float delay) {
+		return (Tween) super.delay(delay);
 	}
 
 	public Tween noDelay() {
@@ -459,8 +449,8 @@ public class Tween extends Motion { // implements Comparable
 		return (Tween) super.repeat();
 	}
 
-	public Tween repeat(int _repeat) {
-		return (Tween) super.repeat(_repeat);
+	public Tween repeat(int count) {
+		return (Tween) super.repeat(count);
 	}
 
 	public Tween noRepeat() {
@@ -475,28 +465,28 @@ public class Tween extends Motion { // implements Comparable
 		return (Tween) super.noReverse();
 	}
 
-	public Tween setName(String _name) {
-		return (Tween) super.setName(_name);
+	public Tween setName(String name) {
+		return (Tween) super.setName(name);
 	}
 
-	public Tween setTimeScale(float _timeScale) {
-		return (Tween) super.setTimeScale(_timeScale);
+	public Tween setTimeScale(float timeScale) {
+		return (Tween) super.setTimeScale(timeScale);
 	}
 
-	public Tween setDuration(float _duration) {
-		return (Tween) super.setDuration(_duration);
+	public Tween setDuration(float duration) {
+		return (Tween) super.setDuration(duration);
 	}
 
-	public Tween setEasing(String _easing) {
-		return (Tween) super.setEasing(_easing);
+	public Tween setEasing(String easing) {
+		return (Tween) super.setEasing(easing);
 	}
 
 	public Tween noEasing() {
 		return (Tween) super.noEasing();
 	}
 
-	public Tween setTimeMode(String _timeMode) {
-		return (Tween) super.setTimeMode(_timeMode);
+	public Tween setTimeMode(String timeMode) {
+		return (Tween) super.setTimeMode(timeMode);
 	}
 
 	public Tween autoUpdate() {
@@ -511,106 +501,114 @@ public class Tween extends Motion { // implements Comparable
 		return (Tween) super.addEventListener(listener);
 	}
 
-	public Tween addProperty(IProperty _p) {
-		properties.add(_p);
+	public Tween add(IProperty p) {
+		properties.add(p);
 
-		if (!_p.getName().equals(""))
-			propertyMap.put(_p.getName(), _p);
-
-		return this;
-	}
-
-	public Tween add(IProperty _p) {
-		properties.add(_p);
-
-		if (!_p.getName().equals(""))
-			propertyMap.put(_p.getName(), _p);
+		if (!p.getName().equals(""))
+			propertyMap.put(p.getName(), p);
 
 		return this;
 	}
 
-	public Tween add(String _name, float _begin, float _end) {
-		return addProperty(new NumberProperty(_name, _begin, _end));
+	public Tween add(String name, float begin, float end) {
+		return add(new NumberProperty(name, begin, end));
 	}
 
-	public Tween addNumber(String _name, float _begin, float _end) {
-		return addProperty(new NumberProperty(_name, _begin, _end));
+	public Tween addNumber(String name, float begin, float end) {
+		return add(new NumberProperty(name, begin, end));
 	}
 
-	public Tween addColor(String _name, int _begin, int _end) {
-		return addProperty(new ColorProperty(_name, _begin, _end));
+	public Tween addColor(String name, int begin, int end) {
+		return add(new ColorProperty(name, begin, end));
 	}
 
-	public Tween add(Object _object, String _name, float _end) {
-		return addProperty(new NumberProperty(_object, _name, _end));
+	public Tween add(Object object, String name, float end) {
+		return add(new NumberProperty(object, name, end));
 	}
 
-	public Tween addNumber(Object _object, String _name, float _end) {
-		return addProperty(new NumberProperty(_object, _name, _end));
+	public Tween addNumber(Object object, String name, float end) {
+		return add(new NumberProperty(object, name, end));
 	}
 
-	public Tween addColor(Object _object, String _name, int _end) {
-		return addProperty(new ColorProperty(_object, _name, _end));
+	public Tween addColor(Object object, String name, int end) {
+		return add(new ColorProperty(object, name, end));
 	}
 
-	public Tween addPVector(PVector _vector, PVector _end) {
-		return addProperty(new PVectorProperty(_vector, _end));
+	public Tween addVector(PVector vector, PVector end) {
+		return add(new VectorProperty(vector, end));
 	}
 
-	public Tween addArc(PVector _vector, PVector _end) {
-		return addProperty(new ArcProperty(_vector, _end));
+	public Tween addArc(PVector vector, PVector end) {
+		return add(new ArcProperty(vector, end));
 	}
 
-	public Tween call(Object _object, String _name) {
-		return (Tween) super.call(_object, _name);
+	public Tween call(Object object, String method, float time) {
+		return (Tween) super.call(object, method, time);
 	}
 
-	public Tween call(Object _object, String _name, float _time) {
-		return (Tween) super.call(_object, _name, _time);
+	public Tween call(String method, float time) {
+		return (Tween) super.call(properties.get(0).getObject(), method, time);
 	}
 
-	public Tween addCall(Callback _call) {
-		return (Tween) super.addCall(_call);
+	public Tween onStart(Object object, String method) {
+		return (Tween) super.onStart(object, method);
 	}
 
-	public NumberProperty get(int _index) {
-		return (NumberProperty) getProperty(_index);
+	public Tween onEnd(Object object, String method) {
+		return (Tween) super.onEnd(object, method);
 	}
 
-	public NumberProperty get(String _name) {
-		return (NumberProperty) getProperty(_name);
+	public Tween onStart(String method) {
+		return (Tween) super.call(properties.get(0).getObject(), method, 0);
 	}
 
-	public NumberProperty getNumber(int _index) {
-		return (NumberProperty) getProperty(_index);
+	public Tween onEnd(String method) {
+		return (Tween) super.call(properties.get(0).getObject(), method,
+				duration);
 	}
 
-	public NumberProperty getNumber(String _name) {
-		return (NumberProperty) getProperty(_name);
+	public Tween addCall(Callback callback) {
+		return (Tween) super.addCall(callback);
 	}
 
-	public ColorProperty getColor(int _index) {
-		return (ColorProperty) getProperty(_index);
+	public NumberProperty get(int index) {
+		return (NumberProperty) getProperty(index);
 	}
 
-	public ColorProperty getColor(String _name) {
-		return (ColorProperty) getProperty(_name);
+	public NumberProperty get(String name) {
+		return (NumberProperty) getProperty(name);
 	}
 
-	public PVectorProperty getPVector(int _index) {
-		return (PVectorProperty) getProperty(_index);
+	public NumberProperty getNumber(int index) {
+		return (NumberProperty) getProperty(index);
 	}
 
-	public PVectorProperty getPVector(String _name) {
-		return (PVectorProperty) getProperty(_name);
+	public NumberProperty getNumber(String name) {
+		return (NumberProperty) getProperty(name);
 	}
 
-	public IProperty getProperty(int _index) {
-		return properties.get(_index);
+	public ColorProperty getColor(int index) {
+		return (ColorProperty) getProperty(index);
 	}
 
-	public IProperty getProperty(String _name) {
-		return propertyMap.get(_name);
+	public ColorProperty getColor(String name) {
+		return (ColorProperty) getProperty(name);
+	}
+
+	public VectorProperty getVector(int index) {
+		return (VectorProperty) getProperty(index);
+	}
+
+	public VectorProperty getPVector(String name) {
+		return (VectorProperty) getProperty(name);
+	}
+
+	public IProperty getProperty(int index) {
+		return properties.get(index);
+	}
+
+	public IProperty getProperty(String name) {
+		return propertyMap.get(name);
 	}
 
 	public IProperty[] getProperties() {
@@ -621,20 +619,26 @@ public class Tween extends Motion { // implements Comparable
 		return properties.size();
 	}
 
-	public String getPropertyName(int _index) {
-		return properties.get(_index).getName();
+	public String getPropertyName(int index) {
+		return properties.get(index).getName();
 	}
 
 	public String[] getPropertyNames() {
-		if (properties.size() > 1) {
-			String[] propertyNames = new String[properties.size() - 1];
+		String[] propertyNames = new String[properties.size()];
 
-			for (int i = 1; i < properties.size() - 1; i++)
-				propertyNames[i] = properties.get(i + 1).getName();
+		for (int i = 0; i < properties.size(); i++)
+			propertyNames[i] = properties.get(i + 1).getName();
 
-			return propertyNames;
-		} else
-			return new String[] {};
+		return propertyNames;
+	}
+
+	public List<String> getPropertyNamesList() {
+		ArrayList<String> propertyNamesList = new ArrayList<String>();
+
+		for (IProperty p : properties)
+			propertyNamesList.add(p.getName());
+
+		return propertyNamesList;
 	}
 
 	@Override

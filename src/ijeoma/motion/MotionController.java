@@ -28,6 +28,7 @@
 package ijeoma.motion;
 
 import ijeoma.motion.event.MotionEventListener;
+import ijeoma.motion.tween.IProperty;
 import ijeoma.motion.tween.Tween;
 import ijeoma.motion.tween.Parallel;
 import ijeoma.motion.tween.Sequence;
@@ -50,6 +51,8 @@ public abstract class MotionController extends Motion implements
 	public HashMap<String, Parallel> parallelMap = new HashMap<String, Parallel>();
 	public HashMap<String, Sequence> sequenceMap = new HashMap<String, Sequence>();
 
+	public HashMap<String, Integer> propertyOrderMap = new HashMap<String, Integer>();
+
 	protected ArrayList<MotionEventListener> listeners;
 
 	public MotionController() {
@@ -71,10 +74,10 @@ public abstract class MotionController extends Motion implements
 	}
 
 	@Override
-	public MotionController play() {
+	public MotionController play() { 
 		for (Tween t : tweens)
-			t.setupProperties();
-
+			t.setupProperties(); 
+		
 		return (MotionController) super.play();
 	}
 
@@ -108,7 +111,7 @@ public abstract class MotionController extends Motion implements
 	@Override
 	public MotionController seek(float _value) {
 		super.seek(_value);
- 
+
 		for (Motion c : children) {
 			if (c.isInsidePlayingTime(getTime()))
 				c.seek(getTime() / (c.getDelay() + c.getDuration()));
@@ -237,6 +240,26 @@ public abstract class MotionController extends Motion implements
 	}
 
 	/**
+	 * Returns all Tweens for a property as a list
+	 */
+	public Tween[] getTweens(String propertyName) {
+		List<Tween> tweenList = getTweenList(propertyName);
+		return tweenList.toArray(new Tween[tweenList.size()]);
+	}
+
+	/**
+	 * Returns all Tweens for a property as a list
+	 */
+	public List<Tween> getTweenList(String propertyName) {
+		ArrayList<Tween> propertyTweens = new ArrayList<Tween>();
+		for (Tween t : tweens)
+			if (t.getPropertyNamesList().contains(propertyName))
+				propertyTweens.add(t);
+
+		return propertyTweens;
+	}
+
+	/**
 	 * Returns all Parallels
 	 */
 	public Parallel[] getParallels() {
@@ -346,30 +369,46 @@ public abstract class MotionController extends Motion implements
 		return this;
 	}
 
-	protected Motion insert(Motion _child, float _time) {
-		_child.delay(_time);
+	protected Motion insert(Motion child, float time) {
+		child.delay(time);
 		// _child.seek(1);
-		_child.setTimeMode(timeMode);
-		_child.noAutoUpdate();
-		_child.addEventListener(this);
+		child.setTimeMode(timeMode);
+		child.noAutoUpdate();
+		child.addEventListener(this);
 
-		if (_child.isTween()) {
-			tweens.add((Tween) _child);
-			if (_child.getName() != null)
-				tweenMap.put(_child.getName(), (Tween) _child);
-		} else if (_child.isParallel()) {
-			parallels.add((Parallel) _child);
-			if (_child.getName() != null)
-				parallelMap.put(_child.getName(), (Parallel) _child);
-		} else if (_child.isSequence()) {
-			sequences.add((Sequence) _child);
-			if (_child.getName() != null)
-				sequenceMap.put(_child.getName(), (Sequence) _child);
+		if (child.isTween()) {
+			Tween t = (Tween) child;
+
+			for (IProperty p : t.getProperties()) {
+				String name = p.getObject().getClass().getSimpleName() + "."
+						+ p.getName();
+				if (propertyOrderMap.containsKey(name)) {
+					int order = propertyOrderMap.get(name);
+					order++;
+					propertyOrderMap.put(name, order);
+					p.setOrder(order);
+				} else {
+					propertyOrderMap.put(name, 0);
+					p.setOrder(0);
+				}
+			}
+
+			tweens.add((Tween) child);
+			if (child.getName() != null)
+				tweenMap.put(child.getName(), (Tween) child);
+		} else if (child.isParallel()) {
+			parallels.add((Parallel) child);
+			if (child.getName() != null)
+				parallelMap.put(child.getName(), (Parallel) child);
+		} else if (child.isSequence()) {
+			sequences.add((Sequence) child);
+			if (child.getName() != null)
+				sequenceMap.put(child.getName(), (Sequence) child);
 		}
 
-		children.add(_child);
-		if (_child.getName() != null)
-			childrenMap.put(_child.getName(), _child);
+		children.add(child);
+		if (child.getName() != null)
+			childrenMap.put(child.getName(), child);
 
 		updateDuration();
 

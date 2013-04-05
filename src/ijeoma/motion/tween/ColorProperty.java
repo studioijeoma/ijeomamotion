@@ -31,8 +31,6 @@ import ijeoma.motion.Motion;
 
 import java.lang.reflect.Field;
 
-import processing.core.PApplet;
-
 public class ColorProperty implements IProperty {
 	protected Object object;
 	protected Class<? extends Object> objectType;
@@ -48,46 +46,48 @@ public class ColorProperty implements IProperty {
 
 	boolean hasVariable = false;
 
+	protected int order = 0;
+
 	public ColorProperty() {
 
 	}
 
-	public ColorProperty(Object _object, String _name, int _end) {
+	public ColorProperty(Object propertyObject, String propertyName, int end) {
 		hasVariable = true;
-		setupObjectField(_object, _name);
-		setup(_name, _end);
+		setupObject(propertyObject, propertyName);
+		setup(propertyName, end);
 	}
 
-	public ColorProperty(String _name, int _begin, int _end) {
-		setup(_name, _begin, _end);
+	public ColorProperty(String name, int begin, int end) {
+		setup(name, begin, end);
 	}
 
-	private void setup(String _name, int _end) {
-		name = _name;
+	private void setup(String name, int end) {
+		this.name = name;
 
-		setEnd(_end);
+		setEnd(end);
 
 		position = 0;
 	}
 
-	private void setup(String _name, int _begin, int _end) {
-		name = _name;
+	private void setup(String name, int begin, int end) {
+		this.name = name;
 
-		setEnd(_end);
-		setBegin(_begin);
+		setEnd(end);
+		setBegin(begin);
 
 		position = 0;
 	}
 
-	private void setupObjectField(Object _object, String _objectFieldName) {
-		object = _object;
+	private void setupObject(Object propertyObject, String propertyName) {
+		object = propertyObject;
 		objectType = object.getClass();
 
 		boolean found = false;
 
 		while (objectType != null) {
 			for (Field f : objectType.getDeclaredFields())
-				if (f.getName().equals(_objectFieldName)) {
+				if (f.getName().equals(propertyName)) {
 					fieldType = f.getType();
 					found = true;
 					break;
@@ -101,7 +101,7 @@ public class ColorProperty implements IProperty {
 
 		if (found)
 			try {
-				field = objectType.getDeclaredField(_objectFieldName);
+				field = objectType.getDeclaredField(propertyName);
 
 				try {
 					field.setAccessible(true);
@@ -115,20 +115,14 @@ public class ColorProperty implements IProperty {
 			}
 	}
 
-	public void updateObjectField(Object _object) {
-		object = _object;
-
-		setBegin();
-	}
-
 	@Override
 	public String getName() {
 		return name;
 	}
 
 	@Override
-	public void setName(String _name) {
-		name = _name;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Integer getBegin() {
@@ -159,7 +153,7 @@ public class ColorProperty implements IProperty {
 		return end;
 	}
 
-	public void setEnd(Object _end) {
+	public void setEnd(Object end) {
 		if (hasVariable) {
 			if (field != null)
 				try {
@@ -172,8 +166,8 @@ public class ColorProperty implements IProperty {
 		} else
 			begin = value;
 
-		end = (Integer) _end;
-		change = end - begin;
+		this.end = (Integer) end;
+		change = this.end - begin;
 	}
 
 	public Integer getChange() {
@@ -192,7 +186,7 @@ public class ColorProperty implements IProperty {
 	public void setPosition(Object _position) {
 		position = (Float) _position;
 
-		updateValue();
+		update();
 	}
 
 	public Integer getValue() {
@@ -214,7 +208,7 @@ public class ColorProperty implements IProperty {
 	}
 
 	@Override
-	public void updateValue() {
+	public void update() {
 		value = Motion.getParent().lerpColor(begin, end, position);
 
 		if (hasVariable)
@@ -232,6 +226,14 @@ public class ColorProperty implements IProperty {
 
 	public Object getObject() {
 		return object;
+	}
+
+	public void setOrder(int index) {
+		order = index;
+	}
+
+	public int getOrder() {
+		return order;
 	}
 
 	@Override

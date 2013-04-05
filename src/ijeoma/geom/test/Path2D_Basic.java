@@ -70,14 +70,14 @@ public class Path2D_Basic extends PApplet {
 		stroke(0);
 		strokeWeight(3);
 		noFill();
-		// path1.drawLine(g);
-		path1.drawPoints(g);
+		path1.drawLine(g);
+		// path1.drawPoints(g);
 
 		noFill();
 		stroke(255, 0, 0);
 		strokeWeight(2);
-		// path2.drawLine(g);
-		path2.drawPoints(g);
+		path2.drawLine(g);
+		// path2.drawPoints(g);
 
 		PVector p = path2.getVertexAt((float) mouseX / width);
 		noStroke();

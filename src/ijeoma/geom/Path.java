@@ -51,7 +51,7 @@ public class Path {
 
 	protected ArrayList<PVector> vertices = new ArrayList<PVector>();
 
-	protected float distance = 0;
+	protected float length = 0;
 
 	boolean computed = false;
 
@@ -300,19 +300,19 @@ public class Path {
 	}
 
 	public void compute() {
-		computeDist();
+		computeLength();
 
 		computed = true;
 	}
 
-	public void computeDist() {
-		distance = 0;
+	public void computeLength() {
+		length = 0;
 
 		for (int i = 0; i < vertices.size() - 1; i++) {
 			PVector d1 = vertices.get(i);
 			PVector d2 = vertices.get(i + 1);
 
-			distance += PApplet.dist(d1.x, d1.y, d2.x, d2.y);
+			length += PApplet.dist(d1.x, d1.y, d2.x, d2.y);
 		}
 	}
 
@@ -350,8 +350,8 @@ public class Path {
 		return segmentPosition;
 	}
 
-	public float getDistance() {
-		return distance;
+	public float getLength() {
+		return length;
 	}
 
 	// public float getHeading2DAt(float t) {

@@ -108,14 +108,14 @@ public class ArcProperty implements IProperty {
 	public void setPosition(Object _position) {
 		position = (Float) _position;
 
-		updateValue();
+		update();
 	}
 
 	public PVector getValue() {
 		return value.get();
 	}
 
-	public void updateValue() {
+	public void update() {
 		PVector mid = new PVector((begin.x + end.x) / 2, (begin.y + end.y) / 2);
 
 		int r = (int) Math.sqrt((begin.x - mid.x) * (begin.x - mid.x)
@@ -150,4 +150,16 @@ public class ArcProperty implements IProperty {
 				+ ", end: " + getEnd() + ", change: " + getChange()
 				+ ", position: " + getPosition() + "]";
 	}
+
+	@Override
+	public void setOrder(int index) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getOrder() {
+		// TODO Auto-generated method stub
+		return 0;
+	} 
 }

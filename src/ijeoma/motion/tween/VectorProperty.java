@@ -27,25 +27,30 @@
 
 package ijeoma.motion.tween;
 
-import processing.core.PApplet;
 import processing.core.PVector;
 
-public class PVectorProperty implements IProperty {
+public class VectorProperty implements IProperty {
 	protected String name = "";
 	protected PVector vector;
 	protected PVector begin, end, change;
 	protected float position;
 
+	protected int order = 0;
+
 	// public Property(String _name, float _end) {
 	// setup(_name, _end);
 	// }
 
-	public PVectorProperty(PVector _vector, PVector _end) {
-		vector = _vector;
-		begin = _vector.get();
-		end = _end;
-		// name = _name;
-		position = 0;
+	public VectorProperty(PVector vector, PVector end) {
+		this.vector = vector;
+
+		this.begin = vector.get();
+		this.end = end;
+		this.position = 0;
+	}
+
+	public void update() {
+		vector.set(PVector.lerp(begin, end, position));
 	}
 
 	@Override
@@ -54,8 +59,8 @@ public class PVectorProperty implements IProperty {
 	}
 
 	@Override
-	public void setName(String _name) {
-		name = _name;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public PVector getBegin() {
@@ -63,24 +68,27 @@ public class PVectorProperty implements IProperty {
 	}
 
 	public void setBegin() {
-
+		if (order == 0)
+			vector.set(begin.get());
+		else
+			begin = vector.get();
 	}
 
-	public void setBegin(Object _begin) {
-		begin = (PVector) _begin;
+	public void setBegin(Object begin) {
+		this.begin = (PVector) begin;
 
-		setChange(PVector.sub(end, begin));
+		setChange(PVector.sub(end, this.begin));
 	}
 
 	public PVector getEnd() {
 		return end;
 	}
 
-	public void setEnd(Object _end) {
+	public void setEnd(Object end) {
 		begin = vector.get();
-		end = (PVector) _end;
+		this.end = (PVector) end;
 
-		setChange(PVector.sub(end, begin));
+		setChange(PVector.sub(this.end, begin));
 	}
 
 	public PVector getChange() {
@@ -99,19 +107,23 @@ public class PVectorProperty implements IProperty {
 	public void setPosition(Object _position) {
 		position = (Float) _position;
 
-		updateValue();
+		update();
 	}
 
 	public PVector getValue() {
 		return vector;
 	}
 
-	public void updateValue() {
-		vector.set(PVector.lerp(begin, end, position));
-	}
-
 	public Object getObject() {
 		return vector;
+	}
+
+	public void setOrder(int index) {
+		order = index;
+	}
+
+	public int getOrder() {
+		return order;
 	}
 
 	public String toString() {

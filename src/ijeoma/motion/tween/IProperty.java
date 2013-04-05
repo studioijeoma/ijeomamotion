@@ -27,29 +27,40 @@
 
 package ijeoma.motion.tween;
 
-public interface IProperty {	
+public interface IProperty {
+	void update();
+	
 	public String getName();
-	public void setName(String _name);
+
+	public void setName(String name);
 
 	public Object getBegin();
+
 	public void setBegin();
-	public void setBegin(Object _begin);
+
+	public void setBegin(Object begin);
 
 	public Object getEnd();
-	public void setEnd(Object _end);
+
+	public void setEnd(Object end);
 
 	public Object getChange();
-	public void setChange(Object _change);
+
+	public void setChange(Object change);
 
 	public Object getPosition();
-	public void setPosition(Object _position);
+
+	public void setPosition(Object position);
 
 	public Object getValue();
-	void updateValue();
-	
+
 	public Object getObject();
 
+	void setOrder(int index);
+
+	public int getOrder();
+
 	@Override
-	public String toString();
+	public String toString(); 
 
 }

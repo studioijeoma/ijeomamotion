@@ -17,7 +17,7 @@ public class Vahnsin_Test extends PApplet {
 		f = createFont("Arial", 12);
 		Motion.setup(this);
 		b = new Box();
-		t = new Tween(1000).addPVector(b.pos, new PVector(width, height))
+		t = new Tween(1000).addVector(b.pos, new PVector(width, height))
 				.addNumber(b, "opacity", 0).play();
 
 		// t = new Tween(100).addNumber(b.pos, "x", width)

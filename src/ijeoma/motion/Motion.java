@@ -29,8 +29,6 @@ package ijeoma.motion;
 
 import ijeoma.motion.event.MotionEvent;
 import ijeoma.motion.event.MotionEventListener;
-import ijeoma.motion.tween.Tween;
-import ijeoma.motion.tween.Sequence;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -52,6 +50,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	public HashMap<String, Callback> callMap = new HashMap<String, Callback>();
 
 	protected float playTime;
+	protected float playCount = 0;
 
 	protected float time = 0f;
 	protected float timeScale = 1f;
@@ -64,7 +63,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	protected Class<?> easingClass;
 	protected Method easingMethod;
 
-	protected int repeatTime = 0;
+	protected int repeatCount = 0;
 	protected int repeatDuration = 0;
 
 	protected boolean isPlaying = false;
@@ -81,15 +80,25 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 	protected float reverseTime = 0;
 
+	protected int order = 0;
+
 	protected ArrayList<MotionEventListener> listeners = new ArrayList<MotionEventListener>();
 
 	protected Method motionStartedMethod, motionEndedMethod,
 			motionChangedMethod, motionRepeatedMethod;
 
+	protected Class<?> motionStartedParameterClass, motionEndedParameterClass,
+			motionChangedParameterClass, motionRepatedParameterClass;
+
 	// public Logger logger;
 
 	private static class LibraryNotInitializedException extends
 			NullPointerException {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		LibraryNotInitializedException() {
 			super(
 					"Call Motion.setup(this); before using the other Motion objects");
@@ -100,23 +109,23 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	 * Constructs a Motion
 	 * 
 	 */
-	public Motion(String _name, float _duration, float _delay, String _easing) {
-		setup(_name, _duration, _delay, _easing);
+	public Motion(String name, float duration, float delay, String easing) {
+		setup(name, duration, delay, easing);
 		setupEvents();
 	}
 
-	public Motion(String _name, float _duration, float _delay) {
-		setup(_name, _duration, _delay, easing);
+	public Motion(String name, float duration, float delay) {
+		setup(name, duration, delay, easing);
 		setupEvents();
 	}
 
-	public Motion(String _name, float _duration) {
-		setup(_name, _duration, delay, easing);
+	public Motion(String name, float duration) {
+		setup(name, duration, delay, easing);
 		setupEvents();
 	}
 
-	public Motion(String _name) {
-		setup(_name, duration, delay, easing);
+	public Motion(String name) {
+		setup(name, duration, delay, easing);
 		setupEvents();
 	}
 
@@ -125,25 +134,24 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		setupEvents();
 	}
 
-	protected void setup(String _name, float _duration, float _delay,
-			String _easing) {
-		name = _name;
+	protected void setup(String name, float duration, float delay, String easing) {
+		this.name = name;
 
-		duration = _duration;
+		this.duration = duration;
 
-		delay = _delay;
+		this.delay = delay;
 
 		playTime = 0;
 
-		setEasing(_easing);
+		setEasing(easing);
 	}
 
-	protected void setup(float _duration, float _delay, String _easing) {
-		setup("", _duration, _delay, _easing);
+	protected void setup(float duration, float delay, String easing) {
+		setup("", duration, delay, easing);
 	}
 
-	public static void setup(PApplet _parent) {
-		Motion.parent = _parent;
+	public static void setup(PApplet parent) {
+		Motion.parent = parent;
 	}
 
 	protected void setupEvents() {
@@ -175,7 +183,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		} catch (Exception e) {
 		}
 	}
-	
+
 	public void update() {
 		if (isRegistered)
 			if (isPlaying) {
@@ -187,12 +195,12 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 			}
 	}
 
-	public void update(float _time) {
-		if (isInsidePlayingTime(_time)) {
+	public void update(float time) {
+		if (isInsidePlayingTime(time)) {
 			if (!isPlaying)
 				play();
 
-			setTime(_time);
+			setTime(time);
 			updateCalls();
 		} else if (isPlaying)
 			stop();
@@ -220,7 +228,6 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 			update();
 	}
 
-
 	/**
 	 * Starts the tween from the beginning position
 	 */
@@ -230,10 +237,11 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		seek(0);
 		resume();
 
-		repeatTime = 0;
+		playCount++;
+		repeatCount = 0;
 
 		if (!isRegistered) {
-			parent.registerPre(this);
+			parent.registerMethod("pre", this);
 			isRegistered = true;
 		}
 
@@ -250,21 +258,22 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 		reverseTime = (reverseTime == 0) ? duration : 0;
 
-		if (isRepeating && (repeatDuration == 0 || repeatTime < repeatDuration)) {
+		if (isRepeating
+				&& (repeatDuration == 0 || repeatCount < repeatDuration)) {
 			seek(0);
 			resume();
 
 			if (!isRepeatingDelay)
 				delay = 0;
 
-			repeatTime++;
+			repeatCount++;
 
 			dispatchMotionRepeatedEvent();
 		} else {
 			seek(1);
 			pause();
 
-			repeatTime = 0;
+			repeatCount = 0;
 
 			dispatchMotionEndedEvent();
 		}
@@ -280,7 +289,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		playTime = time;
 
 		if (isRegistered) {
-			parent.unregisterPre(this);
+			parent.unregisterMethod("pre", this);
 			isRegistered = false;
 		}
 
@@ -297,7 +306,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 				: (parent.frameCount - playTime);
 
 		if (!isRegistered) {
-			parent.registerPre(this);
+			parent.registerMethod("pre", this);
 			isRegistered = true;
 		}
 
@@ -307,17 +316,17 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	/**
 	 * Changes the time of the tween to a time percentange between 0 and 1
 	 */
-	public Motion seek(float _value) {
-		playTime = (delay + duration) * _value;
+	public Motion seek(float value) {
+		playTime = (delay + duration) * value;
 
 		setTime(playTime);
 		updateCalls();
 
 		return this;
 	}
-	
-	public Motion delay(float _delay) {
-		delay = _delay;
+
+	public Motion delay(float delay) {
+		this.delay = delay;
 		// isDelaying = true;
 
 		return this;
@@ -335,7 +344,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	}
 
 	public Motion repeatDelay() {
-		isRepeating = true;		 
+		isRepeating = true;
 		isRepeatingDelay = true;
 		return this;
 	}
@@ -357,9 +366,9 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	/**
 	 * 
 	 */
-	public Motion repeat(int _repeat) {
+	public Motion repeat(int repeat) {
 		isRepeating = true;
-		repeatDuration = _repeat;
+		repeatDuration = repeat;
 		return this;
 	}
 
@@ -370,6 +379,10 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		isRepeating = false;
 		repeatDuration = 0;
 		return this;
+	}
+
+	public int getRepeatCount() {
+		return repeatCount;
 	}
 
 	/**
@@ -385,8 +398,8 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return this;
 	}
 
-	public Motion setName(String _name) {
-		name = _name;
+	public Motion setName(String name) {
+		this.name = name;
 		return this;
 	}
 
@@ -394,8 +407,8 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return name;
 	}
 
-	protected void setTime(float _time) {
-		time = _time;
+	protected void setTime(float time) {
+		this.time = time;
 
 		if (isReversing && reverseTime != 0)
 			time = reverseTime - time;
@@ -405,8 +418,8 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return (time < delay) ? 0f : (time - delay);
 	}
 
-	public Motion setTimeScale(float _timeScale) {
-		timeScale = _timeScale;
+	public Motion setTimeScale(float timeScale) {
+		this.timeScale = timeScale;
 
 		return this;
 	}
@@ -419,8 +432,8 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return getTime() / duration;
 	}
 
-	public Motion setDuration(float _duration) {
-		duration = _duration;
+	public Motion setDuration(float duration) {
+		this.duration = duration;
 
 		return this;
 	}
@@ -430,7 +443,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	}
 
 	/**
-	 * @param _easing
+	 * @param easing
 	 *            LINEAR_IN, LINEAR_OUT, LINEAR_BOTH, QUAD_IN, QUAD_OUT,
 	 *            QUAD_BOTH, CUBIC_IN, CUBIC_BOTH, CUBIC_OUT, QUART_IN,
 	 *            QUART_OUT, QUART_BOTH, QUINT_IN, QUINT_OUT, QUINT_BOTH,
@@ -439,8 +452,8 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	 *            BOUNCE_IN, BOUNCE_OUT, BOUNCE_BOTH, ELASTIC_IN, ELASTIC_OUT,
 	 *            ELASTIC_BOTH
 	 */
-	public Motion setEasing(String _easing) {
-		easing = _easing;
+	public Motion setEasing(String easing) {
+		this.easing = easing;
 
 		int index = easing.indexOf("Ease");
 
@@ -471,11 +484,11 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	}
 
 	/**
-	 * @param _timeMode
+	 * @param timeMode
 	 *            SECONDS, FRAMES
 	 */
-	public Motion setTimeMode(String _timeMode) {
-		timeMode = _timeMode;
+	public Motion setTimeMode(String timeMode) {
+		this.timeMode = timeMode;
 
 		return this;
 	}
@@ -484,8 +497,12 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return timeMode;
 	}
 
-	public int getRepeat() {
-		return repeatTime;
+	protected void setOrder(int index) {
+		order = index;
+	}
+
+	public int getOrder() {
+		return order;
 	}
 
 	public Motion autoUpdate() {
@@ -517,18 +534,18 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return isReversing;
 	}
 
-	public boolean isInsideDelayingTime(float _value) {
-		return (_value >= 0 && _value <= delay);
+	public boolean isInsideDelayingTime(float value) {
+		return (value >= 0 && value <= delay);
 	}
 
-	public boolean isInsidePlayingTime(float _value) {
-		return (_value >= delay && _value <= delay + duration);
+	public boolean isInsidePlayingTime(float value) {
+		return (value >= delay && value <= delay + duration);
 	}
 
-	public boolean isAbovePlayingTime(float _value) {
-		return _value > delay + duration;
+	public boolean isAbovePlayingTime(float value) {
+		return value > delay + duration;
 	}
-	
+
 	public static PApplet getParent() {
 		if (parent == null)
 			throw new LibraryNotInitializedException();
@@ -536,16 +553,20 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return parent;
 	}
 
-	public Motion call(Object _object, String _name) {
-		return addCall(new Callback(_object, _name, duration));
+	public Motion call(Object object, String name, float time) {
+		return addCall(new Callback(this, object, name, time));
 	}
 
-	public Motion call(Object _object, String _name, float _time) {
-		return addCall(new Callback(_object, _name, _time));
+	public Motion onStart(Object object, String name) {
+		return addCall(new Callback(this, object, name, 0));
 	}
 
-	public Motion addCall(Callback _call) {
-		calls.add(_call);
+	public Motion onEnd(Object object, String name) {
+		return addCall(new Callback(this, object, name, duration));
+	}
+
+	public Motion addCall(Callback call) {
+		calls.add(call);
 		return this;
 	}
 
@@ -553,19 +574,18 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	 * Returns a Callback by id/index (useful if you're only controlling
 	 * Callbacks)
 	 */
-	public Callback getCallback(int _index) {
-		if (_index < calls.size())
-			return calls.get(_index);
+	public Callback getCallback(int index) {
+		if (index < calls.size())
+			return calls.get(index);
 		else
 			return null;
 	}
 
 	/**
-	 * Returns a Callback by id/index (useful if you're only controlling
-	 * Callbacks)
+	 * Returns a Callback by name (useful if you're only controlling Callbacks)
 	 */
-	public Callback getCallback(String _name) {
-		return callMap.get(_name);
+	public Callback getCallback(String name) {
+		return callMap.get(name);
 	}
 
 	/**
@@ -689,22 +709,22 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return timeMode.equals(FRAMES);
 	}
 
-	private String firstCharToUpperCase(String _s) {
-		return Character.toUpperCase(_s.charAt(0)) + _s.substring(1);
+	private String firstCharToUpperCase(String s) {
+		return Character.toUpperCase(s.charAt(0)) + s.substring(1);
 	}
 
-	private String firstCharToLowerCase(String _s) {
-		return Character.toLowerCase(_s.charAt(0)) + _s.substring(1);
-	}
-
-	@Override
-	public int compareTo(Motion _motion) {
-		return (int) (delay - _motion.getDelay());
+	private String firstCharToLowerCase(String s) {
+		return Character.toLowerCase(s.charAt(0)) + s.substring(1);
 	}
 
 	@Override
-	public int compare(Motion _motion1, Motion _motion2) {
-		return (int) (_motion2.getDelay() - _motion1.getDelay());
+	public int compareTo(Motion motion) {
+		return (int) (delay - motion.getDelay());
+	}
+
+	@Override
+	public int compare(Motion motion1, Motion motion2) {
+		return (int) (motion2.getDelay() - motion1.getDelay());
 	}
 
 	public String toString() {

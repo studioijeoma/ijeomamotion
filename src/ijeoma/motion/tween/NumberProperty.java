@@ -44,7 +44,12 @@ public class NumberProperty implements IProperty {
 
 	protected float value;
 
+	protected int order = 0;
+
 	boolean hasVariable = false;
+	boolean hasSetup = false;
+
+	boolean ignore = false;
 
 	public NumberProperty() {
 
@@ -52,7 +57,7 @@ public class NumberProperty implements IProperty {
 
 	public NumberProperty(Object _object, String _name, float _end) {
 		hasVariable = true;
-		setupObjectField(_object, _name);
+		setupObject(_object, _name);
 		setup(_name, _end);
 	}
 
@@ -60,32 +65,32 @@ public class NumberProperty implements IProperty {
 		setup(_name, _begin, _end);
 	}
 
-	private void setup(String _name, float _end) {
-		name = _name;
+	private void setup(String name, float end) {
+		this.name = name;
 
-		setEnd(_end);
-
-		position = 0;
-	}
-
-	private void setup(String _name, float _begin, float _end) {
-		name = _name;
-
-		setEnd(_end);
-		setBegin(_begin);
+		setEnd(end);
 
 		position = 0;
 	}
 
-	private void setupObjectField(Object _object, String _objectFieldName) {
-		object = _object;
+	private void setup(String name, float begin, float end) {
+		this.name = name;
+
+		setEnd(end);
+		setBegin(begin);
+
+		position = 0;
+	}
+
+	private void setupObject(Object propertyObject, String propertyName) {
+		object = propertyObject;
 		objectType = object.getClass();
 
 		boolean found = false;
 
 		while (objectType != null) {
 			for (Field f : objectType.getDeclaredFields())
-				if (f.getName().equals(_objectFieldName)) {
+				if (f.getName().equals(propertyName)) {
 					fieldType = f.getType();
 					found = true;
 					break;
@@ -99,7 +104,7 @@ public class NumberProperty implements IProperty {
 
 		if (found)
 			try {
-				field = objectType.getDeclaredField(_objectFieldName);
+				field = objectType.getDeclaredField(propertyName);
 
 				try {
 					field.setAccessible(true);
@@ -113,10 +118,18 @@ public class NumberProperty implements IProperty {
 			}
 	}
 
-	public void updateObjectField(Object _object) {
-		object = _object;
+	public void update() {
+		value = PApplet.lerp(begin, end, position);
 
-		setBegin();
+		if (hasVariable)
+			if (field != null)
+				try {
+					field.setFloat(object, value);
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
 	}
 
 	@Override
@@ -137,7 +150,11 @@ public class NumberProperty implements IProperty {
 		if (hasVariable) {
 			if (field != null)
 				try {
-					begin = field.getFloat(object);
+					if (hasSetup && order > 0) {
+						field.setFloat(object, begin);
+					} else
+						begin = field.getFloat(object);
+					position = 0;
 				} catch (IllegalArgumentException e) {
 					e.printStackTrace();
 				} catch (IllegalAccessException e) {
@@ -145,6 +162,8 @@ public class NumberProperty implements IProperty {
 				}
 
 			change = end - begin;
+
+			hasSetup = true;
 		}
 	}
 
@@ -191,7 +210,7 @@ public class NumberProperty implements IProperty {
 	public void setPosition(Object _position) {
 		position = (Float) _position;
 
-		updateValue();
+		update();
 	}
 
 	public Float getValue() {
@@ -212,25 +231,16 @@ public class NumberProperty implements IProperty {
 			return value;
 	}
 
-	@Override
-	public void updateValue() {
-		value = PApplet.lerp(begin, end, position);
-
-		if (hasVariable)
-			if (field != null)
-				try {
-					field.setFloat(object, value);
-					// PApplet.println(name + ".updateValue: " + begin + " - "
-					// + getValue() + " - " + end);
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				}
-	}
-
 	public Object getObject() {
 		return object;
+	}
+
+	public void setOrder(int index) {
+		order = index;
+	}
+
+	public int getOrder() {
+		return order;
 	}
 
 	@Override

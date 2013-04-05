@@ -37,6 +37,10 @@ public interface MotionConstant {
 	public static String KEYFRAME = "KeyFrame";
 	public static String CALLBACK = "Callback";
 
+	public static String NUMBER_PROPERTY = "Number";
+	public static String COLOR_PROPERTY = "Color";
+	public static String PVECTOR_PROPERTY = "PVector";
+
 	public static String SECONDS = "seconds";
 	public static String FRAMES = "frames";
 
@@ -79,7 +83,7 @@ public interface MotionConstant {
 
 	public static String REVERSE = "reverse";
 	public static String NO_REVERSE = "noReverse";
-	
+
 	public static String ONCE = "once";
 	public static String REPEAT = "repeat";
 

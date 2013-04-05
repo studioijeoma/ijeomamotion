@@ -117,7 +117,7 @@ public class Line_Tween extends PApplet {
 			// fill(c);
 
 			colorMode(HSB);
-			float h = map((lt.getRepeat() % 4) + lt.getPosition(), 0, 3,
+			float h = map((lt.getRepeatCount() % 4) + lt.getPosition(), 0, 3,
 					0, 360);
 			// float a = 360 - 360 * map(
 			// (lt.getRepeatCount() % 4) + lt.getPosition(), 0, 3, 0, 1);

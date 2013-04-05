@@ -6,7 +6,7 @@ import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PVector;
 
-public class Tween_PVectors extends PApplet {
+public class Tween_Vector extends PApplet {
 
 	Tween t;
 	PFont f;
@@ -27,8 +27,8 @@ public class Tween_PVectors extends PApplet {
 
 		Motion.setup(this);
 
-		t = new Tween(100).addPVector(v1, new PVector(width, height))
-				.addPVector(v2, new PVector(0, height)).play();
+		t = new Tween(100).addVector(v1, new PVector(width, height))
+				.addVector(v2, new PVector(0, height)).play();
 
 		// The above could also be written as
 		// t = new Tween(100)

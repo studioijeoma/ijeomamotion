@@ -1,28 +1,32 @@
-import ijeoma.motion.*;
-import ijeoma.motion.tween.*;
+import ijeoma.motion.Motion;
+import ijeoma.motion.tween.Tween; 
 
 Tween t;
 
 float w = 0;
 
-void setup() {
+public void setup() {
   size(400, 100);
   smooth();
 
   Motion.setup(this);
 
-  t = new Tween(100).call(this, "test", 50).play();
+  t = new Tween(100).add(this, "w", width).onStart("onStart")
+    .onEnd("onEnd").play();
 }
 
-void test() {
-  println("test");
+public void onStart(Tween t) {
+  println(t+" started");
 }
 
-void draw() {
+public void onEnd(Tween t) {
+  println(t+" ended");
+}
+ 
+public void draw() {
   background(255);
 
   noStroke();
-
   fill(255 / 2f);
   rect(0, 0, w, height);
 
@@ -31,8 +35,8 @@ void draw() {
   fill(0);
   text(time, width - textWidth(time) - 10, height - 10);
 }
-
-void keyPressed() {
+ 
+public void keyPressed() {
   t.play();
 }
 

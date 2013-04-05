@@ -27,68 +27,94 @@
 
 package ijeoma.motion;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import processing.core.PApplet;
+
 public class Callback {
+	Motion parent;
+
 	protected Class<? extends Object> objectClass;
 	private Object object;
 	private Method objectMethod;
-	protected Method callbackStartedMethod, callbackEndedMethod;
+	private Class<?> parameterClass;
 
 	float time = 0;
 	boolean invoked = false;
 
-	public Callback(Object _object, String _callbackObjectMethodName,
-			float _time) {
-		setupObject(_object, _callbackObjectMethodName, null);
-		time = _time;
+	public Callback(Motion parent, Object methodObject, String methodName,
+			float methodTime) {
+		setup(parent, methodObject, methodName);
+		time = methodTime;
 	}
 
-	private void setupObject(Object _object, String _objectMethodName,
-			String _paramters) {
-		object = _object;
-		objectClass = _object.getClass();
+	public Callback(Object methodObject, String methodName, float methodTime) {
+		setup(null, methodObject, methodName);
+		time = methodTime;
+	}
 
-		boolean found = false;
+	public void setup(Motion motionObject, Object methodObject,
+			String methodName) {
+		boolean foundMethod = false;
 
-		for (int i = 0; i < objectClass.getDeclaredMethods().length; i++) {
-			if (objectClass.getDeclaredMethods()[i].getName().equals(
-					_objectMethodName)) {
-				if (objectClass.getDeclaredMethods()[i].getParameterTypes().length == 0) {
-					found = true;
-					break;
+		parent = motionObject;
+
+		object = methodObject;
+		objectClass = methodObject.getClass();
+		objectMethod = null;
+		parameterClass = null;
+
+		while (objectClass != null) {
+			for (int i = 0; i < objectClass.getDeclaredMethods().length; i++) {
+				if (objectClass.getDeclaredMethods()[i].getName().equals(
+						methodName)) {
+					if (objectClass.getDeclaredMethods()[i].getParameterTypes().length == 1) {
+						if (objectClass.getDeclaredMethods()[i]
+								.getParameterTypes()[0] == parent.getClass()) {
+							parameterClass = parent.getClass();
+							foundMethod = true;
+							break;
+						}
+					} else if (objectClass.getDeclaredMethods()[i]
+							.getParameterTypes().length == 0) {
+						parameterClass = null;
+						foundMethod = true;
+						break;
+					}
 				}
 			}
+			if (foundMethod)
+				break;
+			else
+				objectClass = objectClass.getSuperclass();
 		}
 
-		if (found) {
+		if (foundMethod) {
 			try {
-				Class<?>[] args = new Class[] {};
-				objectMethod = objectClass.getDeclaredMethod(_objectMethodName,
-						args);
+				Class<?>[] args = (parameterClass == null) ? new Class[] {}
+						: new Class[] { parent.getClass() };
+				objectMethod = objectClass.getDeclaredMethod(methodName, args);
 				objectMethod.setAccessible(true);
 			} catch (SecurityException e) {
 				e.printStackTrace();
 			} catch (NoSuchMethodException e) {
 				e.printStackTrace();
 			}
-		}  
+		}
 	}
 
 	protected void invoke() {
 		try {
-			objectMethod.invoke(object, null);
+			Object[] args = (parameterClass == null) ? new Object[] {}
+					: new Object[] { parent };
+			objectMethod.invoke(object, args);
 			invoked = true;
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
