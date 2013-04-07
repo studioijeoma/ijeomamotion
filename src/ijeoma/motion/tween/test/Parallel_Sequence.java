@@ -52,14 +52,14 @@ public class Parallel_Sequence extends PApplet {
 
 		String time;
 
-		time = (int) ts1.getCurrentChild().getTime() + " / "
-				+ (int) ts1.getCurrentChild().getDuration();
+		time = (int) ts1.getChild().getTime() + " / "
+				+ (int) ts1.getChild().getDuration();
 
 		fill(0);
 		text(time, 10, 10 + 12);
 
-		time = (int) ts2.getCurrentChild().getTime() + " / "
-				+ (int) ts2.getCurrentChild().getDuration();
+		time = (int) ts2.getChild().getTime() + " / "
+				+ (int) ts2.getChild().getDuration();
 
 		fill(0);
 		text(time, 10, 100 + 10 + 12);

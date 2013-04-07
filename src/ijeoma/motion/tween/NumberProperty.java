@@ -46,17 +46,13 @@ public class NumberProperty implements IProperty {
 
 	protected int order = 0;
 
-	boolean hasVariable = false;
-	boolean hasSetup = false;
-
-	boolean ignore = false;
+	boolean hasSetupValue = false;
 
 	public NumberProperty() {
 
 	}
 
 	public NumberProperty(Object _object, String _name, float _end) {
-		hasVariable = true;
 		setupObject(_object, _name);
 		setup(_name, _end);
 	}
@@ -112,24 +108,39 @@ public class NumberProperty implements IProperty {
 					e.printStackTrace();
 				}
 
-				setBegin();
+				// setupValue();
 			} catch (NoSuchFieldException e) {
 				e.printStackTrace();
 			}
 	}
 
-	public void update() {
+	// public void setupValue() {
+	// // hasSetupValue = false;
+	// }
+
+	public void updateValue() {
 		value = PApplet.lerp(begin, end, position);
 
-		if (hasVariable)
-			if (field != null)
-				try {
-					field.setFloat(object, value);
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				}
+		if (field != null)
+			try {
+				// if (!hasSetupValue) {
+				// if (order == 0)
+				// field.setFloat(object, begin);
+				// else
+				// begin = field.getFloat(object);
+				//
+				// change = end - begin;
+				// value = PApplet.lerp(begin, end, position);
+				//
+				// hasSetupValue = true;
+				// }
+
+				field.setFloat(object, value);
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
 	}
 
 	@Override
@@ -147,23 +158,13 @@ public class NumberProperty implements IProperty {
 	}
 
 	public void setBegin() {
-		if (hasVariable) {
-			if (field != null)
-				try {
-					if (hasSetup && order > 0) {
-						field.setFloat(object, begin);
-					} else
-						begin = field.getFloat(object);
-					position = 0;
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				}
-
+		try {
+			begin = field.getFloat(object);
 			change = end - begin;
-
-			hasSetup = true;
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -177,15 +178,14 @@ public class NumberProperty implements IProperty {
 	}
 
 	public void setEnd(Object _end) {
-		if (hasVariable) {
-			if (field != null)
-				try {
-					begin = field.getFloat(object);
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				}
+		if (field != null) {
+			try {
+				begin = field.getFloat(object);
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
 		} else
 			begin = value;
 
@@ -210,23 +210,20 @@ public class NumberProperty implements IProperty {
 	public void setPosition(Object _position) {
 		position = (Float) _position;
 
-		update();
+		updateValue();
 	}
 
 	public Float getValue() {
-		if (hasVariable) {
-			if (field != null)
-				try {
-					return field.getFloat(object);
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-					return null;
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-					return null;
-				}
-			else
+		if (field != null) {
+			try {
+				return field.getFloat(object);
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
 				return null;
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+				return null;
+			}
 		} else
 			return value;
 	}

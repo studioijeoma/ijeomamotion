@@ -107,7 +107,7 @@ public class Sequence extends MotionController {
 		super.update();
 
 		int i = 0;
- 
+
 		if (isPlaying)
 			for (Motion c : children) {
 				if (c.isInsidePlayingTime(time)) {
@@ -123,26 +123,24 @@ public class Sequence extends MotionController {
 
 	@Override
 	public void update(float _time) {
-		super.update(_time); 
-		
-		int i = 0; 
+		super.update(_time);
+		updateCurrentChild();
+	}
 
-		for (Motion c : children) {
-			if (c.isInsidePlayingTime(time)) {
+	private void updateCurrentChild() {
+		for (int i = 0; i < children.size(); i++)
+			if (children.get(i).isInsidePlayingTime(time)) {
 				currentChildIndex = i;
-				currentChild = c;
+				currentChild = children.get(i);
 
 				break;
 			}
-
-			i++;
-		}
 	}
 
-	public Sequence play() {  
+	public Sequence play() {
 		return (Sequence) super.play();
 	}
- 
+
 	public Sequence stop() {
 		return (Sequence) super.stop();
 	}
@@ -154,11 +152,12 @@ public class Sequence extends MotionController {
 	public Sequence resume() {
 		return (Sequence) super.resume();
 	}
- 
+
 	public Sequence seek(float _value) {
+		updateCurrentChild();
 		return (Sequence) super.seek(_value);
 	}
-	
+
 	public Sequence delay(float _delay) {
 		return (Sequence) super.delay(_delay);
 	}
@@ -230,7 +229,7 @@ public class Sequence extends MotionController {
 	public Sequence addEventListener(MotionEventListener listener) {
 		return (Sequence) super.addEventListener(listener);
 	}
-	
+
 	@Override
 	public Sequence add(Motion _child) {
 		currentChild = _child;
@@ -240,22 +239,22 @@ public class Sequence extends MotionController {
 	/**
 	 * returns the current object (either Tween or TweenParallel)
 	 */
-	public Motion getCurrentChild() {
+	public Motion getChild() {
 		return currentChild;
-	}
-
-	/**
-	 * returns the current child index;
-	 */
-	public int getCurrentChildIndex() {
-		return currentChildIndex;
 	}
 
 	/**
 	 * returns the current child type which is either a Tween or TweenParallel
 	 */
-	public String getCurrentChildType() {
+	public String getChildType() {
 		return (currentChild.getClass().getSimpleName());
+	}
+	
+	/**
+	 * returns the current child index;
+	 */
+	public int getCount() {
+		return currentChildIndex;
 	}
 
 	@Override

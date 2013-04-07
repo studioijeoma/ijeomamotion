@@ -49,7 +49,7 @@ public class VectorProperty implements IProperty {
 		this.position = 0;
 	}
 
-	public void update() {
+	public void updateValue() {
 		vector.set(PVector.lerp(begin, end, position));
 	}
 
@@ -67,17 +67,14 @@ public class VectorProperty implements IProperty {
 		return begin;
 	}
 
-	public void setBegin() {
-		if (order == 0)
-			vector.set(begin.get());
-		else
-			begin = vector.get();
+	public void setBegin() { 
+		begin = vector.get();
+		change = PVector.sub(end, begin);
 	}
 
 	public void setBegin(Object begin) {
 		this.begin = (PVector) begin;
-
-		setChange(PVector.sub(end, this.begin));
+		change = PVector.sub(end, this.begin);
 	}
 
 	public PVector getEnd() {
@@ -107,7 +104,7 @@ public class VectorProperty implements IProperty {
 	public void setPosition(Object _position) {
 		position = (Float) _position;
 
-		update();
+		updateValue();
 	}
 
 	public PVector getValue() {

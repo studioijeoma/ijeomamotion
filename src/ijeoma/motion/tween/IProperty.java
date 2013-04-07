@@ -28,8 +28,8 @@
 package ijeoma.motion.tween;
 
 public interface IProperty {
-	void update();
-	
+	void updateValue();
+
 	public String getName();
 
 	public void setName(String name);
@@ -61,6 +61,6 @@ public interface IProperty {
 	public int getOrder();
 
 	@Override
-	public String toString(); 
+	public String toString();
 
 }

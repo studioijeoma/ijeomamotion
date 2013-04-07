@@ -45,7 +45,7 @@ public class Tween extends Motion { // implements Comparable
 	protected ArrayList<IProperty> properties = new ArrayList<IProperty>();
 	protected HashMap<String, IProperty> propertyMap = new HashMap<String, IProperty>();
 
-	protected boolean hasSetupProperties = false;
+	// protected boolean hasSetupProperties = false;
 
 	protected Method tweenStartedMethod, tweenEndedMethod, tweenChangedMethod,
 			tweenRepeatedMethod;
@@ -243,28 +243,29 @@ public class Tween extends Motion { // implements Comparable
 	 *            BOUNCE_IN, BOUNCE_OUT, BOUNCE_BOTH, ELASTIC_IN, ELASTIC_OUT,
 	 *            ELASTIC_BOTH
 	 */
-	public Tween(float begin, float end, float duration, float delay,
-			String easing) {
-		IProperty p = new NumberProperty("", begin, end);
+	public Tween(String name, float begin, float end, float duration,
+			float delay, String easing) {
+		IProperty p = new NumberProperty(name, begin, end);
 
 		setup(p, duration, delay, easing);
 		setupEvents();
 	}
 
-	public Tween(float begin, float end, float duration, float delay) {
-		IProperty p = new NumberProperty("", begin, end);
+	public Tween(String name, float begin, float end, float duration,
+			float delay) {
+		IProperty p = new NumberProperty(name, begin, end);
 
 		setup(p, duration, delay, easing);
 		setupEvents();
 	}
 
-	public Tween(float begin, float end, float duration) {
-		IProperty p = new NumberProperty("", begin, end);
+	public Tween(String name, float begin, float end, float duration) {
+		IProperty p = new NumberProperty(name, begin, end);
 
 		setup(p, duration, delay, easing);
 		setupEvents();
 	}
-
+	
 	/**
 	 * Constructs a Tween
 	 * 
@@ -289,24 +290,23 @@ public class Tween extends Motion { // implements Comparable
 	 *            BOUNCE_IN, BOUNCE_OUT, BOUNCE_BOTH, ELASTIC_IN, ELASTIC_OUT,
 	 *            ELASTIC_BOTH
 	 */
-	public Tween(String name, float begin, float end, float duration,
-			float delay, String easing) {
-		IProperty p = new NumberProperty(name, begin, end);
+	public Tween(float begin, float end, float duration, float delay,
+			String easing) {
+		IProperty p = new NumberProperty("", begin, end);
 
 		setup(p, duration, delay, easing);
 		setupEvents();
 	}
 
-	public Tween(String name, float begin, float end, float duration,
-			float delay) {
-		IProperty p = new NumberProperty(name, begin, end);
+	public Tween(float begin, float end, float duration, float delay) {
+		IProperty p = new NumberProperty("", begin, end);
 
 		setup(p, duration, delay, easing);
 		setupEvents();
 	}
 
-	public Tween(String name, float begin, float end, float duration) {
-		IProperty p = new NumberProperty(name, begin, end);
+	public Tween(float begin, float end, float duration) {
+		IProperty p = new NumberProperty("", begin, end);
 
 		setup(p, duration, delay, easing);
 		setupEvents();
@@ -370,15 +370,6 @@ public class Tween extends Motion { // implements Comparable
 			updateProperties();
 	}
 
-	public void setupProperties() {
-		// if (!hasSetupProperties) {
-		for (IProperty p : properties)
-			p.setBegin();
-
-		hasSetupProperties = true;
-		// }
-	}
-
 	public void updateProperties() {
 		try {
 			for (IProperty p : properties) {
@@ -394,8 +385,6 @@ public class Tween extends Motion { // implements Comparable
 
 	@Override
 	public Tween play() {
-		setupProperties();
-
 		return (Tween) super.play();
 	}
 

@@ -78,8 +78,8 @@ public class Sequence_GML extends PApplet {
 		// if (!loadingGML) {
 		Tween[] tweens = ts.getTweens();
 
-		if (ts.getCurrentChildIndex() > 1)
-			for (int i = 0; i < ts.getCurrentChildIndex() - 1; i++) {
+		if (ts.getCount() > 1)
+			for (int i = 0; i < ts.getCount() - 1; i++) {
 				stroke(255);
 				strokeWeight(tweens[i].getDuration() / 15f * 25);
 				noFill();

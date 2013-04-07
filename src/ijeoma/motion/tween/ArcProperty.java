@@ -73,7 +73,7 @@ public class ArcProperty implements IProperty {
 		return begin;
 	}
 
-	public void setBegin() {
+	public void setupValue() {
 
 	}
 
@@ -108,14 +108,14 @@ public class ArcProperty implements IProperty {
 	public void setPosition(Object _position) {
 		position = (Float) _position;
 
-		update();
+		updateValue();
 	}
 
 	public PVector getValue() {
 		return value.get();
 	}
 
-	public void update() {
+	public void updateValue() {
 		PVector mid = new PVector((begin.x + end.x) / 2, (begin.y + end.y) / 2);
 
 		int r = (int) Math.sqrt((begin.x - mid.x) * (begin.x - mid.x)

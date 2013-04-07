@@ -109,7 +109,7 @@ public class ColorProperty implements IProperty {
 					e.printStackTrace();
 				}
 
-				setBegin();
+				// setupValue();
 			} catch (NoSuchFieldException e) {
 				e.printStackTrace();
 			}
@@ -130,17 +130,13 @@ public class ColorProperty implements IProperty {
 	}
 
 	public void setBegin() {
-		if (hasVariable) {
-			if (field != null)
-				try {
-					begin = field.getInt(object);
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				}
-
+		try {
+			begin = field.getInt(object);
 			change = end - begin;
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -186,7 +182,7 @@ public class ColorProperty implements IProperty {
 	public void setPosition(Object _position) {
 		position = (Float) _position;
 
-		update();
+		updateValue();
 	}
 
 	public Integer getValue() {
@@ -208,15 +204,13 @@ public class ColorProperty implements IProperty {
 	}
 
 	@Override
-	public void update() {
+	public void updateValue() {
 		value = Motion.getParent().lerpColor(begin, end, position);
 
 		if (hasVariable)
 			if (field != null)
 				try {
-					field.setInt(object, value);
-					// PApplet.println(name + ".updateValue: " + begin + " - "
-					// + getValue() + " - " + end);
+					field.setInt(object, value); 
 				} catch (IllegalArgumentException e) {
 					e.printStackTrace();
 				} catch (IllegalAccessException e) {

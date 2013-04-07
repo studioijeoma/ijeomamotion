@@ -51,8 +51,6 @@ public abstract class MotionController extends Motion implements
 	public HashMap<String, Parallel> parallelMap = new HashMap<String, Parallel>();
 	public HashMap<String, Sequence> sequenceMap = new HashMap<String, Sequence>();
 
-	public HashMap<String, Integer> propertyOrderMap = new HashMap<String, Integer>();
-
 	protected ArrayList<MotionEventListener> listeners;
 
 	public MotionController() {
@@ -75,9 +73,6 @@ public abstract class MotionController extends Motion implements
 
 	@Override
 	public MotionController play() { 
-		for (Tween t : tweens)
-			t.setupProperties(); 
-		
 		return (MotionController) super.play();
 	}
 
@@ -369,6 +364,38 @@ public abstract class MotionController extends Motion implements
 		return this;
 	}
 
+	private void computeTweens() {
+		HashMap<String, Integer> propertyOrderMap = new HashMap<String, Integer>();
+		HashMap<String, IProperty> ppropertyMap = new HashMap<String, IProperty>();
+
+		for (Tween t : tweens)
+			for (IProperty p : t.getProperties()) {
+				String name = p.getObject().getClass().getSimpleName() + "."
+						+ p.getName();
+				if (propertyOrderMap.containsKey(name)) {
+					IProperty pp = ppropertyMap.get(name);
+
+					int order = propertyOrderMap.get(name);
+					order++;
+
+					p.setBegin(pp.getEnd());
+					p.setOrder(order);
+
+					propertyOrderMap.put(name, order);
+					ppropertyMap.put(name, p);
+				} else {
+					ArrayList<Tween> tweens = new ArrayList<Tween>();
+					tweens.add(t);
+
+					p.setBegin();
+					p.setOrder(0);
+
+					propertyOrderMap.put(name, 0);
+					ppropertyMap.put(name, p);
+				}
+			}
+	}
+
 	protected Motion insert(Motion child, float time) {
 		child.delay(time);
 		// _child.seek(1);
@@ -377,25 +404,11 @@ public abstract class MotionController extends Motion implements
 		child.addEventListener(this);
 
 		if (child.isTween()) {
-			Tween t = (Tween) child;
-
-			for (IProperty p : t.getProperties()) {
-				String name = p.getObject().getClass().getSimpleName() + "."
-						+ p.getName();
-				if (propertyOrderMap.containsKey(name)) {
-					int order = propertyOrderMap.get(name);
-					order++;
-					propertyOrderMap.put(name, order);
-					p.setOrder(order);
-				} else {
-					propertyOrderMap.put(name, 0);
-					p.setOrder(0);
-				}
-			}
-
 			tweens.add((Tween) child);
 			if (child.getName() != null)
 				tweenMap.put(child.getName(), (Tween) child);
+
+			computeTweens();
 		} else if (child.isParallel()) {
 			parallels.add((Parallel) child);
 			if (child.getName() != null)
