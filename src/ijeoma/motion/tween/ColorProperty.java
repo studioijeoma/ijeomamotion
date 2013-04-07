@@ -31,6 +31,8 @@ import ijeoma.motion.Motion;
 
 import java.lang.reflect.Field;
 
+import processing.core.PApplet;
+
 public class ColorProperty implements IProperty {
 	protected Object object;
 	protected Class<? extends Object> objectType;
@@ -44,8 +46,6 @@ public class ColorProperty implements IProperty {
 
 	protected int value;
 
-	boolean hasVariable = false;
-
 	protected int order = 0;
 
 	public ColorProperty() {
@@ -53,7 +53,6 @@ public class ColorProperty implements IProperty {
 	}
 
 	public ColorProperty(Object propertyObject, String propertyName, int end) {
-		hasVariable = true;
 		setupObject(propertyObject, propertyName);
 		setup(propertyName, end);
 	}
@@ -149,21 +148,20 @@ public class ColorProperty implements IProperty {
 		return end;
 	}
 
-	public void setEnd(Object end) {
-		if (hasVariable) {
-			if (field != null)
-				try {
-					begin = field.getInt(object);
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				}
+	public void setEnd(Object _end) {
+		if (field != null) {
+			try {
+				begin = field.getInt(object);
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
 		} else
 			begin = value;
 
-		this.end = (Integer) end;
-		change = this.end - begin;
+		end = (Integer) _end;
+		change = end - begin;
 	}
 
 	public Integer getChange() {
@@ -186,36 +184,31 @@ public class ColorProperty implements IProperty {
 	}
 
 	public Integer getValue() {
-		if (hasVariable) {
-			if (field != null)
-				try {
-					return field.getInt(object);
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-					return null;
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-					return null;
-				}
-			else
+		if (field != null) {
+			try {
+				return field.getInt(object);
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
 				return null;
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+				return null;
+			}
 		} else
 			return value;
 	}
 
-	@Override
 	public void updateValue() {
 		value = Motion.getParent().lerpColor(begin, end, position);
 
-		if (hasVariable)
-			if (field != null)
-				try {
-					field.setInt(object, value); 
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				}
+		if (field != null)
+			try {
+				field.setInt(object, value);
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
 	}
 
 	public Object getObject() {

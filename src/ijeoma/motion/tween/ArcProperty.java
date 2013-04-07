@@ -39,6 +39,8 @@ public class ArcProperty implements IProperty {
 
 	protected float position;
 
+	protected int order = 0;
+
 	public ArcProperty(String _name, PVector _vector, PVector _end) {
 		object = _vector;
 
@@ -73,7 +75,7 @@ public class ArcProperty implements IProperty {
 		return begin;
 	}
 
-	public void setupValue() {
+	public void setBegin() {
 
 	}
 
@@ -145,21 +147,18 @@ public class ArcProperty implements IProperty {
 		return value;
 	}
 
+	public void setOrder(int index) {
+		order = index;
+	}
+
+	public int getOrder() {
+		return order;
+	}
+
 	public String toString() {
 		return "PVectorParameter[name: " + getName() + ", begin: " + getBegin()
 				+ ", end: " + getEnd() + ", change: " + getChange()
 				+ ", position: " + getPosition() + "]";
 	}
 
-	@Override
-	public void setOrder(int index) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int getOrder() {
-		// TODO Auto-generated method stub
-		return 0;
-	} 
 }
