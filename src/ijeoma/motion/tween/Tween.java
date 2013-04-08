@@ -265,7 +265,7 @@ public class Tween extends Motion { // implements Comparable
 		setup(p, duration, delay, easing);
 		setupEvents();
 	}
-	
+
 	/**
 	 * Constructs a Tween
 	 * 
@@ -405,7 +405,7 @@ public class Tween extends Motion { // implements Comparable
 
 	@Override
 	public Tween seek(float value) {
-		// super.seek(_value);
+		// super.seek(value);
 
 		playTime = (delay + duration) * value;
 

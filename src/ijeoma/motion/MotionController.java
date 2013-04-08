@@ -72,17 +72,17 @@ public abstract class MotionController extends Motion implements
 	}
 
 	@Override
-	public MotionController play() { 
+	public MotionController play() {
 		return (MotionController) super.play();
 	}
 
 	@Override
 	public MotionController stop() {
-		super.stop();
-
 		for (Motion c : children)
 			if (c.isPlaying)
 				c.stop();
+
+		super.stop();
 
 		return this;
 	}

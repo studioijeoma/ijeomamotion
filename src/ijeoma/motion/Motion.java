@@ -90,8 +90,6 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	protected Class<?> motionStartedParameterClass, motionEndedParameterClass,
 			motionChangedParameterClass, motionRepatedParameterClass;
 
-	// public Logger logger;
-
 	private static class LibraryNotInitializedException extends
 			NullPointerException {
 		/**
@@ -232,18 +230,17 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	 * Starts the tween from the beginning position
 	 */
 	public Motion play() {
-		// PApplet.println(this + ".play()");
+		PApplet.println(this + ".play()");
+		if (!isRegistered) {
+			parent.registerMethod("pre", this);
+			isRegistered = true;
+		}
 
 		seek(0);
 		resume();
 
 		playCount++;
 		repeatCount = 0;
-
-		if (!isRegistered) {
-			parent.registerMethod("pre", this);
-			isRegistered = true;
-		}
 
 		dispatchMotionStartedEvent();
 
@@ -254,7 +251,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	 * Ends the tween at the ending position
 	 */
 	public Motion stop() {
-		// PApplet.println(this + ".stop()");
+		PApplet.println(this + ".stop()");
 
 		reverseTime = (reverseTime == 0) ? duration : 0;
 
@@ -277,16 +274,6 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 			dispatchMotionEndedEvent();
 		}
-		return this;
-	}
-
-	/**
-	 * Pauses the tween
-	 */
-	public Motion pause() {
-		isPlaying = false;
-
-		playTime = time;
 
 		if (isRegistered) {
 			parent.unregisterMethod("pre", this);
@@ -297,30 +284,48 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	}
 
 	/**
-	 * Resumes the tween
+	 * Pauses the tween
 	 */
-	public Motion resume() {
-		isPlaying = true;
-
-		playTime = (timeMode == SECONDS) ? (parent.millis() - playTime * 1000)
-				: (parent.frameCount - playTime);
-
-		if (!isRegistered) {
-			parent.registerMethod("pre", this);
-			isRegistered = true;
+	public Motion pause() {
+		if (isRegistered) {
+			parent.unregisterMethod("pre", this);
+			isRegistered = false;
 		}
+
+		isPlaying = false;
+
+		playTime = time;
 
 		return this;
 	}
 
 	/**
-	 * Changes the time of the tween to a time percentange between 0 and 1
+	 * Resumes the tween
+	 */
+	public Motion resume() {
+		if (!isRegistered) {
+			parent.registerMethod("pre", this);
+			isRegistered = true;
+		}
+
+		isPlaying = true;
+
+		playTime = (timeMode == SECONDS) ? (parent.millis() - playTime * 1000)
+				: (parent.frameCount - playTime);
+
+		return this;
+	}
+
+	/**
+	 * Changes the time of the tween to a time percentage between 0 and 1
 	 */
 	public Motion seek(float value) {
 		playTime = (delay + duration) * value;
 
-		setTime(playTime);
-		updateCalls();
+		if (playTime != time) {
+			setTime(playTime);
+			updateCalls();
+		}
 
 		return this;
 	}
@@ -539,7 +544,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	}
 
 	public boolean isInsidePlayingTime(float value) {
-		return (value >= delay && value <= delay + duration);
+		return (value > delay && value < delay + duration);
 	}
 
 	public boolean isAbovePlayingTime(float value) {
