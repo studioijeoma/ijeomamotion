@@ -107,35 +107,19 @@ public class NumberProperty implements IProperty {
 				} catch (java.security.AccessControlException e) {
 					e.printStackTrace();
 				}
-
-				// setupValue();
 			} catch (NoSuchFieldException e) {
 				e.printStackTrace();
 			}
 	}
-
-	// public void setupValue() {
-	// // hasSetupValue = false;
-	// }
 
 	public void updateValue() {
 		value = PApplet.lerp(begin, end, position);
 
 		if (field != null)
 			try {
-				// if (!hasSetupValue) {
-				// if (order == 0)
-				// field.setFloat(object, begin);
-				// else
-				// begin = field.getFloat(object);
-				//
-				// change = end - begin;
-				// value = PApplet.lerp(begin, end, position);
-				//
-				// hasSetupValue = true;
-				// }
-
-				field.setFloat(object, value);
+				if ((position > 0 && position < 1)
+						|| (position == 0 && order == 0))
+					field.setFloat(object, value);
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {

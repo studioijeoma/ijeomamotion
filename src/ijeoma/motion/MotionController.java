@@ -73,18 +73,16 @@ public abstract class MotionController extends Motion implements
 
 	@Override
 	public MotionController play() {
+		updateChildren();
+
 		return (MotionController) super.play();
 	}
 
 	@Override
 	public MotionController stop() {
-		for (Motion c : children)
-			if (c.isPlaying)
-				c.stop();
+		updateChildren();
 
-		super.stop();
-
-		return this;
+		return (MotionController) super.stop();
 	}
 
 	@Override
@@ -137,6 +135,39 @@ public abstract class MotionController extends Motion implements
 	protected void updateChildren() {
 		for (Motion c : children)
 			c.update(getTime());
+	}
+
+	private void updateTweens() {
+		HashMap<String, Integer> orderMap = new HashMap<String, Integer>();
+		HashMap<String, IProperty> ppropertyMap = new HashMap<String, IProperty>();
+
+		for (Tween t : tweens)
+			for (IProperty p : t.getProperties()) {
+				String name = p.getObject().getClass().getSimpleName() + "."
+						+ p.getName();
+
+				if (orderMap.containsKey(name)) {
+					IProperty pp = ppropertyMap.get(name);
+
+					int order = orderMap.get(name);
+					order++;
+
+					p.setBegin(pp.getEnd());
+					p.setOrder(order);
+
+					orderMap.put(name, order);
+					ppropertyMap.put(name, p);
+				} else {
+					ArrayList<Tween> tweens = new ArrayList<Tween>();
+					tweens.add(t);
+
+					p.setBegin();
+					p.setOrder(0);
+
+					orderMap.put(name, 0);
+					ppropertyMap.put(name, p);
+				}
+			}
 	}
 
 	protected void updateDuration() {
@@ -364,38 +395,6 @@ public abstract class MotionController extends Motion implements
 		return this;
 	}
 
-	private void computeTweens() {
-		HashMap<String, Integer> propertyOrderMap = new HashMap<String, Integer>();
-		HashMap<String, IProperty> ppropertyMap = new HashMap<String, IProperty>();
-
-		for (Tween t : tweens)
-			for (IProperty p : t.getProperties()) {
-				String name = p.getObject().getClass().getSimpleName() + "."
-						+ p.getName();
-				if (propertyOrderMap.containsKey(name)) {
-					IProperty pp = ppropertyMap.get(name);
-
-					int order = propertyOrderMap.get(name);
-					order++;
-
-					p.setBegin(pp.getEnd());
-					p.setOrder(order);
-
-					propertyOrderMap.put(name, order);
-					ppropertyMap.put(name, p);
-				} else {
-					ArrayList<Tween> tweens = new ArrayList<Tween>();
-					tweens.add(t);
-
-					p.setBegin();
-					p.setOrder(0);
-
-					propertyOrderMap.put(name, 0);
-					ppropertyMap.put(name, p);
-				}
-			}
-	}
-
 	protected Motion insert(Motion child, float time) {
 		child.delay(time);
 		// _child.seek(1);
@@ -408,7 +407,7 @@ public abstract class MotionController extends Motion implements
 			if (child.getName() != null)
 				tweenMap.put(child.getName(), (Tween) child);
 
-			computeTweens();
+			updateTweens();
 		} else if (child.isParallel()) {
 			parallels.add((Parallel) child);
 			if (child.getName() != null)

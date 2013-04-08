@@ -193,7 +193,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 			}
 	}
 
-	public void update(float time) {
+	public void update(float time) { 
 		if (isInsidePlayingTime(time)) {
 			if (!isPlaying)
 				play();
@@ -231,10 +231,6 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	 */
 	public Motion play() {
 		PApplet.println(this + ".play()");
-		if (!isRegistered) {
-			parent.registerMethod("pre", this);
-			isRegistered = true;
-		}
 
 		seek(0);
 		resume();
@@ -273,11 +269,6 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 			repeatCount = 0;
 
 			dispatchMotionEndedEvent();
-		}
-
-		if (isRegistered) {
-			parent.unregisterMethod("pre", this);
-			isRegistered = false;
 		}
 
 		return this;
@@ -540,11 +531,11 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	}
 
 	public boolean isInsideDelayingTime(float value) {
-		return (value >= 0 && value <= delay);
+		return (value > 0 && value <= delay);
 	}
 
 	public boolean isInsidePlayingTime(float value) {
-		return (value > delay && value < delay + duration);
+		return (value > delay && value <= delay + duration);
 	}
 
 	public boolean isAbovePlayingTime(float value) {

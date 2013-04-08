@@ -45,8 +45,6 @@ public class Tween extends Motion { // implements Comparable
 	protected ArrayList<IProperty> properties = new ArrayList<IProperty>();
 	protected HashMap<String, IProperty> propertyMap = new HashMap<String, IProperty>();
 
-	// protected boolean hasSetupProperties = false;
-
 	protected Method tweenStartedMethod, tweenEndedMethod, tweenChangedMethod,
 			tweenRepeatedMethod;
 
