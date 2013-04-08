@@ -193,7 +193,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 			}
 	}
 
-	public void update(float time) { 
+	public void update(float time) {
 		if (isInsidePlayingTime(time)) {
 			if (!isPlaying)
 				play();
@@ -230,7 +230,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	 * Starts the tween from the beginning position
 	 */
 	public Motion play() {
-		PApplet.println(this + ".play()");
+		// PApplet.println(this + ".play()");
 
 		seek(0);
 		resume();
@@ -247,7 +247,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	 * Ends the tween at the ending position
 	 */
 	public Motion stop() {
-		PApplet.println(this + ".stop()");
+		// PApplet.println(this + ".stop()");
 
 		reverseTime = (reverseTime == 0) ? duration : 0;
 

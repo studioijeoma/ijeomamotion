@@ -1,7 +1,6 @@
 #Ijeomamotion
  
-A cross-mode Processing library for sketching animations with numbers, colors vectors, beziers, curves and more! It can play tweens in parallel, in a sequence or in a timeline/keyframes. Parallels can playback Sequences and vice versa. Timelines can also playback Parallels and Sequences too! You can also use all of aforementioed to call functions!
-Cross-mode means that it will run and export in both Processing IDE's Java and Javascript modes. You can also use it in Javascript with or without Processing. However as of now the javascript port ijeomamotion.js doesnt include the ijeomamotion.tween.Callback class or ijeomamotion.geom and ijeomamotion.math packages but it will soon! Please post issues on [Github](github.com/ekeneijeoma/ijeomamotion/issues) or [Processing's forums](forum.processing.org) under "Contributed Libraries". 
+A cross-mode Processing library for sketching animations with numbers, colors, vectors, beziers, curves and more! Cross-mode means that it runs and exports in both Processing's Java and Javascript modes. You can also use it in Javascript without Processing.js. At the moment ijeomamotion.js doesnt include the Callback class, ijeomamotion.geom and ijeomamotion.math packages! Please post issues on [Github](github.com/ekeneijeoma/ijeomamotion/issues) or [Processing's forums](forum.processing.org) under "Contributed Libraries". 
 
 #Download and Install
 In Processing 2.0 you can do an auto download and install by going Sketch->Add Library...->Animation->ijeomamotion. Otherwise download the latest zip and check out INSTALL.txt.
@@ -9,9 +8,8 @@ In Processing 2.0 you can do an auto download and install by going Sketch->Add L
 #Javadocs
 http://ekeneijeoma.com/processing/ijeomamotion/reference/index.html
 
-#Demo
+#Example
 ![alt text](http://goo.gl/NZjG8 "Arcs")
-![alt text](http://goo.gl/nUiH9 "Lines")
 
 #Getting Started 
 First, import the library into your Sketch via Sketch->Import Library->ijeomamotion. 
@@ -56,13 +54,139 @@ Tween t = new Tween(100).addColor(this, "c1", color(255)).addColor(this, "c2", c
 ###PVectors
 You can also tween PVectors. Say we want to tween PVectors `v1 = PVector(0,0)` and `v2 = PVector(0,0)` to `v1 = PVector(50, 50)` and `v2 = PVector(100, 100)`.
 ```java
-Tween t = new Tween(100).addPVector(v1, new PVector(50, 50)).addPVector(v2, new PVector(100, 100)).play();
+Tween t = new Tween(100).addVector(v1, new PVector(50, 50)).addVector(v2, new PVector(100, 100)).play();
 ```
 
 ###All in 1!
 You can also tween multiples properties of any type in 1 Tween!
 ```java
-Tween t = new Tween(100).add(this, "x", 100).addColor(this,"c", color(255)).addPVector(v1, new PVector(100, 100)).play();
+Tween t = new Tween(100).add(this, "x", 100).addColor(this,"c", color(255)).addVector(v1, new PVector(100, 100)).play();
+```
+
+###Callbacks
+```java
+Tween = new Tween(100).add(this, "x", 100).onStart("onStart").onEnd("onEnd").play();
+
+void onStart(){};
+void onEnd(){};
+```
+
+##How to playback Tweens 
+###Delaying
+```java
+t = new Tween(this, "w", width, 50, 50).play();
+```
+```java
+t = new Tween(50).add(this, "w", width).delay(50).play();
+```
+###Pausing, Resuming "Scrubbing"
+```java
+Tween t;
+
+float w = 0;
+
+void setup() {
+  size(400, 100);
+  smooth();
+
+  Motion.setup(this);
+
+  t = new Tween(this, "w", width, 100).play(); 
+}
+
+void draw() {
+  background(255);
+
+  noStroke();
+  fill(0);
+  rect(0, 0, w, height); 
+}
+
+void keyPressed() {
+  t.play();
+}
+
+void mousePressed() {
+  t.pause();
+}
+
+void mouseReleased() {
+  t.resume();
+}
+
+void mouseDragged() {
+  t.seek((float) mouseX / width);
+} 
+```
+###Repeating
+```java
+Tween t = new Tween(this, "w", width, 100).repeat().play();
+```
+###Reversing
+```java 
+Tween t = new Tween(this, "w", width, 100).repeat().reverse().play();
+```
+##How to use Processing-style events with Tweens 
+This runs in PDE Java-mode only but can also be used in JS-mode with Javascript-only Processing.js.
+```java
+void tweenStarted(Tween _t) {
+  println(_t + " started");
+}
+
+void tweenEnded(Tween _t) {
+  println(_t + " ended");
+}  
+```
+##How to use Java-style events with Tweens (PDE Java-mode only)
+```java 
+t = new Tween(this, "w", width, 100).addEventListener(new TweenEventListener()).play();
+
+public class TweenEventListener implements MotionEventListener {
+  void onMotionEvent(MotionEvent te) {
+    if (te.type == MotionEvent.TWEEN_STARTED)
+      println(((Tween) te.getSource()) + " started");
+    else if (te.type == MotionEvent.TWEEN_ENDED)
+      println(((Tween) te.getSource()) + " ended"); 
+  }
+} 
+```
+
+##How to call functions with Tweens
+Say you want to call a function named `test` at 25 frames in a tween with a duration of a 100 frames.
+```java
+t = new Tween(100).call(this, "test", 25).play();
+
+public void test() {
+  println("test");
+}
+```
+
+##How to playback tweens in parallel
+```java
+Parallel tp = new Parallel()
+  .add(new Tween(this, "x1", width, 100), "x1")
+  .add(new Tween(this, "x2", -width, 200), "x2").play(); 
+```
+
+##How to playback tweens in a sequence
+```java
+Sequence ts = new Sequence();
+  ts.add(new Tween(100).add(this, "x1", width).add(this, "c1", color(0)), "x1");
+  ts.add(new Tween(75).add(this,  "x2", width).add(this, "c2", color(0)), "x2");
+  ts.add(new Tween(50).add(this,  "x3", width).add(this, "c3", color(0)), "x3");
+  ts.add(new Tween(25).add(this,  "x4", width).add(this, "c4", color(0)), "x4");
+  ts.repeat().play();
+```
+
+##How to playback tweens in a timeline
+```java
+Timeline tl = new Timeline();
+  tl.add(new Tween(50).add(this, "y1",  height).add(this, "c1", color(0)), 0);
+  tl.add(new Tween(50).add(this, "y2", -height).add(this, "c2", color(0)), 50);
+  tl.add(new Tween(50).add(this, "y3",  height).add(this, "c3", color(0)), 100);
+  tl.add(new Tween(50).add(this, "y4", -height).add(this, "c4", color(0)), 150);
+  tl.add(new Tween(50).add(this, "y5",  height).add(this, "c5", color(0)), 200);
+  tl.repeat().play();
 ```
 
 ###Cross-mode
@@ -139,122 +263,4 @@ void keyPressed() {
   t.play();
 }
 
-```
-
-##How to playback Tweens 
-###Delaying
-```java
-t = new Tween(this, "w", width, 50, 50).play();
-```
-```java
-t = new Tween(50).add(this, "w", width).delay(50).play();
-```
-###Pausing, Resuming "Scrubbing"
-```java
-Tween t;
-
-float w = 0;
-
-void setup() {
-  size(400, 100);
-  smooth();
-
-  Motion.setup(this);
-
-  t = new Tween(this, "w", width, 100).play(); 
-}
-
-void draw() {
-  background(255);
-
-  noStroke();
-  fill(0);
-  rect(0, 0, w, height); 
-}
-
-void keyPressed() {
-  t.play();
-}
-
-void mousePressed() {
-  t.pause();
-}
-
-void mouseReleased() {
-  t.resume();
-}
-
-void mouseDragged() {
-  t.seek((float) mouseX / width);
-} 
-```
-###Repeating
-```java
-t = new Tween(this, "w", width, 100).repeat().play();
-```
-###Reversing
-```java 
-Tween t = new Tween(this, "w", width, 100).repeat().reverse().play();
-```
-##How to use Processing-style events with Tweens 
-This runs in PDE Java-mode only but can also be used in JS-mode with Javascript-only Processing.js.
-```java
-void tweenStarted(Tween _t) {
-  println(_t + " started");
-}
-
-void tweenEnded(Tween _t) {
-  println(_t + " ended");
-}  
-```
-##How to use Java-style events with Tweens (PDE Java-mode only)
-```java 
-t = new Tween(this, "w", width, 100).addEventListener(new TweenEventListener()).play();
-
-public class TweenEventListener implements MotionEventListener {
-  void onMotionEvent(MotionEvent te) {
-    if (te.type == MotionEvent.TWEEN_STARTED)
-      println(((Tween) te.getSource()) + " started");
-    else if (te.type == MotionEvent.TWEEN_ENDED)
-      println(((Tween) te.getSource()) + " ended"); 
-  }
-} 
-```
-
-##How to call functions with Tweens
-Say you want to call a function named `test` at 25 frames in a tween with a duration of a 100 frames.
-```java
-t = new Tween(100).call(this, "test", 25).play();
-
-public void test() {
-  println("test");
-}
-```
-
-##How to playback tweens in parallel
-```java
-Parallel tp = new Parallel()
-  .add(new Tween(this, "x1", width, 100), "x1")
-  .add(new Tween(this, "x2", -width, 200), "x2").play(); 
-```
-
-##How to playback tweens in a sequence
-```java
-Sequence ts = new Sequence();
-  ts.add(new Tween(100).add(this, "x1", width).add(this, "c1", color(0)), "x1");
-  ts.add(new Tween(75).add(this,  "x2", width).add(this, "c2", color(0)), "x2");
-  ts.add(new Tween(50).add(this,  "x3", width).add(this, "c3", color(0)), "x3");
-  ts.add(new Tween(25).add(this,  "x4", width).add(this, "c4", color(0)), "x4");
-  ts.repeat().play();
-```
-
-##How to playback tweens in a timeline
-```java
-Timeline tl = new Timeline();
-  tl.add(new Tween(50).add(this, "y1",  height).add(this, "c1", color(0)), 0);
-  tl.add(new Tween(50).add(this, "y2", -height).add(this, "c2", color(0)), 50);
-  tl.add(new Tween(50).add(this, "y3",  height).add(this, "c3", color(0)), 100);
-  tl.add(new Tween(50).add(this, "y4", -height).add(this, "c4", color(0)), 150);
-  tl.add(new Tween(50).add(this, "y5",  height).add(this, "c5", color(0)), 200);
-  tl.repeat().play();
 ```

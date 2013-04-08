@@ -4,9 +4,11 @@ import ijeoma.motion.Motion;
 import ijeoma.motion.tween.Tween;
 import ijeoma.motion.tween.Sequence;
 import processing.core.PApplet;
+import processing.core.PVector;
 
 public class Ani_Sequence_Basics extends PApplet {
 	public float x, y, diameter;
+	PVector v;
 	// AniSequence seq;
 	Sequence ts;
 
@@ -18,8 +20,9 @@ public class Ani_Sequence_Basics extends PApplet {
 		textAlign(CENTER);
 		background(255);
 
-		x = 50;
-		y = 50;
+		// x = 50;
+		// y = 50;
+		v = new PVector(50, 50);
 		diameter = 5;
 
 		// seq = new AniSequence(this);
@@ -36,13 +39,22 @@ public class Ani_Sequence_Basics extends PApplet {
 
 		Motion.setup(this);
 
-		ts = new Sequence();
-		ts.add(new Tween(100).add(this, "diameter", 55));
-		ts.add(new Tween(100).add(this, "x", 400).add(this, "y", 100));
+		// ts = new Sequence();
+		// ts.add(new Tween(100).add(this, "diameter", 55));
+		// ts.add(new Tween(100).add(this, "x", 400).add(this, "y", 100));
 		// ts.add(new Tween(100).add(this, "x", 450).add(this, "y", 400));
 		// ts.add(new Tween(100).add(this, "x", 100).add(this, "y", 450));
 		// ts.add(new Tween(100).add(this, "x", 50).add(this, "y", 50)
 		// .add(this, "diameter", 5));
+		// ts.play();
+
+		ts = new Sequence();
+		ts.add(new Tween(100).add(this, "diameter", 55));
+		ts.add(new Tween(100).addVector(v, new PVector(400, 100)));
+		ts.add(new Tween(100).addVector(v, new PVector(450, 400)));
+		ts.add(new Tween(100).addVector(v, new PVector(100, 450)));
+		ts.add(new Tween(100).addVector(v, new PVector(50, 50)).add(this,
+				"diameter", 5));
 		ts.play();
 	}
 
@@ -54,7 +66,8 @@ public class Ani_Sequence_Basics extends PApplet {
 		// ts.update();
 
 		fill(0);
-		ellipse(x, y, diameter, diameter);
+		// ellipse(x, y, diameter, diameter);
+		ellipse(v.x, v.y, diameter, diameter);
 
 		String time = (int) ts.getTime() + " / " + (int) ts.getDuration();
 		text(time, width - textWidth(time) - 10, height - 10);

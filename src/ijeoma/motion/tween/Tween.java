@@ -489,6 +489,9 @@ public class Tween extends Motion { // implements Comparable
 	}
 
 	public Tween add(IProperty p) {
+		if (properties.size() == 0 && name == "")
+			name = p.getName();
+
 		properties.add(p);
 
 		if (!p.getName().equals(""))

@@ -52,9 +52,9 @@ public class ColorProperty implements IProperty {
 
 	}
 
-	public ColorProperty(Object propertyObject, String propertyName, int end) {
-		setupObject(propertyObject, propertyName);
-		setup(propertyName, end);
+	public ColorProperty(Object object, String name, int end) {
+		setupObject(object, name);
+		setup(name, end);
 	}
 
 	public ColorProperty(String name, int begin, int end) {

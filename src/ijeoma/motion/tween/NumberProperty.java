@@ -52,13 +52,13 @@ public class NumberProperty implements IProperty {
 
 	}
 
-	public NumberProperty(Object _object, String _name, float _end) {
-		setupObject(_object, _name);
-		setup(_name, _end);
+	public NumberProperty(Object object, String name, float end) {
+		setupObject(object, name);
+		setup(name, end);
 	}
 
-	public NumberProperty(String _name, float _begin, float _end) {
-		setup(_name, _begin, _end);
+	public NumberProperty(String name, float begin, float end) {
+		setup(name, begin, end);
 	}
 
 	private void setup(String name, float end) {
