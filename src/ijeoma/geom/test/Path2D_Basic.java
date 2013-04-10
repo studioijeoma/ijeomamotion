@@ -48,19 +48,18 @@ public class Path2D_Basic extends PApplet {
 		float x = 0;
 
 		while (x < width) {
-			path1.addVertex(x, random(250, 400));
+			path1.add(x, random(250, 400));
 
-			x += random(5, 10);
+			x += random(15, 20);
 		}
 
-		path1.addVertex(width, random(200, 400));
+		path1.add(width, random(200, 400));
+		// println("path1.getCount() = " + path1.getPointCount());
 
-		println("path1.getCount() = " + path1.getVertexCount());
+		// path2 = new Path(path1.getPoints());
+		// path2.simplify(5, true);
 
-		path2 = new Path(path1.getVertices());
-		path2.simplify(5, true);
-
-		println("path2.getCount() = " + path2.getVertexCount());
+		// println("path2.getCount() = " + path2.getPointCount());
 	}
 
 	@Override
@@ -70,16 +69,19 @@ public class Path2D_Basic extends PApplet {
 		stroke(0);
 		strokeWeight(3);
 		noFill();
-		path1.drawLine(g);
-		// path1.drawPoints(g);
+		path1.draw(g, 5, 1);
 
-		noFill();
+		strokeWeight(5);
 		stroke(255, 0, 0);
-		strokeWeight(2);
-		path2.drawLine(g);
+		path1.draw(g, POINTS, 5, 1);
+
+		// noFill();
+		// stroke(255, 0, 0);
+		// strokeWeight(2);
+		// path2.draw(g);
 		// path2.drawPoints(g);
 
-		PVector p = path2.getVertexAt((float) mouseX / width);
+		PVector p = path1.getPointAt((float) mouseX / width);
 		noStroke();
 		fill(255, 0, 0);
 		ellipse(p.x, p.y, 10, 10);
@@ -101,12 +103,12 @@ public class Path2D_Basic extends PApplet {
 		if (key == ' ')
 			setupPath();
 		else if (key == '1')
-			path2.setMode(Path.LINEAR);
+			path1.setMode(Path.LINEAR);
 		else if (key == '2')
-			path2.setMode(Path.COSINE);
+			path1.setMode(Path.COSINE);
 		else if (key == '3')
-			path2.setMode(Path.CUBIC);
+			path1.setMode(Path.CUBIC);
 		else if (key == '4')
-			path2.setMode(Path.HERMITE);
+			path1.setMode(Path.HERMITE);
 	}
 }

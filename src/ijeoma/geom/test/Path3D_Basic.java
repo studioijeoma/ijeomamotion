@@ -66,8 +66,8 @@ public class Path3D_Basic extends PApplet {
 			points[i] = new PVector(x, y, z);
 		}
 
-		points[pointCount - 1] = new PVector(end, random(100, 200),
-				random(0, 10));
+		points[pointCount - 1] = new PVector(end, random(100, 200), random(0,
+				10));
 
 		path = new Path(points);
 	}
@@ -80,9 +80,9 @@ public class Path3D_Basic extends PApplet {
 		translate(0, height / 2, 0);
 		noFill();
 		stroke(0);
-		path.drawLine(g);
+		path.draw(g);
 
-		PVector pathVertex = path.getVertexAt((float) mouseX / width);
+		PVector pathVertex = path.getPointAt((float) mouseX / width);
 
 		pushMatrix();
 		translate(pathVertex.x, pathVertex.y, pathVertex.z);

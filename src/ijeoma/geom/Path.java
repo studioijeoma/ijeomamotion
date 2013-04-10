@@ -34,22 +34,21 @@ import java.util.Arrays;
 import java.util.List;
 
 import processing.core.PApplet;
-import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PVector;
 
 public class Path {
 	protected int segmentIndex = 0;
-	protected int segmentVertexIndex = 0;
+	protected int segmentPointIndex = 0;
 	protected float segmentPosition = 0;
 	protected float segmentPositionRange = 0;
 
-	// protected int resolution = 10;
+	protected int steps = 1;
 
 	protected float tension = 0;
 	protected float bias = 0;
 
-	protected ArrayList<PVector> vertices = new ArrayList<PVector>();
+	protected ArrayList<PVector> points = new ArrayList<PVector>();
 
 	protected float length = 0;
 
@@ -67,22 +66,22 @@ public class Path {
 	public Path() {
 	}
 
-	public Path(PVector[] vertices) {
-		setVertices(vertices);
+	public Path(PVector[] points) {
+		setPoints(points);
 	}
 
-	public Path(List<PVector> vertexList) {
-		setVertices(vertexList);
+	public Path(List<PVector> pointList) {
+		setPoints(pointList);
 	}
 
-	public Path(PVector[] vertices, String _mode) {
-		setVertices(vertices);
+	public Path(PVector[] points, String mode) {
+		setPoints(points);
 
-		mode = _mode;
+		this.mode = mode;
 	}
 
-	public Path(PVector[] vertices, String mode, float tension, float bias) {
-		setVertices(vertices);
+	public Path(PVector[] points, String mode, float tension, float bias) {
+		setPoints(points);
 
 		this.mode = mode;
 
@@ -90,45 +89,28 @@ public class Path {
 		this.bias = bias;
 	}
 
-	public void drawPoints(PGraphics g) {
-		draw(g, PConstants.POINTS, 1);
+	public void draw(PGraphics g) {
+		draw(g, PApplet.LINE, steps, 1);
 	}
 
-	public void drawPoints(PGraphics g, float t) {
-		draw(g, PConstants.POINTS, t);
+	public void draw(PGraphics g, float t) {
+		draw(g, PApplet.LINE, steps, t);
 	}
 
-	public void drawPoints(PGraphics g, int steps, float t) {
-		draw(g, PConstants.POINTS, steps, t);
-	}
-
-	public void drawLine(PGraphics g) {
-		draw(g, PConstants.LINE, 1);
-	}
-
-	public void drawLine(PGraphics g, float t) {
-		draw(g, PConstants.LINE, t);
-	}
-
-	public void drawLine(PGraphics g, int steps, float t) {
-		draw(g, PConstants.LINE, steps, t);
-	}
-
-	public void draw(PGraphics g, int mode, float t) {
-		draw(g, mode, 1, t);
+	public void draw(PGraphics g, int steps, float t) {
+		draw(g, PApplet.LINE, steps, t);
 	}
 
 	public void draw(PGraphics g, int mode, int steps, float t) {
-		// int vertexCount = vertices.size() * resolution;
-		int vertexCount = (int) (vertices.size() * steps * t);
+		int pointCount = (int) (points.size() * steps * t);
 
-		if (mode == PConstants.LINE)
+		if (mode == PApplet.LINE)
 			g.beginShape();
 		else
 			g.beginShape(mode);
 
-		for (int i = 0; i <= vertexCount; i += steps) {
-			PVector p1 = getVertexAt((float) i / vertexCount);
+		for (int i = 0; i <= pointCount; i += steps) {
+			PVector p1 = getPointAt((float) i / pointCount);
 
 			if (is3D)
 				g.vertex(p1.x, p1.y, p1.z);
@@ -138,87 +120,82 @@ public class Path {
 		g.endShape();
 	}
 
-	// public void drawPoints(PGraphics _g) {
-	// _g.beginShape();
-	// float s = _g.getStyle().strokeWeight * 2f;
-	// for (PVector p : points)
-	// _g.ellipse(p.x, p.y, s, s);
-	// _g.endShape();
-	// }
-
-	public Path addVertex(float x, float y) {
-		return addVertex(new PVector(x, y));
+	public Path add(float x, float y) {
+		return add(new PVector(x, y));
 	}
 
-	public Path addVertex(PVector vertex) {
-		vertices.add(vertex);
+	public Path add(PVector point) {
+		points.add(point);
 
-		segmentPositionRange = (1f / (vertices.size() - 1));
+		segmentPositionRange = (1f / (points.size() - 1));
 
 		return this;
 	}
 
-	public Path addVertices(PVector[] vertices) {
-		this.vertices.addAll(new ArrayList<PVector>(Arrays.asList(vertices)));
+	public Path addAll(PVector[] points) {
+		this.points.addAll(new ArrayList<PVector>(Arrays.asList(points)));
 
-		segmentPositionRange = (1f / (this.vertices.size() - 1));
+		segmentPositionRange = (1f / (this.points.size() - 1));
 
 		return this;
 	}
 
-	public Path addVertices(List<PVector> vertexList) {
-		vertices.addAll(vertexList);
+	public Path add(List<PVector> pointList) {
+		points.addAll(pointList);
 
-		segmentPositionRange = (1f / (vertices.size() - 1));
+		segmentPositionRange = (1f / (points.size() - 1));
 
 		return this;
 	}
 
 	public void removeAll() {
-		vertices.clear();
+		points.clear();
 	}
 
-	public PVector getVertexAt(float _position) {
+	public PVector get(int index) {
+		return points.get(index);
+	}
+
+	public PVector getPointAt(float position) {
 		PVector point = new PVector();
 
 		if (!computed)
 			compute();
 
-		if (_position < 1) {
-			segmentVertexIndex = PApplet.floor((vertices.size() - 1)
-					* _position);
-			segmentPosition = PApplet.map((_position % segmentPositionRange),
-					0, segmentPositionRange, 0, 1);
+		if (position < 1) {
+			segmentPointIndex = PApplet.floor((points.size() - 1) * position);
+			segmentPosition = PApplet.map((position % segmentPositionRange), 0,
+					segmentPositionRange, 0, 1);
 		} else {
-			segmentVertexIndex = (vertices.size() - 2);
+			segmentPointIndex = (points.size() - 2);
 			segmentPosition = 1;
 		}
 
 		PVector v1, v2, v3, v4;
 
-		v2 = vertices.get(segmentVertexIndex);
-		v3 = vertices.get(segmentVertexIndex + 1);
+		v2 = points.get(segmentPointIndex);
+		v3 = points.get(segmentPointIndex + 1);
 
 		v1 = v4 = new PVector();
 
-		if (segmentVertexIndex == 0) {
-			PVector segmentBegin = vertices.get(0);
-			PVector segmentEnd = vertices.get(1);
+		if (segmentPointIndex == 0) {
+			PVector segmentBegin = points.get(0);
+			PVector segmentEnd = points.get(1);
 			PVector segmentSlope = PVector.sub(segmentEnd, segmentBegin);
 
 			v1 = PVector.sub(segmentEnd, segmentSlope);
 		} else {
-			v1 = vertices.get(segmentVertexIndex - 1);
+			v1 = points.get(segmentPointIndex - 1);
 		}
 
-		if ((segmentVertexIndex + 1) == vertices.size() - 1) {
-			PVector segmentBegin = vertices.get(vertices.size() - 2);
-			PVector segmentEnd = vertices.get(vertices.size() - 1);
+		if ((segmentPointIndex + 1) == points.size() - 1) {
+			PVector segmentBegin = points.get(points.size() - 2);
+			PVector segmentEnd = points.get(points.size() - 1);
 			PVector segmentSlope = PVector.sub(segmentEnd, segmentBegin);
 
 			v4 = PVector.add(segmentEnd, segmentSlope);
 		} else {
-			v4 = vertices.get((segmentVertexIndex + 1) + 1);
+			v4 = points.get((segmentPointIndex + 1) + 1);
 		}
 
 		if (mode.equals(LINEAR)) {
@@ -252,50 +229,50 @@ public class Path {
 		return point;
 	}
 
-	public Path setVertices(PVector[] _points) {
-		return setVertices(new ArrayList<PVector>(Arrays.asList(_points)));
+	public Path setPoints(PVector[] points) {
+		return setPoints(new ArrayList<PVector>(Arrays.asList(points)));
 	}
 
-	public Path setVertices(List<PVector> _points) {
-		vertices = new ArrayList<PVector>(_points);
+	public Path setPoints(List<PVector> points) {
+		points = new ArrayList<PVector>(points);
 
-		for (PVector p : vertices)
+		for (PVector p : points)
 			if (p.z != 0) {
 				is3D = true;
 				break;
 			}
 
-		segmentPositionRange = (1f / (vertices.size() - 1));
+		segmentPositionRange = (1f / (points.size() - 1));
 
 		compute();
 
 		return this;
 	}
 
-	public PVector[] getVertices() {
-		return vertices.toArray(new PVector[vertices.size()]);
+	public PVector[] getPoints() {
+		return points.toArray(new PVector[points.size()]);
 	}
 
-	public List<PVector> getVertexList() {
-		return vertices;
+	public List<PVector> getPointList() {
+		return points;
 	}
 
-	public int getVertexCount() {
-		return vertices.size();
+	public int getPointCount() {
+		return points.size();
 	}
 
 	public Path simplify(float tolerance) {
 		PVector[] simplifiedPoints = Simplify.simplify(
-				vertices.toArray(new PVector[vertices.size()]), tolerance);
-		vertices = new ArrayList<PVector>(Arrays.asList(simplifiedPoints));
+				points.toArray(new PVector[points.size()]), tolerance);
+		points = new ArrayList<PVector>(Arrays.asList(simplifiedPoints));
 		return this;
 	}
 
 	public Path simplify(float tolerance, boolean highestQuality) {
 		PVector[] simplifiedPoints = Simplify.simplify(
-				vertices.toArray(new PVector[vertices.size()]), tolerance,
+				points.toArray(new PVector[points.size()]), tolerance,
 				highestQuality);
-		vertices = new ArrayList<PVector>(Arrays.asList(simplifiedPoints));
+		points = new ArrayList<PVector>(Arrays.asList(simplifiedPoints));
 		return this;
 	}
 
@@ -308,24 +285,24 @@ public class Path {
 	public void computeLength() {
 		length = 0;
 
-		for (int i = 0; i < vertices.size() - 1; i++) {
-			PVector d1 = vertices.get(i);
-			PVector d2 = vertices.get(i + 1);
+		for (int i = 0; i < points.size() - 1; i++) {
+			PVector d1 = points.get(i);
+			PVector d2 = points.get(i + 1);
 
 			length += PApplet.dist(d1.x, d1.y, d2.x, d2.y);
 		}
 	}
 
-	public void setTension(float _tension) {
-		tension = _tension;
+	public void setTension(float tension) {
+		this.tension = tension;
 	}
 
 	public float getTension() {
 		return tension;
 	}
 
-	public Path setBias(float _bias) {
-		bias = _bias;
+	public Path setBias(float bias) {
+		this.bias = bias;
 		return this;
 	}
 
@@ -333,8 +310,8 @@ public class Path {
 		return bias;
 	}
 
-	public Path setMode(String _mode) {
-		mode = _mode;
+	public Path setMode(String mode) {
+		this.mode = mode;
 		return this;
 	}
 
@@ -343,7 +320,7 @@ public class Path {
 	}
 
 	public int getSegmentPointIndex() {
-		return segmentVertexIndex;
+		return segmentPointIndex;
 	}
 
 	public float getSegmentPosition() {
