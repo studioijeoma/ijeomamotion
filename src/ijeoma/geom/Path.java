@@ -64,6 +64,8 @@ public class Path {
 
 	protected String mode = LINEAR;
 
+	boolean visible = true;
+
 	boolean is3D = false;
 
 	public Path() {
@@ -106,25 +108,36 @@ public class Path {
 	}
 
 	public void draw(PGraphics g, int mode, float t) {
-		if (!computed)
-			compute();
+		if (visible) {
+			if (!computed)
+				compute();
 
-		int pointCount = (int) (points.size() * step * t);
+			int pointCount = (int) (points.size() * step * t);
 
-		g.beginShape(mode);
-		for (int i = 1; i <= pointCount; i++) {
-			PVector p1 = getPointAt((float) (i - 1) / (points.size() * step));
-			PVector p2 = getPointAt((float) i / (points.size() * step));
+			g.beginShape(mode);
+			for (int i = 1; i <= pointCount; i++) {
+				PVector p1 = getPointAt((float) (i - 1)
+						/ (points.size() * step));
+				PVector p2 = getPointAt((float) i / (points.size() * step));
 
-			if (is3D) {
-				g.vertex(p1.x, p1.y, p1.z);
-				g.vertex(p2.x, p2.y, p2.z);
-			} else {
-				g.vertex(p1.x, p1.y);
-				g.vertex(p2.x, p2.y);
+				if (is3D) {
+					g.vertex(p1.x, p1.y, p1.z);
+					g.vertex(p2.x, p2.y, p2.z);
+				} else {
+					g.vertex(p1.x, p1.y);
+					g.vertex(p2.x, p2.y);
+				}
 			}
+			g.endShape();
 		}
-		g.endShape();
+	}
+
+	public void show() {
+		visible = true;
+	}
+
+	public void hide() {
+		visible = false;
 	}
 
 	public Path add(float x, float y) {
@@ -138,17 +151,19 @@ public class Path {
 
 		segmentPositionRange = 1f / (points.size() - 1);
 
-		compute();
+		// compute();
 
 		return this;
 	}
 
 	public Path addAll(PVector[] points) {
+		computed = false;
+
 		this.points.addAll(new ArrayList<PVector>(Arrays.asList(points)));
 
 		segmentPositionRange = (1f / (this.points.size() - 1));
 
-		compute();
+		// compute();
 
 		return this;
 	}
@@ -160,7 +175,7 @@ public class Path {
 
 		segmentPositionRange = (1f / (points.size() - 1));
 
-		compute();
+		// compute();
 
 		return this;
 	}
@@ -180,9 +195,6 @@ public class Path {
 	}
 
 	public PVector getPointAt(float position) {
-		// if (!computed)
-		// compute();
-
 		PVector point = new PVector();
 
 		if (position < 1) {
@@ -252,11 +264,40 @@ public class Path {
 		return point;
 	}
 
+	public PVector getPointAtLength(float l) {
+		if (!computed)
+			compute();
+
+		PVector point = new PVector();
+
+		if (points.size() > 1) {
+			int pointCount = (int) (points.size() * step * t);
+
+			float length = 0;
+			int i = 0;
+
+			while (length < l) {
+				PVector p1 = getPointAt((float) (i - 1)
+						/ (points.size() * step));
+				PVector p2 = getPointAt((float) i / (points.size() * step));
+
+				length += PVector.dist(p1, p2);
+
+				point = p1;
+				i++;
+			}
+		}
+
+		return point;
+	}
+
 	public Path setPoints(PVector[] points) {
 		return setPoints(new ArrayList<PVector>(Arrays.asList(points)));
 	}
 
 	public Path setPoints(List<PVector> points) {
+		computed = false;
+
 		points = new ArrayList<PVector>(points);
 
 		for (PVector p : points)
@@ -267,7 +308,7 @@ public class Path {
 
 		segmentPositionRange = (1f / (points.size() - 1));
 
-		compute();
+		// compute();
 
 		return this;
 	}
@@ -285,11 +326,16 @@ public class Path {
 	}
 
 	public List<PVector> getPointList(int step, float t) {
+		if (!computed)
+			compute();
+
 		float[] psegmentLengths = segmentLengths;
 		float plength = length;
 		int pstep = step;
+		float pt = this.t;
 
 		this.step = step;
+		this.t = t;
 
 		compute();
 
@@ -306,6 +352,10 @@ public class Path {
 				while (t2 > segmentLengths[j])
 					j++;
 
+				// PVector p1 = getPointAt((float) (j - 1)
+				// / (points.size() * step * t));
+				// PVector p2 = getPointAt((float) j / (points.size() * step));
+				// //cool effect!!!
 				PVector p1 = getPointAt((float) (j - 1)
 						/ (points.size() * step));
 				PVector p2 = getPointAt((float) j / (points.size() * step));
@@ -320,6 +370,7 @@ public class Path {
 		segmentLengths = psegmentLengths;
 		length = plength;
 		this.step = pstep;
+		this.t = pt;
 
 		return steppedPoints;
 	}
@@ -363,6 +414,9 @@ public class Path {
 	}
 
 	public float getLength() {
+		if (!computed)
+			compute();
+
 		return length;
 	}
 
@@ -460,7 +514,7 @@ public class Path {
 		return closestPoint.dist(p3);
 	}
 
-	boolean contains(PVector p) {
+	public boolean contains(PVector p) {
 		boolean c = false;
 
 		for (int i = 0; i < points.size() - 1; i++) {
