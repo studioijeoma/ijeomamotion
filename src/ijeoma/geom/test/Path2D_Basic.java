@@ -27,12 +27,14 @@
 
 package ijeoma.geom.test;
 
+import java.util.List;
+
 import ijeoma.geom.Path;
 import processing.core.PApplet;
 import processing.core.PVector;
 
 public class Path2D_Basic extends PApplet {
-	Path path1;
+	Path path;
 	Path path2;
 
 	@Override
@@ -43,17 +45,18 @@ public class Path2D_Basic extends PApplet {
 	}
 
 	public void setupPath() {
-		path1 = new Path();
+		path = new Path();
 
 		float x = 0;
 
 		while (x < width) {
-			path1.add(x, random(250, 400));
+			path.add(x, random(250, 400));
+			// path.add(x, height / 2);
 
-			x += random(15, 20);
+			x += 50;// random(25, 50);
 		}
 
-		path1.add(width, random(200, 400));
+		path.add(width, random(200, 400));
 		// println("path1.getCount() = " + path1.getPointCount());
 
 		// path2 = new Path(path1.getPoints());
@@ -66,22 +69,52 @@ public class Path2D_Basic extends PApplet {
 	public void draw() {
 		background(255);
 
+		int steps = 10;
+		// float t = 1f;// (float) mouseX / width;
+
+		// path line
 		stroke(0);
-		strokeWeight(3);
+		strokeWeight(1);
 		noFill();
-		path1.draw(g, 5, 1);
+		path.draw(g, steps, 1);
 
-		strokeWeight(5);
-		stroke(255, 0, 0);
-		path1.draw(g, POINTS, 5, 1);
-
-		// noFill();
+		// path points
+		// strokeWeight(3);
 		// stroke(255, 0, 0);
-		// strokeWeight(2);
-		// path2.draw(g);
-		// path2.drawPoints(g);
+		// path.draw(g, POINTS, steps, t);
 
-		PVector p = path1.getPointAt((float) mouseX / width);
+		// uniform points
+		// noStroke();
+		fill(0, 0, 255);
+		int c1 = color(255, 0, 0);
+		int c2 = color(0, 255, 0);
+		List<PVector> points = path.getPointList(5);
+
+		strokeWeight(3);
+		beginShape(LINES);
+		for (int i = 1; i < points.size(); i++) {
+			PVector p1 = points.get(i - 1);
+			PVector p2 = points.get(i);
+
+			float t = (float) (i - 1) / points.size();
+			int c = lerpColor(c1, c2, t);
+			stroke(c);
+			vertex(p1.x, p1.y);
+
+			t = (float) i / points.size();
+			c = lerpColor(c1, c2, t);
+			stroke(c);
+			vertex(p2.x, p2.y);
+		}
+		endShape();
+
+		// points
+		noStroke();
+		fill(255, 0, 255);
+		for (PVector p : path.getPointList())
+			ellipse(p.x, p.y, 5, 5);
+
+		PVector p = path.getPointAt((float) mouseX / width);
 		noStroke();
 		fill(255, 0, 0);
 		ellipse(p.x, p.y, 10, 10);
@@ -89,7 +122,6 @@ public class Path2D_Basic extends PApplet {
 
 	@Override
 	public void mouseMoved() {
-		float t = map(mouseX, 0, width, 0.1f, 5);
 		// path2.set(path1.get());
 		// path2.simplify(t, true);
 		// path2.setMode(Path.LINEAR);
@@ -103,12 +135,12 @@ public class Path2D_Basic extends PApplet {
 		if (key == ' ')
 			setupPath();
 		else if (key == '1')
-			path1.setMode(Path.LINEAR);
+			path.setMode(Path.LINEAR);
 		else if (key == '2')
-			path1.setMode(Path.COSINE);
+			path.setMode(Path.COSINE);
 		else if (key == '3')
-			path1.setMode(Path.CUBIC);
+			path.setMode(Path.CUBIC);
 		else if (key == '4')
-			path1.setMode(Path.HERMITE);
+			path.setMode(Path.HERMITE);
 	}
 }

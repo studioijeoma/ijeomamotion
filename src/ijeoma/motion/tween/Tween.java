@@ -27,6 +27,7 @@
 
 package ijeoma.motion.tween;
 
+import ijeoma.geom.Path;
 import ijeoma.motion.Callback;
 import ijeoma.motion.Motion;
 import ijeoma.motion.event.MotionEvent;
@@ -526,6 +527,11 @@ public class Tween extends Motion { // implements Comparable
 
 	public Tween addVector(PVector vector, PVector end) {
 		return add(new VectorProperty(vector, end));
+	}
+
+	public Tween addPath(Path path, float end) {
+		// return add(new PathProperty(vector, end));
+		return add(new NumberProperty(path, "t", 0f, end));
 	}
 
 	public Tween addArc(PVector vector, PVector end) {

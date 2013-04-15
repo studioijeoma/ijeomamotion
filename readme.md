@@ -129,12 +129,12 @@ Tween t = new Tween(this, "w", width, 100).repeat().reverse().play();
 ##How to use Processing-style events with Tweens 
 This runs in PDE Java-mode only but can also be used in JS-mode with Javascript-only Processing.js.
 ```java
-void tweenStarted(Tween _t) {
-  println(_t + " started");
+void tweenStarted(Tween t) {
+  println(t + " started");
 }
 
-void tweenEnded(Tween _t) {
-  println(_t + " ended");
+void tweenEnded(Tween t) {
+  println(t + " ended");
 }  
 ```
 ##How to use Java-style events with Tweens (PDE Java-mode only)

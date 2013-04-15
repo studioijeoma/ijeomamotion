@@ -46,8 +46,6 @@ public class NumberProperty implements IProperty {
 
 	protected int order = 0;
 
-	boolean hasSetupValue = false;
-
 	public NumberProperty() {
 
 	}
@@ -55,6 +53,11 @@ public class NumberProperty implements IProperty {
 	public NumberProperty(Object object, String name, float end) {
 		setupObject(object, name);
 		setup(name, end);
+	}
+
+	public NumberProperty(Object object, String name, float begin, float end) {
+		setupObject(object, name);
+		setup(name, begin, end);
 	}
 
 	public NumberProperty(String name, float begin, float end) {

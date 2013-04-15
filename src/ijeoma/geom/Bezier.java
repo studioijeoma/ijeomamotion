@@ -27,18 +27,21 @@
 
 package ijeoma.geom;
 
+import ijeoma.motion.Motion;
+import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PVector;
 
 public class Bezier {
 	PGraphics g;
 	float x1, y1, z1, cx1, cy1, cz1, cx2, cy2, cz2, x2, y2, z2;
-	float position;
+	int steps = 1;
+	float t = 1;
 	boolean is3D = false;
 
 	public Bezier(PGraphics _g, float _x1, float _y1, float _cx1, float _cy1,
 			float _cx2, float _cy2, float _x2, float _y2) {
-		g = _g;
+		g = Motion.getParent().g;
 
 		x1 = _x1;
 		y1 = _y1;
@@ -53,7 +56,7 @@ public class Bezier {
 	Bezier(PGraphics _g, float _x1, float _y1, float _z1, float _cx1,
 			float _cy1, float _cz1, float _cx2, float _cy2, float _cz2,
 			float _x2, float _y2, float _z2) {
-		g = _g;
+		g = Motion.getParent().g;
 
 		x1 = _x1;
 		y1 = _y1;
@@ -71,19 +74,50 @@ public class Bezier {
 		is3D = true;
 	}
 
-	public void draw() {
+	public void draw(PGraphics g) {
 		if (is3D)
 			g.bezier(x1, y1, z1, cx1, cy1, cz1, cx2, cy2, cz2, x2, y2, z2);
 		else
 			g.bezier(x1, y1, cx1, cy1, cx2, cy2, x2, y2);
 	}
 
-	public PVector getPoint(float _position) {
-		float x = g.bezierPoint(x1, cx1, cx2, x2, _position);
-		float y = g.bezierPoint(y1, cy1, cy2, y2, _position);
+	public void draw(PGraphics g, int steps) {
+		draw(g, PApplet.LINE, steps, t);
+	}
+
+	public void draw(PGraphics g, float t) {
+		draw(g, PApplet.LINE, steps, t);
+	}
+
+	public void draw(PGraphics g, int steps, float t) {
+		draw(g, PApplet.LINE, steps, t);
+	}
+
+	public void draw(PGraphics g, int mode, int steps, float t) {
+		int pointCount = PApplet.floor(100 * steps * t);
+
+		if (mode == PApplet.LINE)
+			g.beginShape();
+		else
+			g.beginShape(mode);
+
+		for (int i = 0; i < pointCount; i += steps) {
+			PVector p1 = getPointAt((float) i / 100);
+
+			if (is3D)
+				g.vertex(p1.x, p1.y, p1.z);
+			else
+				g.vertex(p1.x, p1.y);
+		}
+		g.endShape();
+	}
+
+	public PVector getPointAt(float t) {
+		float x = g.bezierPoint(x1, cx1, cx2, x2, t);
+		float y = g.bezierPoint(y1, cy1, cy2, y2, t);
 
 		if (is3D) {
-			float z = g.bezierPoint(z1, cz1, cz2, z2, _position);
+			float z = g.bezierPoint(z1, cz1, cz2, z2, t);
 			return new PVector(x, y, z);
 		} else
 			return new PVector(x, y);

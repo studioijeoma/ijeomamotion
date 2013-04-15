@@ -28,6 +28,7 @@
 package ijeoma.geom.test;
 
 import ijeoma.geom.Curve;
+import ijeoma.motion.Motion;
 import processing.core.PApplet;
 
 public class Curve_Basic extends PApplet {
@@ -39,7 +40,8 @@ public class Curve_Basic extends PApplet {
 		size(100, 100);
 		smooth();
 
-		c = new Curve(g, 5, 26, 5, 26, 73, 24, 73, 61);
+		Motion.setup(this);
+		c = new Curve(5, 26, 5, 26, 73, 24, 73, 61);
 	}
 
 	@Override
@@ -47,6 +49,6 @@ public class Curve_Basic extends PApplet {
 		background(255);
 
 		noFill();
-		c.draw();
+		c.draw(g);
 	}
 }

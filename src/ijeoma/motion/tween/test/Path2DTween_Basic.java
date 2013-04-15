@@ -27,8 +27,8 @@
 package ijeoma.motion.tween.test;
 
 import ijeoma.geom.Path;
-import ijeoma.geom.tween.PathTween;
 import ijeoma.motion.Motion;
+import ijeoma.motion.tween.Tween;
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -36,7 +36,7 @@ public class Path2DTween_Basic extends PApplet {
 	PVector[] points;
 
 	Path p;
-	PathTween tp;
+	Tween tp;
 
 	@Override
 	public void setup() {
@@ -54,14 +54,14 @@ public class Path2DTween_Basic extends PApplet {
 		float x = 0;
 
 		while (x < width) {
-			p.addVertex(x, random(200, 400));
+			p.add(x, random(200, 400));
 
 			x += random(10, 20);
 		}
 
-		p.addVertex(width, random(200, 400));
+		p.add(width, random(200, 400));
 
-		tp = new PathTween(p, 0f, 1f, 300f);
+		tp = new Tween(300f).addPath(p, 1f);
 		tp.repeat();
 		tp.play();
 	}
@@ -72,10 +72,11 @@ public class Path2DTween_Basic extends PApplet {
 
 		noFill();
 		stroke(100);
-		p.drawLine(g);
+		p.draw(g);
 
 		fill(255, 0, 0);
-		ellipse(tp.getX(), tp.getY(), 10, 10);
+		PVector v = p.get();
+		ellipse(v.x, v.y, 10, 10);
 
 		// println(tp.getPoint());
 		// text(tp.getPosition(), 0, height - 100);

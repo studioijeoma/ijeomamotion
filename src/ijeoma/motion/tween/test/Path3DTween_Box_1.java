@@ -27,8 +27,8 @@
 package ijeoma.motion.tween.test;
 
 import ijeoma.geom.Path;
-import ijeoma.geom.tween.PathTween;
 import ijeoma.motion.Motion;
+import ijeoma.motion.tween.Tween;
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -36,7 +36,7 @@ public class Path3DTween_Box_1 extends PApplet {
 	PVector[] points;
 
 	Path p;
-	PathTween tp;
+	Tween tp;
 
 	int HALF_SIZE = 100;
 
@@ -57,7 +57,7 @@ public class Path3DTween_Box_1 extends PApplet {
 
 		Motion.setup(this);
 
-		tp = new PathTween(p, 0f, 1f, 300f);
+		tp = new Tween(300f).addPath(p, 1f);
 		tp.repeat();
 		tp.play();
 	}
@@ -79,12 +79,13 @@ public class Path3DTween_Box_1 extends PApplet {
 		// This draws the path
 		noFill();
 		stroke(100);
-		p.drawLine(g);
+		p.draw(g);
 
 		// This draws the small black box
 		fill(0);
 		pushMatrix();
-		translate(tp.getX(), tp.getY(), tp.getZ());
+		PVector v = p.get();
+		translate(v.x, v.y, v.z);
 		box(20);
 		popMatrix();
 	}

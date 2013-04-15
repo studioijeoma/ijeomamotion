@@ -27,17 +27,21 @@
 
 package ijeoma.geom;
 
+import ijeoma.motion.Motion;
+import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PVector;
 
 public class Curve {
 	PGraphics g;
 	float x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4;
+	int steps = 1;
+	float t = 1;
 	boolean is3D = false;
 
-	public Curve(PGraphics _g, float _x1, float _y1, float _x2, float _y2,
-			float _x3, float _y3, float _x4, float _y4) {
-		g = _g;
+	public Curve(float _x1, float _y1, float _x2, float _y2, float _x3,
+			float _y3, float _x4, float _y4) {
+		g = Motion.getParent().g;
 
 		x1 = _x1;
 		y1 = _y1;
@@ -52,10 +56,10 @@ public class Curve {
 		y4 = _y4;
 	}
 
-	public Curve(PGraphics _g, float _x1, float _y1, float _z1, float _x2,
-			float _y2, float _z2, float _x3, float _y3, float _z3, float _x4,
-			float _y4, float _z4) {
-		g = _g;
+	public Curve(float _x1, float _y1, float _z1, float _x2, float _y2,
+			float _z2, float _x3, float _y3, float _z3, float _x4, float _y4,
+			float _z4) {
+		g = Motion.getParent().g;
 
 		x1 = _x1;
 		y1 = _y1;
@@ -76,19 +80,50 @@ public class Curve {
 		is3D = true;
 	}
 
-	public void draw() {
+	public void draw(PGraphics g) {
 		if (is3D)
 			g.curve(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
 		else
 			g.curve(x1, y1, x2, y2, x3, y3, x4, y4);
 	}
 
-	public PVector getPoint(float _position) {
-		float x = g.curvePoint(x1, x2, x3, x4, _position);
-		float y = g.curvePoint(y1, y2, y3, y4, _position);
+	public void draw(PGraphics g, int steps) {
+		draw(g, PApplet.LINE, steps, t);
+	}
+
+	public void draw(PGraphics g, float t) {
+		draw(g, PApplet.LINE, steps, t);
+	}
+
+	public void draw(PGraphics g, int steps, float t) {
+		draw(g, PApplet.LINE, steps, t);
+	}
+
+	public void draw(PGraphics g, int mode, int steps, float t) {
+		int pointCount = PApplet.floor(100 * steps * t);
+
+		if (mode == PApplet.LINE)
+			g.beginShape();
+		else
+			g.beginShape(mode);
+
+		for (int i = 0; i <= pointCount; i += steps) {
+			PVector p1 = getPointAt((float) i / 100);
+
+			if (is3D)
+				g.vertex(p1.x, p1.y, p1.z);
+			else
+				g.vertex(p1.x, p1.y);
+		}
+		g.endShape();
+	}
+
+	public PVector getPointAt(float t) {
+		float x = g.curvePoint(x1, x2, x3, x4, t);
+		float y = g.curvePoint(y1, y2, y3, y4, t);
 
 		if (is3D) {
-			float z = g.curvePoint(z1, z2, z3, z4, _position);
+			float z = g.curvePoint(z1, z2, z3, z4, t);
 			return new PVector(x, y, z);
 		} else
 			return new PVector(x, y);

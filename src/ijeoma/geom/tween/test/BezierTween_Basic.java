@@ -56,7 +56,7 @@ public class BezierTween_Basic extends PApplet {
 
 		noFill();
 
-		bt.getBezier().draw();
+		bt.getBezier().draw(g);
 
 		fill(0);
 		ellipse(bt.getX(), bt.getY(), 10, 10);

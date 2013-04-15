@@ -28,8 +28,8 @@
 package ijeoma.motion.tween.test;
 
 import ijeoma.geom.Path;
-import ijeoma.geom.tween.PathTween;
 import ijeoma.motion.Motion;
+import ijeoma.motion.tween.Tween;
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -37,7 +37,7 @@ public class Path3DTween_Box_2 extends PApplet {
 	PVector[] points;
 
 	Path p;
-	PathTween tp;
+	Tween t;
 
 	int HALF_SIZE = 100;
 	float[][] path = { { HALF_SIZE, HALF_SIZE, HALF_SIZE },
@@ -62,9 +62,9 @@ public class Path3DTween_Box_2 extends PApplet {
 
 		Motion.setup(this);
 
-		tp = new PathTween(p, 0f, 1f, 300f);
-		tp.repeat();
-		tp.play();
+		t = new Tween(100f).addPath(p, 1f);
+		t.repeat();
+		t.play();
 	}
 
 	@Override
@@ -75,19 +75,20 @@ public class Path3DTween_Box_2 extends PApplet {
 		rotateY(frameCount / 100.0f);
 		rotateX(2.0f);
 		rotateZ(frameCount / 200.0f);
- 
+
 		noFill();
 		stroke(200);
 		box(HALF_SIZE * 2);
- 
+
 		noFill();
 		stroke(100);
 		beginShape();
-		p.drawLine(g);
+		p.draw(g);
 		endShape();
- 
+
 		fill(0);
-		translate(tp.getX(), tp.getY(), tp.getZ());
+		PVector v = p.get();
+		translate(v.x, v.y, v.z);
 
 		// The above can also be written as
 		// PVector pathPoint = tp.getPoint();
@@ -107,6 +108,6 @@ public class Path3DTween_Box_2 extends PApplet {
 		else if (key == '4')
 			p.setMode(Path.HERMITE);
 		else
-			tp.play();
+			t.play();
 	}
 }

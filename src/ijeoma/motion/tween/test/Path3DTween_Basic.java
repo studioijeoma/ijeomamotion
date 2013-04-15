@@ -28,8 +28,8 @@ package ijeoma.motion.tween.test;
  */
 
 import ijeoma.geom.Path;
-import ijeoma.geom.tween.PathTween;
 import ijeoma.motion.Motion;
+import ijeoma.motion.tween.Tween;
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -41,7 +41,7 @@ public class Path3DTween_Basic extends PApplet {
 
 	Path p;
 
-	PathTween tp;
+	Tween tp;
 
 	@Override
 	public void setup() {
@@ -78,7 +78,7 @@ public class Path3DTween_Basic extends PApplet {
 
 		// TweenPath(String _name, Path _path, float _begin,
 		// float _end, float _duration)
-		tp = new PathTween(p, 0f, 1f, 300f);
+		tp = new Tween(300f).addPath(p, 1f);
 		tp.repeat();
 		tp.play();
 	}
@@ -91,10 +91,11 @@ public class Path3DTween_Basic extends PApplet {
 		translate(0, height / 2, 0);
 		noFill();
 		stroke(0);
-		p.drawLine(g);
+		p.draw(g);
 
 		pushMatrix();
-		translate(tp.getX(), tp.getY(), tp.getZ());
+		PVector v = p.get();
+		translate(v.x, v.y, v.z);
 		noStroke();
 		fill(255, 0, 0);
 		sphere(5);

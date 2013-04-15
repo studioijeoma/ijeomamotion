@@ -190,7 +190,7 @@ public class CurveTween extends Tween { // implements Comparable {
 	}
 
 	public PVector getPoint() {
-		return curve.getPoint(getPosition());
+		return curve.getPointAt(getPosition());
 	}
 
 	public float getX() {

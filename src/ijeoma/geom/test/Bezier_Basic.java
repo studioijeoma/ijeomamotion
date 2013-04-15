@@ -28,6 +28,7 @@
 package ijeoma.geom.test;
 
 import ijeoma.geom.Bezier;
+import ijeoma.motion.Motion;
 import processing.core.PApplet;
 
 public class Bezier_Basic extends PApplet {
@@ -39,7 +40,8 @@ public class Bezier_Basic extends PApplet {
 		size(100, 100);
 		smooth();
 
-		b = new Bezier (g, 85, 20, 10, 10, 90, 90, 15, 80);
+		Motion.setup(this);
+		b = new Bezier(g, 85, 20, 10, 10, 90, 90, 15, 80);
 	}
 
 	@Override
@@ -47,6 +49,6 @@ public class Bezier_Basic extends PApplet {
 		background(255);
 
 		noFill();
-		b.draw();
+		b.draw(g,10,1);
 	}
 }

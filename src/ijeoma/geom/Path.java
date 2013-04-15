@@ -43,7 +43,10 @@ public class Path {
 	protected float segmentPosition = 0;
 	protected float segmentPositionRange = 0;
 
-	protected int steps = 1;
+	public float[] segmentLengths;
+
+	protected int step = 5;
+	protected float t = 1;
 
 	protected float tension = 0;
 	protected float bias = 0;
@@ -90,32 +93,36 @@ public class Path {
 	}
 
 	public void draw(PGraphics g) {
-		draw(g, PApplet.LINE, steps, 1);
+		draw(g, PApplet.LINES, t);
+	}
+
+	public void draw(PGraphics g, int mode) {
+		draw(g, mode, t);
 	}
 
 	public void draw(PGraphics g, float t) {
-		draw(g, PApplet.LINE, steps, t);
+		this.t = t;
+		draw(g, PApplet.LINES, t);
 	}
 
-	public void draw(PGraphics g, int steps, float t) {
-		draw(g, PApplet.LINE, steps, t);
-	}
+	public void draw(PGraphics g, int mode, float t) {
+		if (!computed)
+			compute();
 
-	public void draw(PGraphics g, int mode, int steps, float t) {
-		int pointCount = (int) (points.size() * steps * t);
+		int pointCount = (int) (points.size() * step * t);
 
-		if (mode == PApplet.LINE)
-			g.beginShape();
-		else
-			g.beginShape(mode);
+		g.beginShape(mode);
+		for (int i = 1; i <= pointCount; i++) {
+			PVector p1 = getPointAt((float) (i - 1) / (points.size() * step));
+			PVector p2 = getPointAt((float) i / (points.size() * step));
 
-		for (int i = 0; i <= pointCount; i += steps) {
-			PVector p1 = getPointAt((float) i / pointCount);
-
-			if (is3D)
+			if (is3D) {
 				g.vertex(p1.x, p1.y, p1.z);
-			else
+				g.vertex(p2.x, p2.y, p2.z);
+			} else {
 				g.vertex(p1.x, p1.y);
+				g.vertex(p2.x, p2.y);
+			}
 		}
 		g.endShape();
 	}
@@ -125,9 +132,13 @@ public class Path {
 	}
 
 	public Path add(PVector point) {
+		computed = false;
+
 		points.add(point);
 
-		segmentPositionRange = (1f / (points.size() - 1));
+		segmentPositionRange = 1f / (points.size() - 1);
+
+		compute();
 
 		return this;
 	}
@@ -137,19 +148,31 @@ public class Path {
 
 		segmentPositionRange = (1f / (this.points.size() - 1));
 
+		compute();
+
 		return this;
 	}
 
-	public Path add(List<PVector> pointList) {
+	public Path addAll(List<PVector> pointList) {
+		computed = false;
+
 		points.addAll(pointList);
 
 		segmentPositionRange = (1f / (points.size() - 1));
+
+		compute();
 
 		return this;
 	}
 
 	public void removeAll() {
+		length = 0;
+
 		points.clear();
+	}
+
+	public PVector get() {
+		return getPointAt(t);
 	}
 
 	public PVector get(int index) {
@@ -157,10 +180,10 @@ public class Path {
 	}
 
 	public PVector getPointAt(float position) {
-		PVector point = new PVector();
+		// if (!computed)
+		// compute();
 
-		if (!computed)
-			compute();
+		PVector point = new PVector();
 
 		if (position < 1) {
 			segmentPointIndex = PApplet.floor((points.size() - 1) * position);
@@ -257,8 +280,119 @@ public class Path {
 		return points;
 	}
 
+	public List<PVector> getPointList(int step) {
+		return getPointList(step, t);
+	}
+
+	public List<PVector> getPointList(int step, float t) {
+		float[] psegmentLengths = segmentLengths;
+		float plength = length;
+		int pstep = step;
+
+		this.step = step;
+
+		compute();
+
+		List<PVector> steppedPoints = new ArrayList<PVector>();
+
+		float delta = step / length;
+		int j = 1;
+		int pointCount = (int) (points.size() * step * t);
+
+		if (pointCount > 1) {
+			for (float t1 = 0; t1 < 1.0; t1 += delta) {
+				float t2 = t1 * length;
+
+				while (t2 > segmentLengths[j])
+					j++;
+
+				PVector p1 = getPointAt((float) (j - 1)
+						/ (points.size() * step));
+				PVector p2 = getPointAt((float) j / (points.size() * step));
+
+				float t3 = (float) ((t2 - segmentLengths[j - 1]) / (segmentLengths[j] - segmentLengths[j - 1]));
+				PVector p3 = PVector.lerp(p1, p2, t3);
+
+				steppedPoints.add(p3);
+			}
+		}
+
+		segmentLengths = psegmentLengths;
+		length = plength;
+		this.step = pstep;
+
+		return steppedPoints;
+	}
+
 	public int getPointCount() {
 		return points.size();
+	}
+
+	public Path setPosition(float t) {
+		this.t = t;
+		return this;
+	}
+
+	public float getPosition() {
+		return t;
+	}
+
+	public Path setStep(int step) {
+		this.step = step;
+		return this;
+	}
+
+	public float getStep() {
+		return step;
+	}
+
+	public int getSegmentCount() {
+		return segmentLengths.length;
+	}
+
+	public int getSegmentIndex() {
+		return segmentIndex;
+	}
+
+	public int getSegmentPointIndex() {
+		return segmentPointIndex;
+	}
+
+	public float getSegmentPosition() {
+		return segmentPosition;
+	}
+
+	public float getLength() {
+		return length;
+	}
+
+	public Path setTension(float tension) {
+		this.tension = tension;
+		return this;
+	}
+
+	public float getTension() {
+		return tension;
+	}
+
+	public Path setBias(float bias) {
+		this.bias = bias;
+		return this;
+	}
+
+	public float getBias() {
+		return bias;
+	}
+
+	public Path setMode(String mode) {
+		computed = false;
+
+		this.mode = mode;
+		return this;
+	}
+
+	public String getMode() {
+		return mode;
 	}
 
 	public Path simplify(float tolerance) {
@@ -283,79 +417,62 @@ public class Path {
 	}
 
 	public void computeLength() {
-		length = 0;
+		if (points.size() > 1) {
+			int pointCount = (int) (points.size() * step * t);
 
-		for (int i = 0; i < points.size() - 1; i++) {
-			PVector d1 = points.get(i);
-			PVector d2 = points.get(i + 1);
+			length = 0;
+			segmentLengths = new float[pointCount];
 
-			length += PApplet.dist(d1.x, d1.y, d2.x, d2.y);
+			for (int i = 1; i < pointCount; i++) {
+				PVector p1 = getPointAt((float) (i - 1)
+						/ (points.size() * step));
+				PVector p2 = getPointAt((float) i / (points.size() * step));
+
+				length += PVector.dist(p1, p2);
+				segmentLengths[i] = length;
+			}
 		}
 	}
 
-	public void setTension(float tension) {
-		this.tension = tension;
+	public float getLengthToSegment(PVector p1, PVector p2, PVector p3) {
+		final float xDelta = p2.x - p1.x;
+		final float yDelta = p2.y - p1.y;
+
+		// if ((xDelta == 0) && (yDelta == 0)) {
+		// throw new IllegalArgumentException(
+		// "p1 and p2 cannot be the same point");
+		// println(p1 + " and " + p2 + " cannot be the same point");
+		// }
+
+		final float u = ((p3.x - p1.x) * xDelta + (p3.y - p1.y) * yDelta)
+				/ (xDelta * xDelta + yDelta * yDelta);
+
+		final PVector closestPoint;
+
+		if (u < 0) {
+			closestPoint = p1;
+		} else if (u > 1) {
+			closestPoint = p2;
+		} else {
+			closestPoint = new PVector(p1.x + u * xDelta, p1.y + u * yDelta);
+		}
+
+		return closestPoint.dist(p3);
 	}
 
-	public float getTension() {
-		return tension;
+	boolean contains(PVector p) {
+		boolean c = false;
+
+		for (int i = 0; i < points.size() - 1; i++) {
+			PVector v1 = points.get(i);
+			PVector v2 = points.get(i + 1);
+			float d = getLengthToSegment(v1, v2, p);
+			if (d < 5) {
+				c = true;
+				continue;
+			}
+		}
+
+		return c;
 	}
-
-	public Path setBias(float bias) {
-		this.bias = bias;
-		return this;
-	}
-
-	public float getBias() {
-		return bias;
-	}
-
-	public Path setMode(String mode) {
-		this.mode = mode;
-		return this;
-	}
-
-	public int getSegmentIndex() {
-		return segmentIndex;
-	}
-
-	public int getSegmentPointIndex() {
-		return segmentPointIndex;
-	}
-
-	public float getSegmentPosition() {
-		return segmentPosition;
-	}
-
-	public float getLength() {
-		return length;
-	}
-
-	// public float getHeading2DAt(float t) {
-	// // var angle = Math.atan2(vectorA.y - vectorB.y, vectorA.x - vectorB.x)
-	// // var angle = Math.atan2(vectorA.y - vectorB.y, vectorA.x - vectorB.x)
-	// return 0;
-	// }
-	//
-	// public float getHeadingAt(float t) {
-	// // // Make up two vectors
-	// // PVector v1 = new PVector(5, -20, -14);
-	// // PVector v2 = new PVector(-1, 3, 2);
-	// //
-	// // // Store some information about them for below
-	// // float dot = v1.dot(v2);
-	// // float lengthA = v1.;
-	// // float lengthB = v2.;
-	// //
-	// // // Now to find the angle
-	// // float theta = acos( dot / (lengthA * lengthB) ); // Theta = 3.06
-	// // radians or 175.87 degrees
-	// //
-	// // return theta;
-	// return 0;
-	// }
-
-	// public float[] getBounds() {
-	// return float[] {};//pointMin.x, pointMin.y, width,height}
-	// }
 }

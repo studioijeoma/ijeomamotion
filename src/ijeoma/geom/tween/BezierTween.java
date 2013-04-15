@@ -176,7 +176,7 @@ public class BezierTween extends Tween { // implements Comparable {
 	}
 	
 	public PVector getPoint() {
-		return bezier.getPoint(getPosition());
+		return bezier.getPointAt(getPosition());
 	}
 
 	public float getX() {
