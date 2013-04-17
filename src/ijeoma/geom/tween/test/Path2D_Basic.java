@@ -61,7 +61,7 @@ public class Path2D_Basic extends PApplet {
 
 		p.add(x, random(200, 400));
 
-		// t = new Tween(200).addPath(p, 1).play();
+		t = new Tween(200).addPath(p, 1).play();
 	}
 
 	@Override
@@ -80,7 +80,8 @@ public class Path2D_Basic extends PApplet {
 		fill(0, 0, 255);
 		int c1 = color(255, 0, 0);
 		int c2 = color(0, 255, 0);
-		List<PVector> points = p.getPointList(10, (float) mouseX / width);
+		// List<PVector> points = p.getPointList(10, (float) mouseX / width);
+		List<PVector> points = p.getUniformPointList(10);
 		//
 		strokeWeight(3);
 		beginShape(POINTS);

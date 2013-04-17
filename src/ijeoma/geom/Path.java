@@ -40,8 +40,8 @@ import processing.core.PVector;
 public class Path {
 	protected int segmentIndex = 0;
 	protected int segmentPointIndex = 0;
-	protected float segmentPosition = 0;
-	protected float segmentPositionRange = 0;
+	protected float segmentT = 0;
+	protected float segmentTRange = 0;
 
 	public float[] segmentLengths;
 
@@ -55,7 +55,7 @@ public class Path {
 
 	protected float length = 0;
 
-	boolean computed = false;
+	protected boolean computed = false;
 
 	public static String LINEAR = "linear";
 	public static String COSINE = "cosine";
@@ -64,9 +64,9 @@ public class Path {
 
 	protected String mode = LINEAR;
 
-	boolean visible = true;
+	protected boolean visible = true;
 
-	boolean is3D = false;
+	protected boolean is3D = false;
 
 	public Path() {
 	}
@@ -149,7 +149,7 @@ public class Path {
 
 		points.add(point);
 
-		segmentPositionRange = 1f / (points.size() - 1);
+		segmentTRange = 1f / (points.size() - 1);
 
 		// compute();
 
@@ -161,7 +161,7 @@ public class Path {
 
 		this.points.addAll(new ArrayList<PVector>(Arrays.asList(points)));
 
-		segmentPositionRange = (1f / (this.points.size() - 1));
+		segmentTRange = (1f / (this.points.size() - 1));
 
 		// compute();
 
@@ -173,7 +173,7 @@ public class Path {
 
 		points.addAll(pointList);
 
-		segmentPositionRange = (1f / (points.size() - 1));
+		segmentTRange = (1f / (points.size() - 1));
 
 		// compute();
 
@@ -199,11 +199,11 @@ public class Path {
 
 		if (position < 1) {
 			segmentPointIndex = PApplet.floor((points.size() - 1) * position);
-			segmentPosition = PApplet.map((position % segmentPositionRange), 0,
-					segmentPositionRange, 0, 1);
+			segmentT = PApplet.map((position % segmentTRange), 0,
+					segmentTRange, 0, 1);
 		} else {
 			segmentPointIndex = (points.size() - 2);
-			segmentPosition = 1;
+			segmentT = 1;
 		}
 
 		PVector v1, v2, v3, v4;
@@ -234,31 +234,28 @@ public class Path {
 		}
 
 		if (mode.equals(LINEAR)) {
-			point.x = Interpolator.linear(v2.x, v3.x, segmentPosition);
-			point.y = Interpolator.linear(v2.y, v3.y, segmentPosition);
+			point.x = Interpolator.linear(v2.x, v3.x, segmentT);
+			point.y = Interpolator.linear(v2.y, v3.y, segmentT);
 			if (is3D)
-				point.z = Interpolator.linear(v2.z, v3.z, segmentPosition);
+				point.z = Interpolator.linear(v2.z, v3.z, segmentT);
 		} else if (mode.equals(COSINE)) {
-			point.x = Interpolator.cosine(v2.x, v3.x, segmentPosition);
-			point.y = Interpolator.cosine(v2.y, v3.y, segmentPosition);
+			point.x = Interpolator.cosine(v2.x, v3.x, segmentT);
+			point.y = Interpolator.cosine(v2.y, v3.y, segmentT);
 			if (is3D)
-				point.z = Interpolator.cosine(v2.z, v3.z, segmentPosition);
+				point.z = Interpolator.cosine(v2.z, v3.z, segmentT);
 		} else if (mode.equals(CUBIC)) {
-			point.x = Interpolator.cubic(v1.x, v2.x, v3.x, v4.x,
-					segmentPosition);
-			point.y = Interpolator.cubic(v1.y, v2.y, v3.y, v4.y,
-					segmentPosition);
+			point.x = Interpolator.cubic(v1.x, v2.x, v3.x, v4.x, segmentT);
+			point.y = Interpolator.cubic(v1.y, v2.y, v3.y, v4.y, segmentT);
 			if (is3D)
-				point.z = Interpolator.cubic(v1.z, v2.z, v3.z, v4.z,
-						segmentPosition);
+				point.z = Interpolator.cubic(v1.z, v2.z, v3.z, v4.z, segmentT);
 		} else if (mode.equals(HERMITE)) {
-			point.x = Interpolator.hermite(v1.x, v2.x, v3.x, v4.x,
-					segmentPosition, tension, bias);
-			point.y = Interpolator.hermite(v1.y, v2.y, v3.y, v4.y,
-					segmentPosition, tension, bias);
+			point.x = Interpolator.hermite(v1.x, v2.x, v3.x, v4.x, segmentT,
+					tension, bias);
+			point.y = Interpolator.hermite(v1.y, v2.y, v3.y, v4.y, segmentT,
+					tension, bias);
 			if (is3D)
 				point.z = Interpolator.hermite(v1.z, v2.z, v3.z, v4.z,
-						segmentPosition, tension, bias);
+						segmentT, tension, bias);
 		}
 
 		return point;
@@ -306,7 +303,7 @@ public class Path {
 				break;
 			}
 
-		segmentPositionRange = (1f / (points.size() - 1));
+		segmentTRange = (1f / (points.size() - 1));
 
 		// compute();
 
@@ -321,11 +318,11 @@ public class Path {
 		return points;
 	}
 
-	public List<PVector> getPointList(int step) {
-		return getPointList(step, t);
+	public List<PVector> getUniformPointList(int step) {
+		return getUniformPointList(step, t);
 	}
 
-	public List<PVector> getPointList(int step, float t) {
+	public List<PVector> getUniformPointList(int step, float t) {
 		if (!computed)
 			compute();
 
@@ -375,6 +372,42 @@ public class Path {
 		return steppedPoints;
 	}
 
+	public void toUniform(int step) {
+		// if (this.step != step) {
+		this.step = step;
+
+		computeLength();
+		// }
+
+		List<PVector> steppedPoints = new ArrayList<PVector>();
+
+		float delta = step / length;
+		int j = 1;
+		int pointCount = (int) (points.size() * step * t);
+
+		if (pointCount > 1) {
+			for (float t1 = 0; t1 < 1.0; t1 += delta) {
+				float t2 = t1 * length;
+
+				while (t2 > segmentLengths[j])
+					j++;
+
+				PVector p1 = getPointAt((float) (j - 1)
+						/ (points.size() * step));
+				PVector p2 = getPointAt((float) j / (points.size() * step));
+
+				float t3 = (float) ((t2 - segmentLengths[j - 1]) / (segmentLengths[j] - segmentLengths[j - 1]));
+				PVector p3 = PVector.lerp(p1, p2, t3);
+
+				steppedPoints.add(p3);
+			}
+		}
+
+		points = (ArrayList<PVector>) steppedPoints;
+
+		computeLength();
+	}
+
 	public int getPointCount() {
 		return points.size();
 	}
@@ -410,7 +443,7 @@ public class Path {
 	}
 
 	public float getSegmentPosition() {
-		return segmentPosition;
+		return segmentT;
 	}
 
 	public float getLength() {

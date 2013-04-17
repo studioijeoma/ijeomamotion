@@ -88,7 +88,7 @@ public class Path2D_Basic extends PApplet {
 		fill(0, 0, 255);
 		int c1 = color(255, 0, 0);
 		int c2 = color(0, 255, 0);
-		List<PVector> points = path.getPointList(5);
+		List<PVector> points = path.getUniformPointList(5);
 
 		strokeWeight(3);
 		beginShape(LINES);
