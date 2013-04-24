@@ -28,6 +28,7 @@
 package ijeoma.geom;
 
 import ijeoma.math.Interpolator;
+import ijeoma.motion.Motion;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -66,7 +67,7 @@ public class Path {
 
 	protected boolean visible = true;
 
-	protected boolean is3D = false;
+	protected boolean is3D = Motion.getParent().isGL();
 
 	public Path() {
 	}
@@ -297,11 +298,11 @@ public class Path {
 
 		points = new ArrayList<PVector>(points);
 
-		for (PVector p : points)
-			if (p.z != 0) {
-				is3D = true;
-				break;
-			}
+		// for (PVector p : points)
+		// if (p.z != 0) {
+		// is3D = true;
+		// break;
+		// }
 
 		segmentTRange = (1f / (points.size() - 1));
 
@@ -373,11 +374,11 @@ public class Path {
 	}
 
 	public void toUniform(int step) {
-		// if (this.step != step) {
-		this.step = step;
+		if (this.step != step) {
 
-		computeLength();
-		// }
+			computeLength();
+			this.step = step;
+		}
 
 		List<PVector> steppedPoints = new ArrayList<PVector>();
 
@@ -389,7 +390,7 @@ public class Path {
 			for (float t1 = 0; t1 < 1.0; t1 += delta) {
 				float t2 = t1 * length;
 
-				while (t2 > segmentLengths[j])
+				while (t2 >= segmentLengths[j])
 					j++;
 
 				PVector p1 = getPointAt((float) (j - 1)

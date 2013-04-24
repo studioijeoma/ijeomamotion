@@ -37,7 +37,7 @@ public class Curve {
 	float x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4;
 	int steps = 1;
 	float t = 1;
-	boolean is3D = false;
+	boolean is3D = Motion.getParent().isGL();
 
 	public Curve(float _x1, float _y1, float _x2, float _y2, float _x3,
 			float _y3, float _x4, float _y4) {

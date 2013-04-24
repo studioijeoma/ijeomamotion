@@ -37,7 +37,7 @@ public class Bezier {
 	float x1, y1, z1, cx1, cy1, cz1, cx2, cy2, cz2, x2, y2, z2;
 	int steps = 1;
 	float t = 1;
-	boolean is3D = false;
+	boolean is3D = Motion.getParent().isGL();
 
 	public Bezier(PGraphics _g, float _x1, float _y1, float _cx1, float _cy1,
 			float _cx2, float _cy2, float _x2, float _y2) {
