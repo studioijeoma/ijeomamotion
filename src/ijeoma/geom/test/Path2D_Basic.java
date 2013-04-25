@@ -50,13 +50,13 @@ public class Path2D_Basic extends PApplet {
 		float x = 0;
 
 		while (x < width) {
-			path.add(x, random(250, 400));
+			path.add(x, random(250, 400), 0);
 			// path.add(x, height / 2);
 
 			x += 50;// random(25, 50);
 		}
 
-		path.add(width, random(200, 400));
+		path.add(width, random(200, 400), 0);
 		// println("path1.getCount() = " + path1.getPointCount());
 
 		// path2 = new Path(path1.getPoints());

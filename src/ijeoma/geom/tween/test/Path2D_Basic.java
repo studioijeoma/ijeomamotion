@@ -55,11 +55,11 @@ public class Path2D_Basic extends PApplet {
 		float x = 0;
 
 		while (x < width) {
-			p.add(x, random(200, 400));
+			p.add(x, random(200, 400), 0);
 			x += 50;
 		}
 
-		p.add(x, random(200, 400));
+		p.add(x, random(200, 400), 0);
 
 		t = new Tween(200).addPath(p, 1).play();
 	}

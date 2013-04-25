@@ -1,9 +1,7 @@
 package ijeoma.geom.test;
 
-import processing.core.PApplet;
-import processing.core.PShape;
-import processing.core.PVector;
-import ijeoma.geom.SVGPath;
+import ijeoma.geom.*;
+import processing.core.*;
 
 ///**
 // * ##library.name##
@@ -32,9 +30,9 @@ import ijeoma.geom.SVGPath;
 // * @version     ##library.prettyVersion## (##library.version##)
 // */
 
-public class SVGPath2D_Basic extends PApplet {
+public class SVGPath_Basic extends PApplet {
 
-	PShape s;
+	PShape letterGestures;
 	SVGPath p;
 
 	@Override
@@ -42,15 +40,18 @@ public class SVGPath2D_Basic extends PApplet {
 		size(800, 600);
 		smooth();
 
-		s = loadShape(dataPath("cloud.svg"));
+		// s = loadShape(("s.svg"));
+		// s = loadShape(dataPath("cloud.svg"));
+		letterGestures = loadShape("LETTERS2.svg");
 
-		// PShape path = s.getChild(0);
-		//
-		// p = new SVGPath(g, path);
+		PShape path = letterGestures.getChild(0);
+
+		p = new SVGPath(g, path);
 	}
 
 	@Override
 	public void draw() {
+		shape(letterGestures);
 		// background(255);
 		//
 		// stroke(0);
