@@ -141,8 +141,8 @@ public class Path {
 		visible = false;
 	}
 
-	public Path add(float x, float y) {
-		return add(new PVector(x, y));
+	public Path add(float x, float y, float z) {
+		return add(new PVector(x, y, z));
 	}
 
 	public Path add(PVector point) {
