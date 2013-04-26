@@ -207,7 +207,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	public void updateCalls() {
 		for (Callback c : calls)
 			if (getTime() > c.getTime()) {
-				if (!c.hasInvoked())
+				if (!c.hasInvoked() || c.getTime() < 0)
 					c.invoke();
 			} else
 				c.noInvoke();
@@ -559,6 +559,10 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 	public Motion onEnd(Object object, String name) {
 		return addCall(new Callback(this, object, name, duration));
+	}
+
+	public Motion onChange(Object object, String name) {
+		return addCall(new Callback(this, object, name, -1));
 	}
 
 	public Motion addCall(Callback call) {

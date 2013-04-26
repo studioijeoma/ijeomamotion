@@ -49,9 +49,19 @@ public class Callback {
 		time = methodTime;
 	}
 
+	public Callback(Motion parent, Object methodObject, String methodName) {
+		setup(parent, methodObject, methodName);
+		time = -1;
+	}
+
 	public Callback(Object methodObject, String methodName, float methodTime) {
 		setup(null, methodObject, methodName);
 		time = methodTime;
+	}
+
+	public Callback(Object methodObject, String methodName) {
+		setup(null, methodObject, methodName);
+		time = -1;
 	}
 
 	public void setup(Motion motionObject, Object methodObject,
