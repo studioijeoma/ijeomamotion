@@ -1,6 +1,7 @@
 package ijeoma.geom.test;
 
 import ijeoma.geom.*;
+import ijeoma.motion.Motion;
 import processing.core.*;
 
 ///**
@@ -32,7 +33,7 @@ import processing.core.*;
 
 public class SVGPath_Basic extends PApplet {
 
-	PShape letterGestures;
+	PShape svg;
 	SVGPath p;
 
 	@Override
@@ -41,24 +42,30 @@ public class SVGPath_Basic extends PApplet {
 		smooth();
 
 		// s = loadShape(("s.svg"));
-		// s = loadShape(dataPath("cloud.svg"));
-		letterGestures = loadShape("LETTERS2.svg");
+		svg = loadShape("Cloud.svg");
+		//  
 
-		PShape path = letterGestures.getChild(0);
+		PShape path = svg;
 
-		p = new SVGPath(g, path);
+		Motion.setup(this);
+		p = new SVGPath(svg);
 	}
 
 	@Override
 	public void draw() {
-		shape(letterGestures);
-		// background(255);
+		// shape(letterGestures);
+		background(255);
 		//
-		// stroke(0);
-		// noFill();
-		// p.draw();
+		float t = (float) mouseX / width;
+
+		stroke(0);
+		noFill();
+		p.draw(g, t);
+
+		// p.setPosition(t);
 		//
-		// PVector v = p.getPoint((float) mouseX / width);
+		PVector v = p.getPointAt((float) mouseX / width);
+		// println(v);
 		//
 		// fill(255, 0, 0);
 		// ellipse(v.x, v.y, 10, 10);

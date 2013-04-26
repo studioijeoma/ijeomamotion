@@ -37,27 +37,42 @@ public class SVGPath extends Path {
 	PApplet parent;
 	PShape svg;
 
-	int segmentIndex = 0;
-	int segmentVertexIndex = 0;
-	float segmentPosition = 0;
-	float segmentPositionRange = 0;
-
-	PVector point = new PVector();
-
 	public SVGPath(PShape svg) {
 		super();
 
 		this.parent = Motion.getParent();
 		this.svg = svg;
 
-		segmentPositionRange = (1.0f / (svg.getVertexCount() - 1));
+		segmentTRange = (1.0f / (svg.getVertexCount() - 1));
 	}
 
-	public void draw(PGraphics g) {
-		g.shape(svg);
+	public void draw(PGraphics g, int mode, float t) {
+		if (visible) {
+			if (!computed)
+				compute();
+
+			int pointCount = (int) (svg.getVertexCount() * step * t);
+
+			g.beginShape(mode);
+			for (int i = 1; i <= pointCount; i++) {
+				PVector p1 = getPointAt((float) (i - 1)
+						/ (svg.getVertexCount() * step));
+				PVector p2 = getPointAt((float) i
+						/ (svg.getVertexCount() * step));
+
+				if (is3D) {
+					g.vertex(p1.x, p1.y, p1.z);
+					g.vertex(p2.x, p2.y, p2.z);
+				} else {
+					g.vertex(p1.x, p1.y);
+					g.vertex(p2.x, p2.y);
+				}
+			}
+			g.endShape();
+		}
 	}
 
-	public PVector getPoint(float position) {
+	public PVector getPointAt(float position) {
 		// Paths might be empty (go figure)
 		// http://dev.processing.org/bugs/show_bug.cgi?id=982
 		// if (path.vertices == null) return;
@@ -65,106 +80,69 @@ public class SVGPath extends Path {
 		PVector point = new PVector();
 
 		if (position < 1) {
-			segmentPointIndex = PApplet.floor((points.size() - 1) * position);
+			segmentPointIndex = PApplet.floor((svg.getVertexCount() - 1)
+					* position);
 			segmentT = PApplet.map((position % segmentTRange), 0,
 					segmentTRange, 0, 1);
 		} else {
-			segmentPointIndex = (points.size() - 2);
+			segmentPointIndex = (svg.getVertexCount() - 2);
 			segmentT = 1;
 		}
 
-		if (svg.getVertexCodeCount() == 0) { // each point is a simple
-												// vertex
-			for (int i = 0; i < svg.getVertexCodeCount(); i++)
-//				g.vertex(svg.getVertex(i).x, svg.getVertex(i).y);
+		if (svg.getVertexCodeCount() == 0) {
+			point.x = svg.getVertex(segmentPointIndex).x;
+			point.x = svg.getVertex(segmentPointIndex).y;
 		} else { // coded set of vertices
-			int index = 0;
+			switch (svg.getVertexCode(segmentPointIndex)) {
+			case PApplet.VERTEX:
+				point.x = PApplet.lerp(svg.getVertexX(segmentPointIndex),
+						svg.getVertexX(segmentPointIndex + 1), segmentT);
+				point.y = PApplet.lerp(svg.getVertexY(segmentPointIndex),
+						svg.getVertexY(segmentPointIndex + 1), segmentT);
+				break;
+			case PApplet.QUAD_BEZIER_VERTEX:
+				point.x = parent.g.bezierPoint(
+						svg.getVertexX(segmentPointIndex),
+						svg.getVertexX(segmentPointIndex + 1),
+						svg.getVertexX(segmentPointIndex + 2),
+						svg.getVertexX(segmentPointIndex + 2), segmentT);
 
-			for (int j = 0; j < svg.getVertexCodeCount(); j++) {
-				switch (svg.getVertexCode(j)) {
+				point.y = parent.g.bezierPoint(
+						svg.getVertexY(segmentPointIndex),
+						svg.getVertexY(segmentPointIndex + 1),
+						svg.getVertexY(segmentPointIndex + 2),
+						svg.getVertexY(segmentPointIndex + 2), segmentT);
+				break;
+			case PApplet.BEZIER_VERTEX:
+				point.x = parent.g.bezierPoint(
+						svg.getVertexX(segmentPointIndex),
+						svg.getVertexX(segmentPointIndex + 1),
+						svg.getVertexX(segmentPointIndex + 2),
+						svg.getVertexX(segmentPointIndex + 2), segmentT);
 
-				case PApplet.VERTEX:
-					// g.vertex(svg.getVertex(index).x, svg.getVertex(index).y);
-					// cx = path.getVertex(index).x;
-					// cy = path.getVertex(index).y;
+				point.y = parent.g.bezierPoint(
+						svg.getVertexY(segmentPointIndex),
+						svg.getVertexY(segmentPointIndex + 1),
+						svg.getVertexY(segmentPointIndex + 2),
+						svg.getVertexY(segmentPointIndex + 2), segmentT);
+				break;
 
-					point.x = PApplet.lerp(svg.getVertexX(segmentVertexIndex),
-							svg.getVertexX(segmentVertexIndex + 1),
-							segmentPosition);
-					point.y = PApplet.lerp(svg.getVertexY(segmentVertexIndex),
-							svg.getVertexY(segmentVertexIndex + 1),
-							segmentPosition);
-					index++;
-					break;
+			case PApplet.CURVE_VERTEX:
+				point.x = parent.g.curvePoint(
+						svg.getVertexX(segmentPointIndex),
+						svg.getVertexX(segmentPointIndex + 1),
+						svg.getVertexX(segmentPointIndex + 2),
+						svg.getVertexX(segmentPointIndex + 2), segmentT);
 
-				case PApplet.QUAD_BEZIER_VERTEX:
-					// g.quadraticVertex(svg.getVertex(index + 0).x,
-					// svg.getVertex(index + 0).y,
-					// svg.getVertex(index + 1).x,
-					// svg.getVertex(index + 1).y);
-
-					point.x = parent.g.bezierPoint(
-							svg.getVertexX(segmentVertexIndex),
-							svg.getVertexX(segmentVertexIndex + 1),
-							svg.getVertexX(segmentVertexIndex + 2),
-							svg.getVertexX(segmentVertexIndex + 2),
-							segmentPosition);
-
-					point.y = parent.g.bezierPoint(
-							svg.getVertexY(segmentVertexIndex),
-							svg.getVertexY(segmentVertexIndex + 1),
-							svg.getVertexY(segmentVertexIndex + 2),
-							svg.getVertexY(segmentVertexIndex + 2),
-							segmentPosition);
-
-					index += 2;
-					break;
-
-				case PApplet.BEZIER_VERTEX:
-					// g.bezierVertex(svg.getVertex(index + 0).x,
-					// svg.getVertex(index + 0).y,
-					// svg.getVertex(index + 1).x,
-					// svg.getVertex(index + 1).y,
-					// svg.getVertex(index + 2).x,
-					// svg.getVertex(index + 2).y);
-					point.x = parent.g.bezierPoint(
-							svg.getVertexX(segmentVertexIndex),
-							svg.getVertexX(segmentVertexIndex + 1),
-							svg.getVertexX(segmentVertexIndex + 2),
-							svg.getVertexX(segmentVertexIndex + 2),
-							segmentPosition);
-
-					point.y = parent.g.bezierPoint(
-							svg.getVertexY(segmentVertexIndex),
-							svg.getVertexY(segmentVertexIndex + 1),
-							svg.getVertexY(segmentVertexIndex + 2),
-							svg.getVertexY(segmentVertexIndex + 2),
-							segmentPosition);
-					index += 3;
-					break;
-
-				case PApplet.CURVE_VERTEX:
-					// g.curveVertex(svg.getVertex(index).x,
-					// svg.getVertex(index).y);
-					point.x = parent.g.curvePoint(
-							svg.getVertexX(segmentVertexIndex),
-							svg.getVertexX(segmentVertexIndex + 1),
-							svg.getVertexX(segmentVertexIndex + 2),
-							svg.getVertexX(segmentVertexIndex + 2),
-							segmentPosition);
-
-					point.y = parent.g.curvePoint(
-							svg.getVertexY(segmentVertexIndex),
-							svg.getVertexY(segmentVertexIndex + 1),
-							svg.getVertexY(segmentVertexIndex + 2),
-							svg.getVertexY(segmentVertexIndex + 2),
-							segmentPosition);
-					index++;
-					break;
-				}
+				point.y = parent.g.curvePoint(
+						svg.getVertexY(segmentPointIndex),
+						svg.getVertexY(segmentPointIndex + 1),
+						svg.getVertexY(segmentPointIndex + 2),
+						svg.getVertexY(segmentPointIndex + 2), segmentT);
+				break;
 			}
-			return point;
 		}
+		return point;
 	}
 }
 

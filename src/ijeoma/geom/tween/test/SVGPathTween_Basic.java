@@ -1,8 +1,8 @@
 package ijeoma.geom.tween.test;
 
 import ijeoma.geom.SVGPath;
-import ijeoma.geom.tween.SVGPathTween;
 import ijeoma.motion.Motion;
+import ijeoma.motion.tween.Tween;
 import processing.core.PApplet;
 import processing.core.PShape;
 import processing.core.PVector;
@@ -40,27 +40,23 @@ public class SVGPathTween_Basic extends PApplet {
 
 	PShape s;
 	SVGPath p;
-	SVGPathTween t;
+	Tween t;
 
 	@Override
 	public void setup() {
 		size(800, 600);
 		smooth();
 
-		s = loadShape(dataPath("Cloud.svg"));
-
-		PShape path = s.findChild("path2890");
-		// path = s.getChild(1);
-		println(path.getChildCount());
-		println(path.getVertexCount());
-		println(path.getVertexCodeCount());
-
 		Motion.setup(this);
 
-		p = new SVGPath(g, path);
-		t = new SVGPathTween(p, 0, 1, 500);
+		s = loadShape(dataPath("Cloud.svg"));
+		PShape path = s.findChild("path2890");
 
-		t.play();
+		println(path);
+
+		p = new SVGPath(path);
+
+		t = new Tween(100).addPath(p, 1).play();
 	}
 
 	@Override
@@ -69,13 +65,13 @@ public class SVGPathTween_Basic extends PApplet {
 
 		stroke(0);
 		noFill();
-		p.draw();
+		p.draw(g);
 
-		PVector v = t.getPoint();
+		PVector v = p.get();
 
 		text(v.toString(), 25, 25);
 		float position = (float) mouseX / width;
-		text(p.getPoint(position).toString() + " " + position, 25, 50);
+		text(p.getPointAt(position).toString() + " " + position, 25, 50);
 
 		fill(255, 0, 0);
 		ellipse(v.x, v.y, 10, 10);
