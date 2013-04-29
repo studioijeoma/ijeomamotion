@@ -122,6 +122,21 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		setupEvents();
 	}
 
+	public Motion(float duration, float delay, String easing) {
+		setup(name, duration, delay, easing);
+		setupEvents();
+	}
+
+	public Motion(float duration, float delay) {
+		setup(name, duration, delay, easing);
+		setupEvents();
+	}
+
+	public Motion(float duration) {
+		setup(name, duration, delay, easing);
+		setupEvents();
+	}
+
 	public Motion(String name) {
 		setup(name, duration, delay, easing);
 		setupEvents();

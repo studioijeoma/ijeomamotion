@@ -43,6 +43,14 @@ public class SVGPath extends Path {
 		this.parent = Motion.getParent();
 		this.svg = svg;
 
+//		PShape path = svg;
+//		if (svg.getVertexCount() == 0) {
+//			while (path.getVertexCount() == 0)
+//				for (int i = 0; i < path.getVertexCount(); i++) {
+//					path.getChild(i);
+//				}
+//		}
+
 		segmentTRange = (1.0f / (svg.getVertexCount() - 1));
 	}
 
