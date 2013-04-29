@@ -603,7 +603,7 @@ public class Tween extends Motion { // implements Comparable
 		return (VectorProperty) getProperty(index);
 	}
 
-	public VectorProperty getPVector(String name) {
+	public VectorProperty getVector(String name) {
 		return (VectorProperty) getProperty(name);
 	}
 

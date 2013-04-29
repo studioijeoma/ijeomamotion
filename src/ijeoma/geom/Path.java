@@ -548,6 +548,10 @@ public class Path {
 		return closestPoint.dist(p3);
 	}
 
+	public boolean isVisible() {
+		return visible;
+	}
+
 	public boolean contains(PVector p) {
 		boolean c = false;
 
