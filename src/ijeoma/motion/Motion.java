@@ -221,7 +221,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 	public void updateCalls() {
 		for (Callback c : calls)
-			if (getTime() > c.getTime()) {
+			if (time > c.getTime()) {
 				if (!c.hasInvoked() || c.getTime() < 0)
 					c.invoke();
 			} else
@@ -562,6 +562,10 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 			throw new LibraryNotInitializedException();
 
 		return parent;
+	}
+
+	public Motion call(Object object, String name) {
+		return addCall(new Callback(this, object, name, duration));
 	}
 
 	public Motion call(Object object, String name, float time) {

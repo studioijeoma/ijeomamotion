@@ -50,7 +50,8 @@ public class VectorProperty implements IProperty {
 	}
 
 	public void updateValue() {
-		vector.set(PVector.lerp(begin, end, position));
+		if ((position >= 0 && position <= 1) || (position == 0 && order == 0))
+			vector.set(PVector.lerp(begin, end, position));
 	}
 
 	@Override
@@ -67,7 +68,7 @@ public class VectorProperty implements IProperty {
 		return begin;
 	}
 
-	public void setBegin() { 
+	public void setBegin() {
 		begin = vector.get();
 		change = PVector.sub(end, begin);
 	}

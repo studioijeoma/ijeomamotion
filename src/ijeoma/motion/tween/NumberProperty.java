@@ -120,7 +120,7 @@ public class NumberProperty implements IProperty {
 
 		if (field != null)
 			try {
-				if ((position > 0 && position < 1)
+				if ((position >= 0 && position <= 1)
 						|| (position == 0 && order == 0))
 					field.setFloat(object, value);
 			} catch (IllegalArgumentException e) {

@@ -203,7 +203,9 @@ public class ColorProperty implements IProperty {
 
 		if (field != null)
 			try {
-				field.setInt(object, value);
+				if ((position >= 0 && position <= 1)
+						|| (position == 0 && order == 0))
+					field.setInt(object, value);
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {

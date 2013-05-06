@@ -357,7 +357,7 @@ public class Tween extends Motion { // implements Comparable
 	public void update() {
 		super.update();
 
-		if (isPlaying)
+//		if (isPlaying)
 			updateProperties();
 	}
 
@@ -372,7 +372,7 @@ public class Tween extends Motion { // implements Comparable
 	public void updateProperties() {
 		try {
 			for (IProperty p : properties) {
-				Object[] args = { getPosition(), 0, 1, 1 };
+				Object[] args = { getPosition(), 0f, 1f, 1f };
 				float position = ((Float) easingMethod.invoke(parent, args))
 						.floatValue();
 				p.setPosition(position);
