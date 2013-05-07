@@ -47,7 +47,7 @@ public class Sequence_Vectors extends PApplet {
 
 		s = new Sequence();
 		for (PVector p : points)
-			s.add(new Tween(50).addVector(v, p));
+			s.add(new Tween(50).addVector(this, "v", p));
 		s.play();
 	}
 

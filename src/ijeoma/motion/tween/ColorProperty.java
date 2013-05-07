@@ -44,7 +44,7 @@ public class ColorProperty implements IProperty {
 	protected int begin, end, change;
 	protected float position;
 
-	protected int value;
+	protected int value = 0;
 
 	protected int order = 0;
 
@@ -199,18 +199,18 @@ public class ColorProperty implements IProperty {
 	}
 
 	public void updateValue() {
-		value = Motion.getParent().lerpColor(begin, end, position);
+		if ((position > 0 && position <= 1) || (position == 0 && order == 0)) {
+			value = Motion.getParent().lerpColor(begin, end, position);
 
-		if (field != null)
-			try {
-				if ((position >= 0 && position <= 1)
-						|| (position == 0 && order == 0))
+			if (field != null)
+				try {
 					field.setInt(object, value);
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
+		}
 	}
 
 	public Object getObject() {

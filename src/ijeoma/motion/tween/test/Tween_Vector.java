@@ -27,8 +27,8 @@ public class Tween_Vector extends PApplet {
 
 		Motion.setup(this);
 
-		t = new Tween(100).addVector(v1, new PVector(width, height))
-				.addVector(v2, new PVector(0, height)).play();
+		t = new Tween(100).addVector(this, "v1", new PVector(width, height))
+				.addVector(this, "v2", new PVector(0, height)).play();
 
 		// The above could also be written as
 		// t = new Tween(100)

@@ -50,11 +50,11 @@ public class Ani_Sequence_Basics extends PApplet {
 
 		ts = new Sequence();
 		ts.add(new Tween(100).add(this, "diameter", 55));
-		ts.add(new Tween(100).addVector(v, new PVector(400, 100)));
-		ts.add(new Tween(100).addVector(v, new PVector(450, 400)));
-		ts.add(new Tween(100).addVector(v, new PVector(100, 450)));
-		ts.add(new Tween(100).addVector(v, new PVector(50, 50)).add(this,
-				"diameter", 5));
+		ts.add(new Tween(100).addVector(this, "v", new PVector(400, 100)));
+		ts.add(new Tween(100).addVector(this, "v", new PVector(450, 400)));
+		ts.add(new Tween(100).addVector(this, "v", new PVector(100, 450)));
+		ts.add(new Tween(100).addVector(this, "v", new PVector(50, 50)).add(
+				this, "diameter", 5));
 		ts.play();
 	}
 

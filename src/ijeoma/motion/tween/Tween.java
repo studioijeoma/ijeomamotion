@@ -357,8 +357,8 @@ public class Tween extends Motion { // implements Comparable
 	public void update() {
 		super.update();
 
-//		if (isPlaying)
-			updateProperties();
+		// if (isPlaying)
+		updateProperties();
 	}
 
 	@Override
@@ -513,6 +513,10 @@ public class Tween extends Motion { // implements Comparable
 		return add(new ColorProperty(name, begin, end));
 	}
 
+	public Tween addVector(String name, PVector begin, PVector end) {
+		return add(new VectorProperty(name, begin, end));
+	}
+
 	public Tween add(Object object, String name, float end) {
 		return add(new NumberProperty(object, name, end));
 	}
@@ -525,17 +529,13 @@ public class Tween extends Motion { // implements Comparable
 		return add(new ColorProperty(object, name, end));
 	}
 
-	public Tween addVector(PVector vector, PVector end) {
-		return add(new VectorProperty(vector, end));
+	public Tween addVector(Object object, String name, PVector end) {
+		return add(new VectorProperty(object, name, end));
 	}
 
 	public Tween addPath(Path path, float end) {
 		// return add(new PathProperty(vector, end));
 		return add(new NumberProperty(path, "t", 0f, end));
-	}
-
-	public Tween addArc(PVector vector, PVector end) {
-		return add(new ArcProperty(vector, end));
 	}
 
 	public Tween call(Object object, String method, float time) {
