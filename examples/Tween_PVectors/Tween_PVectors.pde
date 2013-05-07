@@ -19,8 +19,8 @@ public void setup() {
 
   Motion.setup(this);
 
-  t = new Tween(100).addPVector(v1, new PVector(width, height))
-    .addPVector(v2, new PVector(0, height)).play(); 
+  t = new Tween(100).addPVector(this, "v1", new PVector(width, height))
+    .addPVector(this, "v2", new PVector(0, height)).play(); 
 }
 
 public void draw() {

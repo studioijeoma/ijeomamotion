@@ -33,6 +33,7 @@ import ijeoma.motion.tween.Tween;
 import ijeoma.motion.tween.Parallel;
 import ijeoma.motion.tween.Sequence;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -73,7 +74,7 @@ public abstract class MotionController extends Motion implements
 
 	@Override
 	public MotionController play() {
-		updateChildren();
+		// updateChildren();
 
 		return (MotionController) super.play();
 	}

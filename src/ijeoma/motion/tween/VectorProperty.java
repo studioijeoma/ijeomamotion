@@ -27,31 +27,119 @@
 
 package ijeoma.motion.tween;
 
+import java.lang.reflect.Field;
+
+import processing.core.PApplet;
 import processing.core.PVector;
 
 public class VectorProperty implements IProperty {
-	protected String name = "";
-	protected PVector vector;
+	protected Object object;
+	protected Class<? extends Object> objectType;
+	protected Field field;
+	protected Class<?> fieldType;
+
+	String name = "";
+
 	protected PVector begin, end, change;
 	protected float position;
 
+	protected PVector value = new PVector();
+
 	protected int order = 0;
 
-	// public Property(String _name, float _end) {
-	// setup(_name, _end);
-	// }
+	public VectorProperty() {
 
-	public VectorProperty(PVector vector, PVector end) {
-		this.vector = vector;
+	}
 
-		this.begin = vector.get();
-		this.end = end;
-		this.position = 0;
+	public VectorProperty(Object object, String name, PVector end) {
+		setupObject(object, name);
+		setup(name, end);
+	}
+
+	public VectorProperty(Object object, String name, PVector begin, PVector end) {
+		setupObject(object, name);
+		setup(name, begin, end);
+	}
+
+	public VectorProperty(String name, PVector begin, PVector end) {
+		setup(name, begin, end);
+	}
+
+	private void setup(String name, PVector end) {
+		this.name = name;
+
+		setEnd(end);
+
+		position = 0;
+	}
+
+	private void setup(String name, PVector begin, PVector end) {
+		this.name = name;
+
+		setEnd(end);
+		setBegin(begin);
+
+		position = 0;
+	}
+
+	private void setupObject(Object propertyObject, String propertyName) {
+		object = propertyObject;
+		objectType = object.getClass();
+
+		boolean found = false;
+
+		while (objectType != null) {
+			for (Field f : objectType.getDeclaredFields())
+				if (f.getName().equals(propertyName)) {
+					fieldType = f.getType();
+					found = true;
+					break;
+				}
+
+			if (found)
+				break;
+			else
+				objectType = objectType.getSuperclass();
+		}
+
+		if (found)
+			try {
+				field = objectType.getDeclaredField(propertyName);
+
+				try {
+					field.setAccessible(true);
+				} catch (java.security.AccessControlException e) {
+					e.printStackTrace();
+				}
+			} catch (NoSuchFieldException e) {
+				e.printStackTrace();
+			}
 	}
 
 	public void updateValue() {
-		if ((position >= 0 && position <= 1) || (position == 0 && order == 0))
-			vector.set(PVector.lerp(begin, end, position));
+		// if (name.equals("pos2") && (order == 0 && position == 0))
+		// PApplet.println(position);
+
+		if ((position > 0 && position <= 1) || (position == 0 && order == 0)) {
+			value.set(PVector.lerp(begin, end, position));
+
+			if (field != null)
+				try {
+					((PVector) field.get(object)).set(value);
+
+					// if (name.equals("pos2")) {
+					// PApplet.println(((PVector) field.get(object)));
+					//
+					// if (value.x == 0 && value.y == 0 && value.z == 0)
+					// PApplet.println(((PVector) field.get(object)));
+					// }
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
 	}
 
 	@Override
@@ -60,8 +148,8 @@ public class VectorProperty implements IProperty {
 	}
 
 	@Override
-	public void setName(String name) {
-		this.name = name;
+	public void setName(String _name) {
+		name = _name;
 	}
 
 	public PVector getBegin() {
@@ -69,8 +157,14 @@ public class VectorProperty implements IProperty {
 	}
 
 	public void setBegin() {
-		begin = vector.get();
-		change = PVector.sub(end, begin);
+		try {
+			begin = ((PVector) field.get(object)).get();
+			change = PVector.sub(end, begin);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void setBegin(Object begin) {
@@ -83,10 +177,20 @@ public class VectorProperty implements IProperty {
 	}
 
 	public void setEnd(Object end) {
-		begin = vector.get();
-		this.end = (PVector) end;
+		if (field != null) {
+			try {
+				begin = ((PVector) field.get(object)).get();
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		} else
+			begin = value;
 
-		setChange(PVector.sub(this.end, begin));
+		this.end = (PVector) end;
+		change = PVector.sub(this.end, begin);
+		;
 	}
 
 	public PVector getChange() {
@@ -109,11 +213,22 @@ public class VectorProperty implements IProperty {
 	}
 
 	public PVector getValue() {
-		return vector;
+		if (field != null) {
+			try {
+				return ((PVector) field.get(object)).get();
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+				return null;
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+				return null;
+			}
+		} else
+			return value;
 	}
 
 	public Object getObject() {
-		return vector;
+		return object;
 	}
 
 	public void setOrder(int index) {
@@ -124,9 +239,10 @@ public class VectorProperty implements IProperty {
 		return order;
 	}
 
+	@Override
 	public String toString() {
-		return "PVectorParameter[name: " + getName() + ", begin: " + getBegin()
-				+ ", end: " + getEnd() + ", change: " + getChange()
-				+ ", position: " + getPosition() + "]";
+		return "NumberParameter[name: " + name + ", begin: " + begin
+				+ ", end: " + end + ", change: " + change + ", position: "
+				+ position + "]";
 	}
 }

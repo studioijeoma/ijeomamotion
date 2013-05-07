@@ -42,7 +42,7 @@ public class NumberProperty implements IProperty {
 	protected float begin, end, change;
 	protected float position;
 
-	protected float value;
+	protected float value = 0;
 
 	protected int order = 0;
 
@@ -116,18 +116,18 @@ public class NumberProperty implements IProperty {
 	}
 
 	public void updateValue() {
-		value = PApplet.lerp(begin, end, position);
+		if ((position > 0 && position <= 1) || (position == 0 && order == 0)) {
+			value = PApplet.lerp(begin, end, position);
 
-		if (field != null)
-			try {
-				if ((position >= 0 && position <= 1)
-						|| (position == 0 && order == 0))
+			if (field != null)
+				try {
 					field.setFloat(object, value);
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
+		}
 	}
 
 	@Override
