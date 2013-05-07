@@ -589,6 +589,16 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return this;
 	}
 
+	public Motion removeCall(Callback call) {
+		calls.remove(call);
+		return this;
+	}
+
+	public Motion removeAllCalls() {
+		calls.clear();
+		return this;
+	}
+
 	/**
 	 * Returns a Callback by id/index (useful if you're only controlling
 	 * Callbacks)
