@@ -16,7 +16,7 @@ public class Tween_Callback extends PApplet {
 
 		Motion.setup(this);
 
-		t = new Tween(100).add(this, "w", width).onStart("onStart")
+		t = new Tween(100).add(this, "w", width).onBegin("onStart")
 				.onEnd("onEnd").onChange(this, "onChange").play();
 	}
 

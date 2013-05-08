@@ -572,7 +572,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return addCall(new Callback(this, object, name, time));
 	}
 
-	public Motion onStart(Object object, String name) {
+	public Motion onBegin(Object object, String name) {
 		return addCall(new Callback(this, object, name, 0));
 	}
 

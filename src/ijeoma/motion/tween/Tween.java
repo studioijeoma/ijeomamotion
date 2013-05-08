@@ -562,11 +562,11 @@ public class Tween extends Motion { // implements Comparable
 		return (Tween) super.call(properties.get(0).getObject(), method, time);
 	}
 
-	public Tween onStart(Object object, String method) {
-		return (Tween) super.onStart(object, method);
+	public Tween onBegin(Object object, String method) {
+		return (Tween) super.onBegin(object, method);
 	}
 
-	public Tween onStart(String method) {
+	public Tween onBegin(String method) {
 		return (Tween) super.call(properties.get(0).getObject(), method, 0);
 	}
 
