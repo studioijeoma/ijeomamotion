@@ -355,6 +355,9 @@ public class Tween extends Motion { // implements Comparable
 
 	@Override
 	public void update() {
+		if (name.equals("t1"))
+			PApplet.println(time);
+
 		super.update();
 
 		// if (isPlaying)
@@ -363,6 +366,9 @@ public class Tween extends Motion { // implements Comparable
 
 	@Override
 	public void update(float time) {
+		if (name.equals("t1"))
+			PApplet.println(time);
+
 		super.update(time);
 
 		if (isPlaying)

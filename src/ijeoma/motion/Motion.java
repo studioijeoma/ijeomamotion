@@ -203,7 +203,15 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 				updateTime();
 				updateCalls();
 
-				if (!isInsideDelayingTime(time) && !isInsidePlayingTime(time))
+				boolean b1 = isInsideDelayingTime(time);
+				boolean b2 = isInsidePlayingTime(time);
+
+				// if (!isInsideDelayingTime(time) &&
+				// !isInsidePlayingTime(time))
+				if (name.equals("t1"))
+					PApplet.println(time);
+
+				if (!b1 && !b2)
 					stop();
 			}
 	}
@@ -546,11 +554,13 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	}
 
 	public boolean isInsideDelayingTime(float value) {
-		return (value > 0 && value <= delay);
+		return (value >=  0 && value <= delay);
+		// return (value >= 0 && value <= delay);
 	}
 
 	public boolean isInsidePlayingTime(float value) {
-		return (value > delay && value <= delay + duration);
+		return (value >= delay && value <= delay + duration);
+		// return (value > delay && value <= delay + duration);
 	}
 
 	public boolean isAbovePlayingTime(float value) {
