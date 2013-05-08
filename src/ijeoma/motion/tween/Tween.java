@@ -538,6 +538,22 @@ public class Tween extends Motion { // implements Comparable
 		return add(new NumberProperty(path, "t", 0f, end));
 	}
 
+	public Tween removeAll() {
+		properties.clear();
+		propertyMap.clear();
+
+		removeCalls();
+
+		return this;
+	}
+
+	public Tween removeCalls() {
+		calls.clear();
+		callMap.clear();
+
+		return this;
+	}
+
 	public Tween call(Object object, String method, float time) {
 		return (Tween) super.call(object, method, time);
 	}

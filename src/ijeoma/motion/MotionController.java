@@ -431,7 +431,7 @@ public abstract class MotionController extends Motion implements
 	/**
 	 * Removes Motion object
 	 */
-	public MotionController removeChild(Motion _child) {
+	public MotionController remove(Motion _child) {
 		if (_child.isTween()) {
 			tweens.remove(_child);
 			// tweenLUT.remove(_child.name);

@@ -594,8 +594,10 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return this;
 	}
 
-	public Motion removeAllCalls() {
+	public Motion removeCalls() {
 		calls.clear();
+		callMap.clear();
+
 		return this;
 	}
 
