@@ -65,10 +65,14 @@ Tween t = new Tween(100).add(this, "x", 100).addColor(this,"c", color(255)).addV
 
 ###Callbacks
 ```java
-Tween = new Tween(100).add(this, "x", 100).onStart("onStart").onEnd("onEnd").play();
+t = new Tween(100).onBegin("onBegin")
+    .onEnd("onEnd").onChange(this, "onChange").play();
 
-void onStart(){};
-void onEnd(){};
+public void onBegin(Tween t) {}
+
+public void onEnd(Tween t) {}
+
+public void onChange(Tween t) {}
 ```
 
 ##How to playback Tweens 

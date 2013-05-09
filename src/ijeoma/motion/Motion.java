@@ -229,11 +229,10 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 	public void updateCalls() {
 		for (Callback c : calls)
-			if (time > c.getTime()) {
-				if (!c.hasInvoked() || c.getTime() < 0)
-					c.invoke();
-			} else
+			if (getTime() == 0 || getTime() <= c.getTime())
 				c.noInvoke();
+			else if (!c.hasInvoked() || c.getTime() < 0)
+				c.invoke(); 
 	}
 
 	protected void updateTime() {
@@ -554,7 +553,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	}
 
 	public boolean isInsideDelayingTime(float value) {
-		return (value >=  0 && value <= delay);
+		return (value >= 0 && value <= delay);
 		// return (value >= 0 && value <= delay);
 	}
 
