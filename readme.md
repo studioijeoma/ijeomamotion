@@ -64,6 +64,7 @@ Tween t = new Tween(100).add(this, "x", 100).addColor(this,"c", color(255)).addV
 ```
 
 ###Callbacks
+You can add create callbacks using a method
 ```java
 t = new Tween(100).onBegin("onBegin")
     .onEnd("onEnd").onChange(this, "onChange").play();
@@ -73,6 +74,24 @@ public void onBegin(Tween t) {}
 public void onEnd(Tween t) {}
 
 public void onChange(Tween t) {}
+```
+You can also create callbacks using ICallback interface class
+```java
+t = new Tween(100).onBegin(new ICallback() {
+    public void run(Object t) {
+      println(t+" begin");
+    }
+  }
+  ).onEnd(new ICallback() {
+    public void run(Object t) {
+      println(t+" end");
+    }
+  } 
+  ).onChange(new ICallback() {
+    public void run(Object t) {
+      println(t+" change");
+    }
+  }).play();
 ```
 
 ##How to playback Tweens 
