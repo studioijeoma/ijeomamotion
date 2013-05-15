@@ -431,19 +431,19 @@ public abstract class MotionController extends Motion implements
 	/**
 	 * Removes Motion object
 	 */
-	public MotionController remove(Motion child) {
-		if (child.isTween()) {
-			tweens.remove(child);
+	public MotionController removeChild(Motion _child) {
+		if (_child.isTween()) {
+			tweens.remove(_child);
 			// tweenLUT.remove(_child.name);
-		} else if (child.isParallel()) {
-			parallels.remove(child);
+		} else if (_child.isParallel()) {
+			parallels.remove(_child);
 			// ParallelLUT.remove(_child.name);
-		} else if (child.isSequence()) {
-			sequences.remove(child);
+		} else if (_child.isSequence()) {
+			sequences.remove(_child);
 			// sequenceLUT.remove(_child.name);
 		}
 
-		children.remove(child);
+		children.remove(_child);
 		// childrenLUT.remove(_child.name);
 
 		return this;
@@ -452,9 +452,17 @@ public abstract class MotionController extends Motion implements
 	/**
 	 * adds multiple Motion objects
 	 */
-	public MotionController addAll(Motion[] children) {
-		for (int i = 0; i < children.length; i++)
-			add(children[i]);
+	public MotionController addAll(Motion[] _children) {
+		for (int i = 0; i < _children.length; i++)
+			add(_children[i]);
+
+		return this;
+	}
+
+	public MotionController addCall(Callback _call) {
+		calls.add(_call);
+
+		updateDuration();
 
 		return this;
 	}
@@ -479,41 +487,6 @@ public abstract class MotionController extends Motion implements
 		childrenMap.clear();
 
 		return this;
-	}
-
-	public MotionController addCall(Callback call) {
-		calls.add(call);
-
-		updateDuration();
-
-		return this;
-	}
-
-	public MotionController onBegin(Object object, String method) {
-		return (MotionController) super.onBegin(object, method);
-	}
-
-	public MotionController onBegin(String method) {
-		return (MotionController) super.call(getTween(0).getProperty(0)
-				.getObject(), method, 0);
-	}
-
-	public MotionController onEnd(Object object, String method) {
-		return (MotionController) super.onEnd(object, method);
-	}
-
-	public MotionController onEnd(String method) {
-		return (MotionController) super.call(getTween(0).getProperty(0)
-				.getObject(), method, duration);
-	}
-
-	public MotionController onChange(Object object, String method) {
-		return (MotionController) super.onChange(object, method);
-	}
-
-	public MotionController onChange(String method) {
-		return (MotionController) super.call(getTween(0).getProperty(0)
-				.getObject(), method, -1);
 	}
 
 	public void printChildren() {

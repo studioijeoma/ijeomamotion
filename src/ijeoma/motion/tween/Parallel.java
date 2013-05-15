@@ -27,7 +27,6 @@
 
 package ijeoma.motion.tween;
 
-import ijeoma.motion.Callback;
 import ijeoma.motion.Motion;
 import ijeoma.motion.MotionController;
 import ijeoma.motion.event.MotionEvent;
@@ -222,58 +221,6 @@ public class Parallel extends MotionController {
 	
 	public Parallel add(Motion _child) {
 		return (Parallel) super.add(_child);
-	}
-	 
-	/**
-	 * Removes Motion object
-	 */
-	public Parallel remove(Motion child) {
-		return (Parallel) super.remove(child);
-	}
-
-	/**
-	 * adds multiple Motion objects
-	 */
-	public Parallel addAll(Motion[] children) {
-		return (Parallel) super.addAll(children);
-	}
-
-	/**
-	 * Removes all Motion objects
-	 */
-	public Parallel removeAll() {
-		return (Parallel) super.removeAll();
-	}
-
-	public Parallel addCall(Callback call) {
-		return (Parallel) super.addCall(call);
-	}
-
-	public Parallel onBegin(Object object, String method) {
-		return (Parallel) super.onBegin(object, method);
-	}
-
-	public Parallel onBegin(String method) {
-		return (Parallel) super.call(getTween(0).getProperty(0).getObject(),
-				method, 0);
-	}
-
-	public Parallel onEnd(Object object, String method) {
-		return (Parallel) super.onEnd(object, method);
-	}
-
-	public Parallel onEnd(String method) {
-		return (Parallel) super.call(getTween(0).getProperty(0).getObject(),
-				method, duration);
-	}
-
-	public Parallel onChange(Object object, String method) {
-		return (Parallel) super.onChange(object, method);
-	}
-
-	public Parallel onChange(String method) {
-		return (Parallel) super.call(getTween(0).getProperty(0).getObject(),
-				method, -1);
 	}
 	
 	@Override

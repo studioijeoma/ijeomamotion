@@ -203,15 +203,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 				updateTime();
 				updateCalls();
 
-				boolean b1 = isInsideDelayingTime(time);
-				boolean b2 = isInsidePlayingTime(time);
-
-				// if (!isInsideDelayingTime(time) &&
-				// !isInsidePlayingTime(time))
-				if (name.equals("t1"))
-					PApplet.println(time);
-
-				if (!b1 && !b2)
+				if (!isInsideDelayingTime(time) && !isInsidePlayingTime(time))
 					stop();
 			}
 	}
@@ -229,10 +221,11 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 	public void updateCalls() {
 		for (Callback c : calls)
-			if (getTime() == 0 || getTime() <= c.getTime())
+			if (time > c.getTime()) {
+				if (!c.hasInvoked() || c.getTime() < 0)
+					c.invoke();
+			} else
 				c.noInvoke();
-			else if (!c.hasInvoked() || c.getTime() < 0)
-				c.invoke(); 
 	}
 
 	protected void updateTime() {
@@ -553,13 +546,11 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	}
 
 	public boolean isInsideDelayingTime(float value) {
-		return (value >= 0 && value <= delay);
-		// return (value >= 0 && value <= delay);
+		return (value > 0 && value <= delay);
 	}
 
 	public boolean isInsidePlayingTime(float value) {
-		return (value >= delay && value <= delay + duration);
-		// return (value > delay && value <= delay + duration);
+		return (value > delay && value <= delay + duration);
 	}
 
 	public boolean isAbovePlayingTime(float value) {
@@ -581,7 +572,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return addCall(new Callback(this, object, name, time));
 	}
 
-	public Motion onBegin(Object object, String name) {
+	public Motion onStart(Object object, String name) {
 		return addCall(new Callback(this, object, name, 0));
 	}
 
@@ -595,18 +586,6 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 	public Motion addCall(Callback call) {
 		calls.add(call);
-		return this;
-	}
-
-	public Motion removeCall(Callback call) {
-		calls.remove(call);
-		return this;
-	}
-
-	public Motion removeCalls() {
-		calls.clear();
-		callMap.clear();
-
 		return this;
 	}
 

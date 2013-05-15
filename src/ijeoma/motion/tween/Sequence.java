@@ -27,7 +27,6 @@
 
 package ijeoma.motion.tween;
 
-import ijeoma.motion.Callback;
 import ijeoma.motion.Motion;
 import ijeoma.motion.MotionController;
 import ijeoma.motion.event.MotionEvent;
@@ -238,58 +237,6 @@ public class Sequence extends MotionController {
 	}
 
 	/**
-	 * Removes Motion object
-	 */
-	public Sequence remove(Motion child) {
-		return (Sequence) super.remove(child);
-	}
-
-	/**
-	 * adds multiple Motion objects
-	 */
-	public Sequence addAll(Motion[] children) {
-		return (Sequence) super.addAll(children);
-	}
-
-	/**
-	 * Removes all Motion objects
-	 */
-	public Sequence removeAll() {
-		return (Sequence) super.removeAll();
-	}
-
-	public Sequence addCall(Callback call) {
-		return (Sequence) super.addCall(call);
-	}
-
-	public Sequence onBegin(Object object, String method) {
-		return (Sequence) super.onBegin(object, method);
-	}
-
-	public Sequence onBegin(String method) {
-		return (Sequence) super.call(getTween(0).getProperty(0).getObject(),
-				method, 0);
-	}
-
-	public Sequence onEnd(Object object, String method) {
-		return (Sequence) super.onEnd(object, method);
-	}
-
-	public Sequence onEnd(String method) {
-		return (Sequence) super.call(getTween(0).getProperty(0).getObject(),
-				method, duration);
-	}
-
-	public Sequence onChange(Object object, String method) {
-		return (Sequence) super.onChange(object, method);
-	}
-
-	public Sequence onChange(String method) {
-		return (Sequence) super.call(getTween(0).getProperty(0).getObject(),
-				method, -1);
-	}
-
-	/**
 	 * returns the current object (either Tween or TweenParallel)
 	 */
 	public Motion getChild() {
@@ -302,7 +249,7 @@ public class Sequence extends MotionController {
 	public String getChildType() {
 		return (currentChild.getClass().getSimpleName());
 	}
-
+	
 	/**
 	 * returns the current child index;
 	 */
