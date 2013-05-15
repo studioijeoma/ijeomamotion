@@ -1,9 +1,9 @@
 /**
- * ##library.name##
- * ##library.sentence##
- * ##library.url##
+ * ijeomamotion
+ * A cross-mode Processing library for sketching animations with numbers, colors vectors, beziers, curves and more. 
+ * http://ekeneijeoma.com/processing/ijeomamotion
  *
- * Copyright ##copyright## ##author##
+ * Copyright (C) 2012 Ekene Ijeoma http://ekeneijeoma.com
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,9 +20,9 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA  02111-1307  USA
  * 
- * @author      ##author##
- * @modified    ##date##
- * @version     ##library.prettyVersion## (##library.version##)
+ * @author      Ekene Ijeoma http://ekeneijeoma.com
+ * @modified    05/13/2013
+ * @version     5.4.1 (54)
  */
 
 package ijeoma.motion;
@@ -431,19 +431,19 @@ public abstract class MotionController extends Motion implements
 	/**
 	 * Removes Motion object
 	 */
-	public MotionController removeChild(Motion _child) {
-		if (_child.isTween()) {
-			tweens.remove(_child);
+	public MotionController remove(Motion child) {
+		if (child.isTween()) {
+			tweens.remove(child);
 			// tweenLUT.remove(_child.name);
-		} else if (_child.isParallel()) {
-			parallels.remove(_child);
+		} else if (child.isParallel()) {
+			parallels.remove(child);
 			// ParallelLUT.remove(_child.name);
-		} else if (_child.isSequence()) {
-			sequences.remove(_child);
+		} else if (child.isSequence()) {
+			sequences.remove(child);
 			// sequenceLUT.remove(_child.name);
 		}
 
-		children.remove(_child);
+		children.remove(child);
 		// childrenLUT.remove(_child.name);
 
 		return this;
@@ -452,17 +452,9 @@ public abstract class MotionController extends Motion implements
 	/**
 	 * adds multiple Motion objects
 	 */
-	public MotionController addAll(Motion[] _children) {
-		for (int i = 0; i < _children.length; i++)
-			add(_children[i]);
-
-		return this;
-	}
-
-	public MotionController addCall(Callback _call) {
-		calls.add(_call);
-
-		updateDuration();
+	public MotionController addAll(Motion[] children) {
+		for (int i = 0; i < children.length; i++)
+			add(children[i]);
 
 		return this;
 	}
@@ -487,6 +479,41 @@ public abstract class MotionController extends Motion implements
 		childrenMap.clear();
 
 		return this;
+	}
+
+	public MotionController addCall(Callback call) {
+		calls.add(call);
+
+		updateDuration();
+
+		return this;
+	}
+
+	public MotionController onBegin(Object object, String method) {
+		return (MotionController) super.onBegin(object, method);
+	}
+
+	public MotionController onBegin(String method) {
+		return (MotionController) super.call(getTween(0).getProperty(0)
+				.getObject(), method, 0);
+	}
+
+	public MotionController onEnd(Object object, String method) {
+		return (MotionController) super.onEnd(object, method);
+	}
+
+	public MotionController onEnd(String method) {
+		return (MotionController) super.call(getTween(0).getProperty(0)
+				.getObject(), method, duration);
+	}
+
+	public MotionController onChange(Object object, String method) {
+		return (MotionController) super.onChange(object, method);
+	}
+
+	public MotionController onChange(String method) {
+		return (MotionController) super.call(getTween(0).getProperty(0)
+				.getObject(), method, -1);
 	}
 
 	public void printChildren() {

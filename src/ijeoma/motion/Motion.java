@@ -1,9 +1,9 @@
 /**
- * ##library.name##
- * ##library.sentence##
- * ##library.url##
+ * ijeomamotion
+ * A cross-mode Processing library for sketching animations with numbers, colors vectors, beziers, curves and more. 
+ * http://ekeneijeoma.com/processing/ijeomamotion
  *
- * Copyright ##copyright## ##author##
+ * Copyright (C) 2012 Ekene Ijeoma http://ekeneijeoma.com
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,9 +20,9 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA  02111-1307  USA
  * 
- * @author      ##author##
- * @modified    ##date##
- * @version     ##library.prettyVersion## (##library.version##)
+ * @author      Ekene Ijeoma http://ekeneijeoma.com
+ * @modified    05/13/2013
+ * @version     5.4.1 (54)
  */
 
 package ijeoma.motion;
@@ -203,6 +203,17 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 				updateTime();
 				updateCalls();
 
+				// boolean b1 = isInsideDelayingTime(time);
+				// boolean b2 = isInsidePlayingTime(time);
+				//
+				// // if (!isInsideDelayingTime(time) &&
+				// // !isInsidePlayingTime(time))
+				// if (name.equals("t1"))
+				// PApplet.println(time);
+				//
+				// if (!b1 && !b2)
+				// stop();
+
 				if (!isInsideDelayingTime(time) && !isInsidePlayingTime(time))
 					stop();
 			}
@@ -221,11 +232,10 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 	public void updateCalls() {
 		for (Callback c : calls)
-			if (time > c.getTime()) {
-				if (!c.hasInvoked() || c.getTime() < 0)
-					c.invoke();
-			} else
+			if (getTime() == 0 || getTime() <= c.getTime())
 				c.noInvoke();
+			else if (!c.hasInvoked() || c.getTime() < 0)
+				c.invoke();
 	}
 
 	protected void updateTime() {
@@ -264,7 +274,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	public Motion stop() {
 		// PApplet.println(this + ".stop()");
 
-		reverseTime = (reverseTime == 0) ? duration : 0;
+		reverseTime = (reverseTime == 0) ? duration : 0; 
 
 		if (isRepeating
 				&& (repeatDuration == 0 || repeatCount < repeatDuration)) {
@@ -422,7 +432,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		this.time = time;
 
 		if (isReversing && reverseTime != 0)
-			time = reverseTime - time;
+			this.time = reverseTime - this.time;
 	}
 
 	public float getTime() {
@@ -546,11 +556,13 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	}
 
 	public boolean isInsideDelayingTime(float value) {
-		return (value > 0 && value <= delay);
+		return (value >= 0 && value <= delay);
+		// return (value >= 0 && value <= delay);
 	}
 
 	public boolean isInsidePlayingTime(float value) {
-		return (value > delay && value <= delay + duration);
+		return (value >= delay && value <= delay + duration);
+		// return (value > delay && value <= delay + duration);
 	}
 
 	public boolean isAbovePlayingTime(float value) {
@@ -572,7 +584,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return addCall(new Callback(this, object, name, time));
 	}
 
-	public Motion onStart(Object object, String name) {
+	public Motion onBegin(Object object, String name) {
 		return addCall(new Callback(this, object, name, 0));
 	}
 
@@ -586,6 +598,18 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 
 	public Motion addCall(Callback call) {
 		calls.add(call);
+		return this;
+	}
+
+	public Motion removeCall(Callback call) {
+		calls.remove(call);
+		return this;
+	}
+
+	public Motion removeCalls() {
+		calls.clear();
+		callMap.clear();
+
 		return this;
 	}
 

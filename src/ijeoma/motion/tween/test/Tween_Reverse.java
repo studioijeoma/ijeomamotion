@@ -16,7 +16,8 @@ public class Tween_Reverse extends PApplet {
 
 		Motion.setup(this);
 
-		t = new Tween(this, "w", width, 100f).repeat().reverse().play();
+		t = new Tween(this, "w", width, 100f).repeat().reverse().play()
+				.onEnd(this, "onEnd");
 	}
 
 	@Override
@@ -34,6 +35,10 @@ public class Tween_Reverse extends PApplet {
 		String time = t.getTime() + " / " + t.getDuration();
 		fill(0);
 		text(time, width - textWidth(time) - 10, height - 10);
+	}
+
+	public void onEnd() {
+		println("onEnd");
 	}
 
 	@Override

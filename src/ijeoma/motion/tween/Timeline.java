@@ -1,9 +1,9 @@
 /**
- * ##library.name##
- * ##library.sentence##
- * ##library.url##
+ * ijeomamotion
+ * A cross-mode Processing library for sketching animations with numbers, colors vectors, beziers, curves and more. 
+ * http://ekeneijeoma.com/processing/ijeomamotion
  *
- * Copyright ##copyright## ##author##
+ * Copyright (C) 2012 Ekene Ijeoma http://ekeneijeoma.com
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,9 +20,9 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA  02111-1307  USA
  * 
- * @author      ##author##
- * @modified    ##date##
- * @version     ##library.prettyVersion## (##library.version##)
+ * @author      Ekene Ijeoma http://ekeneijeoma.com
+ * @modified    05/13/2013
+ * @version     5.4.1 (54)
  */
 
 package ijeoma.motion.tween;
