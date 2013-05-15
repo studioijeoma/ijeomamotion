@@ -1,9 +1,9 @@
 /**
- * ijeomamotion
- * A cross-mode Processing library for sketching animations with numbers, colors vectors, beziers, curves and more. 
- * http://ekeneijeoma.com/processing/ijeomamotion
+ * ##library.name##
+ * ##library.sentence##
+ * ##library.url##
  *
- * Copyright (C) 2012 Ekene Ijeoma http://ekeneijeoma.com
+ * Copyright ##copyright## ##author##
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,15 +20,16 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA  02111-1307  USA
  * 
- * @author      Ekene Ijeoma http://ekeneijeoma.com
- * @modified    05/13/2013
- * @version     5.4.1 (54)
+ * @author      ##author##
+ * @modified    ##date##
+ * @version     ##library.prettyVersion## (##library.version##)
  */
 
 package ijeoma.motion;
 
 import ijeoma.motion.event.MotionEvent;
 import ijeoma.motion.event.MotionEventListener;
+import ijeoma.motion.tween.Tween;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -233,9 +234,9 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	public void updateCalls() {
 		for (Callback c : calls)
 			if (getTime() == 0 || getTime() <= c.getTime())
-				c.noInvoke();
-			else if (!c.hasInvoked() || c.getTime() < 0)
-				c.invoke();
+				c.noRun();
+			else if (!c.hasRun() || c.getTime() < 0)
+				c.run();
 	}
 
 	protected void updateTime() {
@@ -274,7 +275,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	public Motion stop() {
 		// PApplet.println(this + ".stop()");
 
-		reverseTime = (reverseTime == 0) ? duration : 0; 
+		reverseTime = (reverseTime == 0) ? duration : 0;
 
 		if (isRepeating
 				&& (repeatDuration == 0 || repeatCount < repeatDuration)) {
@@ -588,12 +589,24 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		return addCall(new Callback(this, object, name, 0));
 	}
 
+	public Motion onBegin(ICallback object) {
+		return addCall(new Callback(this, object, 0));
+	}
+
 	public Motion onEnd(Object object, String name) {
 		return addCall(new Callback(this, object, name, duration));
 	}
 
+	public Motion onEnd(ICallback object) {
+		return addCall(new Callback(this, object, duration));
+	}
+
 	public Motion onChange(Object object, String name) {
 		return addCall(new Callback(this, object, name, -1));
+	}
+
+	public Motion onChange(ICallback object) {
+		return addCall(new Callback(this, object, -1));
 	}
 
 	public Motion addCall(Callback call) {

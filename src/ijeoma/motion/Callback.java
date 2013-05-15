@@ -1,9 +1,9 @@
 /**
- * ijeomamotion
- * A cross-mode Processing library for sketching animations with numbers, colors vectors, beziers, curves and more. 
- * http://ekeneijeoma.com/processing/ijeomamotion
+ * ##library.name##
+ * ##library.sentence##
+ * ##library.url##
  *
- * Copyright (C) 2012 Ekene Ijeoma http://ekeneijeoma.com
+ * Copyright ##copyright## ##author##
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,17 +20,15 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA  02111-1307  USA
  * 
- * @author      Ekene Ijeoma http://ekeneijeoma.com
- * @modified    05/13/2013
- * @version     5.4.1 (54)
+ * @author      ##author##
+ * @modified    ##date##
+ * @version     ##library.prettyVersion## (##library.version##)
  */
 
 package ijeoma.motion;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import processing.core.PApplet;
 
 public class Callback {
 	Motion parent;
@@ -41,7 +39,9 @@ public class Callback {
 	private Class<?> parameterClass;
 
 	float time = 0;
-	boolean invoked = false;
+	boolean run = false;
+
+	boolean hasClass = false;
 
 	public Callback(Motion parent, Object methodObject, String methodName,
 			float methodTime) {
@@ -62,6 +62,18 @@ public class Callback {
 	public Callback(Object methodObject, String methodName) {
 		setup(null, methodObject, methodName);
 		time = -1;
+	}
+
+	public Callback(Motion motionObject, ICallback methodObject,
+			float methodTime) {
+		parent = motionObject;
+
+		object = methodObject;
+		objectClass = methodObject.getClass();
+
+		time = methodTime;
+
+		hasClass = true;
 	}
 
 	public void setup(Motion motionObject, Object methodObject,
@@ -114,12 +126,18 @@ public class Callback {
 		}
 	}
 
-	protected void invoke() {
+	protected void run() {
 		try {
-			Object[] args = (parameterClass == null) ? new Object[] {}
-					: new Object[] { parent };
-			objectMethod.invoke(object, args);
-			invoked = true;
+			if (hasClass) {
+				// Object o = (parameterClass == null) ? null : parent;
+				((ICallback) object).run(parent);
+				run = true;
+			} else {
+				Object[] args = (parameterClass == null) ? new Object[] {}
+						: new Object[] { parent };
+				objectMethod.invoke(object, args);
+				run = true;
+			}
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
@@ -129,12 +147,12 @@ public class Callback {
 		}
 	}
 
-	public void noInvoke() {
-		invoked = false;
+	public void noRun() {
+		run = false;
 	}
 
-	public boolean hasInvoked() {
-		return invoked;
+	public boolean hasRun() {
+		return run;
 	}
 
 	public float getTime() {

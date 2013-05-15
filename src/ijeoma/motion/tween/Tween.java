@@ -29,6 +29,7 @@ package ijeoma.motion.tween;
 
 import ijeoma.geom.Path;
 import ijeoma.motion.Callback;
+import ijeoma.motion.ICallback;
 import ijeoma.motion.Motion;
 import ijeoma.motion.event.MotionEvent;
 import ijeoma.motion.event.MotionEventListener;
@@ -358,7 +359,7 @@ public class Tween extends Motion { // implements Comparable
 		super.update();
 
 		if (isPlaying)
-			updateProperties(); 
+			updateProperties();
 	}
 
 	@Override
@@ -570,6 +571,10 @@ public class Tween extends Motion { // implements Comparable
 		return (Tween) super.call(properties.get(0).getObject(), method, 0);
 	}
 
+	public Tween onBegin(ICallback object) {
+		return (Tween) super.onBegin(object);
+	}
+
 	public Tween onEnd(Object object, String method) {
 		return (Tween) super.onEnd(object, method);
 	}
@@ -579,12 +584,20 @@ public class Tween extends Motion { // implements Comparable
 				duration);
 	}
 
+	public Tween onEnd(ICallback object) {
+		return (Tween) super.onEnd(object);
+	}
+
 	public Tween onChange(Object object, String method) {
 		return (Tween) super.onChange(object, method);
 	}
 
 	public Tween onChange(String method) {
 		return (Tween) super.call(properties.get(0).getObject(), method, -1);
+	}
+
+	public Tween onChange(ICallback object) {
+		return (Tween) super.onChange(object);
 	}
 
 	public Tween addCall(Callback callback) {
