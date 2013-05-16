@@ -16,7 +16,7 @@ public class Tween_Repeat extends PApplet {
 
 		Motion.setup(this);
 
-		t = new Tween(this, "w", width, 100f).repeat().play();
+		t = new Tween(this, "w", width, 100f).repeat(2).play();
 	}
 
 	@Override
@@ -38,6 +38,15 @@ public class Tween_Repeat extends PApplet {
 
 	@Override
 	public void keyPressed() {
-		t.play();
+		// t = new Tween(this, "w", width, 100f).repeat(2).play();
+		if (key == ' ')
+			t.play();
+		else if (key == 'n') {
+			// w = width;
+			new Tween(this, "w", 0, 100f).repeat(2).play();
+		} else {
+			w = width * (parseInt(str(key)) + 1) / 10f;
+		}
+
 	}
 }
