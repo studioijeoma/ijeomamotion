@@ -36,6 +36,7 @@ import java.util.List;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
+import processing.core.PShape;
 import processing.core.PVector;
 
 public class Path {
@@ -69,6 +70,9 @@ public class Path {
 
 	protected boolean is3D = Motion.getParent().isGL();
 
+	protected PShape shape;
+	protected boolean usePShape = false;
+
 	public Path() {
 	}
 
@@ -96,16 +100,8 @@ public class Path {
 	}
 
 	public Path scale(float s) {
-		return scale(new PVector(s, s, s));
-	}
-
-	public Path scale(float x, float y, float z) {
-		return scale(new PVector(x, y, z));
-	}
-
-	public Path scale(PVector scale) {
 		for (PVector p : points)
-			p.mult(scale);
+			p.mult(s);
 
 		return this;
 	}
@@ -139,23 +135,25 @@ public class Path {
 			if (!computed)
 				compute();
 
-			int pointCount = (int) (points.size() * step * t);
+			if (points.size() > 2) {
+				int pointCount = (int) (points.size() * step * t);
 
-			g.beginShape(mode);
-			for (int i = 1; i <= pointCount; i++) {
-				PVector p1 = getPointAt((float) (i - 1)
-						/ (points.size() * step));
-				PVector p2 = getPointAt((float) i / (points.size() * step));
+				g.beginShape(mode);
+				for (int i = 1; i <= pointCount; i++) {
+					PVector p1 = getPointAt((float) (i - 1)
+							/ (points.size() * step));
+					PVector p2 = getPointAt((float) i / (points.size() * step));
 
-				if (is3D) {
-					g.vertex(p1.x, p1.y, p1.z);
-					g.vertex(p2.x, p2.y, p2.z);
-				} else {
-					g.vertex(p1.x, p1.y);
-					g.vertex(p2.x, p2.y);
+					if (is3D) {
+						g.vertex(p1.x, p1.y, p1.z);
+						g.vertex(p2.x, p2.y, p2.z);
+					} else {
+						g.vertex(p1.x, p1.y);
+						g.vertex(p2.x, p2.y);
+					}
 				}
+				g.endShape();
 			}
-			g.endShape();
 		}
 	}
 
@@ -166,6 +164,16 @@ public class Path {
 	public void hide() {
 		visible = false;
 	}
+
+	// public void show() {
+	// alpha = t = 1;
+	// visible = true;
+	// }
+	//
+	// public void hide() {
+	// t = alpha = 0;
+	// visible = false;
+	// }
 
 	public Path add(float x, float y, float z) {
 		return add(new PVector(x, y, z));
@@ -322,7 +330,9 @@ public class Path {
 	public Path setPoints(List<PVector> points) {
 		computed = false;
 
-		points = new ArrayList<PVector>(points);
+		// for(PVector p:points)
+		// points.add(p);
+		this.points = new ArrayList<PVector>(points);
 
 		// for (PVector p : points)
 		// if (p.z != 0) {
@@ -331,8 +341,6 @@ public class Path {
 		// }
 
 		segmentTRange = (1f / (points.size() - 1));
-
-		// compute();
 
 		return this;
 	}
