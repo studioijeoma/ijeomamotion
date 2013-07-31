@@ -107,25 +107,16 @@ public class Sequence extends MotionController {
 	public void update() {
 		super.update();
 
-		int i = 0;
-
-		if (isPlaying)
-			for (Motion c : children) {
-				if (c.isInsidePlayingTime(time)) {
-					currentChildIndex = i;
-					currentChild = c;
-
-					break;
-				}
-
-				i++;
-			}
+		if (isRegistered && isPlaying)
+			updateCurrentChild();
 	}
 
 	@Override
 	public void update(float _time) {
 		super.update(_time);
-		updateCurrentChild();
+
+		if (isPlaying)
+			updateCurrentChild();
 	}
 
 	private void updateCurrentChild() {

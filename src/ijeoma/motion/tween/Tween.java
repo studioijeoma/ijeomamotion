@@ -358,7 +358,7 @@ public class Tween extends Motion { // implements Comparable
 	public void update() {
 		super.update();
 
-		if (isPlaying)
+		if (isRegistered && isPlaying)
 			updateProperties();
 	}
 

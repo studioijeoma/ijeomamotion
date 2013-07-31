@@ -40,7 +40,7 @@ public class Sequence_Callback extends PApplet {
 				.addColor(this, "c1", color(0)).onBegin("begin").onEnd("end"));
 		ts.add(new Tween("x2", d).add(this, "x2", (float) width)
 				.addColor(this, "c2", color(0)).onBegin("begin").onEnd("end"));
-		ts.repeat().play();
+		ts.play();
 	}
 
 	public void begin(Tween t) {
@@ -68,14 +68,15 @@ public class Sequence_Callback extends PApplet {
 		fill(0);
 
 		String time = (int) ts.get("x1").getTime() + " / "
-				+ (int) ts.get("x1").getDuration() + " / " + x1;
+				+ (int) ts.get("x1").getDuration();// + " / " + x1;
 		fill((ts.get("x1").isPlaying() ? color(0, 255, 0) : color(255, 0, 0)));
 		text(time, 10, 10 + 12);
 
-		time = (int) ts.get("x2").getTime() + " / "
-				+ (int) ts.get("x2").getDuration();
-		fill((ts.get("x2").isPlaying() ? color(0, 255, 0) : color(255, 0, 0)));
-		text(time, 10, height / 2 + 10 + 12);
+		// time = (int) ts.get("x2").getTime() + " / "
+		// + (int) ts.get("x2").getDuration();
+		// fill((ts.get("x2").isPlaying() ? color(0, 255, 0) : color(255, 0,
+		// 0)));
+		// text(time, 10, height / 2 + 10 + 12);
 
 		time = (int) ts.getTime() + " / " + (int) ts.getDuration();
 		fill((ts.isPlaying() ? color(0, 255, 0) : color(255, 0, 0)));

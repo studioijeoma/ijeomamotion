@@ -15,13 +15,13 @@ public class Tween_Callback extends PApplet {
 
 		Motion.setup(this);
 
-		// t = new Tween(100).add(this, "s", width).onBegin("onBegin")
-		// .onEnd("onEnd").onChange(this, "onChange").play();
-		t = new Tween(100).add(this, "s", width).onBegin(new ICallback() {
-			public void run(Object obj) {
-				println(obj);
-			}
-		}).onEnd("onEnd").onChange(this, "onChange").play();
+		t = new Tween(100).add(this, "s", width).onBegin("onBegin")
+				.onEnd("onEnd").onChange(this, "onChange").play();
+		// t = new Tween(100).add(this, "s", width).onBegin(new ICallback() {
+		// public void run(Object obj) {
+		// println(obj);
+		// }
+		// }).onEnd("onEnd").onChange(this, "onChange").play();
 	}
 
 	public void draw() {

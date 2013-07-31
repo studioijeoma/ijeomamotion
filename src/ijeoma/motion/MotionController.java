@@ -122,7 +122,7 @@ public abstract class MotionController extends Motion implements
 	public void update() {
 		super.update();
 
-		if (isPlaying)
+		if (isRegistered && isPlaying)
 			updateChildren();
 	}
 

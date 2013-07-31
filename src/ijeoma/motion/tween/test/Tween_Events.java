@@ -7,7 +7,7 @@ import ijeoma.motion.tween.Tween;
 import processing.core.PApplet;
 import processing.core.PFont;
 
-public class Tween_Events_2 extends PApplet {
+public class Tween_Events extends PApplet {
 	PFont f;
 
 	Tween t;

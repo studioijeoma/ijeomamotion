@@ -199,25 +199,24 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	}
 
 	public void update() {
-		if (isRegistered)
-			if (isPlaying) {
-				updateTime();
-				updateCalls();
+		if (isRegistered && isPlaying) {
+			updateTime();
+			updateCalls();
 
-				// boolean b1 = isInsideDelayingTime(time);
-				// boolean b2 = isInsidePlayingTime(time);
-				//
-				// // if (!isInsideDelayingTime(time) &&
-				// // !isInsidePlayingTime(time))
-				// if (name.equals("t1"))
-				// PApplet.println(time);
-				//
-				// if (!b1 && !b2)
-				// stop();
+			// boolean b1 = isInsideDelayingTime(time);
+			// boolean b2 = isInsidePlayingTime(time);
+			//
+			// // if (!isInsideDelayingTime(time) &&
+			// // !isInsidePlayingTime(time))
+			// if (name.equals("t1"))
+			// PApplet.println(time);
+			//
+			// if (!b1 && !b2)
+			// stop();
 
-				if (!isInsideDelayingTime(time) && !isInsidePlayingTime(time))
-					stop();
-			}
+			if (!isInsideDelayingTime(time) && !isInsidePlayingTime(time))
+				stop();
+		}
 	}
 
 	public void update(float time) {
@@ -231,12 +230,16 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 			stop();
 	}
 
-	public void updateCalls() {
-		for (Callback c : calls)
-			if (getTime() == 0 || getTime() <= c.getTime())
+	public void updateCalls() { 
+		for (Callback c : calls) {
+			// if (isTween() && c.getTime() == getTime())
+			// PApplet.println("updateCalls" + getTime() + "/" + c.getTime());
+
+			if (getTime() == 0 || getTime() < c.getTime())
 				c.noRun();
 			else if (!c.hasRun() || c.getTime() < 0)
 				c.run();
+		}
 	}
 
 	protected void updateTime() {
