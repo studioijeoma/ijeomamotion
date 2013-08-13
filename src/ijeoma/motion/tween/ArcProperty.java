@@ -161,4 +161,10 @@ public class ArcProperty implements IProperty {
 				+ ", position: " + getPosition() + "]";
 	}
 
+	@Override
+	public String getId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
