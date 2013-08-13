@@ -117,29 +117,26 @@ public class VectorProperty implements IProperty {
 	}
 
 	public void updateValue() {
-		// if (name.equals("pos2") && (order == 0 && position == 0))
-		// PApplet.println(position);
-
 		if ((position > 0 && position <= 1) || (position == 0 && order == 0)) {
 			value.set(PVector.lerp(begin, end, position));
 
 			if (field != null)
 				try {
 					((PVector) field.get(object)).set(value);
-
-					// if (name.equals("pos2")) {
-					// PApplet.println(((PVector) field.get(object)));
-					//
-					// if (value.x == 0 && value.y == 0 && value.z == 0)
-					// PApplet.println(((PVector) field.get(object)));
-					// }
 				} catch (IllegalArgumentException e) {
 					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
+				} catch (IllegalAccessException e) { 
 					e.printStackTrace();
 				}
 		}
+	}
+
+	@Override
+	public String getId() {
+		if (field == null)
+			return name;
+		else
+			return System.identityHashCode(object) + "_" + name;
 	}
 
 	@Override

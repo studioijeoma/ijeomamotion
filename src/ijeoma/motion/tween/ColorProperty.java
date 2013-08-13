@@ -113,6 +113,13 @@ public class ColorProperty implements IProperty {
 				e.printStackTrace();
 			}
 	}
+	
+	public String getId() {
+		if (field == null)
+			return name;
+		else
+			return System.identityHashCode(object) + "_" + name;
+	}
 
 	@Override
 	public String getName() {

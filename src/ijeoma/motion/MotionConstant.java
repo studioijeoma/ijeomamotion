@@ -87,5 +87,8 @@ public interface MotionConstant {
 	public static String ONCE = "once";
 	public static String REPEAT = "repeat";
 
+	public static String OVERRIDE = "override";
+	public static String NO_OVERRIDE = "noOverride";
+
 	public static String VERSION = "3.9.6";
 }

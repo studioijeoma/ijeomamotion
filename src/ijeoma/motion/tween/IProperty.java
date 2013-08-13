@@ -30,6 +30,8 @@ package ijeoma.motion.tween;
 public interface IProperty {
 	void updateValue();
 
+	String getId();
+
 	public String getName();
 
 	public void setName(String name);

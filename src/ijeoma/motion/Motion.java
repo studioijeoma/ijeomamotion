@@ -45,9 +45,8 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	protected static PApplet parent;
 	protected static Class parentClass;
 
-	private static String defaultTimeMode = FRAMES;
-	private static String defaultEasing = Motion.EXPO_OUT;
-	// private static String defaultOverwriteMode = OVERWRITE;
+	protected static String defaultTimeMode = FRAMES;
+	protected static String defaultEasing = Motion.EXPO_OUT;
 
 	protected String name = "";
 

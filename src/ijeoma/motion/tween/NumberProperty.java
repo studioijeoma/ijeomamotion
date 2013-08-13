@@ -131,13 +131,22 @@ public class NumberProperty implements IProperty {
 	}
 
 	@Override
+	public String getId() {
+		if (field == null)
+			return name;
+		else
+			return System.identityHashCode(object) + "_" + name;
+	}
+
+	@Override
 	public String getName() {
 		return name;
 	}
 
 	@Override
 	public void setName(String _name) {
-		name = _name;
+		if (field == null)
+			name = _name;
 	}
 
 	public Float getBegin() {
@@ -165,7 +174,9 @@ public class NumberProperty implements IProperty {
 	}
 
 	public void setEnd(Object _end) {
-		if (field != null) {
+		if (field == null)
+			begin = value;
+		else {
 			try {
 				begin = field.getFloat(object);
 			} catch (IllegalArgumentException e) {
@@ -173,8 +184,7 @@ public class NumberProperty implements IProperty {
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			}
-		} else
-			begin = value;
+		}
 
 		end = (_end instanceof Integer) ? new Float(_end.toString())
 				: (Float) _end;

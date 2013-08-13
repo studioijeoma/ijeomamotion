@@ -44,8 +44,14 @@ import processing.core.PApplet;
 import processing.core.PVector;
 
 public class Tween extends Motion { // implements Comparable
+	protected static String defaultOverrideMode = OVERRIDE;
+
+	protected static HashMap<String, Tween> singlePropertyInstances = new HashMap<String, Tween>();
+
 	protected ArrayList<IProperty> properties = new ArrayList<IProperty>();
 	protected HashMap<String, IProperty> propertyMap = new HashMap<String, IProperty>();
+
+	protected String overwriteMode = OVERRIDE;
 
 	protected Method tweenStartedMethod, tweenEndedMethod, tweenChangedMethod,
 			tweenRepeatedMethod;
@@ -73,18 +79,24 @@ public class Tween extends Motion { // implements Comparable
 	 *            BOUNCE_IN, BOUNCE_OUT, BOUNCE_BOTH, ELASTIC_IN, ELASTIC_OUT,
 	 *            ELASTIC_BOTH
 	 */
+	public Tween(String name, float duration, float delay, String easing,
+			String timeMode) {
+		setup(name, duration, delay, easing, timeMode);
+		setupEvents();
+	}
+
 	public Tween(String name, float duration, float delay, String easing) {
-		setup(name, duration, delay, easing);
+		setup(name, duration, delay, easing, defaultTimeMode);
 		setupEvents();
 	}
 
 	public Tween(String name, float duration, float delay) {
-		setup(name, duration, delay, easing);
+		setup(name, duration, delay, defaultEasing, defaultTimeMode);
 		setupEvents();
 	}
 
 	public Tween(String name, float duration) {
-		setup(name, duration, delay, easing);
+		setup(name, duration, delay, defaultEasing, defaultTimeMode);
 		setupEvents();
 	}
 
@@ -107,17 +119,17 @@ public class Tween extends Motion { // implements Comparable
 	 *            ELASTIC_BOTH
 	 */
 	public Tween(float duration, float delay, String easing) {
-		setup("", duration, delay, easing);
+		setup("", duration, delay, easing, defaultTimeMode);
 		setupEvents();
 	}
 
 	public Tween(float duration, float delay) {
-		setup(duration, delay, easing);
+		setup(duration, delay, defaultEasing, defaultTimeMode);
 		setupEvents();
 	}
 
 	public Tween(float duration) {
-		setup(duration, delay, easing);
+		setup(duration, delay, defaultEasing, defaultTimeMode);
 		setupEvents();
 	}
 
@@ -151,7 +163,7 @@ public class Tween extends Motion { // implements Comparable
 			float end, float duration, float delay, String easing) {
 		IProperty p = new NumberProperty(propertyObject, propertyName, end);
 
-		setup(name, p, duration, delay, easing);
+		setup(name, p, duration, delay, easing, defaultTimeMode);
 		setupEvents();
 	}
 
@@ -159,7 +171,7 @@ public class Tween extends Motion { // implements Comparable
 			float end, float duration, float delay) {
 		IProperty p = new NumberProperty(proeprtyObject, propertyName, end);
 
-		setup(name, p, duration, delay, easing);
+		setup(name, p, duration, delay, defaultEasing, defaultTimeMode);
 		setupEvents();
 	}
 
@@ -167,7 +179,7 @@ public class Tween extends Motion { // implements Comparable
 			float end, float duration) {
 		IProperty p = new NumberProperty(propertyObject, propertyName, end);
 
-		setup(name, p, duration, delay, easing);
+		setup(name, p, duration, delay, defaultEasing, defaultTimeMode);
 		setupEvents();
 	}
 
@@ -199,7 +211,7 @@ public class Tween extends Motion { // implements Comparable
 			float duration, float delay, String easing) {
 		IProperty p = new NumberProperty(propertyObject, propertyName, end);
 
-		setup(p, duration, delay, easing);
+		setup(p, duration, delay, easing, defaultTimeMode);
 		setupEvents();
 	}
 
@@ -207,7 +219,7 @@ public class Tween extends Motion { // implements Comparable
 			float duration, float delay) {
 		IProperty p = new NumberProperty(propertyObject, propertyName, end);
 
-		setup(p, duration, delay, easing);
+		setup(p, duration, delay, defaultEasing, defaultTimeMode);
 		setupEvents();
 	}
 
@@ -215,7 +227,7 @@ public class Tween extends Motion { // implements Comparable
 			float duration) {
 		IProperty p = new NumberProperty(propertyObject, propertyName, end);
 
-		setup(p, duration, delay, easing);
+		setup(p, duration, delay, defaultEasing, defaultTimeMode);
 		setupEvents();
 	}
 
@@ -247,7 +259,7 @@ public class Tween extends Motion { // implements Comparable
 			float delay, String easing) {
 		IProperty p = new NumberProperty(name, begin, end);
 
-		setup(p, duration, delay, easing);
+		setup(p, duration, delay, easing, defaultTimeMode);
 		setupEvents();
 	}
 
@@ -255,14 +267,14 @@ public class Tween extends Motion { // implements Comparable
 			float delay) {
 		IProperty p = new NumberProperty(name, begin, end);
 
-		setup(p, duration, delay, easing);
+		setup(p, duration, delay, defaultEasing, defaultTimeMode);
 		setupEvents();
 	}
 
 	public Tween(String name, float begin, float end, float duration) {
 		IProperty p = new NumberProperty(name, begin, end);
 
-		setup(p, duration, delay, easing);
+		setup(p, duration, delay, defaultEasing, defaultTimeMode);
 		setupEvents();
 	}
 
@@ -294,33 +306,36 @@ public class Tween extends Motion { // implements Comparable
 			String easing) {
 		IProperty p = new NumberProperty("", begin, end);
 
-		setup(p, duration, delay, easing);
+		setup(p, duration, delay, easing, defaultTimeMode);
 		setupEvents();
 	}
 
 	public Tween(float begin, float end, float duration, float delay) {
 		IProperty p = new NumberProperty("", begin, end);
 
-		setup(p, duration, delay, easing);
+		setup(p, duration, delay, defaultEasing, defaultTimeMode);
 		setupEvents();
 	}
 
 	public Tween(float begin, float end, float duration) {
 		IProperty p = new NumberProperty("", begin, end);
 
-		setup(p, duration, delay, easing);
+		setup(p, duration, delay, defaultEasing, defaultTimeMode);
 		setupEvents();
 	}
 
 	protected void setup(String name, IProperty p, float duration, float delay,
-			String easing) {
-		setup(name, duration, delay, easing);
+			String easing, String timeMode) {
+		setup(name, duration, delay, easing, timeMode);
 		add(p);
+		addSinglePropertyInstance();
 	}
 
-	protected void setup(IProperty p, float duration, float delay, String easing) {
-		setup(duration, delay, easing);
+	protected void setup(IProperty p, float duration, float delay,
+			String easing, String timeMode) {
+		setup(duration, delay, easing, timeMode);
 		add(p);
+		addSinglePropertyInstance();
 	}
 
 	@Override
@@ -484,6 +499,18 @@ public class Tween extends Motion { // implements Comparable
 
 	public Tween noAutoUpdate() {
 		return (Tween) super.noAutoUpdate();
+	}
+
+	private void addSinglePropertyInstance() {
+		String id = properties.get(0).getId();
+
+		if (singlePropertyInstances.containsKey(id)
+				&& defaultOverrideMode.equals(OVERRIDE)) {
+			Tween t = singlePropertyInstances.get(id);
+			t.removeAll();
+		}
+		
+			singlePropertyInstances.put(id, this);
 	}
 
 	public Tween addEventListener(MotionEventListener listener) {
