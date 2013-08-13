@@ -45,6 +45,10 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	protected static PApplet parent;
 	protected static Class parentClass;
 
+	private static String defaultTimeMode = FRAMES;
+	private static String defaultEasing = Motion.EXPO_OUT;
+	// private static String defaultOverwriteMode = OVERWRITE;
+
 	protected String name = "";
 
 	protected ArrayList<Callback> calls = new ArrayList<Callback>();
@@ -108,47 +112,59 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	 * Constructs a Motion
 	 * 
 	 */
+	public Motion(String name, float duration, float delay, String easing,
+			String timeMode) {
+		setup(name, duration, delay, easing, timeMode);
+		setupEvents();
+	}
+
 	public Motion(String name, float duration, float delay, String easing) {
-		setup(name, duration, delay, easing);
+		setup(name, duration, delay, easing, defaultTimeMode);
 		setupEvents();
 	}
 
 	public Motion(String name, float duration, float delay) {
-		setup(name, duration, delay, easing);
+		setup(name, duration, delay, defaultEasing, defaultTimeMode);
 		setupEvents();
 	}
 
 	public Motion(String name, float duration) {
-		setup(name, duration, delay, easing);
+		setup(name, duration, delay, defaultEasing, defaultTimeMode);
+		setupEvents();
+	}
+
+	public Motion(float duration, float delay, String easing, String timeMode) {
+		setup(name, duration, delay, easing, timeMode);
 		setupEvents();
 	}
 
 	public Motion(float duration, float delay, String easing) {
-		setup(name, duration, delay, easing);
+		setup(name, duration, delay, easing, defaultTimeMode);
 		setupEvents();
 	}
 
 	public Motion(float duration, float delay) {
-		setup(name, duration, delay, easing);
+		setup(name, duration, delay, defaultEasing, defaultTimeMode);
 		setupEvents();
 	}
 
 	public Motion(float duration) {
-		setup(name, duration, delay, easing);
+		setup(name, duration, delay, defaultEasing, defaultTimeMode);
 		setupEvents();
 	}
 
 	public Motion(String name) {
-		setup(name, duration, delay, easing);
+		setup(name, duration, delay, defaultEasing, defaultTimeMode);
 		setupEvents();
 	}
 
 	public Motion() {
-		setup("", duration, delay, easing);
+		setup("", duration, delay, defaultEasing, defaultTimeMode);
 		setupEvents();
 	}
 
-	protected void setup(String name, float duration, float delay, String easing) {
+	protected void setup(String name, float duration, float delay,
+			String easing, String timeMode) {
 		this.name = name;
 
 		this.duration = duration;
@@ -160,8 +176,9 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 		setEasing(easing);
 	}
 
-	protected void setup(float duration, float delay, String easing) {
-		setup("", duration, delay, easing);
+	protected void setup(float duration, float delay, String easing,
+			String timeMode) {
+		setup("", duration, delay, easing, timeMode);
 	}
 
 	public static void setup(PApplet parent) {
@@ -230,7 +247,7 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 			stop();
 	}
 
-	public void updateCalls() { 
+	public void updateCalls() {
 		for (Callback c : calls) {
 			// if (isTween() && c.getTime() == getTime())
 			// PApplet.println("updateCalls" + getTime() + "/" + c.getTime());
@@ -421,6 +438,22 @@ public class Motion implements MotionConstant, Comparator<Motion>,
 	public Motion noReverse() {
 		isReversing = false;
 		return this;
+	}
+
+	public static void setDefaultEasing(String easing) {
+		defaultEasing = easing;
+	}
+
+	public static String getDefaultEasing() {
+		return defaultEasing;
+	}
+
+	public static void setDefaultTimeMode(String timeMode) {
+		defaultTimeMode = timeMode;
+	}
+
+	public static String getDefaultTimeMode() {
+		return defaultTimeMode;
 	}
 
 	public Motion setName(String name) {
